@@ -1,0 +1,25 @@
+
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<!-- sidebar content -->
+		<div class="col-sm-3 col-md-2 sidebar">
+			<ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
+			<!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
+				<li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
+				<!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
+					<a ng-href="lessons/topics/{{topic._id}}">{{topic.title}}</a>
+				<!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
+				</li>
+			</ul>  
+		</div>
+
+		<!-- main content -->
+		<div class="col-sm-9 col-sm-offset-3 col-mid-10 col-md-offset-2 main">
+			<h1 class="page-header">Welcome to CSC 110: Intro to Programming</h1>
+			<p>Choose a topic to work on from the links at left.</p>
+		</div>
+	</div>
+</div>
+

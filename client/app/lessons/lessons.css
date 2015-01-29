@@ -1,0 +1,13 @@
+.ace_editor {
+	margin: auto; 
+	height: 300px;
+	width: 600px;
+	outline: 1px solid #EEEEEE;
+	box-shadow: 0 0 10px gray;
+}
+
+.editor-btns {
+	margin:auto;
+	width: 559px;
+	padding-top: 10px;
+}

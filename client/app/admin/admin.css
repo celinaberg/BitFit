@@ -1,0 +1,24 @@
+.trash { color:rgb(209, 91, 71); }
+
+.addQuestionForm {
+	padding: 15px;
+	background: #D1E3F2;
+	border: 1px solid #CACACA;
+}
+
+.editQuestionForm {
+	padding: 15px;
+	background: #D1E3F2;
+	border: 1px solid #CACACA;
+}
+.addTopicForm {
+	padding: 15px;
+	background: #C7DDC7;
+	border: 1px solid #CACACA;
+}
+
+.editBackgroundForm {
+	padding: 15px;
+	background: #C7DDC7;
+	border: 1px solid #CACACA;
+}

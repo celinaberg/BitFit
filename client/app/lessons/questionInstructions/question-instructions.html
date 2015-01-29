@@ -1,0 +1,41 @@
+<!-- Question Tab's content -->
+<div ng-show="isSet(1)">
+	<div ng-repeat="q in topic.questions">
+	    <div ng-if="questionIndex == $index">
+	  		<h4>Question {{questionIndex + 1}}</h4>
+	        <div ng-bind-html="q.instructions"></div>
+	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[questionIndex].hintIndex + 1">
+	        	<li><strong>Hint:</strong> {{hint}}</li>
+	        </ul>	
+	        	<p ng-if="status[questionIndex].hintIndex >= q.hints.length">{{currentHint}}</p>
+	        
+	        <!--
+ track by status[questionIndex].hintIndex
+	        <p>{{q.instructions}}</p>-->
+	    </div>
+	</div>
+	<div class="text-center">
+		<div class="btn-group" role="group">
+			<button type="button" ng-click="prevQuestion()" class="btn btn-sm btn-default">
+				<span class="glyphicon glyphicon-chevron-left"></span> Previous Question
+			</button>
+			<a href="#" ng-click="showHint()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-flag"></span> I'm stuck!</a>
+			<button type="button" ng-click="nextQuestion()" class="btn btn-sm btn-default">
+				Next Question
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			</button>
+		</div>
+	</div>
+
+	<hr>
+	<div>
+	<div ng-model="q.code" ui-ace="{ onLoad: aceLoaded }"></div>
+	<div class="editor-btns">
+		<button class="btn btn-primary "><span class="glyphicon glyphicon-play"></span> Run Code</button>
+		<!-- TODO: fix this so it gives a warning before resetting code -->
+		<a href="#" class="btn btn-danger " ng-click="reset()"><span class="glyphicon glyphicon-repeat"></span> Reset</a>
+	</div>
+	</div>
+
+    <!--<hr>Your Choice: {{meal.name}} -->
+</div>

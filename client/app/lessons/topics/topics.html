@@ -1,0 +1,59 @@
+
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+
+<!-- this SHOULD contain the stuff i want each individual topic to have -->
+<div class="container-fluid">
+	<div class="row">
+		<!-- sidebar content -->
+		<div class="col-sm-3 col-md-2 sidebar">
+			<ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
+			<!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
+				<li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic._id)}">
+				<!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
+					<a ng-href="lessons/topics/{{topic._id}}">{{topic.title}}</a> 
+				<!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
+				</li>
+			</ul>  
+		</div>
+
+		<!-- main content -->
+		<div class="col-xs-12 col-sm-10 col-sm-offset-3 col-mid-10 col-lg-offset-2 main">
+			<h1 class="page-header">{{topic.title}}</h1>
+			<!-- <div class="row"> -->
+				<!-- Left Content -->
+				<!-- <div class="col-sm-5"> -->
+
+			<!-- Tabs Content-->
+			<section>
+			  <ul class="nav nav-tabs">
+			    <li ng-class="{ active:isSet(1) }">
+			      <a href ng-click="setTab(1)">Questions</a>
+			    </li>
+			    <li ng-class="{ active:isSet(2) }">
+			      <a href ng-click="setTab(2)">Background</a>
+			    </li>
+			  </ul>
+			  <!--  Question Tab's Content  -->
+			  <question-instructions ng-show="isSet(1)"></question-instructions>
+
+			  <!--  Background Tab's Content  -->
+			  <background ng-show="isSet(2)"></background>
+			</section>
+		</div>
+
+				<!--Right Content -->
+				<!--
+				<div class="col-sm-4">
+					<div ng-model="code" ui-ace="{ onLoad: aceLoaded }"></div>
+					<div class="editor-btns">
+						<button class="btn btn-primary "><span class="glyphicon glyphicon-play"></span> Run Code</button>
+						<a href="#" class="btn btn-warning "><span class="glyphicon glyphicon-flag"></span> I'm stuck!</a>
+						<a href="#" class="btn btn-danger " ng-click="reset()"><span class="glyphicon glyphicon-repeat"></span> Reset</a>
+
+					</div>
+				</div>
+				-->
+		</div>
+	</div>
+</div>
