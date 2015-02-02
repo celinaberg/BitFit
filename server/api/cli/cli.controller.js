@@ -60,8 +60,8 @@ exports.destroy = function(req, res) {
 exports.compile = function(req, res) {
   console.log('hey im in cli compile func. heres req.body');
   console.log(req.body);
-  var fileName = 'Test.java'; //req.body.questionNum; // plus attempt num?
-  var className = 'Test';
+  var fileName = req.body.fileName; //'Test.java'; //req.body.questionNum; // plus attempt num?
+  var className = req.body.className; //'Test';
   var dirName = 'users/' + req.body.user._id + '/';
   var dateTime = new Date();
   dirName += dateTime.getMonth();

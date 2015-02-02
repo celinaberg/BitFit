@@ -7,6 +7,7 @@ angular.module('its110App')
         url: '/lessons',
         templateUrl: 'app/lessons/lessons.html',
         controller: 'LessonsCtrl',
+        authenticate: true,
         // By using the _resolve_ property in this way, we are ensuring that anytime our 
   		// 'sidebar' state is entered, we will automatically query all topics from our backend before 
   		// the state actually finishes loading.

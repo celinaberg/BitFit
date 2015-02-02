@@ -79,7 +79,7 @@
                 <!--<div ng-show="editQuestion">-->
                   <strong>Question {{$index + 1}}:</strong><div class="tab" ng-bind-html="q.instructions"></div>
                   <div>
-                  	<strong>Starter Code: </strong><br /><span class="text-muted tab" ng-bind-html="q.code"></span>	<br />
+                  	<strong>Starter Code: </strong><br /><pre><span ng-bind-html="q.code"></span>	<br /></pre>
                   	<strong>Expected Output: </strong><br /><pre>{{q.expectedOutput}}</pre>
                   	<span class="pull-right">
                   		<button type="button" class="btn btn-warning" ng-click="editQuestion=!editQuestion; addEditor($index)" class="editQuestion">

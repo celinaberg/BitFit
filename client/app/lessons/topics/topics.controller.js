@@ -1,17 +1,74 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $log, topics, topic, topicPromiseTC) { // topics is for manipulating questions
+  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC) { // topics is for manipulating questions
     $scope.topic = topic.data; 
-	$scope.topicsTC = topicPromiseTC.data;
-	$scope.tab = 1;
+	  $scope.topicsTC = topicPromiseTC.data;
+	  $scope.tab = 1;
   	$scope.questionIndex = 0; // keeps track of which question the user is on
   	$scope.status = [];
-	$scope.currentHint = 'Sorry, there are no more hints for this question';
+    $scope.currentHint = 'Sorry, there are no more hints for this question';
   	$scope.editor = {};
+    $scope.compileOutput = '';
+    $scope.runOutput = '';
+    $scope.showComments = false;
+    $scope.feedback = '';
+    $scope.className = '';
+    //$scope.fileName = '';
+
+    var endsWith = function(str, suffix) {
+      return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
+
+
+    var getClassName = function() {
+      if (endsWith($scope.className, '.java')) {
+        $scope.className.slice(0, -5);
+        return $scope.className.slice(0, -5);
+      } else {
+        return $scope.className;
+      }
+    }
+
+    var getFileName = function() {
+      if (endsWith($scope.className, '.java')) {
+        return $scope.className;
+      } else {
+        return $scope.className + '.java';
+      }
+    }
+    // FIXME: this functionality should be moved into topics service
+    $scope.compileCode = function() {
+      var className = getClassName();
+      var fileName = getFileName();
+      var obj = { 'className': className,
+                  'fileName': fileName,
+                  'code': $scope.editor.getValue(),
+                  'user': Auth.getCurrentUser(),
+                  'questionNum': $scope.questionIndex
+          }
+      $http.post('api/clis/compile', obj).success(function(data) {
+        if (data === '') {
+          // FIXME how to check if no file was actually compiled?
+          $scope.compileOutput += 'Successfully compiled code.\n';
+        } else {
+          $scope.compileOutput += data;
+        }
+      });
+    }
+
+    // FIXME: this functionality should be moved into topics service
+    $scope.runCode = function() {
+      var className = getClassName();
+      var obj = { 'className': className,
+                  'user': Auth.getCurrentUser()
+                }
+      $http.post('api/clis/run', obj).success(function(data) {
+        $scope.runOutput = data;
+      });
+    }
 
   	$scope.hintRequested = function() {
-  		console.log('called hint requested?');
   		return $scope.status[$scope.questionIndex].hintRequested;
   	}
   	$scope.isSet = function(checkTab) {
@@ -21,6 +78,43 @@ angular.module('its110App')
     $scope.setTab = function(activeTab) {
           $scope.tab = activeTab;
     };
+
+    $scope.checkAnswer = function() {
+      var className = getClassName();
+      var fileName = getFileName();
+      var obj = { 'className': className,
+                  'fileName': fileName,
+                  'code': $scope.editor.getValue(),
+                  'user': Auth.getCurrentUser(),
+                  'questionNum': $scope.questionIndex
+          }
+      $http.post('api/clis/compile', obj).success(function(data) {
+        if (data === '') {
+          // FIXME how to check if no file was actually compiled?
+          $scope.compileOutput += 'Successfully compiled code.\n';
+        } else {
+          $scope.compileOutput += data;
+        }
+        $http.post('api/clis/run', obj).success(function(data) {
+          $scope.runOutput = data;
+          // now we need to compare runOutput to expected output for this question
+          if ($scope.topic.questions[$scope.questionIndex].expectedOutput.trim() === $scope.runOutput.trim()) {
+            $scope.showComments = true;
+            $scope.feedback = "Well done!";
+          } else {
+            $scope.showComments = true;
+            console.log("here's expected output: ");
+            console.log($scope.topic.questions[$scope.questionIndex].expectedOutput);
+            console.log("here's your output");
+            console.log($scope.runOutput);
+            console.log($scope.runOutput.trim().length);
+            console.log($scope.topic.questions[$scope.questionIndex].expectedOutput.trim().length);
+            $scope.feedback = "Your output doesn't quite match the output we're looking for. Please try again";
+          }
+        });
+      });
+
+    }
 
     $scope.showHint = function() {
     	//$scope.currentHint = $scope.topic.questions[$scope.questionIndex].hints[$scope.status[$scope.questionIndex].hintIndex];
@@ -74,7 +168,8 @@ angular.module('its110App')
 	    //_editor.setReadOnly(false);
 	    //_session.setUndoManager(new ace.UndoManager());
 	    _renderer.setShowGutter(true);
-		_editor.setTheme('ace/theme/crimson_editor');
+		  _editor.setTheme('ace/theme/crimson_editor');
+      _editor.setShowPrintMargin(false);
     	_session.setMode('ace/mode/java');
 
     	$scope.editor = _editor;

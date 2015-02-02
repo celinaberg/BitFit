@@ -7,6 +7,7 @@ angular.module('its110App')
         url: '/lessons/topics/{id}', // eventually fix this to be /lessons/week1/{id} etc
         templateUrl: 'app/lessons/topics/topics.html',
         controller: 'TopicsCtrl',
+        authenticate: true,
         resolve: {
 			topic: ['$stateParams', 'topics', function($stateParams, topics) { // gets current topic before controller loads
     			return topics.get($stateParams.id);
