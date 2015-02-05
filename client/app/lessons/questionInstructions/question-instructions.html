@@ -8,7 +8,7 @@
 	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[questionIndex].hintIndex + 1">
 	        	<li><strong>Hint:</strong> {{hint}}</li>
 	        </ul>	
-	        <p ng-if="hintRequested() && status[questionIndex].hintIndex >= q.hints.length">{{currentHint}}</p>     
+	        <p ng-if="hintRequested() && status[questionIndex].hintIndex >= q.hints.length">{{noMoreHints}}</p>     
 	    </div>
 	</div>
 
@@ -30,7 +30,7 @@
 	<!-- Code editor and buttons -->
 	<div class="row">
 		<div class="col-sm-8 vcenter">
-			<div class="ace_lessons" ng-model="q.code" ui-ace="{ onLoad: aceLoaded }"></div>
+			<div class="ace_lessons" ng-model="q.code" ui-ace="{ require: ['ace/search'], onLoad: aceLoaded }"></div>
 		</div><!--
     	--><div class="col-sm-4 vcenter">
     			<label for="javaFile">

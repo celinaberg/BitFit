@@ -28,10 +28,8 @@
       <link rel="stylesheet" href="app/lessons/lessons.css">
       <link rel="stylesheet" href="app/lessons/questionInstructions/questionInstructions.css">
       <link rel="stylesheet" href="app/lessons/topics/topics.css">
-      <link rel="stylesheet" href="app/lessons/userProgress/userProgress.css">
       <link rel="stylesheet" href="app/main/main.css">
       <link rel="stylesheet" href="components/modal/modal.css">
-      <link rel="stylesheet" href="components/sidebar/sidebar.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -70,6 +68,8 @@
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/textAngular/dist/textAngular.min.js"></script>
+      <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+      <script src="bower_components/jsesc/jsesc.js"></script>
       <!-- endbower -->
       <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
       <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
@@ -93,17 +93,14 @@
           <script src="app/lessons/questionInstructions/questionInstructions.directive.js"></script>
           <script src="app/lessons/topics/topics.controller.js"></script>
           <script src="app/lessons/topics/topics.js"></script>
-          <script src="app/lessons/userProgress/userProgress.directive.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
-          <script src="components/getDBStuff/getDBStuff.service.js"></script>
+          <script src="components/logging/logging.service.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
-          <script src="components/sidebar/sidebar.controller.js"></script>
-          <script src="components/sidebar/sidebar.js"></script>
           <script src="components/socket/socket.service.js"></script>
           <script src="components/topics/topics.service.js"></script>
           <!-- endinjector -->

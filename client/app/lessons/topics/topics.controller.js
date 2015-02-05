@@ -1,24 +1,26 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC) { // topics is for manipulating questions
+  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
     $scope.topic = topic.data; 
 	  $scope.topicsTC = topicPromiseTC.data;
 	  $scope.tab = 1;
   	$scope.questionIndex = 0; // keeps track of which question the user is on
   	$scope.status = [];
-    $scope.currentHint = 'Sorry, there are no more hints for this question';
+    $scope.noMoreHints = 'Sorry, there are no more hints for this question';
   	$scope.editor = {};
     $scope.compileOutput = '';
     $scope.runOutput = '';
     $scope.showComments = false;
     $scope.feedback = '';
     $scope.className = '';
-    //$scope.fileName = '';
+
+    //var Search = ace.Search;
+    //var search = new Search().set({needle:'needle'});
 
     var endsWith = function(str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
-    }
+    };
 
 
     var getClassName = function() {
@@ -28,7 +30,7 @@ angular.module('its110App')
       } else {
         return $scope.className;
       }
-    }
+    };
 
     var getFileName = function() {
       if (endsWith($scope.className, '.java')) {
@@ -36,14 +38,41 @@ angular.module('its110App')
       } else {
         return $scope.className + '.java';
       }
+    };
+
+    var escapeRegExp = function(string) {
+      return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    };
+
+    var replaceAll = function(string, find, replace) {
+      return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+      //return string.replace(new RegExp(find, 'g'), replace);
+    };
+
+    var replaceAll = function(string, find, replace) {
+      //var newString = '';
+      var n = string.search(find);
+      console.log('heres n: ', n);
+      if (n !== -1) {
+        console.log('replacing');
+        string = string.replace(find, replace);
+        n = string.search(find);
+        console.log('heres n in while: ', n);
+        console.log('heres string:');
+        console.log(string);
+      }
+      return string;
     }
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function() {
+      console.log('in compile func');
+      var code = $scope.editor.getValue();
+      var editedCode = code.replace(/\\/g, "\\\\");
       var className = getClassName();
       var fileName = getFileName();
       var obj = { 'className': className,
                   'fileName': fileName,
-                  'code': $scope.editor.getValue(),
+                  'code': editedCode,
                   'user': Auth.getCurrentUser(),
                   'questionNum': $scope.questionIndex
           }
@@ -55,7 +84,8 @@ angular.module('its110App')
           $scope.compileOutput += data;
         }
       });
-    }
+      logging.progress.numCompiles++;
+    };
 
     // FIXME: this functionality should be moved into topics service
     $scope.runCode = function() {
@@ -66,11 +96,13 @@ angular.module('its110App')
       $http.post('api/clis/run', obj).success(function(data) {
         $scope.runOutput = data;
       });
-    }
+      logging.progress.numRuns++;
+    };
 
   	$scope.hintRequested = function() {
   		return $scope.status[$scope.questionIndex].hintRequested;
-  	}
+  	};
+
   	$scope.isSet = function(checkTab) {
           return $scope.tab === checkTab;
     };
@@ -80,6 +112,7 @@ angular.module('its110App')
     };
 
     $scope.checkAnswer = function() {
+      logging.progress.totalAttempts++;
       var className = getClassName();
       var fileName = getFileName();
       var obj = { 'className': className,
@@ -95,12 +128,14 @@ angular.module('its110App')
         } else {
           $scope.compileOutput += data;
         }
+
         $http.post('api/clis/run', obj).success(function(data) {
           $scope.runOutput = data;
-          // now we need to compare runOutput to expected output for this question
+          // now we compare runOutput to expected output for this question
           if ($scope.topic.questions[$scope.questionIndex].expectedOutput.trim() === $scope.runOutput.trim()) {
             $scope.showComments = true;
             $scope.feedback = "Well done!";
+            logging.progress.correctAttempts++;
           } else {
             $scope.showComments = true;
             console.log("here's expected output: ");
@@ -117,7 +152,6 @@ angular.module('its110App')
     }
 
     $scope.showHint = function() {
-    	//$scope.currentHint = $scope.topic.questions[$scope.questionIndex].hints[$scope.status[$scope.questionIndex].hintIndex];
     	// increment hint index for this question
     	if ($scope.status[$scope.questionIndex].hintRequested === true) {
     		if ($scope.status[$scope.questionIndex].hintIndex < $scope.topic.questions[$scope.questionIndex].hints.length) {
@@ -129,8 +163,7 @@ angular.module('its110App')
     	
     	console.log('hint index for q: ', $scope.questionIndex);
     	console.log('hint index:', $scope.status[$scope.questionIndex].hintIndex);
-    	// do i always display all hints?
-    	//console.log($scope.topic.questions[$scope.questionIndex].hints[$scope.status[$scope.questionIndex].hintIndex]);
+      logging.progress.numHints++;
 
     };
 
@@ -141,8 +174,17 @@ angular.module('its110App')
         else {
             $scope.questionIndex ++;
         }
-        // update ace editor on page
+        // Update ace editor on page
         $scope.setStarterCode();
+
+        // Log previous question's data
+        logging.progress.endTime = Date.now();
+        logging.logProgress();
+
+        // Set up logging for new question
+        logging.progress.topic = $scope.topic._id;
+        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
+        logging.progress.startTime = Date.now();
     };
 
     $scope.prevQuestion = function() {
@@ -151,18 +193,29 @@ angular.module('its110App')
         } else {
             $scope.questionIndex --;
         }
+        // Update ace editor on page        
         $scope.setStarterCode();
+
+        // Log previous question's data
+        logging.progress.endTime = Date.now();
+        logging.logProgress();
+
+        // Set up logging for new question
+        logging.progress.topic = $scope.topic._id;
+        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
+        logging.progress.startTime = Date.now();        
     };
 
     $scope.isActive = function(id) {
     	// this function is dependent on the URL set in topics.js
-      	return ('/lessons/topics/' + id) === $location.path();
+    	return ('/lessons/topics/' + id) === $location.path();
     };
 
     $scope.aceLoaded = function(_editor) {
 	    // Editor part
 	    var _session = _editor.getSession();
 	    var _renderer = _editor.renderer;
+      
 
 	    // Options
 	    //_editor.setReadOnly(false);
@@ -178,11 +231,11 @@ angular.module('its110App')
     	_editor.focus();
 
 	    // Events
-	    _editor.on("changeSession", function(){ //... 
-	    });
-	    _session.on("change", function(){ 
+	    //_editor.on("changeSession", function(){ //... 
+	    //});
+	    //_session.on("change", function(){ 
 	    //	alert(_session.getValue()); 
-	    });
+	    //});
   	};
 
   	$scope.setStarterCode = function() {
@@ -195,24 +248,24 @@ angular.module('its110App')
   	};
 
   	// Reset button on code editor: resets the starter code (if any) given for this question
- 	$scope.reset = function(week, q) {
+ 	  $scope.reset = function(week, q) {
   		$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
   	};
 
-  	// I'm Stuck button TODO: implement function
-  	$scope.imStuck = function() {
-  		// hints FIXME
-  		console.log($scope.topic.questions[$scope.questionIndex].hints[0]);
-  	};
-
   	$scope.init = function() {
-		for (var i = 0; i < $scope.topic.questions.length; i++) {
+		  for (var i = 0; i < $scope.topic.questions.length; i++) {
   			$scope.status.push(
   			{
   				hintIndex: 0,
   				hintRequested: false
   			});
   		};
+      logging.progress.topic = $scope.topic._id;
+      if ($scope.topic.questions.length > 0) {
+        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id; // for first question only  
+        logging.progress.startTime = Date.now();
+      }
+      
   	};
   	$scope.init();
 

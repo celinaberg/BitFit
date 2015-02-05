@@ -215,7 +215,7 @@ angular.module('its110App')
     	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id).success(function(question) {
     		// why does this success function not get called?
     	});
-    	console.log('delted q in edit content controller now');
+    	console.log('deleted q in edit content controller now');
     	//$scope.topic.questions[index].splice(index, 1); 
     	$scope.topic.questions.splice(index, 1);
 

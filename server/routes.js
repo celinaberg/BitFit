@@ -12,7 +12,6 @@ module.exports = function(app) {
   app.use('/api/loggers', require('./api/logger'));
   app.use('/api/clis', require('./api/cli'));
   app.use('/api/topics', require('./api/topic'));
-  app.use('/api/backgrounds', require('./api/background'));
   app.use('/api/questions', require('./api/question'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
