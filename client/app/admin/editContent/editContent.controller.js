@@ -8,7 +8,23 @@ angular.module('its110App')
     $scope.editors = [];
     $scope.newQuestion = {};
     $scope.newQuestion.hints = [];
-    $scope.CLOutput = '';
+
+    $scope.compileOutput = '';
+    $scope.runOutput = '';
+    $scope.showComments = false;
+    $scope.feedback = '';
+    $scope.className = '';
+    $scope.readOnlyChecked = false;
+
+    $scope.toggleReadOnly = function() {
+    	if ($scope.editor.getReadOnly()) {
+    		$scope.editor.setReadOnly(false);
+    		// update question - need to add a readOnly boolean to question's model
+    	} else {
+    		$scope.editor.setReadOnly(true);
+    		// update question
+    	}	
+    };
 
     //var editor2 = ace.edit("editor");
     //console.log('made editor2');
@@ -63,7 +79,63 @@ angular.module('its110App')
 */
 
 
+    var endsWith = function(str, suffix) {
+      return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    };
 
+
+    var getClassName = function() {
+      if (endsWith($scope.className, '.java')) {
+        $scope.className.slice(0, -5);
+        return $scope.className.slice(0, -5);
+      } else {
+        return $scope.className;
+      }
+    };
+
+    var getFileName = function() {
+      if (endsWith($scope.className, '.java')) {
+        return $scope.className;
+      } else {
+        return $scope.className + '.java';
+      }
+    };
+
+    // FIXME: this functionality should be moved into topics service
+    $scope.compileCode = function() {
+      console.log('in compile func');
+      var code = $scope.editor.getValue();
+      var editedCode = code.replace(/\\/g, "\\\\");
+      var className = getClassName();
+      var fileName = getFileName();
+      var obj = { 'className': className,
+                  'fileName': fileName,
+                  'code': editedCode,
+                  'user': Auth.getCurrentUser(),
+                  'questionNum': $scope.questionIndex
+          }
+      $http.post('api/clis/compile', obj).success(function(data) {
+        if (data === '') {
+          // FIXME how to check if no file was actually compiled?
+          $scope.compileOutput += 'Successfully compiled code.\n';
+        } else {
+          $scope.compileOutput += data;
+        }
+      });
+      //logging.progress.numCompiles++;
+    };
+
+    // FIXME: this functionality should be moved into topics service
+    $scope.runCode = function() {
+      var className = getClassName();
+      var obj = { 'className': className,
+                  'user': Auth.getCurrentUser()
+                }
+      $http.post('api/clis/run', obj).success(function(data) {
+        $scope.runOutput = data;
+      });
+      //logging.progress.numRuns++;
+    };
 
 
 
@@ -103,38 +175,38 @@ angular.module('its110App')
     	$scope.editor.focus();
     };
 
-    $scope.compileCode = function() { // this is in add question, so use $scope.editor
-    	console.log($scope.editor.getValue());
-    	var obj = {'code': $scope.editor.getValue(),
-    				'user': Auth.getCurrentUser(),
-    				'questionNum': $scope.topic.questions.length // since this is a new q to be added
-    			}
-    	$http.post('api/clis/compile', obj).success(function(data) {
-    		console.log('in compile code success func');
-    		console.log(data);
+    // $scope.compileCode = function() { // this is in add question, so use $scope.editor
+    // 	console.log($scope.editor.getValue());
+    // 	var obj = {'code': $scope.editor.getValue(),
+    // 				'user': Auth.getCurrentUser(),
+    // 				'questionNum': $scope.topic.questions.length // since this is a new q to be added
+    // 			}
+    // 	$http.post('api/clis/compile', obj).success(function(data) {
+    // 		console.log('in compile code success func');
+    // 		console.log(data);
 
-    		if (data === '') {
-    			$scope.CLOutput += 'Successfully compiled code.\n';
-    		} else {
-    			data.trim();
-    			$scope.CLOutput += data;
-    			console.log($scope.CLOutput);	
-    		}
+    // 		if (data === '') {
+    // 			$scope.CLOutput += 'Successfully compiled code.\n';
+    // 		} else {
+    // 			data.trim();
+    // 			$scope.CLOutput += data;
+    // 			console.log($scope.CLOutput);	
+    // 		}
     		
-    	})
-    }
+    // 	})
+    // }
 
-    $scope.runCode = function() { // this is in add question, so use $scope.editor
-    	var obj = {'className': 'Test',
-    			   'user': Auth.getCurrentUser()
-    			}
+    // $scope.runCode = function() { // this is in add question, so use $scope.editor
+    // 	var obj = {'className': 'Test',
+    // 			   'user': Auth.getCurrentUser()
+    // 			}
 
-    	$http.post('api/clis/run', obj).success(function(data) {
-    		console.log('in run code success function');
-    		console.log(data);
-    		$scope.CLOutput += data;
-    	})
-    }
+    // 	$http.post('api/clis/run', obj).success(function(data) {
+    // 		console.log('in run code success function');
+    // 		console.log(data);
+    // 		$scope.CLOutput += data;
+    // 	})
+    // }
     $scope.addEditor = function(index) {
     	var editor = ace.edit("editor" + index);
 		// Editor part
@@ -186,6 +258,8 @@ angular.module('its110App')
       topics.addQuestion($scope.topic._id, {
         instructions: $scope.newQuestion.instructions,
         code: $scope.newQuestion.code,
+        className: getClassName(),
+        readOnly: $scope.readOnlyChecked,
         expectedOutput: $scope.newQuestion.expectedOutput,
         hints: $scope.newQuestion.hints
       }).success(function(question) {

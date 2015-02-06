@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
 var QuestionSchema = new Schema({
   instructions: String,
   code: String,
+  className: String,
+  readOnly: Boolean,
   hints: [String],
   expectedOutput: String,
   codeEvaluator: String,

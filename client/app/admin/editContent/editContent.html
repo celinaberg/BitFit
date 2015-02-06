@@ -140,28 +140,97 @@
                     </div>
                     <button type="button" class="btn btn-success" ng-model="collapseCodeEditor" ng-click="focusEditor(); collapseCodeEditor=!collapseCodeEditor" data-target="#showCodeEditor">Show/Hide Starter Code Editor
                     </button><br\>
-      					<div id="showCodeEditor" ng-show="collapseCodeEditor">
-		                    <div class="form-group">
-		                        <label class="tab" for="inputCode">Add Starter Code [optional]<br>
-		                        	Any code you enter here will appear in the student's code editor for this question:</label>
-	                        	<div ng-model="newQuestion.code" class="ace_editor" ui-ace="{ onLoad: aceLoaded }"></div>
-	                        	<br>
-	                        	<button type="button" class="btn btn-warning" ng-click="compileCode()">
-	                        		Compile Code
-	                        	</button>
-	                        	<button type="button" class="btn btn-danger" ng-click="runCode()">
-	                        		Run Code
-	                        	</button>
-	                        	<hr>
-	                        	<label class="tab">Command Line Output:</label>
-	                        	<div id="commandLineOutput" class="command_line_output">
-	                        		<pre>{{CLOutput}}</pre>
-	                        	</div>
-		                    </div>
-                    	</div>
+  					
+  					<!-- Code editor and buttons -->
+  					<div id="showCodeEditor" ng-show="collapseCodeEditor">
+  						<br>
+	                    <!-- <div class="form-group">
+	                        <label class="tab" for="inputCode">Add Starter Code [optional]<br>
+	                        	Any code you enter here will appear in the student's code editor for this question:</label>
+                        	<div ng-model="newQuestion.code" class="ace_editor" ui-ace="{ onLoad: aceLoaded }"></div>
+                        	<br>
+                        	<button type="button" class="btn btn-warning" ng-click="compileCode()">
+                        		Compile Code
+                        	</button>
+                        	<button type="button" class="btn btn-danger" ng-click="runCode()">
+                        		Run Code
+                        	</button>
+                        	<hr>
+                        	<label class="tab">Command Line Output:</label>
+                        	<div id="commandLineOutput" class="command_line_output">
+                        		<pre>{{CLOutput}}</pre>
+                        	</div>
+	                    </div> -->
+	                    <!-- Code editor and buttons -->
+						<div class="row">
+							<div class="col-sm-8 vcenter">
+								<label for="inputCode">
+									Add Starter Code [optional]
+	                        	</label>
+	                        	<p>[Any code you enter here will appear in the student's code editor for this question]</p>
+								<div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }" readonly></div>
+							</div><!--
+					    	--><div class="col-sm-4 vcenter">
+					    			<label for="javaFile">
+					    				Please enter the name of your Java file (must match the class name in your code!):
+					    			</label>
+					    			<div class="input-group">
+					  					<input type="text" class="form-control" placeholder="YourJavaFile" id="javaFile" aria-describedby="basic-addon" ng-model="className">
+					  						<span class="input-group-addon" id="basic-addon">.java</span>
+									</div>
+					    		<hr>
+								<div class="btn-group-vertical ace_lessons" role="group">
+									<button type="button" class="btn btn-warning" ng-click="compileCode()">
+										<span class="glyphicon glyphicon-flash"></span> Compile Code
+									</button> 
+
+									<button type="button" class="btn btn-success" ng-click="runCode()">
+						        		<span class="glyphicon glyphicon-play"></span> Run Code
+						    		</button>
+					    		</div>
+					    		<hr>
+								<div class="btn-group-vertical ace_lessons" role="group">
+									<div class="checkbox">
+									    <label>
+									      <input type="checkbox" ng-model="readOnlyChecked" ng-click="toggleReadOnly()"> Check here to make code read-only
+									    </label>
+								  	</div>
+									<!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
+										Check My Answer <span class="glyphicon glyphicon-send"></span>
+									</button> -->
+								</div>
+							</div>
+						</div>
+                		
+                		<!-- Command line output divs -->
+					    <div class="row">
+					    	<hr>
+					    	<div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
+					    		<h4>{{ feedback }}
+					    		<button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
+					    	</div>
+					        <div class="col-sm-6">	    		
+					    		<div id="commandLineOutput" class="command_line_output_s compile">
+					        		<h4 class="tab"> Compile Output:</h4>
+					        		<pre>{{ compileOutput }}</pre>
+					    		</div>
+					        </div>
+					        <div class="col-sm-6">	    
+					   			<div id="commandLineOutput" class="command_line_output_s run">
+					        		<h4 class="tab"> Run Output:</h4>
+					        		<pre>{{ runOutput }}</pre>
+					    		</div>	        
+					        </div>
+					    </div>
+                	</div>
+
+                	
+
                     	<hr>
                     	<div class="form-group">
-    						<label for="expectedOutputBox">Expected output [optional]</label>
+    						<label for="expectedOutputBox">Code's Output</label>
+    						<p>[Leave this blank if you are providing the code and would like students to guess the output]</p>
+    						<p>[If you are asking students to write code, fill in the output you wish their code to produce]</p>
     						<textarea class="form-control" id="expectedOutputBox" ng-model="newQuestion.expectedOutput"></textarea>
   						</div>
                     	<hr>

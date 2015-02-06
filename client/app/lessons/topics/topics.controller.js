@@ -9,14 +9,16 @@ angular.module('its110App')
   	$scope.status = [];
     $scope.noMoreHints = 'Sorry, there are no more hints for this question';
   	$scope.editor = {};
-    $scope.compileOutput = '';
-    $scope.runOutput = '';
+
+    $scope.output = {
+      className: '',
+      compileOutput: '',
+      runOutput: '',
+      expectedOutput: ''
+    };
+
     $scope.showComments = false;
     $scope.feedback = '';
-    $scope.className = '';
-
-    //var Search = ace.Search;
-    //var search = new Search().set({needle:'needle'});
 
     var endsWith = function(str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
@@ -24,19 +26,21 @@ angular.module('its110App')
 
 
     var getClassName = function() {
-      if (endsWith($scope.className, '.java')) {
-        $scope.className.slice(0, -5);
-        return $scope.className.slice(0, -5);
+      console.log('in get class name');
+      console.log($scope.output.className);
+      if (endsWith($scope.output.className, '.java')) {
+        $scope.output.className.slice(0, -5);
+        return $scope.output.className.slice(0, -5);
       } else {
-        return $scope.className;
+        return $scope.output.className;
       }
     };
 
     var getFileName = function() {
-      if (endsWith($scope.className, '.java')) {
-        return $scope.className;
+      if (endsWith($scope.output.className, '.java')) {
+        return $scope.output.className;
       } else {
-        return $scope.className + '.java';
+        return $scope.output.className + '.java';
       }
     };
 
@@ -79,9 +83,9 @@ angular.module('its110App')
       $http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
-          $scope.compileOutput += 'Successfully compiled code.\n';
+          $scope.output.compileOutput += 'Successfully compiled code.\n';
         } else {
-          $scope.compileOutput += data;
+          $scope.output.compileOutput += data;
         }
       });
       logging.progress.numCompiles++;
@@ -94,7 +98,7 @@ angular.module('its110App')
                   'user': Auth.getCurrentUser()
                 }
       $http.post('api/clis/run', obj).success(function(data) {
-        $scope.runOutput = data;
+        $scope.output.runOutput = data;
       });
       logging.progress.numRuns++;
     };
@@ -115,9 +119,12 @@ angular.module('its110App')
       logging.progress.totalAttempts++;
       var className = getClassName();
       var fileName = getFileName();
+      var code = $scope.editor.getValue();
+      var editedCode = code.replace(/\\/g, "\\\\");
+
       var obj = { 'className': className,
                   'fileName': fileName,
-                  'code': $scope.editor.getValue(),
+                  'code': editedCode,
                   'user': Auth.getCurrentUser(),
                   'questionNum': $scope.questionIndex
           }
@@ -130,20 +137,21 @@ angular.module('its110App')
         }
 
         $http.post('api/clis/run', obj).success(function(data) {
-          $scope.runOutput = data;
+          $scope.output.runOutput = data;
           // now we compare runOutput to expected output for this question
-          if ($scope.topic.questions[$scope.questionIndex].expectedOutput.trim() === $scope.runOutput.trim()) {
+          //if ($scope.topic.questions[$scope.questionIndex].expectedOutput.trim() === $scope.runOutput.trim()) {
+          if ($scope.output.expectedOutput.trim() === $scope.output.runOutput.trim()) {
             $scope.showComments = true;
             $scope.feedback = "Well done!";
             logging.progress.correctAttempts++;
           } else {
             $scope.showComments = true;
             console.log("here's expected output: ");
-            console.log($scope.topic.questions[$scope.questionIndex].expectedOutput);
-            console.log("here's your output");
-            console.log($scope.runOutput);
-            console.log($scope.runOutput.trim().length);
-            console.log($scope.topic.questions[$scope.questionIndex].expectedOutput.trim().length);
+            console.log($scope.output.expectedOutput);
+            console.log("here's run output");
+            console.log($scope.output.runOutput);
+            console.log($scope.output.runOutput.trim().length);
+            //console.log($scope.topic.questions[$scope.questionIndex].expectedOutput.trim().length);
             $scope.feedback = "Your output doesn't quite match the output we're looking for. Please try again";
           }
         });
@@ -175,7 +183,7 @@ angular.module('its110App')
             $scope.questionIndex ++;
         }
         // Update ace editor on page
-        $scope.setStarterCode();
+        $scope.updatePageWithNewQuestion();
 
         // Log previous question's data
         logging.progress.endTime = Date.now();
@@ -194,7 +202,7 @@ angular.module('its110App')
             $scope.questionIndex --;
         }
         // Update ace editor on page        
-        $scope.setStarterCode();
+        $scope.updatePageWithNewQuestion();
 
         // Log previous question's data
         logging.progress.endTime = Date.now();
@@ -227,7 +235,7 @@ angular.module('its110App')
 
     	$scope.editor = _editor;
 
-    	$scope.setStarterCode();
+    	$scope.updatePageWithNewQuestion();
     	_editor.focus();
 
 	    // Events
@@ -238,13 +246,48 @@ angular.module('its110App')
 	    //});
   	};
 
-  	$scope.setStarterCode = function() {
-  		// Set starter code, if there is any
-    	if (typeof $scope.topic.questions !== 'undefinded' && 
-    		typeof $scope.topic.questions[$scope.questionIndex] != 'undefined' &&
-    		typeof $scope.topic.questions[$scope.questionIndex].code != 'undefined') {
+  	$scope.updatePageWithNewQuestion = function() {
+      console.log('in update page with new q');
+      $scope.showComments = false;
+      $scope.output.runOutput = '';
+      $scope.output.compileOutput = '';
+      // Return if there are no questions
+  		if (typeof($scope.topic.questions) === 'undefinded' ||
+          typeof($scope.topic.questions[$scope.questionIndex]) === 'undefined') { 
+        return;
+      }
+      var currQuestion = $scope.topic.questions[$scope.questionIndex];
+      
+      // Set starter code, if this question has any
+    	if (typeof(currQuestion.code) !== 'undefined') {
 	    	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start    		
-    	}
+    	} else {
+
+      }
+
+      // Set class name variable, if provided
+      if (typeof(currQuestion.className) !== 'undefined') {
+        $scope.output.className = currQuestion.className;
+      } else {
+        console.log('type of class name was undefinied');
+        $scope.output.className = '';
+      }
+
+      // Set expected output, if provided
+      if (typeof(currQuestion.expectedOutput) !== 'undefined') {
+        console.log('expected output not undefined');
+        $scope.output.expectedOutput = currQuestion.expectedOutput;
+      } else {
+        console.log('expected output undefined - student must fill in');
+        $scope.output.expectedOutput = '';
+      }
+
+      // Set editor to read only if question requires it
+      if(currQuestion.readOnly) {
+        $scope.editor.setReadOnly(true);
+      } else {
+        $scope.editor.setReadOnly(false);
+      }
   	};
 
   	// Reset button on code editor: resets the starter code (if any) given for this question
