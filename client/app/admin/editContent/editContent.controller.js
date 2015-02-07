@@ -4,26 +4,47 @@ angular.module('its110App')
   .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, $log) {
     $scope.topic = topic.data; 
     $scope.topicsEC = topicPromiseEC.data;
+    
     $scope.editor = {};
     $scope.editors = [];
+    
     $scope.newQuestion = {};
     $scope.newQuestion.hints = [];
 
+    $scope.questionToEdit = {};
+    $scope.questionToEdit.hints = [];
+
     $scope.compileOutput = '';
     $scope.runOutput = '';
+    
     $scope.showComments = false;
     $scope.feedback = '';
     $scope.className = '';
     $scope.readOnlyChecked = false;
 
-    $scope.toggleReadOnly = function() {
-    	if ($scope.editor.getReadOnly()) {
-    		$scope.editor.setReadOnly(false);
-    		// update question - need to add a readOnly boolean to question's model
+    // index is the index of the code editor for this question
+    // use -1 for adding a new question
+    $scope.toggleReadOnly = function(index) {
+    	var editor = {};
+    	var q = {}
+    	if (index < 0) {
+    		// use newQuestion
+    		q = $scope.newQuestion;
+    		editor = $scope.editor;
     	} else {
-    		$scope.editor.setReadOnly(true);
-    		// update question
-    	}	
+    		// use questionToEdit
+    		q = $scope.questionToEdit;
+    		editor = $scope.editors[index];
+    	}
+    	if (editor.getReadOnly()) {
+    		editor.setReadOnly(false);
+    		q.readOnly = false;
+    	} else {
+    		editor.setReadOnly(true);
+    		q.readOnly = true;
+    	}
+    	console.log('heres updated q: ');
+    	console.log(q);
     };
 
     //var editor2 = ace.edit("editor");
@@ -83,38 +104,65 @@ angular.module('its110App')
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
+    // |useEditQuestion| - Boolean, optional, whether to use the edit question variable
+    var getClassName = function(useEditQuestion) {
+    	var className = '';
+    	if (useEditQuestion && typeof($scope.questionToEdit.className) !== 'undefined') {
+    		className = $scope.questionToEdit.className;
+    	} else {
+    		className = $scope.className;
+    	}
 
-    var getClassName = function() {
-      if (endsWith($scope.className, '.java')) {
-        $scope.className.slice(0, -5);
-        return $scope.className.slice(0, -5);
-      } else {
-        return $scope.className;
-      }
+		if (endsWith(className, '.java')) {
+			className.slice(0, -5);
+			return className.slice(0, -5);
+		} else {
+			return className;
+		}
     };
 
-    var getFileName = function() {
-      if (endsWith($scope.className, '.java')) {
-        return $scope.className;
-      } else {
-        return $scope.className + '.java';
-      }
+    var getFileName = function(useEditQuestion) {
+    	var className = '';
+  		if (useEditQuestion && typeof($scope.questionToEdit.className) !== 'undefined') {
+  			className = $scope.questionToEdit.className;
+  		} else {
+  			className = $scope.className;
+  		}
+
+  		if (endsWith(className, '.java')) {
+  			return className;
+  		} else {
+  			return className + '.java';
+  		}
     };
 
     // FIXME: this functionality should be moved into topics service
-    $scope.compileCode = function() {
-      console.log('in compile func');
-      var code = $scope.editor.getValue();
-      var editedCode = code.replace(/\\/g, "\\\\");
-      var className = getClassName();
-      var fileName = getFileName();
-      var obj = { 'className': className,
-                  'fileName': fileName,
-                  'code': editedCode,
-                  'user': Auth.getCurrentUser(),
-                  'questionNum': $scope.questionIndex
+    // index is the index of the code editor for this question
+    // use -1 for adding a new question
+    $scope.compileCode = function(index) {
+    	var editor = {};
+    	var className = '';
+    	var fileName = '';
+    	if (index < 0) { // adding a new question
+    		editor = $scope.editor;
+    		className = getClassName(false);
+    		fileName = getFileName(false);
+    	} else { // editing existing q
+    		editor = $scope.editors[index];
+    		className = getClassName(true);
+    		fileName = getFileName(true);
+    	}
+
+  		console.log('in compile func');
+		var code = editor.getValue();
+  		var editedCode = code.replace(/\\/g, "\\\\");
+		var obj = { 'className': className,
+                    'fileName': fileName,
+                    'code': editedCode,
+                    'user': Auth.getCurrentUser(),
+                    'questionNum': $scope.questionIndex
           }
-      $http.post('api/clis/compile', obj).success(function(data) {
+      	$http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -126,17 +174,24 @@ angular.module('its110App')
     };
 
     // FIXME: this functionality should be moved into topics service
-    $scope.runCode = function() {
-      var className = getClassName();
-      var obj = { 'className': className,
-                  'user': Auth.getCurrentUser()
-                }
-      $http.post('api/clis/run', obj).success(function(data) {
-        $scope.runOutput = data;
-      });
-      //logging.progress.numRuns++;
-    };
+    // index is the index of the code editor for this question
+    // use -1 for adding a new question
+    $scope.runCode = function(index) {
+    	var className = '';
+    	if (index < 0) { // adding new question
+    		className = getClassName(false);
+    	} else { // editing existing question
+    		className = getClassName(true);
+    	}
 
+        var obj = { 'className': className,
+                    'user': Auth.getCurrentUser()
+                  }
+   		$http.post('api/clis/run', obj).success(function(data) {
+        	$scope.runOutput = data;
+      	});
+      	//logging.progress.numRuns++;
+    };
 
 
 
@@ -162,13 +217,15 @@ angular.module('its110App')
     $scope.deleteHintFromNewQ = function(index) {
     	$scope.newQuestion.hints.splice(index, 1);
     }
-
+    // FIXME hints aren't working...
     $scope.addHintToExistingQ = function(questionIndex) {
-    	$scope.topic.questions[questionIndex].hints.push("");
+    	$scope.questionToEdit.hints.push("");
+    	//$scope.topic.questions[questionIndex].hints.push("");
     };
 
-    $scope.deleteHintFromExistingQ = function(questionIndex, hintIndex) {
-    	$scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
+    $scope.deleteHintFromExistingQ = function(hintIndex) {
+    	//$scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
+    	$scope.questionToEdit.hints.splice(hintIndex, 1);
     };
 
     $scope.focusEditor = function() {
@@ -207,7 +264,8 @@ angular.module('its110App')
     // 		$scope.CLOutput += data;
     // 	})
     // }
-    $scope.addEditor = function(index) {
+    $scope.populateEditQForm = function(index) {
+    	// Set up an editor for the question
     	var editor = ace.edit("editor" + index);
 		// Editor part
 		var _session = editor.getSession();
@@ -219,8 +277,12 @@ angular.module('its110App')
 		_renderer.setShowGutter(true);
 		editor.setTheme('ace/theme/crimson_editor');
 		_session.setMode('ace/mode/java');
-
     	$scope.editors[index] = editor;
+
+    	$scope.questionToEdit = $scope.topic.questions[index];
+    	$scope.editors[index].setValue($scope.questionToEdit.code);
+    	$scope.compileOutput = '';
+    	$scope.runOutput = '';
     };
 
     $scope.isActive = function(id) {
@@ -254,30 +316,40 @@ angular.module('its110App')
     };
 
     $scope.addQuestion = function() {
-      if($scope.newQuestion.instructions === '') { return; }
-      topics.addQuestion($scope.topic._id, {
-        instructions: $scope.newQuestion.instructions,
-        code: $scope.newQuestion.code,
-        className: getClassName(),
-        readOnly: $scope.readOnlyChecked,
-        expectedOutput: $scope.newQuestion.expectedOutput,
-        hints: $scope.newQuestion.hints
-      }).success(function(question) {
-        $scope.topic.questions.push(question);
-      });
+  		if($scope.newQuestion.instructions === '') { return; }
       
-      $scope.newQuestion = {};
-      $scope.newQuestion.hints = [];
+  		topics.addQuestion($scope.topic._id, {
+        	instructions: $scope.newQuestion.instructions,
+        	code: $scope.newQuestion.code,
+        	className: getClassName(false),
+        	readOnly: $scope.readOnlyChecked,
+        	expectedOutput: $scope.newQuestion.expectedOutput,
+        	hints: $scope.newQuestion.hints
+  		}).success(function(question) {
+        	$scope.topic.questions.push(question);
+      	});
+      
+  		$scope.newQuestion = {};
+  		$scope.newQuestion.hints = [];
     };
 
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function(questionID, questionIndex) {
     	console.log('heres what im sending to be updated:');
     	console.log($scope.topic.questions[questionIndex]);
+    	console.log('and heres q to edit');
+    	console.log($scope.questionToEdit);
 
-    	$scope.topic.questions[questionIndex].code = $scope.editors[questionIndex].getValue();
-		topics.editQuestion(questionID, $scope.topic.questions[questionIndex]).success(function(question) {
+    	//$scope.topic.questions[questionIndex].code = $scope.editors[questionIndex].getValue();
+		$scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
+		// topics.editQuestion(questionID, $scope.topic.questions[questionIndex]).success(function(question) {
+  //       	console.log('successfully updated question');
+  //       	$scope.questionToEdit = {};
+  //     	});
+		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function(question) {
         	console.log('successfully updated question');
+        	$scope.questionToEdit = {};
+        	$scope.questionToEdit.hints = [];
       	});
     };
 
@@ -297,7 +369,7 @@ angular.module('its110App')
     };
 
     $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('question');
+  		socket.unsyncUpdates('question');
     });
 
 

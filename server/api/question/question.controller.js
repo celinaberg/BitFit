@@ -34,12 +34,10 @@ exports.update = function(req, res) {
   Question.findById(req.params.id, function (err, question) {
     if (err) { return handleError(res, err); }
     if(!question) { return res.send(404); }
-    // with doc.subdocs.pull({ _id: 4815162342 }) // removed
-    if (question.hints.length > req.body.hints.length){
+    //if (question.hints.length > req.body.hints.length) {
       // there was a hint deleted. copy req.body.hints into question.hints
-      question.hints = req.body.hints;
-    }
-
+    question.hints = req.body.hints; // manually copy as merge doesn't
+    //}
     var updated = _.merge(question, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
