@@ -60,8 +60,6 @@ exports.destroy = function(req, res) {
 
 // Compile java code
 exports.compile = function(req, res) {
-  console.log('hey im in cli compile func. heres req.body');
-  console.log(req.body);
   var fileName = req.body.fileName;
   var className = req.body.className;
   var dirName = 'users/' + req.body.user._id + '/';
@@ -114,7 +112,6 @@ exports.compile = function(req, res) {
 
 // run java code
 exports.run = function(req, res) {
-  console.log('going to run a file');
   var dirName = 'users/' + req.body.user._id + '/';
   var dateTime = new Date();
   dirName += dateTime.getMonth();
@@ -128,8 +125,7 @@ exports.run = function(req, res) {
         console.log(error.killed);
         console.log(error.signal);
         console.error(stderr); 
-        //return handleError()
-        return res.send(200, error); // send error instead??
+        return res.send(200, error);
         process.exit(1);
         console.log('exited process?');
       } else {
