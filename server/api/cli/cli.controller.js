@@ -75,7 +75,6 @@ exports.compile = function(req, res) {
       if (error) {
         console.error(stderr); // send to response?
         return res.send(200, stderr);
-        process.exit(1);
       } else {
         console.log(stdout);
         // create java file with |contents|
@@ -99,11 +98,11 @@ exports.compile = function(req, res) {
           if (error) {
             console.error(stderr);
             return res.send(200, stderr);
-            process.exit(1);
           } else {
             console.log(stdout);
             console.log('file created successfully');
-            compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
+            //compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
+            compileJavaFile(dirName + '/' + fileName, res);
           }
         });
       }
@@ -126,8 +125,6 @@ exports.run = function(req, res) {
         console.log(error.signal);
         console.error(stderr); 
         return res.send(200, error);
-        process.exit(1);
-        console.log('exited process?');
       } else {
         console.log(stdout);
         console.log(' '+ req.body.className + ' ran.');
@@ -146,7 +143,6 @@ function compileJavaFile(srcFile, res) {
       if (error) {
         console.error(stderr);
         return res.send(200, stderr);
-        process.exit(1);
       } else {
         console.log(stdout);
         console.log(' '+ srcFile + ' compiled.');
@@ -177,7 +173,6 @@ function createCompileJavaFile(dirName, fileName, className, contents, res) {
       if (error) {
         console.error(stderr);
         return res.send(200, stderr);
-        process.exit(1);
       } else {
         console.log(stdout);
         //return res.send(200, stdout); 
@@ -189,11 +184,11 @@ function createCompileJavaFile(dirName, fileName, className, contents, res) {
           if (error) {
             console.error(stderr);
             return res.send(200, stderr);
-            process.exit(1);
           } else {
             console.log(stdout);
             console.log('file created successfully');
-            compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
+            //compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
+            compileJavaFile(dirName + '/' + fileName, res);
           }
         });
       }
