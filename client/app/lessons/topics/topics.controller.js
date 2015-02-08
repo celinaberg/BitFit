@@ -42,33 +42,10 @@ angular.module('its110App')
       }
     };
 
-    var escapeRegExp = function(string) {
-      return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-    };
-
-    var replaceAll = function(string, find, replace) {
-      return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-      //return string.replace(new RegExp(find, 'g'), replace);
-    };
-
-    var replaceAll = function(string, find, replace) {
-      //var newString = '';
-      var n = string.search(find);
-      console.log('heres n: ', n);
-      if (n !== -1) {
-        console.log('replacing');
-        string = string.replace(find, replace);
-        n = string.search(find);
-        console.log('heres n in while: ', n);
-        console.log('heres string:');
-        console.log(string);
-      }
-      return string;
-    }
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function() {
       var code = $scope.editor.getValue();
-      var editedCode = code.replace(/\\/g, "\\\\");
+      var editedCode = code.replace(/\\/g, '\\\\');
       var className = getClassName();
       var fileName = getFileName();
       var obj = { 'className': className,
@@ -76,7 +53,7 @@ angular.module('its110App')
                   'code': editedCode,
                   'user': Auth.getCurrentUser(),
                   'questionNum': $scope.questionIndex
-          }
+          };
       $http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?

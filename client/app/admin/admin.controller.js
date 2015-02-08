@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('AdminCtrl', function ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location, $log) {
+  .controller('AdminCtrl', function ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
     //$scope.topic = topic; 
     $scope.topics = topicPromiseAC.data;
     //$scope.allTopics = [];

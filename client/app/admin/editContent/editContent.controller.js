@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, $log) {
+  .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location) {
     $scope.topic = topic.data; 
     $scope.topicsEC = topicPromiseEC.data;
     
@@ -26,7 +26,7 @@ angular.module('its110App')
     // use -1 for adding a new question
     $scope.toggleReadOnly = function(index) {
     	var editor = {};
-    	var q = {}
+    	var q = {};
     	if (index < 0) {
     		// use newQuestion
     		q = $scope.newQuestion;
@@ -155,13 +155,13 @@ angular.module('its110App')
 
   		console.log('in compile func');
 		var code = editor.getValue();
-  		var editedCode = code.replace(/\\/g, "\\\\");
+  		var editedCode = code.replace(/\\/g, '\\\\');
 		var obj = { 'className': className,
                     'fileName': fileName,
                     'code': editedCode,
                     'user': Auth.getCurrentUser(),
                     'questionNum': $scope.questionIndex
-          }
+          };
       	$http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
@@ -186,7 +186,7 @@ angular.module('its110App')
 
         var obj = { 'className': className,
                     'user': Auth.getCurrentUser()
-                  }
+                  };
    		$http.post('api/clis/run', obj).success(function(data) {
         	$scope.runOutput = data;
       	});
@@ -206,20 +206,20 @@ angular.module('its110App')
         	if (ea._id === data._id) {
         		angular.copy(data, ea);
         	}
-        })        
+        });        
       });
     };
 
     $scope.addHintToNewQ = function() {
-    	$scope.newQuestion.hints.push("");
+    	$scope.newQuestion.hints.push('');
     };
 
     $scope.deleteHintFromNewQ = function(index) {
     	$scope.newQuestion.hints.splice(index, 1);
-    }
+    };
     // FIXME hints aren't working...
-    $scope.addHintToExistingQ = function(questionIndex) {
-    	$scope.questionToEdit.hints.push("");
+    $scope.addHintToExistingQ = function() {
+    	$scope.questionToEdit.hints.push('');
     	//$scope.topic.questions[questionIndex].hints.push("");
     };
 
@@ -266,7 +266,7 @@ angular.module('its110App')
     // }
     $scope.populateEditQForm = function(index) {
     	// Set up an editor for the question
-    	var editor = ace.edit("editor" + index);
+    	var editor = ace.edit('editor' + index);
 		// Editor part
 		var _session = editor.getSession();
 		var _renderer = editor.renderer;
@@ -308,11 +308,11 @@ angular.module('its110App')
       _editor.focus();
 
       // Events
-      _editor.on("changeSession", function(){ //... 
-      });
-      _session.on("change", function(){ 
-      //  alert(_session.getValue()); 
-      });
+      // _editor.on('changeSession', function(){ //... 
+      // });
+      // _session.on("change", function(){ 
+      // //  alert(_session.getValue()); 
+      // });
     };
 
     $scope.addQuestion = function() {
@@ -347,7 +347,7 @@ angular.module('its110App')
   //       	$scope.questionToEdit = {};
   //     	});
 		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function(question) {
-        	console.log('successfully updated question');
+        	console.log('successfully updated question: ' + question);
         	$scope.questionToEdit = {};
         	$scope.questionToEdit.hints = [];
       	});
@@ -360,6 +360,7 @@ angular.module('its110App')
     	//console.log($scope.topic.questions);
     	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id).success(function(question) {
     		// why does this success function not get called?
+    		console.log('successfully deleted question: ' + question);
     	});
     	console.log('deleted q in edit content controller now');
     	//$scope.topic.questions[index].splice(index, 1); 
