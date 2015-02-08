@@ -23,7 +23,4 @@ angular.module('its110App')
       }
     };
 
-    $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
-    };
   });
