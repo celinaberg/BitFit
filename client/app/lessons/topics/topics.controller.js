@@ -26,8 +26,6 @@ angular.module('its110App')
 
 
     var getClassName = function() {
-      console.log('in get class name');
-      console.log($scope.output.className);
       if (endsWith($scope.output.className, '.java')) {
         $scope.output.className.slice(0, -5);
         return $scope.output.className.slice(0, -5);
@@ -69,7 +67,6 @@ angular.module('its110App')
     }
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function() {
-      console.log('in compile func');
       var code = $scope.editor.getValue();
       var editedCode = code.replace(/\\/g, "\\\\");
       var className = getClassName();
@@ -93,12 +90,20 @@ angular.module('its110App')
 
     // FIXME: this functionality should be moved into topics service
     $scope.runCode = function() {
+      $scope.output.runOutput = 'Attempting to run code...';
       var className = getClassName();
       var obj = { 'className': className,
                   'user': Auth.getCurrentUser()
                 }
       $http.post('api/clis/run', obj).success(function(data) {
-        $scope.output.runOutput = data;
+        if (typeof(data) === 'object') { // Likely error
+          var str = JSON.stringify(data);
+          if(str.search('"killed":true') !== -1) {
+            $scope.output.runOutput += '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.'; 
+          }  
+        } else {
+          $scope.output.runOutput = data;  
+        }
       });
       logging.progress.numRuns++;
     };
@@ -247,7 +252,6 @@ angular.module('its110App')
   	};
 
   	$scope.updatePageWithNewQuestion = function() {
-      console.log('in update page with new q');
       $scope.showComments = false;
       $scope.output.runOutput = '';
       $scope.output.compileOutput = '';
@@ -269,16 +273,13 @@ angular.module('its110App')
       if (typeof(currQuestion.className) !== 'undefined') {
         $scope.output.className = currQuestion.className;
       } else {
-        console.log('type of class name was undefinied');
         $scope.output.className = '';
       }
 
       // Set expected output, if provided
       if (typeof(currQuestion.expectedOutput) !== 'undefined') {
-        console.log('expected output not undefined');
         $scope.output.expectedOutput = currQuestion.expectedOutput;
       } else {
-        console.log('expected output undefined - student must fill in');
         $scope.output.expectedOutput = '';
       }
 
