@@ -4,7 +4,7 @@ angular.module('its110App')
   .factory('topics', function ($http) {
     var o = {
       topics: []
-    }
+    };
 
     // Public API
     return {

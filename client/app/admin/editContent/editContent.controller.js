@@ -22,8 +22,12 @@ angular.module('its110App')
     $scope.className = '';
     $scope.readOnlyChecked = false;
 
-    // index is the index of the code editor for this question
-    // use -1 for adding a new question
+    /**
+      * Toggles the read only value of the starter code for this question.
+      * @param {number} index the index of the code editor for this question.
+      *                 Use -1 for adding a new question.
+      * @return {} fixme
+      */
     $scope.toggleReadOnly = function(index) {
     	var editor = {};
     	var q = {};
@@ -43,68 +47,19 @@ angular.module('its110App')
     		editor.setReadOnly(true);
     		q.readOnly = true;
     	}
-    	console.log('heres updated q: ');
-    	console.log(q);
     };
 
-    //var editor2 = ace.edit("editor");
-    //console.log('made editor2');
-    // editor.session.doc.$lines // gets each line of editor as an array, separating lines at \n
-    // to get multpile ace editors on page
-/*
-	require.config({paths: { "ace" : "../lib/ace"}});
-	require(["ace/ace", "ace/ext/themelist"], function(ace) {
-
-	var $ = document.getElementById.bind(document);
-	var dom = require("ace/lib/dom");
-
-
-
-	// create first editor
-	var editor = ace.edit("editor");
-	editor.setTheme("ace/theme/twilight");
-	editor.session.setMode("ace/mode/javascript");
-	editor.renderer.setScrollMargin(10, 10);
-	editor.setOptions({
-	    // "scrollPastEnd": 0.8,
-	    autoScrollEditorIntoView: true
-	});
-
-	var count = 1;
-	function add() {
-	    var oldEl = editor.container
-	    var pad = document.createElement("div")
-	    pad.style.padding = "40px"
-	    oldEl.parentNode.insertBefore(pad, oldEl.nextSibling)
-
-	    var el = document.createElement("div")
-	    oldEl.parentNode.insertBefore(el, pad.nextSibling)
-
-	    count++
-	    var theme = themes[Math.floor(themes.length * Math.random() - 1e-5)]
-	    editor = ace.edit(el)
-	    editor.setOptions({
-	        mode: "ace/mode/javascript",
-	        theme: theme,
-	        autoScrollEditorIntoView: true
-	    })
-
-	    editor.setValue([
-	        "this is editor number: ", count, "\n",
-	        "using theme \"", theme, "\"\n",
-	        ":)"
-	    ].join(""), -1)
-
-	}
-
-*/
-
-
+    /**
+     * Determines whether |str| ends with |suffix|.
+     * @param {string} str the string to check.
+     * @param {string} suffix the suffix to look for in |str|.
+     * @return {} fixme
+     */
     var endsWith = function(str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
-    // |useEditQuestion| - Boolean, optional, whether to use the edit question variable
+    // |useEditQuestion| - Boolean, whether to use the edit question variable
     var getClassName = function(useEditQuestion) {
     	var className = '';
     	if (useEditQuestion && typeof($scope.questionToEdit.className) !== 'undefined') {
@@ -154,11 +109,14 @@ angular.module('its110App')
     	}
 
   		console.log('in compile func');
-		var code = editor.getValue();
-  		var editedCode = code.replace(/\\/g, '\\\\');
-		var obj = { 'className': className,
+      console.log('heres code:');
+		  var code = editor.getValue();
+      console.log(code);
+  		//var editedCode = code.replace(/\\/g, '\\\\');
+      //console.log(editedCode);
+		  var obj = { 'className': className,
                     'fileName': fileName,
-                    'code': editedCode,
+                    'code': code, //editedCode,
                     'user': Auth.getCurrentUser(),
                     'questionNum': $scope.questionIndex
           };
@@ -192,9 +150,6 @@ angular.module('its110App')
       	});
       	//logging.progress.numRuns++;
     };
-
-
-
 
     $scope.editTopic = function() {
       //if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
@@ -267,6 +222,7 @@ angular.module('its110App')
     $scope.populateEditQForm = function(index) {
     	// Set up an editor for the question
     	var editor = ace.edit('editor' + index);
+      //editor.getSession().setUseWorker(false);
 		// Editor part
 		var _session = editor.getSession();
 		var _renderer = editor.renderer;
@@ -293,8 +249,10 @@ angular.module('its110App')
 
     $scope.aceLoaded = function(_editor) {
       // Editor part
+      //_editor.getSession().setUseWorker(false);
       var _session = _editor.getSession();
       var _renderer = _editor.renderer;
+
 
       // Options
       //_editor.setReadOnly(false);
@@ -307,6 +265,8 @@ angular.module('its110App')
       $scope.editor = _editor;
       _editor.focus();
 
+      console.log('aceloaded func');
+      console.log($scope.editor);
       // Events
       // _editor.on('changeSession', function(){ //... 
       // });
@@ -322,7 +282,7 @@ angular.module('its110App')
         	instructions: $scope.newQuestion.instructions,
         	code: $scope.newQuestion.code,
         	className: getClassName(false),
-        	readOnly: $scope.readOnlyChecked,
+        	readOnly: $scope.newQuestion.readOnly,
         	expectedOutput: $scope.newQuestion.expectedOutput,
         	hints: $scope.newQuestion.hints
   		}).success(function(question) {
@@ -334,21 +294,11 @@ angular.module('its110App')
     };
 
     // does this automatically propogate to the topic being updated??
-    $scope.editQ = function(questionID, questionIndex) {
-    	console.log('heres what im sending to be updated:');
-    	console.log($scope.topic.questions[questionIndex]);
-    	console.log('and heres q to edit');
-    	console.log($scope.questionToEdit);
-
-    	//$scope.topic.questions[questionIndex].code = $scope.editors[questionIndex].getValue();
+    $scope.editQ = function(questionIndex) {
 		$scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-		// topics.editQuestion(questionID, $scope.topic.questions[questionIndex]).success(function(question) {
-  //       	console.log('successfully updated question');
-  //       	$scope.questionToEdit = {};
-  //     	});
-		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function(question) {
-        	console.log('successfully updated question: ' + question);
-        	$scope.questionToEdit = {};
+		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function() {
+        	// update scope array of questions?
+          $scope.questionToEdit = {};
         	$scope.questionToEdit.hints = [];
       	});
     };
@@ -358,10 +308,10 @@ angular.module('its110App')
     $scope.deleteQuestion = function(id, index) {
     	//console.log(index);
     	//console.log($scope.topic.questions);
-    	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id).success(function(question) {
+    	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id);//.success(function(question) {
     		// why does this success function not get called?
-    		console.log('successfully deleted question: ' + question);
-    	});
+    		//console.log('successfully deleted question: ' + question);
+    	//});
     	console.log('deleted q in edit content controller now');
     	//$scope.topic.questions[index].splice(index, 1); 
     	$scope.topic.questions.splice(index, 1);

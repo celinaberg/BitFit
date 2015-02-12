@@ -78,20 +78,19 @@ exports.compile = function(req, res) {
       } else {
         console.log(stdout);
         // create java file with |contents|
-        console.log('heres code pre escaping:');
-        console.log(req.body.code);
-        var obj = {'code': req.body.code };
-        console.log('heres obj');
-        console.log(obj);
-        console.log('heres plain code post escaping:');
-
+         console.log('heres code pre escaping:');
+         console.log(req.body.code);
+        // var obj = {'code': req.body.code };
+        // console.log('heres obj');
+        // console.log(obj);
+         //console.log('heres plain code post escaping:');
 
         var escapedCode = jsesc(req.body.code, {
-          'quotes': 'double',
+          //'quotes': 'double',
           'wrap': true
         });
-        console.log("this is what im sending to echo: ");
-        console.log(escapedCode);
+         console.log("this is what im sending to echo: ");
+         console.log(escapedCode);
 
         exec("echo $" + escapedCode + " > " + dirName + '/' + fileName, { timeout: 10000}, // Process will time out if running for > 10 seconds.
           function(error, stdout, stderr) {

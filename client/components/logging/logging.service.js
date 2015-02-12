@@ -19,8 +19,6 @@ angular.module('its110App')
       },
       logProgress: function () { // call this after user finishes a question
         $http.post('/api/loggers', this.progress).success(function(data) {
-          console.log('in success function, just logged progress:');
-          console.log(data);
         });
         this.progress =  {
           'user': Auth.getCurrentUser()._id,

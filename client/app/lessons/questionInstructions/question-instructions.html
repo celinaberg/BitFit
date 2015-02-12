@@ -1,14 +1,21 @@
 <!-- Question Tab's content -->
 <div ng-show="isSet(1)">
 	<div ng-repeat="q in topic.questions">
-	    <div ng-if="questionIndex == $index">
+	    <div ng-if="(qInfo.currentQuestion - 1) == $index">
 	    	<!-- Question content -->
-	  		<h4>Question {{questionIndex + 1}}</h4>
+	    	<span class="pull-right">
+		        	<a href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
+							<span class="glyphicon glyphicon-flag"></span> Hint
+					</a>
+			</span>
+	  		<h4>Question {{ qInfo.currentQuestion }}</h4>
+
 	        <div ng-bind-html="q.instructions"></div>
-	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[questionIndex].hintIndex + 1">
-	        	<li><strong>Hint:</strong> {{hint}}</li>
+
+	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
+	        	<li><strong>Hint:</strong> <div ng-bind-html="hint"></div></li>
 	        </ul>	
-	        <p ng-if="hintRequested() && status[questionIndex].hintIndex >= q.hints.length">{{noMoreHints}}</p>     
+	        <p ng-if="hintRequested() && status[qInfo.currentQuestion - 1].hintIndex >= q.hints.length">{{noMoreHints}}</p>     
 	    
 			<!-- Code editor and buttons -->
 			<div class="row">
@@ -81,19 +88,9 @@
 		    </div>
 			<hr>
 
-			<!-- Question navigation buttons -->
+			<!-- Pagination buttons -->
 			<div class="text-center">
-				<div class="btn-group" role="group">
-					<button type="button" ng-click="prevQuestion()" class="btn btn-sm btn-default">
-						<span class="glyphicon glyphicon-chevron-left"></span> Previous Question
-					</button>
-					<a href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
-						<span class="glyphicon glyphicon-flag"></span> I'm stuck!
-					</a>
-					<button type="button" ng-click="nextQuestion()" class="btn btn-sm btn-default"> Next Question
-						<span class="glyphicon glyphicon-chevron-right"></span>
-					</button>
-				</div>
+				<pagination total-items="qInfo.totalQuestions" ng-model="qInfo.currentQuestion" ng-change="pageChanged()"></pagination>
 			</div>
 		</div> <!-- end current question  -->
     </div> <!-- end question content div -->

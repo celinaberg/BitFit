@@ -1,42 +1,18 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('LessonsCtrl', function ($http, $scope, $location, $stateParams, $log, Auth, socket, topics, topicPromise) {
-  	$scope.$log = $log;
+  .controller('LessonsCtrl', function ($http, $scope, $location, $stateParams, Auth, socket, topics, topicPromise) {
   	$scope.editor = {};
-  	//$scope.questions = [];
   	$scope.questionIndex = 0;
   	$scope.tab = 1;
-  	//$scope.topicPromise = topicPromise;
-  	//console.log('topic promise in lessons controller');
-  	//console.log(topicPromise);
-  	$scope.topics = topicPromise.data;
-  	//console.log($scope.topicsLC);
-  	//$scope.backgrounder = {};
-  	// Get list of all topics and everything... shouldn't be here FIXME
-  	//$scope.topics = topics.getAll(); 
-  	// Get specific topic for this lesson
-  	//$scope.topic = $scope.topics[$stateParams.id];
-  	//$log.log('logging stuff here:');
-  	//$log.log('scope.topics');
-  	//$log.log($scope.topics);
-  	//$log.log('doing log');
-  	//$log.log(GetDBStuff);
-  	//$scope.backgrounder = GetDBStuff.getBackground($location.path());
-  	//$scope.$log($scope.backgrounder);
+  	$scope.topics = topicPromise.data;  	
 
-  /*	$scope.getBackground = function(url) {
-  		$scope.backgroundInfo = GetDBStuff.getBackground(url);
-  	};
-*/
-  	$scope.isSet = function(checkTab) {
+    $scope.isSet = function(checkTab) {
           return $scope.tab === checkTab;
     };
 
     $scope.setTab = function(activeTab) {
           $scope.tab = activeTab;
-
-          $log.log($location.path());
     };
 
     $scope.aceLoaded = function(_editor) {
@@ -54,7 +30,6 @@ angular.module('its110App')
     	//_editor.setValue($scope.questions[0][0].code, -1) // -1 is document start
     	$scope.editor = _editor;
     	_editor.focus();
- 		$log.log('ace loaded');
 
 	    // Events
 	    // _editor.on("changeSession", function(){ //... 
@@ -64,7 +39,7 @@ angular.module('its110App')
 	    // });
   	};
 
-    $http.get('/api/questions').success(function(allQs) {
+    $http.get('/api/questions').success(function() {
   		//$scope.questions = allQs;
     	socket.syncUpdates('question', $scope.questions);
     });
@@ -91,11 +66,6 @@ angular.module('its110App')
         }
     };
 
-  	// fix this
-  	// $scope.reset = function(week, q) {
-  	// 	$scope.editor.setValue($scope.questions[0][0].code, -1);
-  	// }
-
   	$scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
@@ -113,6 +83,5 @@ angular.module('its110App')
       return route === $location.path();
     };
   }
-  // ] // end controller array
-   );
+);
 

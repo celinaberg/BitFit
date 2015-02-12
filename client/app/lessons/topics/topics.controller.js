@@ -5,10 +5,17 @@ angular.module('its110App')
     $scope.topic = topic.data; 
 	  $scope.topicsTC = topicPromiseTC.data;
 	  $scope.tab = 1;
-  	$scope.questionIndex = 0; // keeps track of which question the user is on
+  	
+    $scope.qInfo = {
+      currentQuestion: 1,
+      totalQuestions: $scope.topic.questions.length*10
+    };
+    
   	$scope.status = [];
     $scope.noMoreHints = 'Sorry, there are no more hints for this question';
   	$scope.editor = {};
+
+
 
     $scope.output = {
       className: '',
@@ -45,14 +52,19 @@ angular.module('its110App')
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function() {
       var code = $scope.editor.getValue();
-      var editedCode = code.replace(/\\/g, '\\\\');
+      if (typeof(code) === 'undefined' || code === '') {
+        $scope.showComments = true;
+        $scope.feedback = 'In order to compile your program, please enter code in the code editor.';
+        return;
+      }
+      //var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
       var className = getClassName();
       var fileName = getFileName();
       var obj = { 'className': className,
                   'fileName': fileName,
-                  'code': editedCode,
+                  'code': code, //editedCode,
                   'user': Auth.getCurrentUser(),
-                  'questionNum': $scope.questionIndex
+                  'questionNum': $scope.qInfo.currentQuestion
           };
       $http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
@@ -71,13 +83,10 @@ angular.module('its110App')
       var className = getClassName();
       var obj = { 'className': className,
                   'user': Auth.getCurrentUser()
-                }
+                };
       $http.post('api/clis/run', obj).success(function(data) {
         if (typeof(data) === 'object') { // Likely error
-          var str = JSON.stringify(data);
-          if(str.search('"killed":true') !== -1) {
-            $scope.output.runOutput += '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.'; 
-          }  
+          $scope.output.runOutput += $scope.handleError(data); 
         } else {
           $scope.output.runOutput = data;  
         }
@@ -85,8 +94,20 @@ angular.module('its110App')
       logging.progress.numRuns++;
     };
 
+
+    $scope.handleError = function(data) {
+      var str = JSON.stringify(data);
+      if(str.search('"killed"') !== -1) {
+        if (str.search('"killed":true') !== -1) {
+          return '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.'; 
+        } else { // program wasn't killed but some other error happened when attempting to run
+          return '\nERROR: The system encountered an error when attempting to run your program. Check your code for errors.';
+        }  
+      }
+    };
+
   	$scope.hintRequested = function() {
-  		return $scope.status[$scope.questionIndex].hintRequested;
+  		return $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested;
   	};
 
   	$scope.isSet = function(checkTab) {
@@ -97,104 +118,123 @@ angular.module('its110App')
           $scope.tab = activeTab;
     };
 
+    // fixme: what happens when user pushes check answer a second time on the same question?
+    /** Checks if student's answer matches the run output (for read only code), or
+      * the expected code (if student is writing the code). Updates feedback variable accordingly.
+      */
     $scope.checkAnswer = function() {
+      $scope.showComments = true;
+      $scope.feedback = 'Checking answer...';
+
       logging.progress.totalAttempts++;
       var className = getClassName();
       var fileName = getFileName();
       var code = $scope.editor.getValue();
-      var editedCode = code.replace(/\\/g, "\\\\");
+      //var editedCode = code.replace(/\\/g, '\\\\');
 
       var obj = { 'className': className,
                   'fileName': fileName,
-                  'code': editedCode,
+                  'code': code, //editedCode,
                   'user': Auth.getCurrentUser(),
-                  'questionNum': $scope.questionIndex
-          }
+                  'questionNum': $scope.qInfo.currentQuestion
+          };
+      if (typeof(code) === 'undefined' || code === '') {
+        $scope.feedback = 'In order to check your answer, please enter code in the code editor.';
+        return;
+      }
       $http.post('api/clis/compile', obj).success(function(data) {
         if (data === '') {
-          // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
         } else {
           $scope.compileOutput += data;
         }
 
         $http.post('api/clis/run', obj).success(function(data) {
-          $scope.output.runOutput = data;
-          // now we compare runOutput to expected output for this question
-          //if ($scope.topic.questions[$scope.questionIndex].expectedOutput.trim() === $scope.runOutput.trim()) {
-          if ($scope.output.expectedOutput.trim() === $scope.output.runOutput.trim()) {
-            $scope.showComments = true;
-            $scope.feedback = "Well done!";
-            logging.progress.correctAttempts++;
+          if (typeof(data) === 'object') { // Likely an error
+            $scope.output.runOutput += $scope.handleError(data);  
           } else {
-            $scope.showComments = true;
-            console.log("here's expected output: ");
-            console.log($scope.output.expectedOutput);
-            console.log("here's run output");
-            console.log($scope.output.runOutput);
-            console.log($scope.output.runOutput.trim().length);
-            //console.log($scope.topic.questions[$scope.questionIndex].expectedOutput.trim().length);
-            $scope.feedback = "Your output doesn't quite match the output we're looking for. Please try again";
+            $scope.output.runOutput = data;
+            // now we compare runOutput to expected output for this question
+            if ($scope.output.expectedOutput.trim() === $scope.output.runOutput.trim()) {
+              $scope.feedback = 'Well done!';
+              logging.progress.correctAttempts++;
+            } else {
+              $scope.feedback = 'Your output doesn\'t quite match the output we\'re looking for. Please try again';
+            }
           }
+          
         });
       });
-
-    }
+    };
 
     $scope.showHint = function() {
-    	// increment hint index for this question
-    	if ($scope.status[$scope.questionIndex].hintRequested === true) {
-    		if ($scope.status[$scope.questionIndex].hintIndex < $scope.topic.questions[$scope.questionIndex].hints.length) {
-    			$scope.status[$scope.questionIndex].hintIndex += 1;	
+    	// Increment hint index for this question
+    	if ($scope.status[$scope.qInfo.currentQuestion - 1].hintRequested === true) {
+    		if ($scope.status[$scope.qInfo.currentQuestion - 1].hintIndex < $scope.topic.questions[$scope.qInfo.currentQuestion - 1].hints.length) {
+    			$scope.status[$scope.qInfo.currentQuestion - 1].hintIndex += 1;	
     		}
     	} else {
-    		$scope.status[$scope.questionIndex].hintRequested = true;
+    		$scope.status[$scope.qInfo.currentQuestion - 1].hintRequested = true;
     	}
-    	
-    	console.log('hint index for q: ', $scope.questionIndex);
-    	console.log('hint index:', $scope.status[$scope.questionIndex].hintIndex);
       logging.progress.numHints++;
-
     };
 
-   	$scope.nextQuestion = function() {
-        if ($scope.questionIndex >= $scope.topic.questions.length -1) {
-            $scope.questionIndex = 0;
-        }
-        else {
-            $scope.questionIndex ++;
-        }
-        // Update ace editor on page
-        $scope.updatePageWithNewQuestion();
-
-        // Log previous question's data
-        logging.progress.endTime = Date.now();
-        logging.logProgress();
-
-        // Set up logging for new question
-        logging.progress.topic = $scope.topic._id;
-        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
-        logging.progress.startTime = Date.now();
+    $scope.setPage = function (pageNo) {
+      $scope.qInfo.currentQuestion = pageNo;
     };
 
-    $scope.prevQuestion = function() {
-        if ($scope.questionIndex == 0) {
-            $scope.questionIndex = $scope.topic.questions.length -1;
-        } else {
-            $scope.questionIndex --;
-        }
-        // Update ace editor on page        
-        $scope.updatePageWithNewQuestion();
+    $scope.pageChanged = function() {
+      // Update ace editor on page
+      $scope.updatePageWithNewQuestion();
 
-        // Log previous question's data
-        logging.progress.endTime = Date.now();
-        logging.logProgress();
+      // Log previous question's data
+      logging.progress.endTime = Date.now();
+      logging.logProgress();
 
-        // Set up logging for new question
-        logging.progress.topic = $scope.topic._id;
-        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
-        logging.progress.startTime = Date.now();        
+      // Set up logging for new question
+      logging.progress.topic = $scope.topic._id;
+      logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id;
+      logging.progress.startTime = Date.now();
     };
+
+   	// $scope.nextQuestion = function() {
+    //     if ($scope.questionIndex >= $scope.topic.questions.length -1) {
+    //         $scope.questionIndex = 0;
+    //     }
+    //     else {
+    //         $scope.questionIndex ++;
+    //     }
+    //     // Update ace editor on page
+    //     $scope.updatePageWithNewQuestion();
+
+    //     // Log previous question's data
+    //     logging.progress.endTime = Date.now();
+    //     logging.logProgress();
+
+    //     // Set up logging for new question
+    //     logging.progress.topic = $scope.topic._id;
+    //     logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
+    //     logging.progress.startTime = Date.now();
+    // };
+
+    // $scope.prevQuestion = function() {
+    //     if ($scope.questionIndex === 0) {
+    //         $scope.questionIndex = $scope.topic.questions.length -1;
+    //     } else {
+    //         $scope.questionIndex --;
+    //     }
+    //     // Update ace editor on page        
+    //     $scope.updatePageWithNewQuestion();
+
+    //     // Log previous question's data
+    //     logging.progress.endTime = Date.now();
+    //     logging.logProgress();
+
+    //     // Set up logging for new question
+    //     logging.progress.topic = $scope.topic._id;
+    //     logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
+    //     logging.progress.startTime = Date.now();        
+    // };
 
     $scope.isActive = function(id) {
     	// this function is dependent on the URL set in topics.js
@@ -203,6 +243,7 @@ angular.module('its110App')
 
     $scope.aceLoaded = function(_editor) {
 	    // Editor part
+      //_editor.getSession().setUseWorker(false);
 	    var _session = _editor.getSession();
 	    var _renderer = _editor.renderer;
       
@@ -233,18 +274,16 @@ angular.module('its110App')
       $scope.output.runOutput = '';
       $scope.output.compileOutput = '';
       // Return if there are no questions
-  		if (typeof($scope.topic.questions) === 'undefinded' ||
-          typeof($scope.topic.questions[$scope.questionIndex]) === 'undefined') { 
+  		if (typeof($scope.topic.questions) === 'undefined' ||
+          typeof($scope.topic.questions[$scope.qInfo.currentQuestion -1]) === 'undefined') { 
         return;
       }
-      var currQuestion = $scope.topic.questions[$scope.questionIndex];
+      var currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1];
       
       // Set starter code, if this question has any
     	if (typeof(currQuestion.code) !== 'undefined') {
-	    	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start    		
-    	} else {
-
-      }
+	    	$scope.editor.setValue($scope.topic.questions[$scope.qInfo.currentQuestion - 1].code, -1); // -1 is document start    		
+    	}
 
       // Set class name variable, if provided
       if (typeof(currQuestion.className) !== 'undefined') {
@@ -269,9 +308,9 @@ angular.module('its110App')
   	};
 
   	// Reset button on code editor: resets the starter code (if any) given for this question
- 	  $scope.reset = function(week, q) {
-  		$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
-  	};
+ 	 //  $scope.reset = function(week, q) {
+  	// 	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
+  	// };
 
   	$scope.init = function() {
 		  for (var i = 0; i < $scope.topic.questions.length; i++) {
@@ -280,14 +319,16 @@ angular.module('its110App')
   				hintIndex: 0,
   				hintRequested: false
   			});
-  		};
+  		}
+      
       logging.progress.topic = $scope.topic._id;
+      
       if ($scope.topic.questions.length > 0) {
-        logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id; // for first question only  
+        logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id; // for first question only  
         logging.progress.startTime = Date.now();
       }
-      
   	};
+
   	$scope.init();
 
   });

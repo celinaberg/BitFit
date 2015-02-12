@@ -11,13 +11,33 @@
     "angular-cookies": ">=1.2.*",
     "angular-sanitize": ">=1.2.*",
     "angular-bootstrap": "~0.11.0",
+    "ace-builds": "1.1.8",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.10",
     "textAngular": "~1.2.2",
     "angular-local-storage": "~0.1.5",
-    "jsesc": "~0.5.0"
+    "angular-ui-ace": "~0.2.3",
+    "angular-ui-bootstrap-pagination": "~0.12.0"
+  },
+  "overrides": {
+    "ace-builds": {
+      "main": [
+        "src-noconflict/ace.js",
+        "src-noconflict/mode-java.js",
+        "src-noconflict/ext-language_tools.js"
+      ],
+      "version": "1.1.8",
+      "name": "ace-builds"
+    },
+    "angular-ui-bootstrap-pagination": {
+      "main": [
+        "pagination.js"
+      ],
+      "version": "~0.12.0",
+      "name": "angular-ui-bootstrap-pagination"
+    }
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

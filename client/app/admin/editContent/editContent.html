@@ -94,7 +94,7 @@
             
             	<!-- Edit question form -->
         		<div class="editQuestionForm" ng-show="editQuestionToggle">
-                    <form ng-submit="editQ(q._id, $index); editQuestionToggle=!editQuestionToggle">
+                    <form ng-submit="editQ($index); editQuestionToggle=!editQuestionToggle">
                      	<div class="form-group">
                         	<label for="editQuestionInstructions">Edit question {{$index + 1}}:</label>
                         	<text-angular ng-model="questionToEdit.instructions" id="editQuestionInstructions"></text-angular>
@@ -211,7 +211,7 @@
 								Add Starter Code [optional]
 			            	</label>
 			            	<p>[Any code you enter here will appear in the student's code editor for this question]</p>
-							<div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }" readonly></div>
+							<div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }"></div>
 						</div><!--
 				    	--><div class="col-sm-4 vcenter">
 				    			<label for="javaFile">

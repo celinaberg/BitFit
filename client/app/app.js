@@ -8,7 +8,7 @@ angular.module('its110App', [
   'textAngular',
   'ui.router',
   'ui.ace',
-  'ui.bootstrap'])
+  'ui.bootstrap.pagination'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
