@@ -18,7 +18,7 @@ angular.module('its110App')
         'correctAttempts': 0
       },
       logProgress: function () { // call this after user finishes a question
-        $http.post('/api/loggers', this.progress).success(function(data) {
+        $http.post('/api/loggers', this.progress).success(function() { // do we need |data| passed in?
           this.progress =  {
             'user': Auth.getCurrentUser()._id,
             'topic': '',
