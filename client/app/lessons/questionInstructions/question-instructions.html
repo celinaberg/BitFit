@@ -3,12 +3,42 @@
 	<div ng-repeat="q in topic.questions">
 	    <div ng-if="(qInfo.currentQuestion - 1) == $index">
 	    	<!-- Question content -->
-	    	<span class="pull-right">
-		        	<a href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
-							<span class="glyphicon glyphicon-flag"></span> Hint
-					</a>
-			</span>
 	  		<h4>Question {{ qInfo.currentQuestion }}</h4>
+	    	<span class="pull-right">
+	    		<div class="btn-group" role="group" aria-label="HelpSection">
+		        	<button type="button" href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
+							<span class="glyphicon glyphicon-flag"></span> Hint
+					</button>
+					<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
+						<span class="glyphicon glyphicon-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
+					</button>
+				</div>
+			</span>
+			<br>
+			<br>
+			<div ng-controller="AskQuestionCtrl" ng-show="askQuestionForm">
+				<span class="pull-right askAQ">
+					<form class="span3" ng-submit="askAQuestion($parent.topic.title, $parent.q.instructions)">
+						<!-- <button type="button" class="close" ng-model="askQuestionForm" ng-click="askQuestionForm=false">&times;</button> -->
+						<legend>Ask a Question</legend>
+						<p class="help-block">Please enter your question below, giving as much detail as possible:</p>
+						<div class="form-group">
+					    	<label for="inputEmail">Email address</label>
+					    	<input ng-model="user.email" type="email" class="form-control" id="inputEmail" placeholder="Enter email" required>
+					  	</div>
+					  	<div class="form-group">
+					    	<label for="inputName">Name</label>
+					    	<input ng-model="user.name" type="text" class="form-control" id="inputName" placeholder="Enter your name" required>
+					  	</div>
+					  	<div class="form-group">
+							<label for="inputQuestion">Question: </label>
+							<textarea ng-model="user.userQuestion" class="form-control" id="inputQuestion" rows="3" type="text" placeholder="Enter your question" required></textarea>
+					  	</div>
+					  	<button type="submit" class="btn btn-default">Submit</button>
+					  	<br>{{ feedback }}
+					</form>
+				</span>
+			</div>
 
 	        <div ng-bind-html="q.instructions"></div>
 

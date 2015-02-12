@@ -42,3 +42,12 @@
 	box-shadow: 0 0 10px gray;
 	border-radius:4px;
 }
+
+.askAQ {
+	background-color: #f0ad4e;
+	color: white;
+	padding:13px;
+	outline: 1px solid #gray;
+	box-shadow: 0 0 10px gray;
+	border-radius:4px;	
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
+  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging, askAQuestion) { // topics is for manipulating questions
     $scope.topic = topic.data; 
 	  $scope.topicsTC = topicPromiseTC.data;
 	  $scope.tab = 1;
