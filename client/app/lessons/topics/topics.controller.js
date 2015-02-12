@@ -51,10 +51,10 @@ angular.module('its110App')
 
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function() {
+      $scope.showComments = false;
       var code = $scope.editor.getValue();
       if (typeof(code) === 'undefined' || code === '') {
-        $scope.showComments = true;
-        $scope.feedback = 'In order to compile your program, please enter code in the code editor.';
+        $scope.output.compileOutput += 'In order to compile your program, please enter code in the code editor.';
         return;
       }
       //var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
@@ -79,6 +79,7 @@ angular.module('its110App')
 
     // FIXME: this functionality should be moved into topics service
     $scope.runCode = function() {
+      $scope.showComments = false;
       $scope.output.runOutput = 'Attempting to run code...';
       var className = getClassName();
       var obj = { 'className': className,
@@ -125,7 +126,7 @@ angular.module('its110App')
     $scope.checkAnswer = function() {
       $scope.showComments = true;
       $scope.feedback = 'Checking answer...';
-
+      console.log('check answer');
       logging.progress.totalAttempts++;
       var className = getClassName();
       var fileName = getFileName();
@@ -139,18 +140,22 @@ angular.module('its110App')
                   'questionNum': $scope.qInfo.currentQuestion
           };
       if (typeof(code) === 'undefined' || code === '') {
-        $scope.feedback = 'In order to check your answer, please enter code in the code editor.';
+        $scope.showComments = false;
+        $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.';
         return;
       }
       $http.post('api/clis/compile', obj).success(function(data) {
+        console.log('in compile success');
+        console.log(data);
         if (data === '') {
-          $scope.compileOutput += 'Successfully compiled code.\n';
+          $scope.output.compileOutput += 'Successfully compiled code.\n';
         } else {
-          $scope.compileOutput += data;
+          $scope.output.compileOutput += data;
         }
 
         $http.post('api/clis/run', obj).success(function(data) {
           if (typeof(data) === 'object') { // Likely an error
+            $scope.showComments = false;
             $scope.output.runOutput += $scope.handleError(data);  
           } else {
             $scope.output.runOutput = data;
