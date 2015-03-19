@@ -8,7 +8,8 @@ angular.module('its110App', [
   'textAngular',
   'ui.router',
   'ui.ace',
-  'ui.bootstrap.pagination'])
+  'ui.bootstrap.pagination',
+  'googlechart'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');

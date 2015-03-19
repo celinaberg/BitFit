@@ -12,9 +12,9 @@ angular.module('its110App')
 			/*topic: ['$stateParams', 'topics', function($stateParams, topics) { // gets current topic before controller loads
     			return topics.get($stateParams.id);
   			}],*/
-  			topicPromiseAC: ['topics', function(topics) { // gets all the topics before controller loads
-				return topics.getAll();
-			}]
-		}
-      });
+  			  topicPromiseAC: ['topics', function(topics) { // gets all the topics before controller loads
+				    return topics.getAll();
+			     }]
+		    }
+      })
   });
