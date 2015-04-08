@@ -70,6 +70,7 @@ angular.module('its110App')
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput += 'Successfully compiled code.\n';
+          logging.progress.numErrorFreeCompiles++;
         } else {
           $scope.output.compileOutput += data;
         }
@@ -126,7 +127,6 @@ angular.module('its110App')
     $scope.checkAnswer = function() {
       $scope.showComments = true;
       $scope.feedback = 'Checking answer...';
-      console.log('check answer');
       logging.progress.totalAttempts++;
       var className = getClassName();
       var fileName = getFileName();
@@ -145,8 +145,6 @@ angular.module('its110App')
         return;
       }
       $http.post('api/clis/compile', obj).success(function(data) {
-        console.log('in compile success');
-        console.log(data);
         if (data === '') {
           $scope.output.compileOutput += 'Successfully compiled code.\n';
         } else {
@@ -188,13 +186,26 @@ angular.module('its110App')
       $scope.qInfo.currentQuestion = pageNo;
     };
 
+    $scope.topicNav = function() {
+      logging.progress.endTime = Date.now();
+      logging.logProgress();
+    };
+
     $scope.pageChanged = function() {
       // Update ace editor on page
       $scope.updatePageWithNewQuestion();
+      // what if they just navigate via topics? and don't use question nav btns?
+      // then the log data collected for that question is submitted the next time they
+      // use a q nav btn, just smushed in with the new question's data.
+      // progress gets reset on loading a new page. any other times?
+      // FIXME DON'T UPDATE CHANGES TO REMOTE RHC SITE
+      // NEED TO ADD SEED.JS TO .GITIGNORE FIRST!!!
+      // AND NEED TO REMOVE THESE COMENTS!!
 
+      // ********************************************************* FIXME
       // Log previous question's data
       logging.progress.endTime = Date.now();
-      logging.logProgress();
+      logging.logProgress(); // async so this returns immediately
 
       // Set up logging for new question
       logging.progress.topic = $scope.topic._id;

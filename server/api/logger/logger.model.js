@@ -10,6 +10,7 @@ var LoggerSchema = new Schema({
   startTime: Date,
   endTime: { type: Date, default: Date.now },
   numCompiles: Number,
+  numErrorFreeCompiles: Number,
   numRuns: Number,
   numHints: Number,
   totalAttempts: Number,

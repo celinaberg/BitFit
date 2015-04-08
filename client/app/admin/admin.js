@@ -16,5 +16,5 @@ angular.module('its110App')
 				    return topics.getAll();
 			     }]
 		    }
-      })
+      });
   });
