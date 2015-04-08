@@ -194,15 +194,7 @@ angular.module('its110App')
     $scope.pageChanged = function() {
       // Update ace editor on page
       $scope.updatePageWithNewQuestion();
-      // what if they just navigate via topics? and don't use question nav btns?
-      // then the log data collected for that question is submitted the next time they
-      // use a q nav btn, just smushed in with the new question's data.
-      // progress gets reset on loading a new page. any other times?
-      // FIXME DON'T UPDATE CHANGES TO REMOTE RHC SITE
-      // NEED TO ADD SEED.JS TO .GITIGNORE FIRST!!!
-      // AND NEED TO REMOVE THESE COMENTS!!
-
-      // ********************************************************* FIXME
+      
       // Log previous question's data
       logging.progress.endTime = Date.now();
       logging.logProgress(); // async so this returns immediately
