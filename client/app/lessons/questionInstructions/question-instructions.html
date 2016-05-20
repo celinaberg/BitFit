@@ -50,17 +50,17 @@
 			<!-- Code editor and buttons -->
 			<div class="row">
 				<div class="col-sm-8 vcenter">
-					<div class="ace_lessons" ng-model="q.code" ui-ace="{ require: ['ace/search'], onLoad: aceLoaded }"></div>
+					<div class="ace_lessons" ng-model="q.code" ui-ace="{ require: ['ace/search'], onLoad: aceLoaded }" style="font-size:1em"></div>
 				</div><!--
 		    	--><div class="col-sm-4 vcenter">
 	    			<!-- show for questions requiring student to write code -->
 	    			<div ng-hide="q.readOnly">
 		    			<label for="javaFile">
-		    				Please enter the name of your Java file (must match the class name in your code!):
+		    				Please enter the name of your <!--Java--> C file<!--(must match the class name in your code!)-->:
 		    			</label>
 		    			<div class="input-group">
-		  					<input type="text" class="form-control" placeholder="YourJavaFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
-		  						<span class="input-group-addon" id="basic-addon">.java</span>
+		  					<input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
+		  						<span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
 						</div>
 			    		<hr>
 						<div class="btn-group-vertical ace_lessons" role="group">
@@ -103,16 +103,16 @@
 		    		<h4>{{ feedback }}
 		    		<!--<button type="button" class="close" ng-click="showComments=!showComments">&times;</button>--></h4>
 		    	</div>
-		        <div ng-hide="q.readOnly" class="col-sm-6">	    		
+		        <div ng-hide="q.readOnly" class="col-sm-6">
 		    		<div id="commandLineOutput" class="command_line_output_s compile">
-		        		<h4 class="tab"> Compile Output:</h4>
-		        		<pre>{{ output.compileOutput }}</pre>
+		    			<h4 class="tab"> Compile Output:</h4>
+		        		<pre class="output">{{ output.compileOutput }}</pre>
 		    		</div>
 		        </div>
-		        <div ng-hide="q.readOnly" class="col-sm-6">	    
+		        <div ng-hide="q.readOnly" class="col-sm-6">
 		   			<div id="commandLineOutput" class="command_line_output_s run">
-		        		<h4 class="tab"> Run Output:</h4>
-		        		<pre>{{ output.runOutput }}</pre>
+		   				<h4 class="tab"> Run Output:</h4>
+		        		<pre class="output">{{ output.runOutput }}</pre>
 		    		</div>	        
 		        </div>
 		    </div>

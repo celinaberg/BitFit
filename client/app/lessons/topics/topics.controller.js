@@ -33,7 +33,7 @@ angular.module('its110App')
 
 
     var getClassName = function() {
-      if (endsWith($scope.output.className, '.java')) {
+      if (endsWith($scope.output.className, '.c')) {
         $scope.output.className.slice(0, -5);
         return $scope.output.className.slice(0, -5);
       } else {
@@ -42,10 +42,10 @@ angular.module('its110App')
     };
 
     var getFileName = function() {
-      if (endsWith($scope.output.className, '.java')) {
+      if (endsWith($scope.output.className, '.c')) {
         return $scope.output.className;
       } else {
-        return $scope.output.className + '.java';
+        return $scope.output.className + '.c';
       }
     };
 
@@ -54,7 +54,7 @@ angular.module('its110App')
       $scope.showComments = false;
       var code = $scope.editor.getValue();
       if (typeof(code) === 'undefined' || code === '') {
-        $scope.output.compileOutput += 'In order to compile your program, please enter code in the code editor.';
+        $scope.output.compileOutput += 'In order to compile your program, please enter code in the code editor.\n';
         return;
       }
       //var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
@@ -141,7 +141,7 @@ angular.module('its110App')
           };
       if (typeof(code) === 'undefined' || code === '') {
         $scope.showComments = false;
-        $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.';
+        $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n';
         return;
       }
       $http.post('api/clis/compile', obj).success(function(data) {
@@ -162,7 +162,7 @@ angular.module('its110App')
               $scope.feedback = 'Well done!';
               logging.progress.correctAttempts++;
             } else {
-              $scope.feedback = 'Your output doesn\'t quite match the output we\'re looking for. Please try again';
+              $scope.feedback = 'Your output doesn\'t quite match the output we\'re looking for. Please try again\n';
             }
           }
           
@@ -261,8 +261,10 @@ angular.module('its110App')
 	    //_session.setUndoManager(new ace.UndoManager());
 	    _renderer.setShowGutter(true);
 		  _editor.setTheme('ace/theme/crimson_editor');
+      _editor.setFontSize('11');
       _editor.setShowPrintMargin(false);
-    	_session.setMode('ace/mode/java');
+    	// _session.setMode('ace/mode/java');
+      _session.setMode('ace/mode/c_cpp');
 
     	$scope.editor = _editor;
 

@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Cli = require('./cli.model');
 var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 var jsesc = require('jsesc');
 // consider using execFile instead of exec:
 // https://blog.liftsecurity.io/2014/08/19/Avoid-Command-Injection-Node.js?utm_source=ourjs.com
@@ -91,8 +92,8 @@ exports.compile = function(req, res) {
         });
          console.log("this is what im sending to echo: ");
          console.log(escapedCode);
-
-        exec("echo $" + escapedCode + " > " + dirName + '/' + fileName, { timeout: 10000}, // Process will time out if running for > 10 seconds.
+        // exec("echo $" + escapedCode + " > " + dirName + '/' + fileName, { timeout: 10000}, // Process will time out if running for > 10 seconds.
+        exec("echo " + escapedCode + " > " + dirName + '/' + fileName, { timeout: 10000}, // Process will time out if running for > 10 seconds.
           function(error, stdout, stderr) {
           if (error) {
             console.error(stderr);
@@ -101,7 +102,7 @@ exports.compile = function(req, res) {
             console.log(stdout);
             console.log('file created successfully');
             //compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
-            compileJavaFile(dirName + '/' + fileName, res);
+            compileJavaFile(dirName + '/' + fileName, dirName, res);
           }
         });
       }
@@ -115,10 +116,15 @@ exports.run = function(req, res) {
   dirName += dateTime.getMonth();
   dirName += dateTime.getDate();
   dirName += dateTime.getFullYear();
-  exec('java -cp "'+ dirName + '" ' + req.body.className, {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  var cmd = dirName + '/a.out';
+  // exec('java -cp "'+ dirName + '" ' + req.body.className, {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
     function (error, stdout, stderr) {
-      if (error) {
+      if (stderr) {
         console.log('error error!!');
+        console.log(process.cwd());
+        console.log(stdout);
         console.log(error);
         console.log(error.killed);
         console.log(error.signal);
@@ -126,6 +132,9 @@ exports.run = function(req, res) {
         return res.send(200, error);
       } else {
         console.log(stdout);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
         console.log(' '+ req.body.className + ' ran.');
         return res.send(200, stdout);
       }
@@ -135,9 +144,11 @@ exports.run = function(req, res) {
 }
 
 
-function compileJavaFile(srcFile, res) {
+function compileJavaFile(srcFile, dirName, res) {
   // exec is asynchronous
-  exec('javac "'+ srcFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  // exec('javac "'+ srcFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  exec('gcc "'+ srcFile + '" -o "' + dirName + '/a.out"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  // exec('gcc "'+ srcFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
     function (error, stdout, stderr) {
       if (error) {
         console.error(stderr);
@@ -187,7 +198,7 @@ function createCompileJavaFile(dirName, fileName, className, contents, res) {
             console.log(stdout);
             console.log('file created successfully');
             //compileJavaFile("/Users/anna/Google\ Drive/Grad\ Studies/thesis/its110/" + dirName + '/' + fileName, res);
-            compileJavaFile(dirName + '/' + fileName, res);
+            compileJavaFile(dirName + '/' + fileName, dirName, res);
           }
         });
       }
