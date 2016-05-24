@@ -18,3 +18,8 @@
 	box-shadow: 0 0 10px gray;
 
 }
+/*	This selects all pre with a tab class in it's parent (only the pre that are embedded in the hints)	*/
+.tab>pre{
+display:inline;
+line-height:40px;
+}
