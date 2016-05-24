@@ -60,6 +60,10 @@ angular.module('its110App')
       //var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
       var className = getClassName();
       var fileName = getFileName();
+      if (fileName === '.c') {
+        $scope.output.compileOutput += 'In order to compile your program, please enter a name for your C file.\n';
+        return;
+      }
       var obj = { 'className': className,
                   'fileName': fileName,
                   'code': code, //editedCode,

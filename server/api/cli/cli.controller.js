@@ -121,7 +121,7 @@ exports.run = function(req, res) {
   // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
   exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
     function (error, stdout, stderr) {
-      if (stderr) {
+      if (error) {
         console.log('error error!!');
         console.log(process.cwd());
         console.log(stdout);
