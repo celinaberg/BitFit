@@ -87,7 +87,7 @@
 	          	
 	          	<div><strong>Hints:</strong>        				
 	              	<span ng-hide="q.hints.length" class="text-muted"><em>No hints added yet.</em></span>
-	              	<div style="white-space:pre-wrap; margin-bottom:-20px;" ng-repeat="hint in q.hints">{{$index +1}}.<div display="inline" class="tab" ng-bind-html="hint"></div>
+	              	<div style="white-space:pre-wrap;" ng-repeat="hint in q.hints">{{$index +1}}.<div class="tab" ng-bind-html="hint"></div>
 	            	</div>
 	            </div>
             
@@ -178,7 +178,7 @@
                         		Add a hint to this question
                     		</button>                    		
                     		<div class="input-group" ng-repeat="hint in questionToEdit.hints track by $index">
-					  			<textarea class="form-control" type="text" id="editHints" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="questionToEdit.hints[$index]"></textarea>
+					  			<text-angular ta-toolbar="pre" class="form-control" type="text" id="editHints" placeholder="Add hint {{$index + 1}} here." ng-model="questionToEdit.hints[$index]"></text-angular>
 						  		<span class="input-group-btn">
 						  			<button type="button" class="close" data-toggle="tooltip" data-placement="top" title="Delete this hint." ng-click="deleteHintFromExistingQ($index)">&times;</button>
 						  		</span>
@@ -284,7 +284,7 @@
 			    	<div ng-repeat="hint in newQuestion.hints track by $index">
 			        	<div class="input-group">
 						 <!-- <label for="inputHints">Hint #{{$index + 1}}:</label> -->
-						  <textarea class="form-control" type="text" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="newQuestion.hints[$index]"></textarea>
+						  <textarea class="form-control" type="text" placeholder="Add hint {{$index + 1}} here."ng-model="newQuestion.hints[$index]"></textarea>
 						  <span class="input-group-btn">
 						  	<button type="button" class="close" ng-click="deleteHintFromNewQ($index)">&times;</button>
 						  </span>
