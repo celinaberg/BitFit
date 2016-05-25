@@ -68,7 +68,8 @@ angular.module('its110App')
     		className = $scope.className;
     	}
 
-		if (endsWith(className, '.java')) {
+		// if (endsWith(className, '.java')) {
+    if (endsWith(className, '.c')) {
 			className.slice(0, -5);
 			return className.slice(0, -5);
 		} else {
@@ -84,10 +85,12 @@ angular.module('its110App')
   			className = $scope.className;
   		}
 
-  		if (endsWith(className, '.java')) {
+  		// if (endsWith(className, '.java')) {
+      if (endsWith(className, '.c')) {
   			return className;
   		} else {
-  			return className + '.java';
+  			// return className + '.java';
+        return className + '.c';
   		}
     };
 
@@ -232,7 +235,8 @@ angular.module('its110App')
 		//_session.setUndoManager(new ace.UndoManager());
 		_renderer.setShowGutter(true);
 		editor.setTheme('ace/theme/crimson_editor');
-		_session.setMode('ace/mode/java');
+		// _session.setMode('ace/mode/java');
+    _session.setMode('ace/mode/c_cpp');
     	$scope.editors[index] = editor;
 
     	$scope.questionToEdit = $scope.topic.questions[index];
@@ -259,7 +263,8 @@ angular.module('its110App')
       //_session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true);
       _editor.setTheme('ace/theme/crimson_editor');
-      _session.setMode('ace/mode/java');
+      // _session.setMode('ace/mode/java');
+      _session.setMode('ace/mode/c_cpp');
 
       //_editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start
       $scope.editor = _editor;
