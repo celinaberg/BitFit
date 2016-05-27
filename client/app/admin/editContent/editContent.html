@@ -93,7 +93,7 @@
             
             	<!-- Edit question form -->
         		<div class="editQuestionForm" ng-show="editQuestionToggle">
-                    <form ng-submit="editQ($index); editQuestionToggle=!editQuestionToggle">
+                    <form ng-submit="editQ($index); editQuestionToggle=editQuestionToggle">
                      	<div class="form-group">
                         	<label for="editQuestionInstructions">Edit question {{$index + 1}}:</label>
                         	<text-angular ng-model="questionToEdit.instructions" id="editQuestionInstructions"></text-angular>
@@ -203,7 +203,7 @@
 			    </button><br>
 					
 				<!-- Code editor and buttons -->
-				<div id="showCodeEditor" ng-show="!collapseCodeEditor">
+				<div id="showCodeEditor" ng-show="collapseCodeEditor">
 					<br>
 					<div class="row">
 						<div class="col-sm-8 vcenter">
