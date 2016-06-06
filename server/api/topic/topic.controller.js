@@ -121,8 +121,12 @@ exports.update = function(req, res) {
     console.log('in update found topic by id');
     if (err) { return handleError(res, err); }
     if(!topic) { return res.send(404); }
+    
+    topic.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
+
     var updated = _.merge(topic, req.body);
     updated.save(function (err) {
+      //console.log(updated);
       if (err) { return handleError(res, err); }
       console.log('updated topic now about to populate qs');
       topic.populate('questions', function(err, topic) {

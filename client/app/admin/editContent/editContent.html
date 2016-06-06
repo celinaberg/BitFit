@@ -178,6 +178,9 @@
               		<button type="button" ng-click="deleteQuestion(q._id, $index)" class="btn btn-danger">
              			Delete <span class="glyphicon glyphicon-trash"></span>
             		</button>
+
+            		<button ng-click="moveQDown($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
+            		<button ng-click="moveQUp($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span></button>
               	</span>
 
               	<!-- Question Instructions, starter code, hints etc -->

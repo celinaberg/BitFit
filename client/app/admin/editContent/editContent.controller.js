@@ -328,6 +328,23 @@ angular.module('its110App')
   		socket.unsyncUpdates('question');
     });
 
+    /// trying question reordering http://stackoverflow.com/a/27709541
+    $scope.moveQUp = function(index) {
+      if(index > -1 && index < $scope.topic.questions.length - 1) {
+        var tmp = $scope.topic.questions[index+1];
+        $scope.topic.questions[index+1] = $scope.topic.questions[index];
+        $scope.topic.questions[index] = tmp;
+      }
+      $scope.editTopic();
+    }
+    $scope.moveQDown = function(index) {
+      if(index > 0 && index < $scope.topic.questions.length) {
+        var tmp = $scope.topic.questions[index-1];
+        $scope.topic.questions[index-1] = $scope.topic.questions[index];
+        $scope.topic.questions[index] = tmp;
+      }
+      $scope.editTopic();
+    }
 
 
   });
