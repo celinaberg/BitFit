@@ -10,7 +10,8 @@
         <li><strong>Click a Topic to Edit:</strong></li>
         <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
         <!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
-          <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a>
+          <!-- <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a> -->
+          <a ng-href="admin/editContent/{{topic.title}}">{{topic.title}}</a>
         <!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
         </li>
       </ul>  
@@ -42,7 +43,8 @@
 
 
       <h2>Manage Users</h2>
-       <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
+       <!--<p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>-->
+       <p>Only Admin users can delete users and view a complete list of all users.</p>
 
     <!--  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showUsers">Show/Hide All Users</button><br \>-->
       <button type="button" class="btn btn-info" ng-model="collapseUsers" ng-click="collapseUsers=!collapseUsers" data-target="#showUsers">Show/Hide All Users</button><br>

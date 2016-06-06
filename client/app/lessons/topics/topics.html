@@ -6,8 +6,9 @@
 		<!-- sidebar content -->
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
-				<li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic._id)}">
-					<a ng-href="lessons/topics/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a> 
+				<li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic.title)}">
+					<!-- <a ng-href="lessons/topics/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a>  -->
+					<a ng-href="lessons/topics/{{topic.title}}" ng-click="topicNav()">{{topic.title}}</a> 
 				</li>
 			</ul>
 

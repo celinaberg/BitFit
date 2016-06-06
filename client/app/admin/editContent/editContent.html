@@ -10,7 +10,8 @@
         <li><strong>Click a Topic to Edit:</strong></li>
         <li ng-repeat="t in topicsEC" ng-class="{active: isActive(t._id)}">
         	<!--<a ng-show="ng-class=active"-->
-        	<a ng-href="admin/editContent/{{t._id}}">{{t.title}}</a> 
+        	<!-- <a ng-href="admin/editContent/{{t._id}}">{{t.title}}</a>  -->
+        	<a ng-href="admin/editContent/{{t.title}}">{{t.title}}</a> 
         </li>
       </ul>  
     </div>
@@ -22,7 +23,7 @@
 		<a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle">
 	  		<span style="font-size: 10pt" class="glyphicon glyphicon-pencil pull-right">Edit</span>
 		</a>
-		<h2 ng-hide="editTitle" class="page-header">{{topic.title}}</h2>
+		<h2 ng-hide="editTitle" class="page-header">{{topic.title}} <small>{{topic.questions.length}} questions</small></h2>
 		<div ng-show="editTitle">
             <form class="form-inline" ng-submit="editTopic(); editTitle=!editTitle">
           		<div class="form-group">
@@ -51,6 +52,114 @@
 			</form>
 		</div>
 		<hr>
+
+		
+              
+		<!-- Add new question form -->
+		<div class="addQuestionForm">
+			<h4>Add a new question to topic <strong>{{topic.title}}</strong></h4>
+			<form ng-submit="addQuestion()">
+			    <div class="form-group">
+			        <label for="inputQuestion">Question Instructions</label>
+			        <text-angular ng-model="newQuestion.instructions" placeholder="Add question instructions here"></text-angular>
+			    </div>
+			    <button type="button" class="btn btn-success" ng-model="collapseCodeEditor" ng-click="focusEditor(); collapseCodeEditor=!collapseCodeEditor" data-target="#showCodeEditor">Show/Hide Starter Code Editor
+			    </button><br>
+					
+				<!-- Code editor and buttons -->
+				<div id="showCodeEditor" ng-show="collapseCodeEditor">
+					<br>
+					<div class="row">
+						<div class="col-sm-8 vcenter">
+							<label for="inputCode">
+								Add Starter Code [optional]
+			            	</label>
+			            	<p>[Any code you enter here will appear in the student's code editor for this question]</p>
+							<div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }"></div>
+						</div><!--
+				    	--><div class="col-sm-4 vcenter">
+				    			<label for="javaFile">
+				    				<!--Please enter the name of your Java file (must match the class name in your code!):-->
+				    				Please enter the name of your C file:
+				    			</label>
+				    			<div class="input-group">
+				  					<input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="className">
+				  						<span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
+								</div>
+				    		<hr>
+							<div class="btn-group-vertical ace_lessons" role="group">
+								<button type="button" class="btn btn-warning" ng-click="compileCode(-1)">
+									<span class="glyphicon glyphicon-flash"></span> Compile Code
+								</button> 
+
+								<button type="button" class="btn btn-success" ng-click="runCode(-1)">
+					        		<span class="glyphicon glyphicon-play"></span> Run Code
+					    		</button>
+				    		</div>
+				    		<hr>
+							<div class="btn-group-vertical ace_lessons" role="group">
+								<div class="checkbox">
+								    <label>
+								      <input type="checkbox" ng-model="newQuestion.readOnly" ng-click="toggleReadOnly(-1)"> Check here to make code read-only
+								    </label>
+							  	</div>
+								<!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
+									Check My Answer <span class="glyphicon glyphicon-send"></span>
+								</button> -->
+							</div>
+						</div>
+					</div>
+					
+					<!-- Command line output divs -->
+				    <div class="row">
+				    	<hr>
+				    	<div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
+				    		<h4>{{ feedback }}
+				    		<button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
+				    	</div>
+				        <div class="col-sm-6">	    		
+				    		<div id="commandLineOutput" class="command_line_output_s compile">
+				        		<h4 class="tab"> Compile Output:</h4>
+				        		<pre class="output">{{ compileOutput }}</pre>
+				    		</div>
+				        </div>
+				        <div class="col-sm-6">	    
+				   			<div id="commandLineOutput" class="command_line_output_s run">
+				        		<h4 class="tab"> Run Output:</h4>
+				        		<pre class="output">{{ runOutput }}</pre>
+				    		</div>	        
+				        </div>
+				    </div>
+				</div>
+		    	<hr>
+
+		    	<!-- Add new Q Expected Output box -->
+		    	<div class="form-group">
+					<label for="expectedOutputBox">Code's Output</label>
+					<p>[Leave this blank if you are providing the code and would like students to guess the output]</p>
+					<p>[If you are asking students to write code, fill in the output you wish their code to produce]</p>
+					<textarea class="form-control" rows="1" id="expectedOutputBox" ng-model="newQuestion.expectedOutput"></textarea>
+				</div>
+		    	<hr>
+			    
+			    <!-- Add new Q Hints Form -->
+			    <div class="form-group">
+			        <button type="button" class="btn btn-success" ng-click="addHintToNewQ()">
+			        	Add a hint to this question
+			    	</button>                    		
+			    	<div ng-repeat="hint in newQuestion.hints track by $index">
+			        	<div class="input-group">
+						 <!-- <label for="inputHints">Hint #{{$index + 1}}:</label> -->
+						  <textarea class="form-control" type="text" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="newQuestion.hints[$index]"></textarea>
+						  <span class="input-group-btn">
+						  	<button type="button" class="close" ng-click="deleteHintFromNewQ($index)">&times;</button>
+						  </span>
+						</div>
+					</div>
+			    </div>
+			    <button type="submit" class="btn btn-primary">Add Question</button>
+			</form>
+		</div>
 
 		<!-- List of current questions -->
         <h4>Questions:</h4><br>     
@@ -169,7 +278,7 @@
 							<label for="editExpectedOutputBox">Code's Output</label>
 							<p>[Leave this blank if you are providing the code and would like students to guess the output]</p>
 							<p>[If you are asking students to write code, fill in the output you wish their code to produce]</p>
-							<textarea class="form-control" rows="3" id="editExpectedOutputBox" ng-model="questionToEdit.expectedOutput"></textarea>
+							<textarea class="form-control" rows="1" id="editExpectedOutputBox" ng-model="questionToEdit.expectedOutput"></textarea>
 						</div>
 	                	<hr>
 
@@ -190,112 +299,6 @@
          		</div> <!-- end edit question div -->
         	</li> <!-- end individual question listings -->
     	</ul> 
-              
-		<!-- Add new question form -->
-		<div class="addQuestionForm">
-			<h4>Add a new question to topic <strong>{{topic.title}}</strong></h4>
-			<form ng-submit="addQuestion()">
-			    <div class="form-group">
-			        <label for="inputQuestion">Question Instructions</label>
-			        <text-angular ng-model="newQuestion.instructions" placeholder="Add question instructions here"></text-angular>
-			    </div>
-			    <button type="button" class="btn btn-success" ng-model="collapseCodeEditor" ng-click="focusEditor(); collapseCodeEditor=!collapseCodeEditor" data-target="#showCodeEditor">Show/Hide Starter Code Editor
-			    </button><br>
-					
-				<!-- Code editor and buttons -->
-				<div id="showCodeEditor" ng-show="collapseCodeEditor">
-					<br>
-					<div class="row">
-						<div class="col-sm-8 vcenter">
-							<label for="inputCode">
-								Add Starter Code [optional]
-			            	</label>
-			            	<p>[Any code you enter here will appear in the student's code editor for this question]</p>
-							<div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }"></div>
-						</div><!--
-				    	--><div class="col-sm-4 vcenter">
-				    			<label for="javaFile">
-				    				<!--Please enter the name of your Java file (must match the class name in your code!):-->
-				    				Please enter the name of your C file:
-				    			</label>
-				    			<div class="input-group">
-				  					<input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="className">
-				  						<span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
-								</div>
-				    		<hr>
-							<div class="btn-group-vertical ace_lessons" role="group">
-								<button type="button" class="btn btn-warning" ng-click="compileCode(-1)">
-									<span class="glyphicon glyphicon-flash"></span> Compile Code
-								</button> 
-
-								<button type="button" class="btn btn-success" ng-click="runCode(-1)">
-					        		<span class="glyphicon glyphicon-play"></span> Run Code
-					    		</button>
-				    		</div>
-				    		<hr>
-							<div class="btn-group-vertical ace_lessons" role="group">
-								<div class="checkbox">
-								    <label>
-								      <input type="checkbox" ng-model="newQuestion.readOnly" ng-click="toggleReadOnly(-1)"> Check here to make code read-only
-								    </label>
-							  	</div>
-								<!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-									Check My Answer <span class="glyphicon glyphicon-send"></span>
-								</button> -->
-							</div>
-						</div>
-					</div>
-					
-					<!-- Command line output divs -->
-				    <div class="row">
-				    	<hr>
-				    	<div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
-				    		<h4>{{ feedback }}
-				    		<button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
-				    	</div>
-				        <div class="col-sm-6">	    		
-				    		<div id="commandLineOutput" class="command_line_output_s compile">
-				        		<h4 class="tab"> Compile Output:</h4>
-				        		<pre class="output">{{ compileOutput }}</pre>
-				    		</div>
-				        </div>
-				        <div class="col-sm-6">	    
-				   			<div id="commandLineOutput" class="command_line_output_s run">
-				        		<h4 class="tab"> Run Output:</h4>
-				        		<pre class="output">{{ runOutput }}</pre>
-				    		</div>	        
-				        </div>
-				    </div>
-				</div>
-		    	<hr>
-
-		    	<!-- Add new Q Expected Output box -->
-		    	<div class="form-group">
-					<label for="expectedOutputBox">Code's Output</label>
-					<p>[Leave this blank if you are providing the code and would like students to guess the output]</p>
-					<p>[If you are asking students to write code, fill in the output you wish their code to produce]</p>
-					<textarea class="form-control" rows="3" id="expectedOutputBox" ng-model="newQuestion.expectedOutput"></textarea>
-				</div>
-		    	<hr>
-			    
-			    <!-- Add new Q Hints Form -->
-			    <div class="form-group">
-			        <button type="button" class="btn btn-success" ng-click="addHintToNewQ()">
-			        	Add a hint to this question
-			    	</button>                    		
-			    	<div ng-repeat="hint in newQuestion.hints track by $index">
-			        	<div class="input-group">
-						 <!-- <label for="inputHints">Hint #{{$index + 1}}:</label> -->
-						  <textarea class="form-control" type="text" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="newQuestion.hints[$index]"></textarea>
-						  <span class="input-group-btn">
-						  	<button type="button" class="close" ng-click="deleteHintFromNewQ($index)">&times;</button>
-						  </span>
-						</div>
-					</div>
-			    </div>
-			    <button type="submit" class="btn btn-primary">Add Question</button>
-			</form>
-		</div>
    
 
       <hr>
