@@ -6,10 +6,17 @@ angular.module('its110App')
 	  $scope.topicsTC = topicPromiseTC.data;
 	  $scope.tab = 1;
   	
-    $scope.qInfo = {
-      currentQuestion: 1,
-      totalQuestions: $scope.topic.questions.length*10
-    };
+    if($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
+      $scope.qInfo = {
+       currentQuestion: $location.search().q,
+       totalQuestions: $scope.topic.questions.length*10
+      };
+    } else {
+      $scope.qInfo = {
+        currentQuestion: 1,
+        totalQuestions: $scope.topic.questions.length*10
+      };
+    }
     
   	$scope.status = [];
     $scope.noMoreHints = 'Sorry, there are no more hints for this question';
@@ -207,6 +214,8 @@ angular.module('its110App')
       logging.progress.topic = $scope.topic._id;
       logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id;
       logging.progress.startTime = Date.now();
+
+      $location.search('q', $scope.qInfo.currentQuestion);
     };
 
    	// $scope.nextQuestion = function() {

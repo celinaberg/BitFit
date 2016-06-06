@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 
 
 var TopicSchema = new Schema({
-  title: String,
+  //title: String,
+  title: { type: String, unique: true, required: true },
   background: String,
   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }]
 });

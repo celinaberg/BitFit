@@ -81,7 +81,8 @@ angular.module('its110App')
     };
 
     $scope.isActive = function(route) {
-      return route === $location.path();
+      // ???
+      return '/lessons/topics/' + route === $location.path();
     };
   }
 );

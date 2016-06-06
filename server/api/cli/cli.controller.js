@@ -7,6 +7,7 @@ var execFile = require('child_process').execFile;
 var jsesc = require('jsesc');
 // consider using execFile instead of exec:
 // https://blog.liftsecurity.io/2014/08/19/Avoid-Command-Injection-Node.js?utm_source=ourjs.com
+var prompt = require('prompt');
 
 // Get list of clis
 exports.index = function(req, res) {
@@ -119,7 +120,27 @@ exports.run = function(req, res) {
   var cmd = dirName + '/a.out';
   // exec('java -cp "'+ dirName + '" ' + req.body.className, {timeout: 10000}, // Process will time out if running for > 10 seconds.
   // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
-  exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  //   function (error, stdout, stderr) {
+  //     if (error) {
+  //       console.log('error error!!');
+  //       console.log(process.cwd());
+  //       console.log(stdout);
+  //       console.log(error);
+  //       console.log(error.killed);
+  //       console.log(error.signal);
+  //       console.error(stderr); 
+  //       return res.send(200, error);
+  //     } else {
+  //       console.log(stdout);
+  //       if (error !== null) {
+  //         console.log('exec error: ' + error);
+  //       }
+  //       console.log(' '+ req.body.className + ' ran.');
+  //       return res.send(200, stdout);
+  //     }
+  //   });
+  var cp = exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
     function (error, stdout, stderr) {
       if (error) {
         console.log('error error!!');
@@ -139,7 +160,9 @@ exports.run = function(req, res) {
         return res.send(200, stdout);
       }
     });
+  
 
+    cp.stdin.end('50');
    
 }
 

@@ -268,7 +268,7 @@ angular.module('its110App')
 
       //_editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start
       $scope.editor = _editor;
-      _editor.focus();
+      //_editor.focus();
 
       console.log('aceloaded func');
       console.log($scope.editor);
