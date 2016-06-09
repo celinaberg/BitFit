@@ -6,6 +6,7 @@
     <!-- sidebar content -->
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
+        <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
       	<li><a ng-href="/admin">Add a Topic</a></li>
         <li><strong>Click a Topic to Edit:</strong></li>
         <li ng-repeat="t in topicsEC" ng-class="{active: isActive(t._id)}">
@@ -54,9 +55,11 @@
 		<hr>
 
 		
-              
+        <button class="btn btn-primary" ng-click="addQ=!addQ">
+	  		<span class="glyphicon glyphicon-plus"></span> Add question
+		</button>
 		<!-- Add new question form -->
-		<div class="addQuestionForm">
+		<div class="addQuestionForm" ng-show="addQ">
 			<h4>Add a new question to topic <strong>{{topic.title}}</strong></h4>
 			<form ng-submit="addQuestion()">
 			    <div class="form-group">
@@ -166,21 +169,24 @@
         <div ng-hide="topic.questions.length">
         	<span class="text-muted"><em>No questions added yet.</em></span>
         </div>
+        <div class="btn-group-vertical" ng-show="topic.questions.length">
+        	<button type="button" class="btn btn-primary" ng-click="editTopic()">Save Question Order</button>
+        </div>
         <ul class="list-group">
       		<li class="list-group-item" ng-repeat="q in topic.questions">
                 <strong>Question {{$index + 1}}:</strong>
                 
                 <!-- Edit Question/Delete Question Buttons -->
                 <span class="pull-right">
-              		<button type="button" class="btn btn-warning" ng-click="editQuestionToggle=!editQuestionToggle; populateEditQForm($index)" class="editQuestion">
+
+            		<button ng-hide="$index == 0" ng-click="moveQDown($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
+            		<button ng-hide="$index == topic.questions.length - 1" ng-click="moveQUp($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span></button>
+              		<button type="button" class="btn btn-info" ng-click="editQuestionToggle=!editQuestionToggle; populateEditQForm($index)" class="editQuestion">
               			Edit <span class="glyphicon glyphicon-pencil"></span>
               		</button>
-              		<button type="button" ng-click="deleteQuestion(q._id, $index)" class="btn btn-danger">
-             			Delete <span class="glyphicon glyphicon-trash"></span>
+              		<button type="button" ng-click="deleteQuestion(q._id, $index)" class="btn btn-warning">
+             			Remove from topic <span class="glyphicon glyphicon-remove"></span>
             		</button>
-
-            		<button ng-click="moveQDown($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
-            		<button ng-click="moveQUp($index)" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span></button>
               	</span>
 
               	<!-- Question Instructions, starter code, hints etc -->
@@ -205,7 +211,7 @@
             
             	<!-- Edit question form -->
         		<div class="editQuestionForm" ng-show="editQuestionToggle">
-                    <form ng-submit="editQ($index); editQuestionToggle=editQuestionToggle">
+                    <form ng-submit="editQ($index); editQuestionToggle=!editQuestionToggle">
                      	<div class="form-group">
                         	<label for="editQuestionInstructions">Edit question {{$index + 1}}:</label>
                         	<text-angular ng-model="questionToEdit.instructions" id="editQuestionInstructions"></text-angular>

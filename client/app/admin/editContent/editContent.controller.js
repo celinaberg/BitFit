@@ -335,7 +335,7 @@ angular.module('its110App')
         $scope.topic.questions[index+1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
-      $scope.editTopic();
+      //$scope.editTopic();
     }
     $scope.moveQDown = function(index) {
       if(index > 0 && index < $scope.topic.questions.length) {
@@ -343,7 +343,7 @@ angular.module('its110App')
         $scope.topic.questions[index-1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
-      $scope.editTopic();
+      //$scope.editTopic();
     }
 
 

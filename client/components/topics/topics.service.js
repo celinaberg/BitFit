@@ -57,7 +57,7 @@ angular.module('its110App')
             console.log(data);
           //})
         });
-        $http.delete('/api/questions/' + question._id); // is this correct? FIXME
+        //$http.delete('/api/questions/' + question._id); // is this correct? FIXME
       },
 
       editTopic: function(id, topic) {

@@ -10,7 +10,7 @@ exports.addQuestion = function(req, res) {
   console.log(req.body);
   req.body.topic = req.params.id; // is this necessary?
 
-  var question = new Question(req.body); // express's body parser middleware populates body for me
+   // express's body parser middleware populates body for me
  
   /*var query = Topic.findById(req.params.id);
 
@@ -24,26 +24,45 @@ exports.addQuestion = function(req, res) {
   });
 */
 
-
-  console.log(question.topic);
   //question.topic = req.topic; // this is the problem line cuz there's no topic
 
-  question.save(function(err, question) {
+  // if question already exists, only add it to topic
+  Question.findById(req.body._id, function (err, question) {
     if (err) {return handleError(res, err); }
-    console.log('in save question success func');
-    Topic.findById(req.params.id, function (err, topic) {
-      if(err) { return handleError(res, err); }
-      if(!topic) { return res.send(404); }
-      
-      topic.questions.push(question);
-      
-      topic.save(function(err, topic) {
-        if (err) { return handleError(err); }
-          return res.json(question);
+    if(question) {
+      Topic.findById(req.params.id, function (err, topic) {
+        if(err) { return handleError(res, err); }
+        if(!topic) { return res.send(404); }
+        
+        topic.questions.push(question);
+        
+        topic.save(function(err, topic) {
+          if (err) { return handleError(err); }
+            return res.json(question);
+        });
+        
       });
-      
-    });
+    } else { // if not, create the new question
+      var question = new Question(req.body);
+      question.save(function(err, question) {
+        if (err) {return handleError(res, err); }
+        console.log('in save question success func');
+        Topic.findById(req.params.id, function (err, topic) {
+          if(err) { return handleError(res, err); }
+          if(!topic) { return res.send(404); }
+          
+          topic.questions.push(question);
+          
+          topic.save(function(err, topic) {
+            if (err) { return handleError(err); }
+              return res.json(question);
+          });
+          
+        });
+      });
+    }
   });
+  
 };
 
 exports.deleteQuestion = function(req, res) {
