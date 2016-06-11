@@ -23,3 +23,14 @@
 	margin-top:10px;
 	margin-bottom:-10px;
 }/**/
+
+.small-q {
+	height:60px;
+	overflow:hidden;
+
+}
+
+.question-item {
+	margin:-1px;
+	border-radius:0 !important;
+}

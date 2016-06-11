@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location) {
+  .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, Flash) {
     $scope.topic = topic.data; 
     $scope.topicsEC = topicPromiseEC.data;
     
@@ -164,7 +164,9 @@ angular.module('its110App')
         	if (ea._id === data._id) {
         		angular.copy(data, ea);
         	}
-        });        
+        });  
+        var message = "Topic successfully updated!";
+        Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);      
       });
     };
 
@@ -292,6 +294,8 @@ angular.module('its110App')
         	hints: $scope.newQuestion.hints
   		}).success(function(question) {
         	$scope.topic.questions.push(question);
+          var message = "Question successfully added!";
+          Flash.create('success', message, 5000, {class: 'custom-class', id: 'custom-id'}, true);  
       	});
       
   		$scope.newQuestion = {};

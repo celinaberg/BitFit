@@ -23,3 +23,9 @@
 	margin-top:10px;
 	margin-bottom:-10px;
 }/**/
+
+.flash {
+	position:fixed;
+	width:50%;
+	z-index:4;
+}

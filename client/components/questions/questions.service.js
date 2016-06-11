@@ -49,16 +49,16 @@ angular.module('its110App')
       //   });
       // },
 
-      // // must delete question, and delete reference to it in question
-      // deleteQuestion: function(question, questionID) {
-      //   $http.post('/api/questions/' + questionID + '/delquestion', question).success(function(data) {
-      //     //o.questions.forEach(function(ea) {
-      //       console.log('successfully deleted q from question');
-      //       console.log(data);
-      //     //})
-      //   });
-      //   $http.delete('/api/questions/' + question._id); // is this correct? FIXME
-      // },
+      // must delete question, and delete reference to it in question
+      delete: function(question, questionID) {
+        // $http.post('/api/questions/' + questionID + '/delquestion', question).success(function(data) {
+        //   //o.questions.forEach(function(ea) {
+        //     console.log('successfully deleted q from question');
+        //     console.log(data);
+        //   //})
+        // });
+        $http.delete('/api/questions/' + question._id); // is this correct? FIXME
+      },
 
       // editquestion: function(id, question) {
       //   question.questions.forEach(function(ea, i) {

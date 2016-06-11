@@ -4,11 +4,12 @@ angular.module('its110App', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
+  'ngFlash',
   'btford.socket-io',
   'textAngular',
   'ui.router',
   'ui.ace',
-  'ui.bootstrap.pagination',
+  'ui.bootstrap',
   'googlechart'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

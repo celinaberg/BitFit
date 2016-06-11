@@ -1,3 +1,4 @@
+
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
@@ -19,7 +20,7 @@
 
     <!-- main content -->
     <div class="col-xs-12 col-sm-10 col-sm-offset-3 col-mid-10 col-lg-offset-2 main">
-
+    	<flash-message></flash-message>
         <!-- Topic title and edit title form -->
 		<a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle">
 	  		<span style="font-size: 10pt" class="glyphicon glyphicon-pencil pull-right">Edit</span>
@@ -55,7 +56,7 @@
 		<hr>
 
 		
-        <button class="btn btn-primary" ng-click="addQ=!addQ">
+        <button class="btn btn-success" ng-click="addQ=!addQ">
 	  		<span class="glyphicon glyphicon-plus"></span> Add question
 		</button>
 		<!-- Add new question form -->
@@ -191,6 +192,10 @@
 
               	<!-- Question Instructions, starter code, hints etc -->
               	<div class="tab" ng-bind-html="q.instructions"></div>
+              	<button type="button" class="btn btn-link" ng-click="readMore=!readMore">
+              			See All
+              	</button>
+              	<div ng-show="readMore">
 	          	<div>
 	              	<strong>Starter Code: </strong><br /><pre><span ng-bind-html="q.code"></span>	<br /></pre>
 	              	<strong>Code is read-only?</strong> {{q.readOnly}}&nbsp&nbsp&nbsp&nbsp
@@ -207,6 +212,7 @@
 	              	<span ng-hide="q.hints.length" class="text-muted"><em>No hints added yet.</em></span>
 	              	<div style="white-space:pre-wrap; margin-bottom:-20px;" ng-repeat="hint in q.hints">{{$index +1}}.<div display="inline" class="tab" ng-bind-html="hint"></div>
 	            	</div>
+	            </div>
 	            </div>
             
             	<!-- Edit question form -->

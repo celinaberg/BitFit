@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('AllQuestionsCtrl', function ($scope, $http, Auth, User, socket, topics, questionPromiseEC, topicPromiseEC, $location) {
+  .controller('AllQuestionsCtrl', function ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data;
     $scope.topicsEC = topicPromiseEC.data;
     
@@ -21,7 +21,6 @@ angular.module('its110App')
     $scope.feedback = '';
     $scope.className = '';
     $scope.readOnlyChecked = false;
-
     /**
       * Toggles the read only value of the starter code for this question.
       * @param {number} index the index of the code editor for this question.
@@ -292,7 +291,7 @@ angular.module('its110App')
     $scope.addQuestion = function() {
       if($scope.newQuestion.instructions === '') { return; }
       
-      topics.addQuestion($scope.topic._id, {
+      questions.create({
           instructions: $scope.newQuestion.instructions,
           code: $scope.newQuestion.code,
           className: getClassName(false),
@@ -300,7 +299,7 @@ angular.module('its110App')
           expectedOutput: $scope.newQuestion.expectedOutput,
           hints: $scope.newQuestion.hints
       }).success(function(question) {
-          $scope.topic.questions.push(question);
+          $scope.questions.push(question);
         });
       
       $scope.newQuestion = {};
@@ -319,38 +318,48 @@ angular.module('its110App')
 
 
 
-    $scope.deleteQuestion = function(id, index) {
+    $scope.deleteQuestion = function(index) {
       //console.log(index);
       //console.log($scope.topic.questions);
-      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id);//.success(function(question) {
+      var conf = confirm("Are you sure you want to permanantly delete that question?");
+      if (conf == true) {
+        questions.delete($scope.questions[index], $scope.questions[index]._id);//.success(function(question) {
         // why does this success function not get called?
         //console.log('successfully deleted question: ' + question);
-      //});
-      console.log('deleted q in edit content controller now');
-      //$scope.topic.questions[index].splice(index, 1); 
-      $scope.topic.questions.splice(index, 1);
+        //});
+        console.log('deleted q in edit content controller now');
+        //$scope.topic.questions[index].splice(index, 1); 
+        $scope.questions.splice(index, 1);
+      } 
+      
 
       //$http.delete('/api/questions/' + id);
     };
 
     $scope.changeQTopic = function(question, index, newTopic) {
       // if no new topic, remove from current topic
-      if(newTopic === "" && $scope.getQTopic(question._id)) {
-        topics.deleteQuestion(question, $scope.getQTopic(question._id));
-      }
-      if($scope.getQTopic(question._id)) {
+      if(newTopic === null) {
+        if($scope.getQTopic(question._id)) {
+          topics.deleteQuestion(question, $scope.getQTopic(question._id)._id);
+        }
+
+        var message = "The question has been removed from its topic.";
+        Flash.create('info', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
+      } else if($scope.getQTopic(question._id)) {
         // if has current topic, remove from current topic
         topics.deleteQuestion(question, $scope.getQTopic(question._id)._id);
         console.log('deleted q from old topic');
         $scope.getQTopic(question._id).questions.splice(index, 1);
       }
-      if(newTopic !== "") {
+      if(newTopic !== null) {
         // add to new topic
         topics.addQuestion(newTopic._id, question).success(function(question) {
           newTopic.questions.push(question);
           console.log('added q to new topic');
+          var message = "You have successfully changed the question's topic!";
+          Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
         });
-      }
+      } 
     };
 
     $scope.$on('$destroy', function () {

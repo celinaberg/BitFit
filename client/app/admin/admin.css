@@ -22,3 +22,9 @@
 	background: #C7DDC7;
 	border: 1px solid #CACACA;
 }
+
+.flash {
+	position:fixed;
+	width:50%;
+	z-index:4;
+}
