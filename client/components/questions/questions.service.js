@@ -35,19 +35,19 @@ angular.module('its110App')
       //   // FIXME: add question to o object here explicitly??
       // },
 
-      // editQuestion: function(id, question) {
-      //   return $http.put('/api/questions/' + id, question).success(function(data) {
-      //     o.questions.forEach(function(ea) {
-      //       if (ea._id === data.question) {
-      //         ea.questions.forEach(function(q) {
-      //           if (q._id === data._id) {
-      //             q = data;
-      //           }
-      //         });
-      //       }
-      //     });   
-      //   });
-      // },
+      editQuestion: function(id, question) {
+        return $http.put('/api/questions/' + id, question).success(function(data) {
+          o.questions.forEach(function(ea) {
+            if (ea._id === data.question) {
+              ea.questions.forEach(function(q) {
+                if (q._id === data._id) {
+                  q = data;
+                }
+              });
+            }
+          });   
+        });
+      },
 
       // must delete question, and delete reference to it in question
       delete: function(question, questionID) {

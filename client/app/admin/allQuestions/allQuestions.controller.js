@@ -21,6 +21,7 @@ angular.module('its110App')
     $scope.feedback = '';
     $scope.className = '';
     $scope.readOnlyChecked = false;
+    $scope.editQuestionToggle = false;
     /**
       * Toggles the read only value of the starter code for this question.
       * @param {number} index the index of the code editor for this question.
@@ -238,7 +239,7 @@ angular.module('its110App')
     _session.setMode('ace/mode/c_cpp');
       $scope.editors[index] = editor;
 
-      $scope.questionToEdit = $scope.topic.questions[index];
+      $scope.questionToEdit = $scope.questions[index];
       $scope.editors[index].setValue($scope.questionToEdit.code);
       $scope.compileOutput = '';
       $scope.runOutput = '';
@@ -290,14 +291,14 @@ angular.module('its110App')
 
     $scope.addQuestion = function() {
       if($scope.newQuestion.instructions === '') { return; }
-      
       questions.create({
           instructions: $scope.newQuestion.instructions,
           code: $scope.newQuestion.code,
           className: getClassName(false),
           readOnly: $scope.newQuestion.readOnly,
           expectedOutput: $scope.newQuestion.expectedOutput,
-          hints: $scope.newQuestion.hints
+          hints: $scope.newQuestion.hints,
+          tags: $scope.newQuestion.tags
       }).success(function(question) {
           $scope.questions.push(question);
         });
@@ -309,7 +310,7 @@ angular.module('its110App')
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function(questionIndex) {
     $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-    topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function() {
+    questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function() {
           // update scope array of questions?
           $scope.questionToEdit = {};
           $scope.questionToEdit.hints = [];

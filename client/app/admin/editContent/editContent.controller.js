@@ -284,14 +284,14 @@ angular.module('its110App')
 
     $scope.addQuestion = function() {
   		if($scope.newQuestion.instructions === '') { return; }
-      
   		topics.addQuestion($scope.topic._id, {
         	instructions: $scope.newQuestion.instructions,
         	code: $scope.newQuestion.code,
         	className: getClassName(false),
         	readOnly: $scope.newQuestion.readOnly,
         	expectedOutput: $scope.newQuestion.expectedOutput,
-        	hints: $scope.newQuestion.hints
+        	hints: $scope.newQuestion.hints,
+          tags: $scope.newQuestion.tags
   		}).success(function(question) {
         	$scope.topic.questions.push(question);
           var message = "Question successfully added!";

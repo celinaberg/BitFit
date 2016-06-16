@@ -7,7 +7,6 @@ var execFile = require('child_process').execFile;
 var jsesc = require('jsesc');
 // consider using execFile instead of exec:
 // https://blog.liftsecurity.io/2014/08/19/Avoid-Command-Injection-Node.js?utm_source=ourjs.com
-var prompt = require('prompt');
 
 // Get list of clis
 exports.index = function(req, res) {
@@ -117,7 +116,9 @@ exports.run = function(req, res) {
   dirName += dateTime.getMonth();
   dirName += dateTime.getDate();
   dirName += dateTime.getFullYear();
-  var cmd = dirName + '/a.out';
+  // var cmd = dirName + '/a.out';
+  var execFile = req.body.fileName.replace(".c", "");
+  var cmd = '"' + dirName + '/' + execFile + '"';
   // exec('java -cp "'+ dirName + '" ' + req.body.className, {timeout: 10000}, // Process will time out if running for > 10 seconds.
   // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
   // exec(cmd, {timeout: 10000}, // Process will time out if running for > 10 seconds.
@@ -162,15 +163,17 @@ exports.run = function(req, res) {
     });
   
 
-    cp.stdin.end('50');
+    //cp.stdin.end('50');
    
 }
 
 
 function compileJavaFile(srcFile, dirName, res) {
+  var execFile = srcFile.replace(".c", "");
   // exec is asynchronous
   // exec('javac "'+ srcFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
-  exec('gcc "'+ srcFile + '" -o "' + dirName + '/a.out"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  exec('gcc "'+ srcFile + '" -o "' + execFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
+  // exec('gcc "'+ srcFile + '" -o "' + dirName + '/a.out"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
   // exec('gcc "'+ srcFile + '"', {timeout: 10000}, // Process will time out if running for > 10 seconds.
     function (error, stdout, stderr) {
       if (error) {

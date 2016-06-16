@@ -1,7 +1,7 @@
 .ace_editor {
 	margin: auto; 
 	height: 400px;
-	width: 600px;
+	width: 100%;
 }
 
 .tab { margin-left: 10px; }
@@ -33,4 +33,9 @@
 .question-item {
 	margin:-1px;
 	border-radius:0 !important;
+}
+
+.search-input {
+	margin:10px;
+	
 }

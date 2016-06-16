@@ -10,6 +10,7 @@ angular.module('its110App', [
   'ui.router',
   'ui.ace',
   'ui.bootstrap',
+  'ngTagsInput',
   'googlechart'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

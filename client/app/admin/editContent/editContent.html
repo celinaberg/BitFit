@@ -25,7 +25,13 @@
 		<a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle">
 	  		<span style="font-size: 10pt" class="glyphicon glyphicon-pencil pull-right">Edit</span>
 		</a>
-		<h2 ng-hide="editTitle" class="page-header">{{topic.title}} <small>{{topic.questions.length}} questions</small></h2>
+		<h2 ng-hide="editTitle" class="page-header">{{topic.title}} <small>{{topic.questions.length}} questions</small>
+
+		
+        <button class="btn btn-success" ng-click="addQ=!addQ">
+	  		<span class="glyphicon glyphicon-plus"></span> Add question
+		</button>
+		</h2>
 		<div ng-show="editTitle">
             <form class="form-inline" ng-submit="editTopic(); editTitle=!editTitle">
           		<div class="form-group">
@@ -55,10 +61,6 @@
 		</div>
 		<hr>
 
-		
-        <button class="btn btn-success" ng-click="addQ=!addQ">
-	  		<span class="glyphicon glyphicon-plus"></span> Add question
-		</button>
 		<!-- Add new question form -->
 		<div class="addQuestionForm" ng-show="addQ">
 			<h4>Add a new question to topic <strong>{{topic.title}}</strong></h4>
@@ -66,6 +68,10 @@
 			    <div class="form-group">
 			        <label for="inputQuestion">Question Instructions</label>
 			        <text-angular ng-model="newQuestion.instructions" placeholder="Add question instructions here"></text-angular>
+			    </div>
+			    <div class="form-group">
+			        <label for="tags">Tags</label>
+			        <input class="form-control" type='text' ng-model="newQuestion.tags" placeholder="Add tags">
 			    </div>
 			    <button type="button" class="btn btn-success" ng-model="collapseCodeEditor" ng-click="focusEditor(); collapseCodeEditor=!collapseCodeEditor" data-target="#showCodeEditor">Show/Hide Starter Code Editor
 			    </button><br>
@@ -196,6 +202,11 @@
               			See All
               	</button>
               	<div ng-show="readMore">
+              	<hr>
+	    			<b>Tags: </b>
+	    			<span>{{q.tags}}</span>
+	    			<span ng-hide="q.tags" class="text-muted">No tags</span>
+	    			<hr>
 	          	<div>
 	              	<strong>Starter Code: </strong><br /><pre><span ng-bind-html="q.code"></span>	<br /></pre>
 	              	<strong>Code is read-only?</strong> {{q.readOnly}}&nbsp&nbsp&nbsp&nbsp
@@ -222,7 +233,11 @@
                         	<label for="editQuestionInstructions">Edit question {{$index + 1}}:</label>
                         	<text-angular ng-model="questionToEdit.instructions" id="editQuestionInstructions"></text-angular>
                       	</div>
-
+                      	<div class="form-group">
+					        <label for="tags">Tags</label>
+					        <input class="form-control" type='text' ng-model="questionToEdit.tags" placeholder="Add tags">
+					        <!-- <input class="form-control" type='text' ng-model="questionToEdit.tags" placeholder="Add tags"> -->
+					    </div>
                       	<!-- Code editor and compile/run buttons & output boxes -->
                       	<div class="form-group">
                       		<div class="col-sm-8 vcenter">

@@ -21,7 +21,8 @@
     "angular-ui-ace": "~0.2.3",
     "angular-ui-bootstrap-pagination": "~0.12.0",
     "angular-google-chart": "~0.0.11",
-    "angular-flash-alert": "^2.3.0"
+    "angular-flash-alert": "^2.3.0",
+    "ng-tags-input": "3.1.1"
   },
   "overrides": {
     "ace-builds": {
@@ -39,6 +40,12 @@
       ],
       "version": "~0.12.0",
       "name": "angular-ui-bootstrap-pagination"
+    },
+    "ng-tags-input": {
+      "main": [
+        "ng-tags-input.min.js",
+        "ng-tags-input.css"
+      ]
     },
     "font-awesome": {
       "main": [
