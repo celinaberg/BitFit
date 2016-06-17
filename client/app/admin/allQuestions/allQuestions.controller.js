@@ -139,14 +139,14 @@ angular.module('its110App')
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.runCode = function(index) {
-      var className = '';
+      var fileName = '';
       if (index < 0) { // adding new question
-        className = getClassName(false);
+        fileName = getFileName(false);
       } else { // editing existing question
-        className = getClassName(true);
+        fileName = getFileName(true);
       }
 
-        var obj = { 'className': className,
+        var obj = { 'fileName': fileName,
                     'user': Auth.getCurrentUser()
                   };
       $http.post('api/clis/run', obj).success(function(data) {
@@ -315,7 +315,7 @@ angular.module('its110App')
           for (var i=0; i<newQuestions.length; i++){
               $scope.questions.push(newQuestions[i]);
           }
-          var message = "You have successfully imported new questions!";
+          var message = "You have successfully imported new questions! Scroll to the bottom of the page to see.";
           Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
         });
       $scope.questionsToImport = '';

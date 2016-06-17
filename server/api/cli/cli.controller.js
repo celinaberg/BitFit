@@ -157,7 +157,7 @@ exports.run = function(req, res) {
         if (error !== null) {
           console.log('exec error: ' + error);
         }
-        console.log(' '+ req.body.className + ' ran.');
+        console.log(' '+ req.body.fileName + ' ran.');
         return res.send(200, stdout);
       }
     });
