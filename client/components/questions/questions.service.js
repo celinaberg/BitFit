@@ -20,6 +20,12 @@ angular.module('its110App')
         });
       },
 
+      import: function(questions) {
+        return $http.post('/api/questions/import', questions).success(function(data) {
+          angular.extend(o.questions, data);
+        });
+      },
+
       // get: function(id) {
       //   /* this worked fine - with $scope.question = question; after the js resolve
       //   return $http.get('/api/questions/' + id).then(function(res){

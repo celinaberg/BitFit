@@ -11,6 +11,14 @@ exports.index = function(req, res) {
   });
 };
 
+// Get list of questions for export
+exports.export = function(req, res) {
+  Question.find({}, { _id: 0, topic: 0 }, function (err, questions) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, questions);
+  });
+};
+
 // Get a single question
 exports.show = function(req, res) {
   Question.findById(req.params.id, function (err, question) {
@@ -25,6 +33,14 @@ exports.create = function(req, res) {
   Question.create(req.body, function(err, question) {
     if(err) { return handleError(res, err); }
     return res.json(201, question);
+  });
+};
+
+// Import many questions to DB.
+exports.import = function(req, res) {
+  Question.collection.insert(req.body, function(err, questions) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, questions);
   });
 };
 

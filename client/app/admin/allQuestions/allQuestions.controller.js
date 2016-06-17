@@ -22,6 +22,7 @@ angular.module('its110App')
     $scope.className = '';
     $scope.readOnlyChecked = false;
     $scope.editQuestionToggle = false;
+    $scope.questionsToImport = '';
     /**
       * Toggles the read only value of the starter code for this question.
       * @param {number} index the index of the code editor for this question.
@@ -305,6 +306,17 @@ angular.module('its110App')
       
       $scope.newQuestion = {};
       $scope.newQuestion.hints = [];
+    };
+
+    // FIXME: strange error
+    $scope.importQuestions = function() {
+      if($scope.questionsToImport === '') { return; }
+      questions.import($scope.questionsToImport).success(function(newQuestions) {
+          for (var i=0; i<dnewQuestions.length; i++){
+              $scope.questions.push(newQuestions[i]);
+          }
+        });
+      $scope.questionsToImport === '';
     };
 
     // does this automatically propogate to the topic being updated??
