@@ -312,11 +312,13 @@ angular.module('its110App')
     $scope.importQuestions = function() {
       if($scope.questionsToImport === '') { return; }
       questions.import($scope.questionsToImport).success(function(newQuestions) {
-          for (var i=0; i<dnewQuestions.length; i++){
+          for (var i=0; i<newQuestions.length; i++){
               $scope.questions.push(newQuestions[i]);
           }
+          var message = "You have successfully imported new questions!";
+          Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
         });
-      $scope.questionsToImport === '';
+      $scope.questionsToImport = '';
     };
 
     // does this automatically propogate to the topic being updated??
@@ -395,6 +397,12 @@ angular.module('its110App')
         $scope.topic.questions[index] = tmp;
       }
       $scope.editTopic();
+    }
+
+    $scope.clearSearch = function(){
+        if($scope.search.tags.length == 0){
+            delete $scope.search;
+        }
     }
 
 

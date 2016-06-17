@@ -31,7 +31,7 @@
 			<div class="col-xs-12">
 				<div ng-show="showImportInput">
 				<textarea class="form-control importTxt" ng-model="questionsToImport" placeholder="Copy & Paste exported questions here"></textarea>
-				<button class="btn btn-primary" ng-click="importQuestions(questionsToImport)">Import</button>
+				<button class="btn btn-primary" ng-click="importQuestions(questionsToImport); showImportInput=!showImportInput">Import</button>
 				</div>
 				<!-- </div> -->
 				<!-- Add new question form -->
@@ -151,7 +151,7 @@
 		</div>
         <div class="input-group search-input col-md-6">
 	        <div class="input-group-addon"><i class="fa fa-search"></i></div>
-	        <input type="text" class="form-control" placeholder="Search questions" ng-model="search">
+	        <input type="text" class="form-control" placeholder="Search questions" ng-change="clearSearch()" ng-model="search.tags">
 	    </div> 
 	    <ul class="list-group">
 	    	<li class="list-group-item col-xs-6 question-item" ng-repeat="q in questions | filter:search">
