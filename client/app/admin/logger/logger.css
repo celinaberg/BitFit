@@ -1,0 +1,62 @@
+.ace_editor {
+	margin: auto; 
+	height: 400px;
+	width: 100%;
+}
+
+.tab { margin-left: 10px; }
+
+.command_line_output {
+	margin-top: 5px;
+	margin: auto;
+  	height: 200px;
+  	width: 600px;
+  	overflow: scroll;
+  	background-color: black;
+  	color: white;
+	outline: 1px solid #gray;
+	box-shadow: 0 0 10px gray;
+
+}
+/*	This selects all pre with a tab class in it's parent (only the pre that are embedded in the hints)	*/
+.tab>pre{
+	margin-top:10px;
+	margin-bottom:-10px;
+}/**/
+
+.small-q {
+	height:60px;
+	overflow:hidden;
+
+}
+
+.question-item {
+	margin:-1px;
+	border-radius:0 !important;
+}
+
+.search-input {
+	margin:10px;
+	
+}
+
+.importTxt {
+	height: 300px !important;
+	margin-bottom: 10px;
+}
+
+#chartContainer {
+	margin-left:25%;
+    /*display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; 
+    vertical-align: top;
+    overflow: hidden;*/
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}

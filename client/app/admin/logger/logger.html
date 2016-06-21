@@ -1,0 +1,46 @@
+
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+	<div class="row">
+
+		<!-- sidebar content -->
+		<div class="col-sm-3 col-md-2 sidebar">
+			<ul class="nav nav-sidebar">
+				<li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
+				<li><a ng-href="/admin">Add a Topic</a></li>
+				<li><strong>Click a Topic to Edit:</strong></li>
+				<li ng-repeat="t in topicsEC" ng-class="{active: isActive(t._id)}">
+					<!--<a ng-show="ng-class=active"-->
+					<!-- <a ng-href="admin/editContent/{{t._id}}">{{t.title}}</a>  -->
+					<a ng-href="admin/editContent/{{t.title}}">{{t.title}}</a> 
+				</li>
+			</ul>  
+		</div>
+		<input type="text" ng-model="q">
+		{{q}}
+<!-- <div class="col-xs-7 graph-container"> -->
+		<!-- <graph data="graphData" height="600px">
+			<x field="question"></x>
+			<y field="totalAttempts"></y>
+			<graph-legend></graph-legend>
+			<scatter-plot field="topic" value="{{q}}" title="topic"></scatter-plot>
+		</graph> -->
+<div id="chartContainer">
+  <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 900, 700);
+      d3.json("/api/loggers", function (data) {
+        var myChart = new dimple.chart(svg, data);
+        myChart.setBounds(60, 30, 840, 500)
+        myChart.addCategoryAxis("x", "question");
+        myChart.addMeasureAxis("y", "totalAttempts");
+        myChart.addMeasureAxis("z", "numCompiles");
+        myChart.addSeries("user", dimple.plot.area);
+        myChart.addLegend(180, 10, 730, 20, "right");
+        myChart.draw();
+      });
+  </script>
+</div>
+		<!-- </div> -->
+	</div>
+</div>

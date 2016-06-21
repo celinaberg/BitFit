@@ -11,6 +11,7 @@ angular.module('its110App', [
   'ui.ace',
   'ui.bootstrap',
   'ngTagsInput',
+  'angular-dimple',
   'googlechart'])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -55,7 +56,8 @@ angular.module('its110App', [
         }
       });
       // Check user's role if user is accessing Admin area
-      if ($location.path() === '/admin') {
+      if ($location.path().includes('/admin')) {
+        console.log("here");
         if (!Auth.isAdmin()) {
           console.log('redirecting as not admin!!!');  
           $location.path('/');
