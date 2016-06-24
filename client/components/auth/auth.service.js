@@ -136,6 +136,24 @@ angular.module('its110App')
         return currentUser.role === 'admin';
       },
 
+      isAdminAsync: function(cb) {
+        if(currentUser.hasOwnProperty('$promise')) {
+          currentUser.$promise.then(function() {
+            if(currentUser.role === 'admin') {
+            cb(true);
+          } else {
+            cb(false);
+          }
+          }).catch(function() {
+            cb(false);
+          });
+        } else if(currentUser.role === 'admin') {
+          cb(true);
+        } else {
+          cb(false);
+        }
+      },
+
       /**
        * Get auth token
        */

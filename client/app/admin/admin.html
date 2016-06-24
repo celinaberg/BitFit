@@ -7,6 +7,7 @@
       <ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
       <!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
         <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
+        <li><a ng-href="/admin/logger">Logger</a></li>
         <li><a ng-href="/admin">Add a Topic</a></li>
         <li><strong>Click a Topic to Edit:</strong></li>
         <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">

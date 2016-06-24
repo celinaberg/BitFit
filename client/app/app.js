@@ -56,13 +56,14 @@ angular.module('its110App', [
         }
       });
       // Check user's role if user is accessing Admin area
-      if ($location.path().includes('/admin')) {
-        console.log("here");
-        if (!Auth.isAdmin()) {
-          console.log('redirecting as not admin!!!');  
+      // if ($location.path().includes('/admin') && !Auth.isAdmin()) {
+      //     console.log('redirecting as not admin!!!');  
+      //     $location.path('/');
+      //   }
+      Auth.isAdminAsync(function(isAdmin) {
+        if ($location.path().includes('/admin') && !isAdmin) {
           $location.path('/');
         }
-        
-      }
+      });
     });
   });
