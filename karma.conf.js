@@ -26,6 +26,7 @@ module.exports = function(config) {
       'client/bower_components/ace-builds/src-min-noconflict/ace.js',
       'client/bower_components/angular-ui-ace/ui-ace.js',
       'client/bower_components/angular-ui-bootstrap-pagination/pagination.js',
+      'client/bower_components/nvd3/build/nv.d3.min.js',
       'client/app/app.js',
       'client/app/app.coffee',
       'client/app/**/*.js',

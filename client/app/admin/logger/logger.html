@@ -1,6 +1,5 @@
 
 <div ng-include="'components/navbar/navbar.html'"></div>
-
 <div class="container-fluid">
 	<div class="row">
 
@@ -18,40 +17,25 @@
 			</ul>  
 		</div>
 		<div class="col-xs-12 col-sm-10 col-sm-offset-3 col-mid-10 col-lg-offset-2 main">
-		<!-- <input type="text" ng-model="q"> -->
-		<!-- {{q}} -->
-<!-- <div class="col-xs-7 graph-container"> -->
-		<!-- <graph data="graphData" height="600px">
-			<x field="question"></x>
-			<y field="totalAttempts"></y>
-			<graph-legend></graph-legend>
-			<scatter-plot field="topic" value="{{q}}" title="topic"></scatter-plot>
-		</graph> -->
 
- <!--  <script type="text/javascript">
-    var svg = dimple.newSvg("#chartContainer", 900, 700);
-      d3.json("/api/loggers", function (data) {
-        var myChart = new dimple.chart(svg, data);
-        myChart.setBounds(60, 30, 840, 500)
-        myChart.addCategoryAxis("x", "question");
-        myChart.addMeasureAxis("y", "totalAttempts");
-        //myChart.addMeasureAxis("z", "numCompiles");
-        myChart.addSeries("user", dimple.plot.area);
-        myChart.addLegend(180, 10, 730, 20, "right");
-        myChart.draw();
-      });
-  </script> -->
-  <div class="btn-group">
-	  <button ng-click="drawGraph()" class="graph-button btn btn-default" ng-disabled="graphDrawn">Graph</button>
-	  <!-- <button ng-click="updateGraph('area')" class="graph-button btn btn-default">Area Graph</button>
-	  <button ng-click="updateGraph('line')" class="graph-button btn btn-default">Line Graph</button>
-	  <button ng-click="updateGraph('bubble')" class="graph-button btn btn-default">Bubble Graph</button> -->
+    
+        <nvd3 options="options" data="data"></nvd3>
+        <h3>Users selected:
+        <small ng-show="selectedUsers.length > 0">{{selectedUsers.length}} users selected</small>
+        </h3>
+        <span ng-show="selectedUsers.length < 1">No users selected</span>
+        <ul ng-show="selectedUsers.length > 0">
+        <li ng-repeat="u in selectedUsers">{{u.key}}: {{u.values}}</li>
+        <ul>
+
+
+  <!-- <div class="btn-group">
 	  <button ng-click="updateGraph('y', 'numRuns')" class="graph-button btn btn-default">y = num runs</button>
 	  <button ng-click="updateGraph('y', 'numCompiles')" class="graph-button btn btn-default">y = num compile</button>
 	  <button ng-click="updateGraph('y', 'totalAttempts')" class="graph-button btn btn-default">y = total attempts</button>
 	  <button ng-click="updateGraph('x', 'question')" class="graph-button btn btn-default">x = question</button>
 	  <button ng-click="updateGraph('x', 'user')" class="graph-button btn btn-default">x = user</button>
-  </div>
+  </div> -->
   <div id="chartContainer">
 </div>
 		</div>
