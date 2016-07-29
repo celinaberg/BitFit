@@ -12,7 +12,7 @@ angular.module('its110App')
         'link': '/lessons'
       }];
 
-    $scope.isCollapsed = true;
+    $scope.navbarCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
@@ -23,6 +23,8 @@ angular.module('its110App')
     };
 
     $scope.isActive = function(route) {
-      return route === $location.path();
+      return route === $location.path() ||
+       ($location.path().includes('/admin') && route.includes('/admin')) ||
+        ($location.path().includes('/lessons') && route.includes('/lessons'));
     };
   });

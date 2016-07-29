@@ -10,8 +10,8 @@
         <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
         <li><a ng-href="/admin/logger">Logger</a></li>
       	<li><a ng-href="/admin">Add a Topic</a></li>
-        <li><strong>Click a Topic to Edit:</strong></li>
-        <li ng-repeat="t in topicsEC" ng-class="{active: isActive(t._id)}">
+        <li><span class="topics-to-edit">Click a Topic to Edit</span></li>
+        <li ng-repeat="t in topicsEC" ng-class="{active: isActive(t.title)}">
         	<!--<a ng-show="ng-class=active"-->
         	<!-- <a ng-href="admin/editContent/{{t._id}}">{{t.title}}</a>  -->
         	<a ng-href="admin/editContent/{{t.title}}">{{t.title}}</a> 
@@ -20,23 +20,21 @@
     </div>
 
     <!-- main content -->
-    <div class="col-xs-12 col-sm-10 col-sm-offset-3 col-mid-10 col-lg-offset-2 main">
+    <div class="col-xs-9 col-sm-10 col-xs-offset-3 col-mid-10 col-lg-offset-2 main">
     	<flash-message></flash-message>
         <!-- Topic title and edit title form -->
-		<a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle">
-	  		<span style="font-size: 10pt" class="glyphicon glyphicon-pencil pull-right">Edit</span>
+		<a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle pull-right">
+	  		<span class="glyphicon glyphicon-pencil"></span>Edit
 		</a>
 		<h2 ng-hide="editTitle" class="page-header">{{topic.title}} <small>{{topic.questions.length}} questions</small>
-
-		
-        <button class="btn btn-success" ng-click="addQ=!addQ">
-	  		<span class="glyphicon glyphicon-plus"></span> Add question
-		</button>
+			<button class="btn btn-success" ng-click="addQ=!addQ">
+		  		<span class="glyphicon glyphicon-plus"></span> Add question
+			</button>
 		</h2>
-		<div ng-show="editTitle">
+		<div ng-show="editTitle" class="page-header">
             <form class="form-inline" ng-submit="editTopic(); editTitle=!editTitle">
-          		<div class="form-group">
-                	<label for="editTopicTitleID">Edit Topic's Title:</label>
+            <label for="editTopicTitleID" class="sr-only">Edit Topic's Title:</label>
+          		<div class="form-group input-group input-group-lg">
                 	<input type="text" id="editTopicTitleID" class="form-control" ng-model="topic.title" placeholder="{{topic.title}}" autofocus>
           		</div>
           		<button type="submit" class="btn btn-primary">Update Title</button>
@@ -44,8 +42,8 @@
       	</div>
         
       	<!-- Topic background and edit background form -->
-		<a ng-model="editBackground" ng-click="editBackground=!editBackground" class="editTopicBackground">
-			<span class="glyphicon glyphicon-pencil pull-right">Edit</span>
+		<a ng-model="editBackground" ng-click="editBackground=!editBackground" class="editTopicBackground pull-right">
+			<span class="glyphicon glyphicon-pencil"></span>Edit
 		</a>
 		<div ng-hide="editBackground">
 			<h4>Background: </h4><br>

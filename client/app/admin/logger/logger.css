@@ -1,56 +1,28 @@
 #chartContainer {
-	/*margin-left:25%;*/
+	width: 100%;
+  height: 400px;
 }
 
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
+#loading {
+  position: absolute;
+  z-index: -1;
+  top: 250px;
+  left: 45%;
 }
 
 .btn-group {
 	/*display: block;*/
 }
 
-svg {
-	/*margin-left: 500px;*/
+svg.nvd3-svg {
+	background-color: #fff;
 }
 
-
-
-
-.bar {
-  fill: steelblue;
-}
-
-.bar:hover {
-  fill: brown;
-}
-
-.axis {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.area {
-  fill: steelblue;
+.user-info {
+	display:inline-block;
+	width:250px;
+	border: #bfbfbf solid 1px;
+	padding:1%;
+	border-radius:2px;
+	margin:1%;
 }

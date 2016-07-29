@@ -37,3 +37,31 @@
     color: #000;
     padding: 0.2em 0;
 }
+
+.navbar-inverse {
+    background: #594F4F;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: #547980;
+}
+
+.navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-brand {
+    color: #C3C3C3;
+}
+
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
+    background-color: #45ADA8 !important;
+}
+
+a {
+    color: #29807B;
+}
+
+a:hover, a:active, a:focus {
+    color: #45ADA8;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border: none;
+}
