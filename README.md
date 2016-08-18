@@ -33,6 +33,33 @@ Getting it Running
     bower install
     ```
     
+* Create a server/config/local.env.js file AND a server/config/seed.js file
+
 ### Run Locally
 * Get the MongoDB up and running following their [instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
 * `grunt serve`
+
+### Run for Production
+I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and has a lot of cool features.
+* To install: 
+
+  ```
+  sudo su
+  npm install pm2 -g
+  ```
+* To run BitFit:
+
+  ```
+  sudo su
+  pm2 start server/app.js --name BitFit
+  ```
+  
+* To start/stop/restart:
+
+  ```
+  sudo su
+  pm2 start BitFit
+  pm2 stop BitFit
+  pm2 restart BitFit
+  ```
+  
