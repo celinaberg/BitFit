@@ -17,6 +17,11 @@ Features
   - View and manage list of users
   - Explore logged data of student usage through a parallel coordinates graph
 
+Install Mac
+-----------
+- Setup new install with `script/setup`
+- Run server with `script/server`
+
 Getting it Running
 ------------
 ### Requirements
