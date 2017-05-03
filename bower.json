@@ -6,7 +6,7 @@
     "json3": "~3.3.1",
     "es5-shim": "~4.5.9",
     "jquery": "~3.2.1",
-    "bootstrap": "~3.3.7",
+    "bootstrap": "~4.0.0-alpha.6",
     "angular-resource": ">=1.2.*",
     "angular-cookies": ">=1.2.*",
     "angular-sanitize": ">=1.2.*",
