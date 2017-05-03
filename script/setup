@@ -1,11 +1,10 @@
+#!/bin/sh
+
 set -e
 
 cd "$(dirname "$0")/.."
 
 script/bootstrap
-
-npm install
-bower install
 
 touch server/config/local.env.js
 touch server/config/seed.js

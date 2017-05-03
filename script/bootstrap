@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set -e
 
 cd "$(dirname "$0")/.."
@@ -8,3 +10,6 @@ if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
     brew bundle
   }
 fi
+
+npm install
+bower install
