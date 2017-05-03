@@ -9,19 +9,19 @@ angular.module('its110App')
     // Public API
     return {
       getAll: function () {
-        return $http.get('/api/questions').success(function(data) {
+        return $http.get('/api/questions').then(function(data) {
           angular.copy(data, o.questions);
         });
       },
 
       create: function(question) {
-        return $http.post('/api/questions', question).success(function(data) {
+        return $http.post('/api/questions', question).then(function(data) {
           o.questions.push(data);
         });
       },
 
       import: function(questions) {
-        return $http.post('/api/questions/import', questions).success(function(data) {
+        return $http.post('/api/questions/import', questions).then(function(data) {
           angular.extend(o.questions, data);
         });
       },
@@ -31,7 +31,7 @@ angular.module('its110App')
       //   return $http.get('/api/questions/' + id).then(function(res){
       //     return res.data;
       //   }); */
-      //   return $http.get('/api/questions/' + id).success(function(res){
+      //   return $http.get('/api/questions/' + id).then(function(res){
       //     return res;
       //   });
       // },
@@ -42,7 +42,7 @@ angular.module('its110App')
       // },
 
       editQuestion: function(id, question) {
-        return $http.put('/api/questions/' + id, question).success(function(data) {
+        return $http.put('/api/questions/' + id, question).then(function(data) {
           o.questions.forEach(function(ea) {
             if (ea._id === data.question) {
               ea.questions.forEach(function(q) {
@@ -66,7 +66,7 @@ angular.module('its110App')
       //     question.questions[i] = ea._id;
       //   });
 
-      //   return $http.put('/api/questions/' + id, question).success(function(data) {
+      //   return $http.put('/api/questions/' + id, question).then(function(data) {
       //     //var index = o.questions.indexOf(data._id);
       //     o.questions.forEach(function(ea) {
       //       if (ea._id === data._id) {
