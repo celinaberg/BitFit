@@ -123,7 +123,7 @@ angular.module('its110App')
                     'user': Auth.getCurrentUser(),
                     'questionNum': $scope.questionIndex
           };
-      	$http.post('api/clis/compile', obj).success(function(data) {
+      	$http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -148,7 +148,7 @@ angular.module('its110App')
         var obj = { 'fileName': fileName,
                     'user': Auth.getCurrentUser()
                   };
-   		$http.post('api/clis/run', obj).success(function(data) {
+   		$http.post('api/clis/run', obj).then(function(data) {
         	$scope.runOutput = data;
       	});
       	//logging.progress.numRuns++;
@@ -158,7 +158,7 @@ angular.module('its110App')
       //if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       //var editedTopic = $scope.allTopics[i];
       //editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success(function(data) {
+      topics.editTopic($scope.topic._id, $scope.topic).then(function(data) {
         $scope.topic = data;
         $scope.topicsEC.forEach(function(ea) {
         	if (ea._id === data._id) {
@@ -198,7 +198,7 @@ angular.module('its110App')
     // 				'user': Auth.getCurrentUser(),
     // 				'questionNum': $scope.topic.questions.length // since this is a new q to be added
     // 			}
-    // 	$http.post('api/clis/compile', obj).success(function(data) {
+    // 	$http.post('api/clis/compile', obj).then(function(data) {
     // 		console.log('in compile code success func');
     // 		console.log(data);
 
@@ -218,7 +218,7 @@ angular.module('its110App')
     // 			   'user': Auth.getCurrentUser()
     // 			}
 
-    // 	$http.post('api/clis/run', obj).success(function(data) {
+    // 	$http.post('api/clis/run', obj).then(function(data) {
     // 		console.log('in run code success function');
     // 		console.log(data);
     // 		$scope.CLOutput += data;
@@ -292,7 +292,7 @@ angular.module('its110App')
         	expectedOutput: $scope.newQuestion.expectedOutput,
         	hints: $scope.newQuestion.hints,
           tags: $scope.newQuestion.tags
-  		}).success(function(question) {
+  		}).then(function(question) {
         	$scope.topic.questions.push(question);
           var message = "Question successfully added!";
           Flash.create('success', message, 5000, {class: 'custom-class', id: 'custom-id'}, true);  
@@ -305,7 +305,7 @@ angular.module('its110App')
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function(questionIndex) {
 		$scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function() {
+		topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(function() {
         	// update scope array of questions?
           $scope.questionToEdit = {};
         	$scope.questionToEdit.hints = [];
@@ -317,7 +317,7 @@ angular.module('its110App')
     $scope.deleteQuestion = function(id, index) {
     	//console.log(index);
     	//console.log($scope.topic.questions);
-    	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id);//.success(function(question) {
+    	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id);//.then(function(question) {
     		// why does this success function not get called?
     		//console.log('successfully deleted question: ' + question);
     	//});

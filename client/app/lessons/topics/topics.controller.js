@@ -77,7 +77,7 @@ angular.module('its110App')
                   'user': Auth.getCurrentUser(),
                   'questionNum': $scope.qInfo.currentQuestion
           };
-      $http.post('api/clis/compile', obj).success(function(data) {
+      $http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n';
@@ -101,7 +101,7 @@ angular.module('its110App')
       var obj = { 'fileName': fileName,
                   'user': Auth.getCurrentUser()
                 };
-      $http.post('api/clis/run', obj).success(function(data) {
+      $http.post('api/clis/run', obj).then(function(data) {
         if (typeof(data) === 'object') { // Likely error
           $scope.output.runOutput += $scope.handleError(data); 
         } else {
@@ -159,14 +159,14 @@ angular.module('its110App')
         $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n';
         return;
       }
-      $http.post('api/clis/compile', obj).success(function(data) {
+      $http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           $scope.output.compileOutput = 'Successfully compiled code.\n';
         } else {
           $scope.output.compileOutput = data;
         }
 
-        $http.post('api/clis/run', obj).success(function(data) {
+        $http.post('api/clis/run', obj).then(function(data) {
           if (typeof(data) === 'object') { // Likely an error
             $scope.showComments = false;
             $scope.output.runOutput += $scope.handleError(data);  

@@ -124,7 +124,7 @@ angular.module('its110App')
                     'user': Auth.getCurrentUser(),
                     'questionNum': $scope.questionIndex
           };
-        $http.post('api/clis/compile', obj).success(function(data) {
+        $http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -149,7 +149,7 @@ angular.module('its110App')
         var obj = { 'fileName': fileName,
                     'user': Auth.getCurrentUser()
                   };
-      $http.post('api/clis/run', obj).success(function(data) {
+      $http.post('api/clis/run', obj).then(function(data) {
           $scope.runOutput = data;
         });
         //logging.progress.numRuns++;
@@ -159,7 +159,7 @@ angular.module('its110App')
       //if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       //var editedTopic = $scope.allTopics[i];
       //editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success(function(data) {
+      topics.editTopic($scope.topic._id, $scope.topic).then(function(data) {
         $scope.topic = data;
         $scope.topicsEC.forEach(function(ea) {
           if (ea._id === data._id) {
@@ -197,7 +197,7 @@ angular.module('its110App')
     //        'user': Auth.getCurrentUser(),
     //        'questionNum': $scope.topic.questions.length // since this is a new q to be added
     //      }
-    //  $http.post('api/clis/compile', obj).success(function(data) {
+    //  $http.post('api/clis/compile', obj).then(function(data) {
     //    console.log('in compile code success func');
     //    console.log(data);
 
@@ -217,7 +217,7 @@ angular.module('its110App')
     //         'user': Auth.getCurrentUser()
     //      }
 
-    //  $http.post('api/clis/run', obj).success(function(data) {
+    //  $http.post('api/clis/run', obj).then(function(data) {
     //    console.log('in run code success function');
     //    console.log(data);
     //    $scope.CLOutput += data;
@@ -300,7 +300,7 @@ angular.module('its110App')
           expectedOutput: $scope.newQuestion.expectedOutput,
           hints: $scope.newQuestion.hints,
           tags: $scope.newQuestion.tags
-      }).success(function(question) {
+      }).then(function(question) {
           $scope.questions.push(question);
         });
       
@@ -311,7 +311,7 @@ angular.module('its110App')
     // FIXME: strange error
     $scope.importQuestions = function() {
       if($scope.questionsToImport === '') { return; }
-      questions.import($scope.questionsToImport).success(function(newQuestions) {
+      questions.import($scope.questionsToImport).then(function(newQuestions) {
           for (var i=0; i<newQuestions.length; i++){
               $scope.questions.push(newQuestions[i]);
           }
@@ -324,7 +324,7 @@ angular.module('its110App')
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function(questionIndex) {
     $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-    questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function() {
+    questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(function() {
           // update scope array of questions?
           $scope.questionToEdit = {};
           $scope.questionToEdit.hints = [];
@@ -338,7 +338,7 @@ angular.module('its110App')
       //console.log($scope.topic.questions);
       var conf = confirm("Are you sure you want to permanantly delete that question?");
       if (conf == true) {
-        questions.delete($scope.questions[index], $scope.questions[index]._id);//.success(function(question) {
+        questions.delete($scope.questions[index], $scope.questions[index]._id);//.then(function(question) {
         // why does this success function not get called?
         //console.log('successfully deleted question: ' + question);
         //});
@@ -368,7 +368,7 @@ angular.module('its110App')
       }
       if(newTopic !== null) {
         // add to new topic
-        topics.addQuestion(newTopic._id, question).success(function(question) {
+        topics.addQuestion(newTopic._id, question).then(function(question) {
           newTopic.questions.push(question);
           console.log('added q to new topic');
           var message = "You have successfully changed the question's topic!";

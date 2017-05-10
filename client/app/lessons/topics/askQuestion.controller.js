@@ -27,7 +27,7 @@ angular.module('its110App')
     	var id = Auth.getCurrentUser()._id;
     	$scope.user.userId = id;
 
-    	askAQuestion.postQuestion($scope.user).success(function() {
+    	askAQuestion.postQuestion($scope.user).then(function() {
     		$scope.user = {};
     		$scope.feedback = 'Thank you. Your question has been submitted to the teaching team.';
     	});

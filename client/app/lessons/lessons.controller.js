@@ -40,7 +40,7 @@ angular.module('its110App')
 	    // });
   	};
 
-    $http.get('/api/questions').success(function() {
+    $http.get('/api/questions').then(function() {
   		//$scope.questions = allQs;
     	socket.syncUpdates('question', $scope.questions);
     });

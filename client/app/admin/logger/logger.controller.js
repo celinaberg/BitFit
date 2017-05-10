@@ -26,13 +26,13 @@ angular.module('its110App')
     }
   };
 
-  // $http.get('/api/loggers').success(function(data){
+  // $http.get('/api/loggers').then(function(data){
   //   $scope.data = data;
   // }).error(function(err){
   //   throw err;
   // });
 
-  $http.get('/api/loggers').success(function(data){
+  $http.get('/api/loggers').then(function(data){
     var nested_data = d3.nest()
     .key(function(d) { return d.user; })
     .rollup(function(leaves) { 
