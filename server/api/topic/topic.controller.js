@@ -11,7 +11,7 @@ exports.addQuestion = function(req, res) {
   req.body.topic = req.params.id; // is this necessary?
 
    // express's body parser middleware populates body for me
- 
+
   /*var query = Topic.findById(req.params.id);
 
   query.exec(function (err, topic){
@@ -33,14 +33,14 @@ exports.addQuestion = function(req, res) {
       Topic.findById(req.params.id, function (err, topic) {
         if(err) { return handleError(res, err); }
         if(!topic) { return res.send(404); }
-        
+
         topic.questions.push(question);
-        
+
         topic.save(function(err, topic) {
           if (err) { return handleError(err); }
             return res.json(question);
         });
-        
+
       });
     } else { // if not, create the new question
       var question = new Question(req.body);
@@ -50,19 +50,19 @@ exports.addQuestion = function(req, res) {
         Topic.findById(req.params.id, function (err, topic) {
           if(err) { return handleError(res, err); }
           if(!topic) { return res.send(404); }
-          
+
           topic.questions.push(question);
-          
+
           topic.save(function(err, topic) {
             if (err) { return handleError(err); }
               return res.json(question);
           });
-          
+
         });
       });
     }
   });
-  
+
 };
 
 exports.deleteQuestion = function(req, res) {
@@ -101,12 +101,12 @@ exports.index = function(req, res) {
     Topic.find().populate('topic.questions').exec(function(err, topics) {
       //console.log('found topics...');
       //console.log(topics);
-      return res.json(200, topics);
+      return res.status(200).json(topics);
     });
     //console.log('in get list of topics');
     //console.log(topics);
     //return res.json(200, topics);
-  
+
 };
 
 // Get a single topic
@@ -120,7 +120,7 @@ exports.show = function(req, res) {
       if (err) { return handleError(res, err); }
       return res.json(topic);
     });
-    
+
   });
 };
 
@@ -140,7 +140,7 @@ exports.update = function(req, res) {
     console.log('in update found topic by id');
     if (err) { return handleError(res, err); }
     if(!topic) { return res.send(404); }
-    
+
     topic.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
 
     var updated = _.merge(topic, req.body);
@@ -149,7 +149,7 @@ exports.update = function(req, res) {
       if (err) { return handleError(res, err); }
       console.log('updated topic now about to populate qs');
       topic.populate('questions', function(err, topic) {
-        if (err) { 
+        if (err) {
           console.log('error populating questions of updated topic');
           return handleError(res, err); }
         console.log('looks like populate was successful?');
