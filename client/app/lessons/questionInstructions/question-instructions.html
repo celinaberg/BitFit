@@ -9,17 +9,17 @@
 		        	<button type="button" href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
 							<span class="glyphicon glyphicon-flag"></span> Hint
 					</button>
-					<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
+			<!--		<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
 						<span class="glyphicon glyphicon-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
 					</button>
-				</div>
+				--></div>
 			</span>
 			<br>
-			<br>
+			<br><!--
 			<div ng-controller="AskQuestionCtrl" ng-show="askQuestionForm">
 				<span class="pull-right askAQ">
 					<form class="span3" ng-submit="askAQuestion($parent.topic.title, $parent.q.instructions)">
-						<!-- <button type="button" class="close" ng-model="askQuestionForm" ng-click="askQuestionForm=false">&times;</button> -->
+						 <button type="button" class="close" ng-model="askQuestionForm" ng-click="askQuestionForm=false">&times;</button>
 						<legend>Ask a Question</legend>
 						<p class="help-block">Please enter your question below, giving as much detail as possible:</p>
 						<div class="form-group">
@@ -39,7 +39,7 @@
 					</form>
 				</span>
 			</div>
-
+-->
 	        <div ng-bind-html="q.instructions"></div>
 
 	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">

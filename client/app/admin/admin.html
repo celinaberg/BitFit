@@ -22,12 +22,12 @@
 
     <!-- main content -->
     <div class="col-sm-9 col-xs-offset-3 col-mid-10 col-md-offset-2 main">
-      <h1 class="page-header">Welcome to the Admin section</h1>
+      <h2 class="page-header">Add a New Topic&nbsp;&nbsp;<small><a href="#users">Manage Users</a></small></h2>
+      
       <p>Click the links at left to edit a topic</p>
-      <p>Add new topics below.</p>
 
       <div class="addTopicForm">
-        <h2>Add a New Topic</h2>
+        <h3>New Topic</h3>
         <form ng-submit="addTopic()">
             <div class="form-group">
                 <label for="inputTopicTitle">Topic Title (will be displayed as a clickable link in student sidebar)</label>
@@ -42,7 +42,7 @@
         </form>
       </div>
 
-
+      <a id="users"></a>
       <h2>Manage Users</h2>
        <!--<p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>-->
        <p>Only Admin users can delete users and view a complete list of all users.</p>
@@ -54,8 +54,9 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="user in users">
             <strong>{{user.name}}</strong><br>
-            <span class="text-muted">{{user.email}}</span>
-            <span class="text-muted"> {{user._id}}</span>
+            <span class="text-muted">Student #: {{user.email}}</span>
+            <span>&nbsp;</span>
+            <span class="text-muted">Account ID: {{user._id}}</span>
             <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
           </li>
         </ul>

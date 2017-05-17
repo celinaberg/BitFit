@@ -21,16 +21,18 @@
 
         <div class="form-group" ng-class="{ 'has-success': form.email.$valid && submitted,
                                             'has-error': form.email.$invalid && submitted }">
-          <label>Email</label>
+          <label>UBC Student Number</label>
 
-          <input type="email" name="email" class="form-control" ng-model="user.email"
+          <input type="text" name="email" class="form-control" ng-model="user.email"
+                 ng-pattern="/^\d*$/"                 
                  required
+                 integer
                  mongoose-error/>
-          <p class="help-block" ng-show="form.email.$error.email && submitted">
-            Doesn't look like a valid email.
+          <p class="help-block" ng-show="!form.email.$valid && submitted">
+            Doesn't look like a valid student number.
           </p>
           <p class="help-block" ng-show="form.email.$error.required && submitted">
-            What's your email address?
+            What's your student number?
           </p>
           <p class="help-block" ng-show="form.email.$error.mongoose">
             {{ errors.email }}
