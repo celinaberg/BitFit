@@ -7,10 +7,10 @@
 var Logger = require('./logger.model');
 
 exports.register = function(socket) {
-  Logger.schema.post('save', function (doc) {
+  Logger.schema.post('save', function(doc) {
     onSave(socket, doc);
   });
-  Logger.schema.post('remove', function (doc) {
+  Logger.schema.post('remove', function(doc) {
     onRemove(socket, doc);
   });
 }
