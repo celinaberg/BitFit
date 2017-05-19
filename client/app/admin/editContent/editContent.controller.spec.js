@@ -1,21 +1,14 @@
 'use strict';
-
-describe('Controller: EditContentCtrl', function() {
-
+describe('Controller: EditContentCtrl', function () {
   // load the controller's module
   beforeEach(module('bitfit'));
-
   var EditContentCtrl, scope;
-
   // Initialize the controller and a mock scope
-  beforeEach(inject(function($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    EditContentCtrl = $controller('EditContentCtrl', {
-      $scope: scope
-    });
+    EditContentCtrl = $controller('EditContentCtrl', { $scope: scope });
   }));
-
-  it('should ...', function() {
+  it('should ...', function () {
     expect(1).toEqual(1);
   });
 });
