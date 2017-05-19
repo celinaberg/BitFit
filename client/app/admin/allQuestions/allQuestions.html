@@ -24,7 +24,7 @@
 			<!-- Topic title and edit title form -->
 			<h2 class="page-header">Manage All Questions
 				<button class="btn btn-success" ng-click="addQ=!addQ">
-					<span class="glyphicon glyphicon-plus"></span> Add question
+					<span class="fa fa-plus"></span> Add question
 				</button>
 				<a class="btn btn-default" download='questions.json' target="_self" href='api/questions/export'>Export Questions</a>
 				<button class="btn btn-primary" ng-click="showImportInput=!showImportInput">Import Questions</button>
@@ -73,11 +73,11 @@
 					<hr>
 					<div class="btn-group-vertical ace_lessons" role="group">
 						<button type="button" class="btn btn-warning" ng-click="compileCode(-1)">
-							<span class="glyphicon glyphicon-flash"></span> Compile Code
+							<span class="fa fa-flash"></span> Compile Code
 						</button> 
 
 						<button type="button" class="btn btn-success" ng-click="runCode(-1)">
-							<span class="glyphicon glyphicon-play"></span> Run Code
+							<span class="fa fa-play"></span> Run Code
 						</button>
 					</div>
 					<hr>
@@ -88,7 +88,7 @@
 							</label>
 						</div>
 								<!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-									Check My Answer <span class="glyphicon glyphicon-send"></span>
+									Check My Answer <span class="fa fa-send"></span>
 								</button> -->
 							</div>
 						</div>
@@ -167,10 +167,10 @@
 	    			</button>
 	    			<div class="pull-right">
 	    			<button type="button" ng-click="editQuestionToggle=!editQuestionToggle; populateEditQForm($index)" class="btn btn-info">
-	    				<span class="glyphicon glyphicon-pencil"></span>
+	    				<span class="fa fa-pencil"></span>
 	    			</button>
 	    			<button type="button" ng-click="deleteQuestion($index)" class="btn btn-danger">
-	    				<span class="glyphicon glyphicon-trash"></span>
+	    				<span class="fa fa-trash"></span>
 	    			</button>
 	    			</div>
 	    		</span>
@@ -239,11 +239,11 @@
 					    		<hr>
 								<div class="btn-group-vertical ace_lessons" role="group">
 									<button type="button" class="btn btn-warning" ng-click="compileCode($index)">
-										<span class="glyphicon glyphicon-flash"></span> Compile Code
+										<span class="fa fa-flash"></span> Compile Code
 									</button> 
 
 									<button type="button" class="btn btn-success" ng-click="runCode($index)">
-						        		<span class="glyphicon glyphicon-play"></span> Run Code
+						        		<span class="fa fa-play"></span> Run Code
 						    		</button>
 					    		</div>
 					    		<hr>
@@ -254,7 +254,7 @@
 									    </label>
 								  	</div>
 									<!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-										Check My Answer <span class="glyphicon glyphicon-send"></span>
+										Check My Answer <span class="fa fa-send"></span>
 									</button> -->
 								</div>
 							</div>

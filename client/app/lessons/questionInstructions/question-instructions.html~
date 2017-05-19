@@ -7,10 +7,10 @@
 	    	<span class="pull-right">
 	    		<div class="btn-group" role="group" aria-label="HelpSection">
 		        	<button type="button" href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
-							<span class="glyphicon glyphicon-flag"></span> Hint
+							<span class="fa fa-flag"></span> Hint
 					</button>
 					<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
-						<span class="glyphicon glyphicon-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
+						<span class="fa fa-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
 					</button>
 				</div>
 			</span>
@@ -65,11 +65,11 @@
 			    		<hr>
 						<div class="btn-group-vertical ace_lessons" role="group">
 							<button type="button" class="btn btn-warning" ng-click="compileCode()">
-								<span class="glyphicon glyphicon-flash"></span> Compile Code
+								<span class="fa fa-flash"></span> Compile Code
 							</button> 
 
 							<button type="button" class="btn btn-success" ng-click="runCode()">
-				        		<span class="glyphicon glyphicon-play"></span> Run Code
+				        		<span class="fa fa-play"></span> Run Code
 				    		</button>
 			    		</div>
 		    		</div>
@@ -90,7 +90,7 @@
 		    		<hr>
 					<div class="btn-group-vertical ace_lessons" role="group">
 						<button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-							Check My Answer <span class="glyphicon glyphicon-send"></span>
+							Check My Answer <span class="fa fa-send"></span>
 						</button>
 					</div>
 				</div>
