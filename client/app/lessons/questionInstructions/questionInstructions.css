@@ -1,65 +1,71 @@
 .command_line_output_s {
-	margin-top: 5px;
-	margin: auto;
-  	height: 200px;
-  	width: 100%;
-  	/*overflow: scroll;*/
-  	overflow: hidden;
-	outline: 1px solid #gray;
-	box-shadow: 0 0 10px gray;
-	border-radius:4px;
+  margin-top: 5px;
+  margin: auto;
+  height: 200px;
+  width: 100%;
+  /*overflow: scroll;*/
+  overflow: hidden;
+  outline: 1px solid #gray;
+  box-shadow: 0 0 10px gray;
+  border-radius: 4px;
 }
 
 .output {
-	white-space: pre-wrap;
-	overflow-y: scroll;
-	height: 160px;
+  white-space: pre-wrap;
+  overflow-y: scroll;
+  height: 160px;
 }
 
 .ace_lessons {
-	width: 100%;
-	margin: auto;
+  width: 100%;
+  margin: auto;
 }
 
 .vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
 }
 
 .compile {
-	background-color: #EFBB72;
-	color: white;
-	width: 100%;
+  background-color: #EFBB72;
+  color: white;
+  width: 100%;
 }
 
 .run {
-	background-color: #70BA70;
-	color: white;
-	width: 100%;
+  background-color: #70BA70;
+  color: white;
+  width: 100%;
 }
 
 .feedback_section {
-	margin:15px;
-	padding:10px;
-	background-color: #428bca;
-	color: white;
-	text-align: center;
-	outline: 1px solid #gray;
-	box-shadow: 0 0 10px gray;
-	border-radius:4px;
+  margin: 15px;
+  padding: 10px;
+  background-color: #428bca;
+  color: white;
+  text-align: center;
+  outline: 1px solid #gray;
+  box-shadow: 0 0 10px gray;
+  border-radius: 4px;
 }
 
 .askAQ {
-	background-color: #f0ad4e;
-	color: white;
-	padding:13px;
-	outline: 1px solid #gray;
-	box-shadow: 0 0 10px gray;
-	border-radius:4px;	
+  background-color: #f0ad4e;
+  color: white;
+  padding: 13px;
+  outline: 1px solid #gray;
+  box-shadow: 0 0 10px gray;
+  border-radius: 4px;
 }
+
+
 /*	This selects all pre with a tab class in it's parent (only the pre that are embedded in the hints)	*/
-.tab>pre{
-	margin-top:10px;
-	margin-bottom:-10px;
-}/**/
+
+.tab>pre {
+  margin-top: 10px;
+  margin-bottom: -10px;
+}
+
+
+/**/

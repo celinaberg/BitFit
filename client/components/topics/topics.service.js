@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('its110App')
-  .factory('topics', function ($http) {
+  .factory('topics', function($http) {
     var o = {
       topics: []
     };
 
     // Public API
     return {
-      getAll: function () {
+      getAll: function() {
         return $http.get('/api/topics').then(function(data) {
           angular.copy(data, o.topics);
         });
@@ -25,7 +25,7 @@ angular.module('its110App')
         return $http.get('/api/topics/' + id).then(function(res){
           return res.data;
         }); */
-        return $http.get('/api/topics/' + id).then(function(res){
+        return $http.get('/api/topics/' + id).then(function(res) {
           return res;
         });
       },
@@ -53,8 +53,8 @@ angular.module('its110App')
       deleteQuestion: function(question, topicID) {
         $http.post('/api/topics/' + topicID + '/delquestion', question).then(function(data) {
           //o.topics.forEach(function(ea) {
-            console.log('thenfully deleted q from topic');
-            console.log(data);
+          console.log('thenfully deleted q from topic');
+          console.log(data);
           //})
         });
         //$http.delete('/api/questions/' + question._id); // is this correct? FIXME

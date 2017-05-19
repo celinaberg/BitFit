@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: loggerCtrl', function () {
+describe('Controller: loggerCtrl', function() {
 
   // load the controller's module
   beforeEach(module('its110App'));
@@ -8,14 +8,14 @@ describe('Controller: loggerCtrl', function () {
   var loggerCtrl, scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function($controller, $rootScope) {
     scope = $rootScope.$new();
     loggerCtrl = $controller('loggerCtrl', {
       $scope: scope
     });
   }));
 
-  it('should ...', function () {
+  it('should ...', function() {
     expect(1).toEqual(1);
   });
 });

@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('its110App')
-  .factory('questions', function ($http) {
+  .factory('questions', function($http) {
     var o = {
       questions: []
     };
 
     // Public API
     return {
-      getAll: function () {
+      getAll: function() {
         return $http.get('/api/questions').then(function(data) {
           angular.copy(data, o.questions);
         });
@@ -51,7 +51,7 @@ angular.module('its110App')
                 }
               });
             }
-          });   
+          });
         });
       },
 

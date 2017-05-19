@@ -1,21 +1,22 @@
 <!-- Question Tab's content -->
 <div ng-show="isSet(1)">
-	<div ng-repeat="q in topic.questions">
-	    <div ng-if="(qInfo.currentQuestion - 1) == $index">
-	    	<!-- Question content -->
-	  		<h4>Question {{ qInfo.currentQuestion }}</h4>
-	    	<span class="pull-right">
+  <div ng-repeat="q in topic.questions">
+    <div ng-if="(qInfo.currentQuestion - 1) == $index">
+      <!-- Question content -->
+      <h4>Question {{ qInfo.currentQuestion }}</h4>
+      <span class="pull-right">
 	    		<div class="btn-group" role="group" aria-label="HelpSection">
 		        	<button type="button" href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
 							<span class="fa fa-flag"></span> Hint
-					</button>
-			<!--		<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
+      </button>
+      <!--		<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
 						<span class="fa fa-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
 					</button>
 				--></div>
-			</span>
-			<br>
-			<br><!--
+    </span>
+    <br>
+    <br>
+    <!--
 			<div ng-controller="AskQuestionCtrl" ng-show="askQuestionForm">
 				<span class="pull-right askAQ">
 					<form class="span3" ng-submit="askAQuestion($parent.topic.title, $parent.q.instructions)">
@@ -40,88 +41,95 @@
 				</span>
 			</div>
 -->
-	        <div ng-bind-html="q.instructions"></div>
+    <div ng-bind-html="q.instructions"></div>
 
-	        <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
-	        	<li><strong>Hint:</strong> <div class="tab" style="white-space:pre-wrap;" ng-bind-html="hint"></div></li>
-	        </ul>	
-	        <p ng-if="hintRequested() && status[qInfo.currentQuestion - 1].hintIndex >= q.hints.length">{{noMoreHints}}</p>     
-	    
-			<!-- Code editor and buttons -->
-			<div class="row">
-				<div class="col-sm-8 vcenter">
-					<div class="ace_lessons" ng-model="q.code" ui-ace="{ require: ['ace/search'], onLoad: aceLoaded }" style="font-size:1em"></div>
-				</div><!--
-		    	--><div class="col-sm-4 vcenter">
-	    			<!-- show for questions requiring student to write code -->
-	    			<div ng-hide="q.readOnly">
-		    			<label for="javaFile">
+    <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
+      <li><strong>Hint:</strong>
+        <div class="tab" style="white-space:pre-wrap;" ng-bind-html="hint"></div>
+      </li>
+    </ul>
+    <p ng-if="hintRequested() && status[qInfo.currentQuestion - 1].hintIndex >= q.hints.length">{{noMoreHints}}</p>
+
+    <!-- Code editor and buttons -->
+    <div class="row">
+      <div class="col-sm-8 vcenter">
+        <div class="ace_lessons" ng-model="q.code" ui-ace="{ require: ['ace/search'], onLoad: aceLoaded }" style="font-size:1em"></div>
+      </div>
+      <!--
+		    	-->
+      <div class="col-sm-4 vcenter">
+        <!-- show for questions requiring student to write code -->
+        <div ng-hide="q.readOnly">
+          <label for="javaFile">
 		    				Please enter the name of your <!--Java--> C file<!--(must match the class name in your code!)-->:
 		    			</label>
-		    			<div class="input-group">
-		  					<input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
-		  						<span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
-						</div>
-			    		<hr>
-						<div class="btn-group-vertical ace_lessons" role="group">
-							<button type="button" class="btn btn-warning" ng-click="compileCode()">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
+            <span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
+          </div>
+          <hr>
+          <div class="btn-group-vertical ace_lessons" role="group">
+            <button type="button" class="btn btn-warning" ng-click="compileCode()">
 								<span class="fa fa-flash"></span> Compile Code
-							</button> 
+							</button>
 
-							<button type="button" class="btn btn-success" ng-click="runCode()">
+            <button type="button" class="btn btn-success" ng-click="runCode()">
 				        		<span class="fa fa-play"></span> Run Code
 				    		</button>
-			    		</div>
-		    		</div>
+          </div>
+        </div>
 
-		    		<!-- show for questions requiring students to guess the output of provided code -->
-		    		<div ng-show="q.readOnly">
-		    			<form>
-			    			<label for="expectedOutputInputBox">
+        <!-- show for questions requiring students to guess the output of provided code -->
+        <div ng-show="q.readOnly">
+          <form>
+            <label for="expectedOutputInputBox">
 			    				Please enter your answer here:
 		    				</label>
-		    				<div class="form-group">
-		    					<textarea class="form-control" rows="3" id="expectedOutputInputBox" ng-model="output.expectedOutput">
+            <div class="form-group">
+              <textarea class="form-control" rows="3" id="expectedOutputInputBox" ng-model="output.expectedOutput">
 		    					</textarea>
-		    				</div>
-	    				</form>
-		    		</div>
+            </div>
+          </form>
+        </div>
 
-		    		<hr>
-					<div class="btn-group-vertical ace_lessons" role="group">
-						<button type="button" class="btn btn-primary" ng-click="checkAnswer()">
+        <hr>
+        <div class="btn-group-vertical ace_lessons" role="group">
+          <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
 							Check My Answer <span class="fa fa-send"></span>
 						</button>
-					</div>
-				</div>
-			</div>
+        </div>
+      </div>
+    </div>
 
-			<!-- Command line output divs -->
-		    <div class="row">
-		    	<hr>
-		    	<div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
-		    		<h4>{{ feedback }}
+    <!-- Command line output divs -->
+    <div class="row">
+      <hr>
+      <div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
+        <h4>{{ feedback }}
 		    		<!--<button type="button" class="close" ng-click="showComments=!showComments">&times;</button>--></h4>
-		    	</div>
-		        <div ng-hide="q.readOnly" class="col-sm-6">
-		    		<div id="commandLineOutput" class="command_line_output_s compile">
-		    			<h4 class="tab"> Compile Output:</h4>
-		        		<pre class="output">{{ output.compileOutput }}</pre>
-		    		</div>
-		        </div>
-		        <div ng-hide="q.readOnly" class="col-sm-6">
-		   			<div id="commandLineOutput" class="command_line_output_s run">
-		   				<h4 class="tab"> Run Output:</h4>
-		        		<pre class="output">{{ output.runOutput }}</pre>
-		    		</div>	        
-		        </div>
-		    </div>
-			<hr>
+      </div>
+      <div ng-hide="q.readOnly" class="col-sm-6">
+        <div id="commandLineOutput" class="command_line_output_s compile">
+          <h4 class="tab"> Compile Output:</h4>
+          <pre class="output">{{ output.compileOutput }}</pre>
+        </div>
+      </div>
+      <div ng-hide="q.readOnly" class="col-sm-6">
+        <div id="commandLineOutput" class="command_line_output_s run">
+          <h4 class="tab"> Run Output:</h4>
+          <pre class="output">{{ output.runOutput }}</pre>
+        </div>
+      </div>
+    </div>
+    <hr>
 
-			<!-- Pagination buttons -->
-			<div class="text-center">
-				<pagination total-items="qInfo.totalQuestions" ng-model="qInfo.currentQuestion" ng-change="pageChanged()"></pagination>
-			</div>
-		</div> <!-- end current question  -->
-    </div> <!-- end question content div -->
-</div> <!-- end question tab content -->
+    <!-- Pagination buttons -->
+    <div class="text-center">
+      <pagination total-items="qInfo.totalQuestions" ng-model="qInfo.currentQuestion" ng-change="pageChanged()"></pagination>
+    </div>
+  </div>
+  <!-- end current question  -->
+</div>
+<!-- end question content div -->
+</div>
+<!-- end question tab content -->

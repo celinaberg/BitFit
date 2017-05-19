@@ -1,7 +1,7 @@
-
 /**
  * Bootstrap Fonts
  */
+
 
 /*@font-face {
     font-family: 'fas Halflings';
@@ -12,9 +12,11 @@
     url('../bower_components/bootstrap/fonts/fas-halflings-regular.svg#fas_halflingsregular') format('svg');
 }*/
 
+
 /**
  *Font Awesome Fonts
  */
+
 
 /*@font-face {
     font-family: 'FontAwesome';
@@ -27,9 +29,11 @@
     font-style: normal;
 }*/
 
+
 /**
  * App-wide Styles
  */
+
 
 /*.browsehappy {
     margin: 0.2em 0;
@@ -68,9 +72,11 @@ a:hover, a:active, a:focus {
 
 
 /*  NEW STYLES */
+
 .bg-primary {
   background-color: #45ADA8 !important;
 }
+
 .bg-inverse {
   background-color: #594F4F !important;
 }

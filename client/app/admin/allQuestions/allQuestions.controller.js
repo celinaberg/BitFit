@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('AllQuestionsCtrl', function ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
+  .controller('AllQuestionsCtrl', function($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data;
     $scope.topicsEC = topicPromiseEC.data;
-    
+
     $scope.editor = {};
     $scope.editors = [];
-    
+
     $scope.newQuestion = {};
     $scope.newQuestion.hints = [];
 
@@ -16,7 +16,7 @@ angular.module('its110App')
 
     $scope.compileOutput = '';
     $scope.runOutput = '';
-    
+
     $scope.showComments = false;
     $scope.feedback = '';
     $scope.className = '';
@@ -24,11 +24,11 @@ angular.module('its110App')
     $scope.editQuestionToggle = false;
     $scope.questionsToImport = '';
     /**
-      * Toggles the read only value of the starter code for this question.
-      * @param {number} index the index of the code editor for this question.
-      *                 Use -1 for adding a new question.
-      * @return {} fixme
-      */
+     * Toggles the read only value of the starter code for this question.
+     * @param {number} index the index of the code editor for this question.
+     *                 Use -1 for adding a new question.
+     * @return {} fixme
+     */
     $scope.toggleReadOnly = function(index) {
       var editor = {};
       var q = {};
@@ -69,13 +69,13 @@ angular.module('its110App')
         className = $scope.className;
       }
 
-    // if (endsWith(className, '.java')) {
-    if (endsWith(className, '.c')) {
-      className.slice(0, -5);
-      return className.slice(0, -5);
-    } else {
-      return className;
-    }
+      // if (endsWith(className, '.java')) {
+      if (endsWith(className, '.c')) {
+        className.slice(0, -5);
+        return className.slice(0, -5);
+      } else {
+        return className;
+      }
     };
 
     var getFileName = function(useEditQuestion) {
@@ -118,13 +118,14 @@ angular.module('its110App')
       console.log(code);
       //var editedCode = code.replace(/\\/g, '\\\\');
       //console.log(editedCode);
-      var obj = { 'className': className,
-                    'fileName': fileName,
-                    'code': code, //editedCode,
-                    'user': Auth.getCurrentUser(),
-                    'questionNum': $scope.questionIndex
-          };
-        $http.post('api/clis/compile', obj).then(function(data) {
+      var obj = {
+        'className': className,
+        'fileName': fileName,
+        'code': code, //editedCode,
+        'user': Auth.getCurrentUser(),
+        'questionNum': $scope.questionIndex
+      };
+      $http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -146,13 +147,14 @@ angular.module('its110App')
         fileName = getFileName(true);
       }
 
-        var obj = { 'fileName': fileName,
-                    'user': Auth.getCurrentUser()
-                  };
+      var obj = {
+        'fileName': fileName,
+        'user': Auth.getCurrentUser()
+      };
       $http.post('api/clis/run', obj).then(function(data) {
-          $scope.runOutput = data;
-        });
-        //logging.progress.numRuns++;
+        $scope.runOutput = data;
+      });
+      //logging.progress.numRuns++;
     };
 
     $scope.editTopic = function() {
@@ -165,7 +167,7 @@ angular.module('its110App')
           if (ea._id === data._id) {
             angular.copy(data, ea);
           }
-        });        
+        });
       });
     };
 
@@ -206,9 +208,9 @@ angular.module('its110App')
     //    } else {
     //      data.trim();
     //      $scope.CLOutput += data;
-    //      console.log($scope.CLOutput); 
+    //      console.log($scope.CLOutput);
     //    }
-        
+
     //  })
     // }
 
@@ -227,17 +229,17 @@ angular.module('its110App')
       // Set up an editor for the question
       var editor = ace.edit('editor' + index);
       //editor.getSession().setUseWorker(false);
-    // Editor part
-    var _session = editor.getSession();
-    var _renderer = editor.renderer;
+      // Editor part
+      var _session = editor.getSession();
+      var _renderer = editor.renderer;
 
-    // Options
-    //_editor.setReadOnly(false);
-    //_session.setUndoManager(new ace.UndoManager());
-    _renderer.setShowGutter(true);
-    editor.setTheme('ace/theme/crimson_editor');
-    // _session.setMode('ace/mode/java');
-    _session.setMode('ace/mode/c_cpp');
+      // Options
+      //_editor.setReadOnly(false);
+      //_session.setUndoManager(new ace.UndoManager());
+      _renderer.setShowGutter(true);
+      editor.setTheme('ace/theme/crimson_editor');
+      // _session.setMode('ace/mode/java');
+      _session.setMode('ace/mode/c_cpp');
       $scope.editors[index] = editor;
 
       $scope.questionToEdit = $scope.questions[index];
@@ -248,17 +250,17 @@ angular.module('its110App')
 
     $scope.isActive = function(id) {
       // this function is dependent on the URL set in topics.js
-        return ('/admin/allQuestions/' + id) === $location.path();
+      return ('/admin/allQuestions/' + id) === $location.path();
     };
 
     $scope.getQTopic = function(questionID) {
-        for(var i = 0; i < $scope.topicsEC.length; i++) {
-          if($scope.topicsEC[i].questions.indexOf(questionID) !== -1) {
-            return $scope.topicsEC[i];
-          }
+      for (var i = 0; i < $scope.topicsEC.length; i++) {
+        if ($scope.topicsEC[i].questions.indexOf(questionID) !== -1) {
+          return $scope.topicsEC[i];
         }
+      }
 
-        return null;
+      return null;
     }
 
     $scope.aceLoaded = function(_editor) {
@@ -283,52 +285,59 @@ angular.module('its110App')
       console.log('aceloaded func');
       console.log($scope.editor);
       // Events
-      // _editor.on('changeSession', function(){ //... 
+      // _editor.on('changeSession', function(){ //...
       // });
-      // _session.on("change", function(){ 
-      // //  alert(_session.getValue()); 
+      // _session.on("change", function(){
+      // //  alert(_session.getValue());
       // });
     };
 
     $scope.addQuestion = function() {
-      if($scope.newQuestion.instructions === '') { return; }
+      if ($scope.newQuestion.instructions === '') {
+        return;
+      }
       questions.create({
-          instructions: $scope.newQuestion.instructions,
-          code: $scope.newQuestion.code,
-          className: getClassName(false),
-          readOnly: $scope.newQuestion.readOnly,
-          expectedOutput: $scope.newQuestion.expectedOutput,
-          hints: $scope.newQuestion.hints,
-          tags: $scope.newQuestion.tags
+        instructions: $scope.newQuestion.instructions,
+        code: $scope.newQuestion.code,
+        className: getClassName(false),
+        readOnly: $scope.newQuestion.readOnly,
+        expectedOutput: $scope.newQuestion.expectedOutput,
+        hints: $scope.newQuestion.hints,
+        tags: $scope.newQuestion.tags
       }).then(function(question) {
-          $scope.questions.push(question);
-        });
-      
+        $scope.questions.push(question);
+      });
+
       $scope.newQuestion = {};
       $scope.newQuestion.hints = [];
     };
 
     // FIXME: strange error
     $scope.importQuestions = function() {
-      if($scope.questionsToImport === '') { return; }
+      if ($scope.questionsToImport === '') {
+        return;
+      }
       questions.import($scope.questionsToImport).then(function(newQuestions) {
-          for (var i=0; i<newQuestions.length; i++){
-              $scope.questions.push(newQuestions[i]);
-          }
-          var message = "You have successfully imported new questions! Scroll to the bottom of the page to see.";
-          Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
-        });
+        for (var i = 0; i < newQuestions.length; i++) {
+          $scope.questions.push(newQuestions[i]);
+        }
+        var message = "You have successfully imported new questions! Scroll to the bottom of the page to see.";
+        Flash.create('success', message, 3500, {
+          class: 'flash',
+          id: 'flash-id'
+        }, true);
+      });
       $scope.questionsToImport = '';
     };
 
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function(questionIndex) {
-    $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-    questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(function() {
-          // update scope array of questions?
-          $scope.questionToEdit = {};
-          $scope.questionToEdit.hints = [];
-        });
+      $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
+      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(function() {
+        // update scope array of questions?
+        $scope.questionToEdit = {};
+        $scope.questionToEdit.hints = [];
+      });
     };
 
 
@@ -338,71 +347,77 @@ angular.module('its110App')
       //console.log($scope.topic.questions);
       var conf = confirm("Are you sure you want to permanantly delete that question?");
       if (conf == true) {
-        questions.delete($scope.questions[index], $scope.questions[index]._id);//.then(function(question) {
+        questions.delete($scope.questions[index], $scope.questions[index]._id); //.then(function(question) {
         // why does this success function not get called?
         //console.log('successfully deleted question: ' + question);
         //});
         console.log('deleted q in edit content controller now');
-        //$scope.topic.questions[index].splice(index, 1); 
+        //$scope.topic.questions[index].splice(index, 1);
         $scope.questions.splice(index, 1);
-      } 
-      
+      }
+
 
       //$http.delete('/api/questions/' + id);
     };
 
     $scope.changeQTopic = function(question, index, newTopic) {
       // if no new topic, remove from current topic
-      if(newTopic === null) {
-        if($scope.getQTopic(question._id)) {
+      if (newTopic === null) {
+        if ($scope.getQTopic(question._id)) {
           topics.deleteQuestion(question, $scope.getQTopic(question._id)._id);
         }
 
         var message = "The question has been removed from its topic.";
-        Flash.create('info', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
-      } else if($scope.getQTopic(question._id)) {
+        Flash.create('info', message, 3500, {
+          class: 'flash',
+          id: 'flash-id'
+        }, true);
+      } else if ($scope.getQTopic(question._id)) {
         // if has current topic, remove from current topic
         topics.deleteQuestion(question, $scope.getQTopic(question._id)._id);
         console.log('deleted q from old topic');
         $scope.getQTopic(question._id).questions.splice(index, 1);
       }
-      if(newTopic !== null) {
+      if (newTopic !== null) {
         // add to new topic
         topics.addQuestion(newTopic._id, question).then(function(question) {
           newTopic.questions.push(question);
           console.log('added q to new topic');
           var message = "You have successfully changed the question's topic!";
-          Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true);  
+          Flash.create('success', message, 3500, {
+            class: 'flash',
+            id: 'flash-id'
+          }, true);
         });
-      } 
+      }
     };
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('question');
     });
 
     /// trying question reordering http://stackoverflow.com/a/27709541
     $scope.moveQUp = function(index) {
-      if(index > -1 && index < $scope.topic.questions.length - 1) {
-        var tmp = $scope.topic.questions[index+1];
-        $scope.topic.questions[index+1] = $scope.topic.questions[index];
+      if (index > -1 && index < $scope.topic.questions.length - 1) {
+        var tmp = $scope.topic.questions[index + 1];
+        $scope.topic.questions[index + 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
       $scope.editTopic();
     }
     $scope.moveQDown = function(index) {
-      if(index > 0 && index < $scope.topic.questions.length) {
-        var tmp = $scope.topic.questions[index-1];
-        $scope.topic.questions[index-1] = $scope.topic.questions[index];
+      if (index > 0 && index < $scope.topic.questions.length) {
+        var tmp = $scope.topic.questions[index - 1];
+        $scope.topic.questions[index - 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
       $scope.editTopic();
     }
 
-    $scope.clearSearch = function(){
-        if($scope.search.tags.length == 0){
-            delete $scope.search;
-        }
+    $scope.clearSearch = function() {
+      if ($scope.search.tags.length == 0) {
+        delete $scope.search;
+      }
     }
 
 

@@ -1,26 +1,26 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
-    $scope.topic = topic.data; 
-	  $scope.topicsTC = topicPromiseTC.data;
-	  $scope.tab = 1;
-  	
-    if($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
+  .controller('TopicsCtrl', function($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
+    $scope.topic = topic.data;
+    $scope.topicsTC = topicPromiseTC.data;
+    $scope.tab = 1;
+
+    if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
       $scope.qInfo = {
-       currentQuestion: $location.search().q,
-       totalQuestions: $scope.topic.questions.length*10
+        currentQuestion: $location.search().q,
+        totalQuestions: $scope.topic.questions.length * 10
       };
     } else {
       $scope.qInfo = {
         currentQuestion: 1,
-        totalQuestions: $scope.topic.questions.length*10
+        totalQuestions: $scope.topic.questions.length * 10
       };
     }
-    
-  	$scope.status = [];
+
+    $scope.status = [];
     $scope.noMoreHints = 'Sorry, there are no more hints for this question';
-  	$scope.editor = {};
+    $scope.editor = {};
 
 
 
@@ -71,12 +71,13 @@ angular.module('its110App')
         $scope.output.compileOutput = 'In order to compile your program, please enter a name for your C file.\n';
         return;
       }
-      var obj = { 'className': className,
-                  'fileName': fileName,
-                  'code': code, //editedCode,
-                  'user': Auth.getCurrentUser(),
-                  'questionNum': $scope.qInfo.currentQuestion
-          };
+      var obj = {
+        'className': className,
+        'fileName': fileName,
+        'code': code, //editedCode,
+        'user': Auth.getCurrentUser(),
+        'questionNum': $scope.qInfo.currentQuestion
+      };
       $http.post('api/clis/compile', obj).then(function(data) {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
@@ -98,14 +99,15 @@ angular.module('its110App')
       //             'user': Auth.getCurrentUser()
       //           };
       var fileName = getFileName();
-      var obj = { 'fileName': fileName,
-                  'user': Auth.getCurrentUser()
-                };
+      var obj = {
+        'fileName': fileName,
+        'user': Auth.getCurrentUser()
+      };
       $http.post('api/clis/run', obj).then(function(data) {
         if (typeof(data) === 'object') { // Likely error
-          $scope.output.runOutput += $scope.handleError(data); 
+          $scope.output.runOutput += $scope.handleError(data);
         } else {
-          $scope.output.runOutput = data;  
+          $scope.output.runOutput = data;
         }
       });
       logging.progress.numRuns++;
@@ -114,31 +116,31 @@ angular.module('its110App')
 
     $scope.handleError = function(data) {
       var str = JSON.stringify(data);
-      if(str.search('"killed"') !== -1) {
+      if (str.search('"killed"') !== -1) {
         if (str.search('"killed":true') !== -1) {
-          return '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.'; 
+          return '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.';
         } else { // program wasn't killed but some other error happened when attempting to run
           return '\nERROR: The system encountered an error when attempting to run your program. Check your code for errors.';
-        }  
+        }
       }
     };
 
-  	$scope.hintRequested = function() {
-  		return $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested;
-  	};
+    $scope.hintRequested = function() {
+      return $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested;
+    };
 
-  	$scope.isSet = function(checkTab) {
-          return $scope.tab === checkTab;
+    $scope.isSet = function(checkTab) {
+      return $scope.tab === checkTab;
     };
 
     $scope.setTab = function(activeTab) {
-          $scope.tab = activeTab;
+      $scope.tab = activeTab;
     };
 
     // fixme: what happens when user pushes check answer a second time on the same question?
     /** Checks if student's answer matches the run output (for read only code), or
-      * the expected code (if student is writing the code). Updates feedback variable accordingly.
-      */
+     * the expected code (if student is writing the code). Updates feedback variable accordingly.
+     */
     $scope.checkAnswer = function() {
       $scope.showComments = true;
       $scope.feedback = 'Checking answer...';
@@ -148,12 +150,13 @@ angular.module('its110App')
       var code = $scope.editor.getValue();
       //var editedCode = code.replace(/\\/g, '\\\\');
 
-      var obj = { 'className': className,
-                  'fileName': fileName,
-                  'code': code, //editedCode,
-                  'user': Auth.getCurrentUser(),
-                  'questionNum': $scope.qInfo.currentQuestion
-          };
+      var obj = {
+        'className': className,
+        'fileName': fileName,
+        'code': code, //editedCode,
+        'user': Auth.getCurrentUser(),
+        'questionNum': $scope.qInfo.currentQuestion
+      };
       if (typeof(code) === 'undefined' || code === '') {
         $scope.showComments = false;
         $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n';
@@ -169,7 +172,7 @@ angular.module('its110App')
         $http.post('api/clis/run', obj).then(function(data) {
           if (typeof(data) === 'object') { // Likely an error
             $scope.showComments = false;
-            $scope.output.runOutput += $scope.handleError(data);  
+            $scope.output.runOutput += $scope.handleError(data);
           } else {
             $scope.output.runOutput = data;
             // now we compare runOutput to expected output for this question
@@ -180,24 +183,24 @@ angular.module('its110App')
               $scope.feedback = 'Your output doesn\'t quite match the output we\'re looking for. Please try again\n';
             }
           }
-          
+
         });
       });
     };
 
     $scope.showHint = function() {
-    	// Increment hint index for this question
-    	if ($scope.status[$scope.qInfo.currentQuestion - 1].hintRequested === true) {
-    		if ($scope.status[$scope.qInfo.currentQuestion - 1].hintIndex < $scope.topic.questions[$scope.qInfo.currentQuestion - 1].hints.length) {
-    			$scope.status[$scope.qInfo.currentQuestion - 1].hintIndex += 1;	
-    		}
-    	} else {
-    		$scope.status[$scope.qInfo.currentQuestion - 1].hintRequested = true;
-    	}
+      // Increment hint index for this question
+      if ($scope.status[$scope.qInfo.currentQuestion - 1].hintRequested === true) {
+        if ($scope.status[$scope.qInfo.currentQuestion - 1].hintIndex < $scope.topic.questions[$scope.qInfo.currentQuestion - 1].hints.length) {
+          $scope.status[$scope.qInfo.currentQuestion - 1].hintIndex += 1;
+        }
+      } else {
+        $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested = true;
+      }
       logging.progress.numHints++;
     };
 
-    $scope.setPage = function (pageNo) {
+    $scope.setPage = function(pageNo) {
       $scope.qInfo.currentQuestion = pageNo;
     };
 
@@ -209,7 +212,7 @@ angular.module('its110App')
     $scope.pageChanged = function() {
       // Update ace editor on page
       $scope.updatePageWithNewQuestion();
-      
+
       // Log previous question's data
       logging.progress.endTime = Date.now();
       logging.logProgress(); // async so this returns immediately
@@ -222,7 +225,7 @@ angular.module('its110App')
       $location.search('q', $scope.qInfo.currentQuestion);
     };
 
-   	// $scope.nextQuestion = function() {
+    // $scope.nextQuestion = function() {
     //     if ($scope.questionIndex >= $scope.topic.questions.length -1) {
     //         $scope.questionIndex = 0;
     //     }
@@ -248,7 +251,7 @@ angular.module('its110App')
     //     } else {
     //         $scope.questionIndex --;
     //     }
-    //     // Update ace editor on page        
+    //     // Update ace editor on page
     //     $scope.updatePageWithNewQuestion();
 
     //     // Log previous question's data
@@ -258,59 +261,59 @@ angular.module('its110App')
     //     // Set up logging for new question
     //     logging.progress.topic = $scope.topic._id;
     //     logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
-    //     logging.progress.startTime = Date.now();        
+    //     logging.progress.startTime = Date.now();
     // };
 
     $scope.isActive = function(id) {
-    	// this function is dependent on the URL set in topics.js
-    	return ('/lessons/topics/' + id) === $location.path();
+      // this function is dependent on the URL set in topics.js
+      return ('/lessons/topics/' + id) === $location.path();
     };
 
     $scope.aceLoaded = function(_editor) {
-	    // Editor part
+      // Editor part
       //_editor.getSession().setUseWorker(false);
-	    var _session = _editor.getSession();
-	    var _renderer = _editor.renderer;
-      
+      var _session = _editor.getSession();
+      var _renderer = _editor.renderer;
 
-	    // Options
-	    //_editor.setReadOnly(false);
-	    //_session.setUndoManager(new ace.UndoManager());
-	    _renderer.setShowGutter(true);
-		  _editor.setTheme('ace/theme/crimson_editor');
+
+      // Options
+      //_editor.setReadOnly(false);
+      //_session.setUndoManager(new ace.UndoManager());
+      _renderer.setShowGutter(true);
+      _editor.setTheme('ace/theme/crimson_editor');
       _editor.setFontSize('11');
       _editor.setShowPrintMargin(false);
-    	// _session.setMode('ace/mode/java');
+      // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp');
 
-    	$scope.editor = _editor;
+      $scope.editor = _editor;
 
-    	$scope.updatePageWithNewQuestion();
-    	_editor.focus();
+      $scope.updatePageWithNewQuestion();
+      _editor.focus();
 
-	    // Events
-	    //_editor.on("changeSession", function(){ //... 
-	    //});
-	    //_session.on("change", function(){ 
-	    //	alert(_session.getValue()); 
-	    //});
-  	};
+      // Events
+      //_editor.on("changeSession", function(){ //...
+      //});
+      //_session.on("change", function(){
+      //	alert(_session.getValue());
+      //});
+    };
 
-  	$scope.updatePageWithNewQuestion = function() {
+    $scope.updatePageWithNewQuestion = function() {
       $scope.showComments = false;
       $scope.output.runOutput = '';
       $scope.output.compileOutput = '';
       // Return if there are no questions
-  		if (typeof($scope.topic.questions) === 'undefined' ||
-          typeof($scope.topic.questions[$scope.qInfo.currentQuestion -1]) === 'undefined') { 
+      if (typeof($scope.topic.questions) === 'undefined' ||
+        typeof($scope.topic.questions[$scope.qInfo.currentQuestion - 1]) === 'undefined') {
         return;
       }
       var currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1];
-      
+
       // Set starter code, if this question has any
-    	if (typeof(currQuestion.code) !== 'undefined') {
-	    	$scope.editor.setValue($scope.topic.questions[$scope.qInfo.currentQuestion - 1].code, -1); // -1 is document start    		
-    	}
+      if (typeof(currQuestion.code) !== 'undefined') {
+        $scope.editor.setValue($scope.topic.questions[$scope.qInfo.currentQuestion - 1].code, -1); // -1 is document start
+      }
 
       // Set class name variable, if provided
       if (typeof(currQuestion.className) !== 'undefined') {
@@ -327,35 +330,34 @@ angular.module('its110App')
       }
 
       // Set editor to read only if question requires it
-      if(currQuestion.readOnly) {
+      if (currQuestion.readOnly) {
         $scope.editor.setReadOnly(true);
       } else {
         $scope.editor.setReadOnly(false);
       }
-  	};
+    };
 
-  	// Reset button on code editor: resets the starter code (if any) given for this question
- 	 //  $scope.reset = function(week, q) {
-  	// 	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
-  	// };
+    // Reset button on code editor: resets the starter code (if any) given for this question
+    //  $scope.reset = function(week, q) {
+    // 	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
+    // };
 
-  	$scope.init = function() {
-		  for (var i = 0; i < $scope.topic.questions.length; i++) {
-  			$scope.status.push(
-  			{
-  				hintIndex: 0,
-  				hintRequested: false
-  			});
-  		}
-      
+    $scope.init = function() {
+      for (var i = 0; i < $scope.topic.questions.length; i++) {
+        $scope.status.push({
+          hintIndex: 0,
+          hintRequested: false
+        });
+      }
+
       logging.progress.topic = $scope.topic._id;
-      
+
       if ($scope.topic.questions.length > 0) {
-        logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id; // for first question only  
+        logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id; // for first question only
         logging.progress.startTime = Date.now();
       }
-  	};
+    };
 
-  	$scope.init();
+    $scope.init();
 
   });

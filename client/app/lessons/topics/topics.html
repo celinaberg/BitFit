@@ -1,49 +1,50 @@
-
-<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/navbar/navbar.html'">
+</div>
 
 <div class="container-fluid">
-	<div class="row">
-		<!-- sidebar content -->
-		<div class="col-sm-3 col-md-2 sidebar">
-			<ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
-				<li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic.title)}">
-					<!-- <a ng-href="lessons/topics/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a>  -->
-					<a ng-href="lessons/topics/{{topic.title}}" ng-click="topicNav()">{{topic.title}}</a> 
-				</li>
-			</ul>
+  <div class="row">
+    <!-- sidebar content -->
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <!-- put ng-repeat on here to nest menus for multiple q's per week -->
+        <li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic.title)}">
+          <!-- <a ng-href="lessons/topics/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a>  -->
+          <a ng-href="lessons/topics/{{topic.title}}" ng-click="topicNav()">{{topic.title}}</a>
+        </li>
+      </ul>
 
-			<!-- user's progress content -->
-			<!-- <user-progress></user-progress> -->  
-		</div>		
+      <!-- user's progress content -->
+      <!-- <user-progress></user-progress> -->
+    </div>
 
 
-		<!-- main content -->
-		<div class="col-xs-9 col-sm-10 col-xs-offset-3 col-mid-10 col-lg-offset-2 main">
-			<h1 class="page-header">{{topic.title}}</h1>
-			<!-- <div class="row"> -->
-				<!-- Left Content -->
-				<!-- <div class="col-sm-5"> -->
+    <!-- main content -->
+    <div class="col-xs-9 col-sm-10 col-xs-offset-3 col-mid-10 col-lg-offset-2 main">
+      <h1 class="page-header">{{topic.title}}</h1>
+      <!-- <div class="row"> -->
+      <!-- Left Content -->
+      <!-- <div class="col-sm-5"> -->
 
-			<!-- Tabs Content-->
-			<section>
-			  <ul class="nav nav-tabs">
-			    <li ng-class="{ active:isSet(1) }">
-			      <a href ng-click="setTab(1)">Questions</a>
-			    </li>
-			    <li ng-class="{ active:isSet(2) }">
-			      <a href ng-click="setTab(2)">Background</a>
-			    </li>
-			  </ul>
-			  <!--  Question Tab's Content  -->
-			  <question-instructions ng-show="isSet(1)"></question-instructions>
+      <!-- Tabs Content-->
+      <section>
+        <ul class="nav nav-tabs">
+          <li ng-class="{ active:isSet(1) }">
+            <a href ng-click="setTab(1)">Questions</a>
+          </li>
+          <li ng-class="{ active:isSet(2) }">
+            <a href ng-click="setTab(2)">Background</a>
+          </li>
+        </ul>
+        <!--  Question Tab's Content  -->
+        <question-instructions ng-show="isSet(1)"></question-instructions>
 
-			  <!--  Background Tab's Content  -->
-			  <background ng-show="isSet(2)"></background>
-			</section>
-		</div>
+        <!--  Background Tab's Content  -->
+        <background ng-show="isSet(2)"></background>
+      </section>
+    </div>
 
-				<!--Right Content -->
-				<!--
+    <!--Right Content -->
+    <!--
 				<div class="col-sm-4">
 					<div ng-model="code" ui-ace="{ onLoad: aceLoaded }"></div>
 					<div class="editor-btns">
@@ -54,6 +55,6 @@
 					</div>
 				</div>
 				-->
-		</div>
-	</div>
+  </div>
+</div>
 </div>

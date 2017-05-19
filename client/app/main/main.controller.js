@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function($scope, $http, socket) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').then(function(awesomeThings) {
@@ -10,10 +10,12 @@ angular.module('its110App')
     });
 
     $scope.addThing = function() {
-      if($scope.newThing === '') {
+      if ($scope.newThing === '') {
         return;
       }
-      $http.post('/api/things', { name: $scope.newThing });
+      $http.post('/api/things', {
+        name: $scope.newThing
+      });
       $scope.newThing = '';
     };
 
@@ -21,7 +23,7 @@ angular.module('its110App')
       $http.delete('/api/things/' + thing._id);
     };
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
     });
   });
