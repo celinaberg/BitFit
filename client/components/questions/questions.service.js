@@ -11,6 +11,7 @@ angular.module('its110App')
       getAll: function() {
         return $http.get('/api/questions').then(function(data) {
           angular.copy(data, o.questions);
+          return o.questions;
         });
       },
 

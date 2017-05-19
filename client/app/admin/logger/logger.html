@@ -4,13 +4,21 @@
   <div class="row">
 
     <!-- sidebar content -->
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
-        <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
-        <li class="active"><a ng-href="/admin/logger">Logger</a></li>
-        <li><a ng-href="/admin">Add a Topic</a></li>
-      </ul>
+    <div class="col-sm-3 col-md-2 p-0 bg-faded">
+      <div class="container p-0">
+        <div class="col-12">
+          <a ng-href="/admin/allQuestions">Manage all Questions</a>
+        </div>
+        <div class="col-12">
+          <a ng-href="/admin/logger">Logger</a>
+        </div>
+        <div class="col-12 active">
+          <a ng-href="/admin">Add a Topic</a>
+        </div>
+      </div>
     </div>
+
+
     <div class="col-xs-9 col-sm-10 col-xs-offset-3 col-mid-10 col-lg-offset-2 main">
       <h2 class="page-header">Student statistics</h1>
 	    	<div id="chartContainer">

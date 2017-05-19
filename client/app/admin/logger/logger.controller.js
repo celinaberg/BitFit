@@ -57,7 +57,7 @@ angular.module('its110App')
         })
         .entries(data);
       $scope.data = nested_data;
-    }).error(function(err) {
+    }).catch(function(err) {
       throw err;
     });
 
