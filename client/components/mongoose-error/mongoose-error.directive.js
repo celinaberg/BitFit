@@ -3,7 +3,7 @@
 /**
  * Removes server error when user updates input
  */
-angular.module('its110App')
+angular.module('bitfit')
   .directive('mongooseError', function() {
     return {
       restrict: 'A',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('SignupCtrl', function($scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};

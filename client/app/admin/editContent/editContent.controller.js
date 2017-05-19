@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('EditContentCtrl', function($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, Flash) {
     $scope.topic = topic.data;
     $scope.topicsEC = topicPromiseEC.data;

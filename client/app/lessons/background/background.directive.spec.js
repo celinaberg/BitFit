@@ -3,7 +3,7 @@
 describe('Directive: background', function() {
 
   // load the directive's module and view
-  beforeEach(module('its110App'));
+  beforeEach(module('bitfit'));
   beforeEach(module('app/lessons/background/background.html'));
 
   var element, scope;

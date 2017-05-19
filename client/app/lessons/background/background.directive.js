@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .directive('background', function() {
     return {
       templateUrl: 'app/lessons/background/background.html',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('AdminCtrl', function($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
     //$scope.topic = topic;
     $scope.topics = topicPromiseAC.data;

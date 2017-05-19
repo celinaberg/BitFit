@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('AskQuestionCtrl', function($scope, Auth, askAQuestion) { // topics is for manipulating questions
     /*
   email: String,

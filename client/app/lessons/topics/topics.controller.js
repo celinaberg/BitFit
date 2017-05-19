@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('TopicsCtrl', function($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
     $scope.topic = topic.data;
     $scope.topicsTC = topicPromiseTC.data;

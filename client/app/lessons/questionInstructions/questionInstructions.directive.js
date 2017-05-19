@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .directive('questionInstructions', function() {
     return {
       templateUrl: 'app/lessons/questionInstructions/question-instructions.html',

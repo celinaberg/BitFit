@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .factory('User', function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
 

@@ -3,7 +3,7 @@
 describe('Controller: LessonsCtrl', function() {
 
   // load the controller's module
-  beforeEach(module('its110App'));
+  beforeEach(module('bitfit'));
 
   var LessonsCtrl, scope;
 

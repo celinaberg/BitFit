@@ -3,7 +3,7 @@
 describe('Directive: questionInstructions', function() {
 
   // load the directive's module and view
-  beforeEach(module('its110App'));
+  beforeEach(module('bitfit'));
   beforeEach(module('app/lessons/questionInstructions/question-instructions.html'));
 
   var element, scope;

@@ -1,7 +1,7 @@
 /* global io */
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url

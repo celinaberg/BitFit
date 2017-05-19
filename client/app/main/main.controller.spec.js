@@ -3,7 +3,7 @@
 describe('Controller: MainCtrl', function() {
 
   // load the controller's module
-  beforeEach(module('its110App'));
+  beforeEach(module('bitfit'));
   beforeEach(module('socketMock'));
 
   var MainCtrl,

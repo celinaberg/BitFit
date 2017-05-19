@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('LessonsCtrl', function($http, $scope, $location, $stateParams, Auth, socket, topics, topicPromise) {
     $scope.editor = {};
     $scope.questionIndex = 0;

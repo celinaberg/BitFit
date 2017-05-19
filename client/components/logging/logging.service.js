@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .factory('logging', function($http, Auth) {
 
     // Public API

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App')
+angular.module('bitfit')
   .controller('AllQuestionsCtrl', function($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data;
     $scope.topicsEC = topicPromiseEC.data;

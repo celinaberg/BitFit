@@ -3,7 +3,7 @@
 describe('Service: questions', function() {
 
   // load the service's module
-  beforeEach(module('its110App'));
+  beforeEach(module('bitfit'));
 
   // instantiate service
   var questions;

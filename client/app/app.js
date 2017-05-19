@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('its110App', [
+angular.module('bitfit', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
