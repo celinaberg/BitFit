@@ -51,6 +51,7 @@ Question.find({}).remove(function() {
   Question.create({
       instructions: "New, w1q1 from MongoDB!! Add code to the code editor to make the system output numbers 1 through 10.",
       code: "for (int i = 0; i < 10; i ++) {\n\n}",
+      expectedOutput: "12345678910",
       hints: ["first hint", "second hint", "third hint! Do you get it now?"]
     }, {
       path: '/week1',
