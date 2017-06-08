@@ -88,6 +88,8 @@ Vagrant.configure("2") do |config|
     nvm alias default 8
     cd /home/comped/BitFit
     npm install
+    npm install -g bower
+    bower install
     cp server/config/local.env.sample.js server/config/local.env.js
   SHELL
 end
