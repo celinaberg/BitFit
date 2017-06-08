@@ -1,9 +1,10 @@
 {
-  "name": "its110",
-  "version": "0.0.0",
+  "name": "bitfit",
+  "version": "0.1.0",
   "main": "server/app.js",
   "dependencies": {
     "body-parser": "~1.17.1",
+    "chalk": "^1.1.3",
     "composable-middleware": "^0.3.0",
     "compression": "~1.6.2",
     "cookie-parser": "~1.4.3",
@@ -11,6 +12,7 @@
     "errorhandler": "~1.5.0",
     "express": "~4.15.2",
     "express-jwt": "^5.3.0",
+    "grunt-express-server": "^0.5.3",
     "jsesc": "^2.5.0",
     "jsonwebtoken": "^7.4.0",
     "lodash": "~4.17.4",
@@ -24,20 +26,36 @@
   },
   "devDependencies": {
     "connect-livereload": "~0.6.0",
+    "grunt": "^1.0.1",
     "grunt-build-control": "^0.7.1",
     "jit-grunt": "^0.10.0",
     "jshint-stylish": "~2.2.1",
     "open": "~0.0.4",
     "should": "~11.2.1",
     "supertest": "~3.0.0",
-    "time-grunt": "~1.4.0"
+    "time-grunt": "~1.4.0",
+    "async": "^2.4.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-mocha-test": "^0.13.2",
+    "grunt-asset-injector": "^0.1.0",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-env": "^0.4.4",
+    "grunt-open": "^0.2.3",
+    "grunt-parallel": "^0.5.1",
+    "grunt-wiredep": "^3.0.1",
+    "hooker": "^0.2.3",
+    "mocha": "^3.4.2"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "start": "node server/app.js",
     "test": "grunt test",
+    "serve": "grunt serve",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
