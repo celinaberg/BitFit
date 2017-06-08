@@ -1,5 +1,4 @@
 # BitFit
-
 An app designed to help students learn to write and read C code.
 
 BitFit is forked from Modsquad-AVA/BitFit, which was designed to help students learn Java.
@@ -7,7 +6,6 @@ BitFit is forked from Modsquad-AVA/BitFit, which was designed to help students l
 BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS](https://angularjs.org/). 
 
 ## Features
-
 - Student version of web app
   - Questions where students can write and run real C code
 - Admin section of web app
@@ -25,22 +23,22 @@ BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS]
  - `npm run serve`
  - Navigate to localhost:8080 to view site
 
-### Run for Production
+## Run for Production
 I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and has a lot of cool features.
-* To install: 
+ -  To install: 
 
   ```
   sudo su
   npm install pm2 -g
   ```
-* To run BitFit:
+ - To run BitFit:
 
   ```
   sudo su
   pm2 start server/app.js --name BitFit
   ```
   
-* To start/stop/restart:
+ - To start/stop/restart:
 
   ```
   sudo su
