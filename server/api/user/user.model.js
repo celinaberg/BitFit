@@ -8,7 +8,32 @@ var UserSchema = new Schema({
   name: String,
   email: {
     type: String,
-    lowercase: true
+    lowercase: true,
+    validate: [{
+        validator: function(v) {
+          return v.length != 0;
+        },
+        message: 'Email cannot be blank'
+      },
+      {
+        isAsync: true,
+        validator: function(v, cb) {
+          var self = this;
+          this.constructor.findOne({
+            email: v
+          }, function(err, user) {
+            if (err) throw err;
+            if (user) {
+              if (self.id === user.id) return cb(true);
+              return cb(false);
+            }
+            cb(true);
+          })
+        },
+        message: 'Email already in use'
+      }
+    ],
+    required: [true, 'User email is required']
   },
   role: {
     type: String,
@@ -56,13 +81,6 @@ UserSchema
  * Validations
  */
 
-// Validate empty email
-UserSchema
-  .path('email')
-  .validate(function(email) {
-    return email.length;
-  }, 'Email cannot be blank');
-
 // Validate empty password
 UserSchema
   .path('hashedPassword')
@@ -70,22 +88,6 @@ UserSchema
     return hashedPassword.length;
   }, 'Password cannot be blank');
 
-// Validate email is not taken
-UserSchema
-  .path('email')
-  .validate(function(value, respond) {
-    var self = this;
-    this.constructor.findOne({
-      email: value
-    }, function(err, user) {
-      if (err) throw err;
-      if (user) {
-        if (self.id === user.id) return respond(true);
-        return respond(false);
-      }
-      respond(true);
-    });
-  }, 'The specified email address is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
