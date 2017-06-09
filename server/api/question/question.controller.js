@@ -9,7 +9,7 @@ exports.index = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(200, questions);
+    return res.status(200).json(questions);
   });
 };
 
@@ -22,7 +22,7 @@ exports.export = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(200, questions);
+    return res.status(200).json(questions);
   });
 };
 
@@ -45,7 +45,7 @@ exports.create = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(201, question);
+    return res.status(201).json(question);
   });
 };
 
@@ -55,7 +55,7 @@ exports.import = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(201, questions);
+    return res.status(201).json(questions);
   });
 };
 
@@ -80,7 +80,7 @@ exports.update = function(req, res) {
       if (err) {
         return handleError(res, err);
       }
-      return res.json(200, question);
+      return res.status(200).json(question);
     });
   });
 };

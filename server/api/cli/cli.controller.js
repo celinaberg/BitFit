@@ -14,7 +14,7 @@ exports.index = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(200, clis);
+    return res.status(200).json(clis);
   });
 };
 
@@ -37,7 +37,7 @@ exports.create = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(201, cli);
+    return res.status(201).json(cli);
   });
 };
 
@@ -58,7 +58,7 @@ exports.update = function(req, res) {
       if (err) {
         return handleError(res, err);
       }
-      return res.json(200, cli);
+      return res.status(200).json(cli);
     });
   });
 };
