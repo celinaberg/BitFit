@@ -22,7 +22,6 @@ function onConnect(socket) {
   require('../api/cli/cli.socket').register(socket);
   require('../api/topic/topic.socket').register(socket);
   require('../api/question/question.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function(socketio) {
@@ -42,9 +41,9 @@ module.exports = function(socketio) {
   // }));
 
   socketio.on('connection', function(socket) {
-    socket.address = socket.handshake.address !== null ?
-      socket.handshake.address.address + ':' + socket.handshake.address.port :
-      process.env.DOMAIN;
+    socket.address = socket.handshake.address !== null
+      ? socket.handshake.address.address + ':' + socket.handshake.address.port
+      : process.env.DOMAIN;
 
     socket.connectedAt = new Date();
 
