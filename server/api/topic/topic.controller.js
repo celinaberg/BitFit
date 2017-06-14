@@ -125,7 +125,7 @@ exports.index = function(req, res) {
   });
   //console.log('in get list of topics');
   //console.log(topics);
-  //return res.json(200, topics);
+  //return res.status(200).json(topics);
 
 };
 
@@ -158,7 +158,7 @@ exports.create = function(req, res) {
     if (err) {
       return handleError(res, err);
     }
-    return res.json(201, topic);
+    return res.status(201).json(topic);
   });
 };
 
@@ -193,7 +193,7 @@ exports.update = function(req, res) {
         }
         console.log('looks like populate was successful?');
         console.log(topic);
-        return res.json(200, topic);
+        return res.status(200).json(topic);
       });
     });
   });
