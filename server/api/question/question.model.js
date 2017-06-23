@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+    Schema = mongoose.Schema;
 
 var QuestionSchema = new Schema({
   instructions: String,
@@ -12,10 +12,7 @@ var QuestionSchema = new Schema({
   tags: String,
   expectedOutput: String,
   codeEvaluator: String,
-  topic: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Topic'
-  }
+  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);

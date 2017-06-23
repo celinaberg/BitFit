@@ -3,44 +3,21 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var authTypes = ['github', 'twitter'];
 
 var UserSchema = new Schema({
   name: String,
-  email: {
-    type: String,
-    lowercase: true,
-    validate: [{
-        validator: function(v) {
-          return v.length != 0;
-        },
-        message: 'Email cannot be blank'
-      },
-      {
-        isAsync: true,
-        validator: function(v, cb) {
-          var self = this;
-          this.constructor.findOne({
-            email: v
-          }, function(err, user) {
-            if (err) throw err;
-            if (user) {
-              if (self.id === user.id) return cb(true);
-              return cb(false);
-            }
-            cb(true);
-          })
-        },
-        message: 'Email already in use'
-      }
-    ],
-    required: [true, 'User email is required']
-  },
+  email: { type: String, lowercase: true },
   role: {
     type: String,
     default: 'user'
   },
   hashedPassword: String,
-  salt: String
+  provider: String,
+  salt: String,
+  facebook: {},
+  google: {},
+  github: {}
 });
 
 /**
@@ -81,13 +58,36 @@ UserSchema
  * Validations
  */
 
+// Validate empty email
+UserSchema
+  .path('email')
+  .validate(function(email) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return email.length;
+  }, 'Email cannot be blank');
+
 // Validate empty password
 UserSchema
   .path('hashedPassword')
   .validate(function(hashedPassword) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
     return hashedPassword.length;
   }, 'Password cannot be blank');
 
+// Validate email is not taken
+UserSchema
+  .path('email')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({email: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'The specified email address is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -100,7 +100,7 @@ UserSchema
   .pre('save', function(next) {
     if (!this.isNew) return next();
 
-    if (!validatePresenceOf(this.hashedPassword))
+    if (!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1)
       next(new Error('Invalid password'));
     else
       next();
@@ -128,7 +128,7 @@ UserSchema.methods = {
    * @api public
    */
   makeSalt: function() {
-    return crypto.randomBytes(64).toString('base64');
+    return crypto.randomBytes(16).toString('base64');
   },
 
   /**
@@ -141,7 +141,7 @@ UserSchema.methods = {
   encryptPassword: function(password) {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
-    return crypto.pbkdf2Sync(password, salt, 10000, 515, 'sha512').toString('base64');
+    return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   }
 };
 

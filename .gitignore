@@ -6,5 +6,8 @@ client/bower_components
 dist
 /server/config/local.env.js
 /users
-.DS_Store
-.vagrant
+/server/config/seed.js
+*.csr
+*.key
+*.crt
+*.log

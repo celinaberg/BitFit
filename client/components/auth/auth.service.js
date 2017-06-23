@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('bitfit')
+angular.module('its110App')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
-    if ($cookieStore.get('token')) {
+    if($cookieStore.get('token')) {
       currentUser = User.get();
     }
 
@@ -23,12 +23,14 @@ angular.module('bitfit')
         $http.post('/auth/local', {
           email: user.email,
           password: user.password
-        }).then(function(data) {
+        }).
+        success(function(data) {
           $cookieStore.put('token', data.token);
           currentUser = User.get();
           deferred.resolve(data);
           return cb();
-        }).catch(function(err) {
+        }).
+        error(function(err) {
           this.logout();
           deferred.reject(err);
           return cb(err);
@@ -80,9 +82,7 @@ angular.module('bitfit')
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({
-          id: currentUser._id
-        }, {
+        return User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function(user) {
@@ -114,13 +114,13 @@ angular.module('bitfit')
        * Waits for currentUser to resolve before checking if user is logged in
        */
       isLoggedInAsync: function(cb) {
-        if (currentUser.hasOwnProperty('$promise')) {
+        if(currentUser.hasOwnProperty('$promise')) {
           currentUser.$promise.then(function() {
             cb(true);
           }).catch(function() {
             cb(false);
           });
-        } else if (currentUser.hasOwnProperty('role')) {
+        } else if(currentUser.hasOwnProperty('role')) {
           cb(true);
         } else {
           cb(false);
@@ -137,17 +137,17 @@ angular.module('bitfit')
       },
 
       isAdminAsync: function(cb) {
-        if (currentUser.hasOwnProperty('$promise')) {
+        if(currentUser.hasOwnProperty('$promise')) {
           currentUser.$promise.then(function() {
-            if (currentUser.role === 'admin') {
-              cb(true);
-            } else {
-              cb(false);
-            }
+            if(currentUser.role === 'admin') {
+            cb(true);
+          } else {
+            cb(false);
+          }
           }).catch(function() {
             cb(false);
           });
-        } else if (currentUser.role === 'admin') {
+        } else if(currentUser.role === 'admin') {
           cb(true);
         } else {
           cb(false);

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bitfit')
-  .factory('Modal', function($rootScope, $modal) {
+angular.module('its110App')
+  .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -43,8 +43,8 @@ angular.module('bitfit')
            */
           return function() {
             var args = Array.prototype.slice.call(arguments),
-              name = args.shift(),
-              deleteModal;
+                name = args.shift(),
+                deleteModal;
 
             deleteModal = openModal({
               modal: {

@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('bitfit')
-  .controller('NavbarCtrl', function($scope, $location, Auth) {
-    $scope.menu = [{
+angular.module('its110App')
+  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+    $scope.menu = [
+      {
         'title': 'Home',
         'link': '/'
       },
       {
         'title': 'Lessons',
         'link': '/lessons'
-      }
-    ];
+      }];
 
     $scope.navbarCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
@@ -24,7 +24,7 @@ angular.module('bitfit')
 
     $scope.isActive = function(route) {
       return route === $location.path() ||
-        ($location.path().includes('/admin') && route.includes('/admin')) ||
+       ($location.path().includes('/admin') && route.includes('/admin')) ||
         ($location.path().includes('/lessons') && route.includes('/lessons'));
     };
   });

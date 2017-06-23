@@ -1,22 +1,21 @@
 'use strict';
 
-angular.module('bitfit')
-  .factory('topics', function($http) {
+angular.module('its110App')
+  .factory('topics', function ($http) {
     var o = {
       topics: []
     };
 
     // Public API
     return {
-      getAll: function() {
-        return $http.get('/api/topics').then(function(data) {
+      getAll: function () {
+        return $http.get('/api/topics').success(function(data) {
           angular.copy(data, o.topics);
-          return o.topics;
         });
       },
 
       create: function(topic) {
-        return $http.post('/api/topics', topic).then(function(data) {
+        return $http.post('/api/topics', topic).success(function(data) {
           o.topics.push(data);
         });
       },
@@ -26,7 +25,7 @@ angular.module('bitfit')
         return $http.get('/api/topics/' + id).then(function(res){
           return res.data;
         }); */
-        return $http.get('/api/topics/' + id).then(function(res) {
+        return $http.get('/api/topics/' + id).success(function(res){
           return res;
         });
       },
@@ -37,7 +36,7 @@ angular.module('bitfit')
       },
 
       editQuestion: function(id, question) {
-        return $http.put('/api/questions/' + id, question).then(function(data) {
+        return $http.put('/api/questions/' + id, question).success(function(data) {
           o.topics.forEach(function(ea) {
             if (ea._id === data.topic) {
               ea.questions.forEach(function(q) {
@@ -46,16 +45,16 @@ angular.module('bitfit')
                 }
               });
             }
-          });
+          });   
         });
       },
 
       // must delete question, and delete reference to it in topic
       deleteQuestion: function(question, topicID) {
-        $http.post('/api/topics/' + topicID + '/delquestion', question).then(function(data) {
+        $http.post('/api/topics/' + topicID + '/delquestion', question).success(function(data) {
           //o.topics.forEach(function(ea) {
-          console.log('thenfully deleted q from topic');
-          console.log(data);
+            console.log('successfully deleted q from topic');
+            console.log(data);
           //})
         });
         //$http.delete('/api/questions/' + question._id); // is this correct? FIXME
@@ -66,7 +65,7 @@ angular.module('bitfit')
           topic.questions[i] = ea._id;
         });
 
-        return $http.put('/api/topics/' + id, topic).then(function(data) {
+        return $http.put('/api/topics/' + id, topic).success(function(data) {
           //var index = o.topics.indexOf(data._id);
           o.topics.forEach(function(ea) {
             if (ea._id === data._id) {
