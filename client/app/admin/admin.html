@@ -4,64 +4,66 @@
   <div class="row">
     <!-- sidebar content -->
     <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar"> <!-- put ng-repeat on here to nest menus for multiple q's per week -->
-      <!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
+      <ul class="nav nav-sidebar">
+        <!-- put ng-repeat on here to nest menus for multiple q's per week -->
+        <!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
         <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
         <li><a ng-href="/admin/logger">Logger</a></li>
         <li class="active"><a ng-href="/admin">Add a Topic</a></li>
         <li><span class="topics-to-edit">Click a Topic to Edit</span></li>
         <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
-        
-        <!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
+
+          <!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
           <!-- <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a> -->
           <a ng-href="admin/editContent/{{topic.title}}">{{topic.title}}</a>
-        <!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
+          <!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
         </li>
-      </ul>  
+      </ul>
     </div>
 
     <!-- main content -->
     <div class="col-sm-9 col-xs-offset-3 col-mid-10 col-md-offset-2 main">
       <h2 class="page-header">Add a New Topic&nbsp;&nbsp;<small><a href="#users">Manage Users</a></small></h2>
-      
+
       <p>Click the links at left to edit a topic</p>
 
       <div class="addTopicForm">
         <h3>New Topic</h3>
         <form ng-submit="addTopic()">
-            <div class="form-group">
-                <label for="inputTopicTitle">Topic Title (will be displayed as a clickable link in student sidebar)</label>
-                <input type="text" ng-model="newTopic.topicTitle" class="form-control" id="inputTopicTitle" placeholder="Title">
-            </div>
-            <div class="form-group">
-                <label for="inputBackground">Topic Background</label>
-                <text-angular ng-model="newTopic.topicBackground" placeholder="Add topic background info here"></text-angular>
-                <!--<input type="text" class="form-control" ng-model="newTopic.topicBackground" id="inputBackground" placeholder="Topic Background">-->
-            </div>
-            <button type="submit" class="btn btn-success">Add Topic</button>
+          <div class="form-group">
+            <label for="inputTopicTitle">Topic Title (will be displayed as a clickable link in student sidebar)</label>
+            <input type="text" ng-model="newTopic.topicTitle" class="form-control" id="inputTopicTitle" placeholder="Title">
+          </div>
+          <div class="form-group">
+            <label for="inputBackground">Topic Background</label>
+            <text-angular ng-model="newTopic.topicBackground" placeholder="Add topic background info here"></text-angular>
+            <!--<input type="text" class="form-control" ng-model="newTopic.topicBackground" id="inputBackground" placeholder="Topic Background">-->
+          </div>
+          <button type="submit" class="btn btn-success">Add Topic</button>
         </form>
       </div>
 
       <a id="users"></a>
       <h2>Manage Users</h2>
-       <!--<p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>-->
-       <p>Only Admin users can delete users and view a complete list of all users.</p>
+      <!--<p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>-->
+      <p>Only Admin users can delete users and view a complete list of all users.</p>
 
-    <!--  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showUsers">Show/Hide All Users</button><br \>-->
+      <!--  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#showUsers">Show/Hide All Users</button><br \>-->
       <button type="button" class="btn btn-info" ng-model="collapseUsers" ng-click="collapseUsers=!collapseUsers" data-target="#showUsers">Show/Hide All Users</button><br>
       <div id="showUsers" ng-show="collapseUsers">
-      
+
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="user in users">
             <strong>{{user.name}}</strong><br>
             <span class="text-muted">Student #: {{user.email}}</span>
             <span>&nbsp;</span>
             <span class="text-muted">Account ID: {{user._id}}</span>
-            <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+            <a ng-click="delete(user)" class="trash"><span class="fa fa-trash pull-right"></span></a>
           </li>
         </ul>
       </div>
 
-    </div> <!-- end main content -->
+    </div>
+    <!-- end main content -->
   </div>
 </div>
