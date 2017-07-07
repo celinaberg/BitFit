@@ -37,7 +37,7 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 80
+        port: process.env.PORT || 4343
       },
       dev: {
         options: {
@@ -53,7 +53,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://192.168.2.100:<%= express.options.port %>'
+        url: 'https://127.0.0.1:<%= express.options.port %>'
       }
     },
     watch: {
