@@ -13,3 +13,4 @@ dist
 *.key
 *.crt
 *.log
+.DS_Store
