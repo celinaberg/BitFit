@@ -15,6 +15,7 @@ var config = require('./config/environment');
 var fs = require('fs');
 
 // Connect to database
+mongoose.Promise = global.Promise;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 // Populate DB with sample data
