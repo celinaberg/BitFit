@@ -1,11 +1,11 @@
 'use strict';
 
 describe('Controller: TopicsCtrl', function () {
-
   // load the controller's module
   beforeEach(module('its110App'));
 
-  var TopicsCtrl, scope;
+  var TopicsCtrl,
+    scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {

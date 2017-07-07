@@ -4,7 +4,7 @@ var path = require('path');
 var _ = require('lodash');
 
 function requiredProcessEnv(name) {
-  if(!process.env[name]) {
+  if (!process.env[name]) {
     throw new Error('You must set the ' + name + ' environment variable');
   }
   return process.env[name];
@@ -20,7 +20,7 @@ var all = {
 
   // Server port
   port: process.env.PORT || 443,
-  //ip: '192.168.2.1',
+  // ip: '192.168.2.1',
   // Should we populate the DB with sample data?
   seedDB: false, // fixme?
 

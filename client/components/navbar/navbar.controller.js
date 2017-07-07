@@ -4,12 +4,12 @@ angular.module('its110App')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [
       {
-        'title': 'Home',
-        'link': '/'
+        title: 'Home',
+        link: '/'
       },
       {
-        'title': 'Lessons',
-        'link': '/lessons'
+        title: 'Lessons',
+        link: '/lessons'
       }];
 
     $scope.navbarCollapsed = true;
@@ -17,12 +17,12 @@ angular.module('its110App')
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.logout = function() {
+    $scope.logout = function () {
       Auth.logout();
       $location.path('/login');
     };
 
-    $scope.isActive = function(route) {
+    $scope.isActive = function (route) {
       return route === $location.path() ||
        ($location.path().includes('/admin') && route.includes('/admin')) ||
         ($location.path().includes('/lessons') && route.includes('/lessons'));

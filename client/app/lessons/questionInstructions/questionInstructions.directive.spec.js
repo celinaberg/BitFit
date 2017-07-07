@@ -1,12 +1,12 @@
 'use strict';
 
 describe('Directive: questionInstructions', function () {
-
   // load the directive's module and view
   beforeEach(module('its110App'));
   beforeEach(module('app/lessons/questionInstructions/question-instructions.html'));
 
-  var element, scope;
+  var element,
+    scope;
 
   beforeEach(inject(function ($rootScope) {
     scope = $rootScope.$new();

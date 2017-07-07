@@ -32,16 +32,15 @@ angular.module('its110App', [
       },
 
       // Intercept 401s and redirect you to login
-      responseError: function(response) {
-        if(response.status === 401) {
+      responseError: function (response) {
+        if (response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
           $cookieStore.remove('token');
           return $q.reject(response);
         }
-        else {
-          return $q.reject(response);
-        }
+
+        return $q.reject(response);
       }
     };
   })
@@ -49,17 +48,17 @@ angular.module('its110App', [
   .run(function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
+      Auth.isLoggedInAsync(function (loggedIn) {
         if (next.authenticate && !loggedIn) {
           $location.path('/login');
         }
       });
       // Check user's role if user is accessing Admin area
       // if ($location.path().includes('/admin') && !Auth.isAdmin()) {
-      //     console.log('redirecting as not admin!!!');  
+      //     console.log('redirecting as not admin!!!');
       //     $location.path('/');
       //   }
-      Auth.isAdminAsync(function(isAdmin) {
+      Auth.isAdminAsync(function (isAdmin) {
         if ($location.path().includes('/admin') && !isAdmin) {
           $location.path('/');
         }

@@ -1,11 +1,11 @@
 'use strict';
 
 describe('Controller: EditContentCtrl', function () {
-
   // load the controller's module
   beforeEach(module('its110App'));
 
-  var EditContentCtrl, scope;
+  var EditContentCtrl,
+    scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {

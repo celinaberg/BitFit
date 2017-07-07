@@ -9,19 +9,19 @@ angular.module('its110App')
     // Public API
     return {
       getAll: function () {
-        return $http.get('/api/questions').success(function(data) {
+        return $http.get('/api/questions').success(function (data) {
           angular.copy(data, o.questions);
         });
       },
 
-      create: function(question) {
-        return $http.post('/api/questions', question).success(function(data) {
+      create: function (question) {
+        return $http.post('/api/questions', question).success(function (data) {
           o.questions.push(data);
         });
       },
 
-      import: function(questions) {
-        return $http.post('/api/questions/import', questions).success(function(data) {
+      import: function (questions) {
+        return $http.post('/api/questions/import', questions).success(function (data) {
           angular.extend(o.questions, data);
         });
       },
@@ -41,25 +41,25 @@ angular.module('its110App')
       //   // FIXME: add question to o object here explicitly??
       // },
 
-      editQuestion: function(id, question) {
-        return $http.put('/api/questions/' + id, question).success(function(data) {
-          o.questions.forEach(function(ea) {
+      editQuestion: function (id, question) {
+        return $http.put('/api/questions/' + id, question).success(function (data) {
+          o.questions.forEach(function (ea) {
             if (ea._id === data.question) {
-              ea.questions.forEach(function(q) {
+              ea.questions.forEach(function (q) {
                 if (q._id === data._id) {
                   q = data;
                 }
               });
             }
-          });   
+          });
         });
       },
 
       // must delete question, and delete reference to it in question
-      delete: function(question, questionID) {
+      delete: function (question, questionID) {
         $http.delete('/api/questions/' + question._id);
         console.log('successfully deleted q');
-      },
+      }
 
       // editquestion: function(id, question) {
       //   question.questions.forEach(function(ea, i) {

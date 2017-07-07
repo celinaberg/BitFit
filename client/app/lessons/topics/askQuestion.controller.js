@@ -9,28 +9,27 @@ angular.module('its110App')
   date: { type: Date, default: Date.now },
   answered: Boolean,
   questionInstructions: String,
-  topicString: String 
+  topicString: String
 */
-	$scope.user = {
-		userQuestion: '',
-		topic: '',
-		questionInstructions: '',
-		name: '',
-		email: ''
-	};
+    $scope.user = {
+      userQuestion: '',
+      topic: '',
+      questionInstructions: '',
+      name: '',
+      email: ''
+    };
 
   	$scope.feedback = '';
 
-  	$scope.askAQuestion = function(title, instructions) {
+  	$scope.askAQuestion = function (title, instructions) {
   		$scope.user.topic = title;
   		$scope.user.questionInstructions = instructions;
     	var id = Auth.getCurrentUser()._id;
     	$scope.user.userId = id;
 
-    	askAQuestion.postQuestion($scope.user).success(function() {
+    	askAQuestion.postQuestion($scope.user).success(function () {
     		$scope.user = {};
     		$scope.feedback = 'Thank you. Your question has been submitted to the teaching team.';
     	});
-
-    };
+  };
   });

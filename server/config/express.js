@@ -5,7 +5,7 @@
 'use strict';
 
 var express = require('express');
-//var favicon = require('serve-favicon');
+// var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
@@ -16,7 +16,7 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 
-module.exports = function(app) {
+module.exports = function (app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
@@ -28,15 +28,15 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
-  if ('production' === env) {
-app.use(express.static(path.join(config.root, '.tmp')));
-    //app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+  if (env === 'production') {
+    app.use(express.static(path.join(config.root, '.tmp')));
+    // app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
   }
 
-  if ('development' === env || 'test' === env) {
+  if (env === 'development' || env === 'test') {
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));

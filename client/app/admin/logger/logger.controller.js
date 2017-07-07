@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('its110App')
-.controller('loggerCtrl', function($scope, $http) {
+.controller('loggerCtrl', function ($scope, $http) {
   $scope.selectedUsers = [];
   $scope.options = {
     chart: {
@@ -15,13 +15,13 @@ angular.module('its110App')
         left: 10
       },
       dispatch: {
-        brush: function(e){ $scope.updateList(e.active); }
+        brush: function (e) { $scope.updateList(e.active); }
       },
       dimensions: [
-      "Total # Compiles",
-      "Total Attempts",
-      "Correct Attempts",
-      "Hints Used"
+        'Total # Compiles',
+        'Total Attempts',
+        'Correct Attempts',
+        'Hints Used'
       ]
     }
   };
@@ -32,23 +32,24 @@ angular.module('its110App')
   //   throw err;
   // });
 
-  $http.get('/api/loggers').success(function(data){
+  $http.get('/api/loggers').success(function (data) {
     var nested_data = d3.nest()
-    .key(function(d) { return d.user; })
-    .rollup(function(leaves) { 
-      return {"Total # Compiles": d3.sum(leaves, function(d) {return parseFloat(d.numCompiles);}),
-             "Total Attempts": d3.sum(leaves, function(d) {return parseFloat(d.totalAttempts);}),
-             "Correct Attempts": d3.sum(leaves, function(d) {return parseFloat(d.correctAttempts);}),
-             "Hints Used": d3.sum(leaves, function(d) {return parseFloat(d.numHints);})
-      } })
+    .key(function (d) { return d.user; })
+    .rollup(function (leaves) {
+      return { 'Total # Compiles': d3.sum(leaves, function (d) { return parseFloat(d.numCompiles); }),
+        'Total Attempts': d3.sum(leaves, function (d) { return parseFloat(d.totalAttempts); }),
+        'Correct Attempts': d3.sum(leaves, function (d) { return parseFloat(d.correctAttempts); }),
+        'Hints Used': d3.sum(leaves, function (d) { return parseFloat(d.numHints); })
+      };
+    })
     .entries(data);
     $scope.data = nested_data;
-  }).error(function(err){
+  }).error(function (err) {
     throw err;
   });
 
-  $scope.updateList = function(val) {
-    if(val.length == $scope.data.length) {
+  $scope.updateList = function (val) {
+    if (val.length == $scope.data.length) {
       $scope.$apply(function () {
         $scope.selectedUsers = [];
       });
@@ -58,5 +59,4 @@ angular.module('its110App')
       });
     }
   };
-
 });

@@ -18,13 +18,13 @@ var fs = require('fs');
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 // Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+if (config.seedDB) { require('./config/seed'); }
 
 // new for HTTPS
 var options = {
-      cert: fs.readFileSync(__dirname+'/certificate.crt'),
-      key: fs.readFileSync(__dirname+'/server.key')
-    };
+  cert: fs.readFileSync(__dirname + '/certificate.crt'),
+  key: fs.readFileSync(__dirname + '/server.key')
+};
 
 
 // Setup server
@@ -32,9 +32,9 @@ var app = express();
 
 // new for HTTPS
 var server = require('https').createServer(options, app);
-//var server = require('http').createServer(app);
+// var server = require('http').createServer(app);
 var socketio = require('socket.io')(server, {
-  serveClient: (config.env === 'production') ? false : true,
+  serveClient: config.env !== 'production',
   path: '/socket.io-client'
 });
 require('./config/socketio')(socketio);
@@ -49,8 +49,8 @@ server.listen(config.port, config.ip, function () {
 // redirect to HTTPS
 var http = require('http');
 http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://comped.cs.ubc.ca" });
-    res.end();
+  res.writeHead(301, { Location: 'https://comped.cs.ubc.ca' });
+  res.end();
 }).listen(8085);
 
 

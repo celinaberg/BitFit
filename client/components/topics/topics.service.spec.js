@@ -1,7 +1,6 @@
 'use strict';
 
 describe('Service: topics', function () {
-
   // load the service's module
   beforeEach(module('its110App'));
 
@@ -14,5 +13,4 @@ describe('Service: topics', function () {
   it('should do something', function () {
     expect(!!topics).toBe(true);
   });
-
 });

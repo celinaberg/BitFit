@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 var HelpForumSchema = new Schema({
   email: String,
@@ -10,7 +10,7 @@ var HelpForumSchema = new Schema({
   date: { type: Date, default: Date.now },
   answered: { type: Boolean, default: false },
   questionInstructions: String,
-  topicString: String 
+  topicString: String
 });
 
 module.exports = mongoose.model('HelpForum', HelpForumSchema);

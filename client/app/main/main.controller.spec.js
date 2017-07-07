@@ -1,14 +1,13 @@
 'use strict';
 
 describe('Controller: MainCtrl', function () {
-
   // load the controller's module
   beforeEach(module('its110App'));
   beforeEach(module('socketMock'));
 
   var MainCtrl,
-      scope,
-      $httpBackend;
+    scope,
+    $httpBackend;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
@@ -19,5 +18,4 @@ describe('Controller: MainCtrl', function () {
       $scope: scope
     });
   }));
-
 });

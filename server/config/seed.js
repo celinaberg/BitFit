@@ -9,7 +9,7 @@
 // var Question = require('../api/question/question.model');
 // var Topic = require('../api/topic/topic.model');
 
-// User.find({}).remove(function() { 
+// User.find({}).remove(function() {
 //   User.create({
 //     provider: 'local',
 //     role: 'admin',
@@ -71,7 +71,7 @@
 //   }, {
 //     //code : "",
 //     expectedOutput : "1036200 kg",
-//     hints : [ 
+//     hints : [
 //         "Don't forget to output the units!"
 //     ],
 //     instructions : "<p>Write a program that takes the length, width and height of a solid steel rectangular bar (in metres).&#160; The program must then compute the mass of the bar in kilograms assuming that the density of the steel is 7850 kg per cubic metre.&#160; Recall that:&#160; mass = density x volume. To check your answer, try length = 6, width = 2, height = 11<br></p>",
@@ -81,7 +81,7 @@
 //     expectedOutput : "Area in square metres: 202342.821000",
 //     //hints : [],
 //     instructions : "<p>Suppose that in an APSC 160 lab, students were asked to write a program that:<br>&#160;&#160;&#160; - prompts the user for the area of a plot of land in acres (CAN'T DO IN BITFIT)<br>&#160;&#160;&#160; - prints the area of the same plot of land in square metres<br>Assume that 1 acre is equivalent to 4046.85642 square metres.&#160; One student, Pat, submitted the given code. The program compiles and runs, but does not produce the right output.</p><p>Fix the code. To check your answer, try a &#34;user input&#34; of 50 acres.<br></p>",
-//   }, 
+//   },
 // {
 //   	className : "convertweight",
 //     code : "/*\n * Author: Ein Freund\n * Date: July 20, 2009\n * Purpose:  prompts user for a weight in kilograms and converts it to pounds.\n */\n\n#include <stdio.h>\n#include <stdlib.h>\n\n#define LBS_PER_KG 2.2\n\nint main( void ) {\n    double weightKgs;\n    double weightLbs;\n\n    weightLbs = LBS_PER_KG * weightKgs;\n\n   // printf( \"Please enter a weight in kilograms: \" );\n    weightKgs = 10;\n   // scanf( \"%lf\", &weightKgs );\n\n    printf( \"Corresponding weight in lbs: %f\\n\", weightLbs );\n\n    system( \"PAUSE\" );\n    return 0;\n    \n}",

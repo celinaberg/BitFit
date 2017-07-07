@@ -2,11 +2,11 @@
 
 angular.module('its110App')
   .controller('AdminCtrl', function ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
-    //$scope.topic = topic; 
+    // $scope.topic = topic;
     $scope.topics = topicPromiseAC.data;
-    //$scope.allTopics = [];
+    // $scope.allTopics = [];
     // the following should really be in the topics service file, and then pre loaded via admin.js resolve...
-    /*$scope.topicsAC.forEach(function(ea) {
+    /* $scope.topicsAC.forEach(function(ea) {
       $http.get('/api/topics/' + ea._id).success(function(res){ // this http call SHOULD be in topics service... but it wasn't working there
           $scope.allTopics.push(res);
         });
@@ -16,18 +16,18 @@ angular.module('its110App')
 
     $scope.newQuestion = {}; // this will go in admin functionality
     $scope.newTopic = {};
-    //$scope.tab = 1;
+    // $scope.tab = 1;
     $scope.questionIndex = 0; // keeps track of which question the user is on
 
     // Use the User $resource to fetch all users
     $scope.users = User.query();
-    //$scope.questions = Question.query();
-    //$scope.newQuestion = {};
-    //$scope.questions = [];
-    //$scope.topicTitle = '';
-    //$scope.topicBackground = '';
-    //$scope.topics = topics.getAll();
-    //$log.log($scope.topics);
+    // $scope.questions = Question.query();
+    // $scope.newQuestion = {};
+    // $scope.questions = [];
+    // $scope.topicTitle = '';
+    // $scope.topicBackground = '';
+    // $scope.topics = topics.getAll();
+    // $log.log($scope.topics);
 /*
     $http.get('/api/questions').success(function(questions) {
       $scope.questions = questions;
@@ -44,14 +44,13 @@ angular.module('its110App')
     };*/
 
 
-
-    $scope.addTopic = function() {
+    $scope.addTopic = function () {
       if (!$scope.newTopic.topicTitle || $scope.newTopic.topicTitle === '') { return; }
-        topics.create({
-          title: $scope.newTopic.topicTitle,
-          background: $scope.newTopic.topicBackground,
-          questions: [ // not adding any questions....
-            /*{
+      topics.create({
+        title: $scope.newTopic.topicTitle,
+        background: $scope.newTopic.topicBackground,
+        questions: [ // not adding any questions....
+            /* {
               instructions: "This is the instructions for the FIRST question",
               code: "for (int i = 0; i < 10; i++) { // do something }",
               hints: ['an', 'array', 'of', 'strings']
@@ -66,26 +65,25 @@ angular.module('its110App')
               code: "for (int i = 0; i < 10; i++) { // do something }",
               hints: ['an', 'array', 'of', 'strings']
             } */
-          ] 
-        }).success(function(topic) {
-          //$scope.topicsAC.push(topic);
-          $scope.topics.push(topic);
-        });
+        ]
+      }).success(function (topic) {
+          // $scope.topicsAC.push(topic);
+        $scope.topics.push(topic);
+      });
 
-        $scope.newTopic = {};
+      $scope.newTopic = {};
     };
 
 
-
-    $scope.isActive = function(id) {
+    $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
-        return ('/lessons/topics/' + id) === $location.path();
+      return ('/lessons/topics/' + id) === $location.path();
     };
 
 
-    $scope.delete = function(user) {
+    $scope.delete = function (user) {
       User.remove({ id: user._id });
-      angular.forEach($scope.users, function(u, i) {
+      angular.forEach($scope.users, function (u, i) {
         if (u === user) {
           $scope.users.splice(i, 1);
         }

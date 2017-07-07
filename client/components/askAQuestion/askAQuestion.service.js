@@ -13,30 +13,30 @@ angular.module('its110App')
   date: { type: Date, default: Date.now },
   answered: Boolean,
   questionInstructions: String,
-  topicString: String 
+  topicString: String
 */
 
     // Public API
     return {
       getAll: function () {
-        return $http.get('/api/helpForums').success(function(data) {
+        return $http.get('/api/helpForums').success(function (data) {
           angular.copy(data, o.forumQuestions);
         });
       },
 
-      postQuestion: function(forumQ) {
-        return $http.post('/api/helpForums', forumQ).success(function(data) {
+      postQuestion: function (forumQ) {
+        return $http.post('/api/helpForums', forumQ).success(function (data) {
           o.forumQuestions.push(data);
         });
       },
 
-      editForumQuestion: function(id, forumQ) {
-        return $http.put('/api/helpForums/' + id, forumQ).success(function(data) {
-          //o.forumQuestions.forEach(function(ea) {
+      editForumQuestion: function (id, forumQ) {
+        return $http.put('/api/helpForums/' + id, forumQ).success(function (data) {
+          // o.forumQuestions.forEach(function(ea) {
             // if (ea._id === data._id) {
             //   angular.copy(data, ea);
             // }
-          //});
+          // });
           angular.copy(data, o.forumQuestions);
         });
       }
