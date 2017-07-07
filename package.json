@@ -30,6 +30,9 @@
   },
   "devDependencies": {
     "connect-livereload": "~0.4.0",
+    "eslint": "^3",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.7.0",
     "grunt": "~0.4.4",
     "grunt-angular-templates": "^0.5.4",
     "grunt-asset-injector": "^0.1.0",
@@ -90,6 +93,7 @@
     "start": "node server/app.js",
     "serve": "grunt serve",
     "test": "grunt test",
+    "lint": "eslint server",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
