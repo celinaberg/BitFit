@@ -1,4 +1,7 @@
 # BitFit
+[![dependencies Status](https://david-dm.org/celinaberg/BitFit/prod/status.svg)](https://david-dm.org/celinaberg/BitFit)
+[![devDependencies Status](https://david-dm.org/celinaberg/BitFit/prod/dev-status.svg)](https://david-dm.org/celinaberg/BitFit?type=dev)
+
 An app designed to help students learn to write and read C code.
 
 BitFit is forked from Modsquad-AVA/BitFit, which was designed to help students learn Java.
