@@ -4,18 +4,25 @@
 
 'use strict';
 
+var HelpForum = require('./api/helpForum');
+var Loggers = require('./api/logger');
+var CLIs = require('./api/cli');
+var Topic = require('./api/topic');
+var Question = require('./api/question');
+var User = require('./api/user');
+var Auth = require('./auth');
 var errors = require('./components/errors');
 
 module.exports = function (app) {
   // Insert routes below
-  app.use('/api/helpForums', require('./api/helpForum'));
-  app.use('/api/loggers', require('./api/logger'));
-  app.use('/api/clis', require('./api/cli'));
-  app.use('/api/topics', require('./api/topic'));
-  app.use('/api/questions', require('./api/question'));
-  app.use('/api/users', require('./api/user'));
+  app.use('/api/helpForums', HelpForum);
+  app.use('/api/loggers', Loggers);
+  app.use('/api/clis', CLIs);
+  app.use('/api/topic', Topic);
+  app.use('/api/questions', Question);
+  app.use('/api/users', User);
 
-  app.use('/auth', require('./auth'));
+  app.use('/auth', Auth);
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
