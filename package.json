@@ -93,7 +93,8 @@
     "start": "node server/app.js",
     "serve": "grunt serve",
     "test": "grunt test",
-    "lint": "eslint server",
+    "lint-server": "eslint server",
+    "lint-client": "eslint client --ignore-pattern client/bower_components",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
