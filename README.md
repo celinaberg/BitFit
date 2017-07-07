@@ -37,4 +37,6 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
   pm2 stop BitFit
   pm2 restart BitFit
   ```
-  
+
+# Dependencies
+ - Node v6.11.0

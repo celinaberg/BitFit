@@ -41,7 +41,7 @@ require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
 
-// Start server
+// Start server//server.listen(4343);
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
@@ -51,7 +51,7 @@ var http = require('http');
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://comped.cs.ubc.ca" });
     res.end();
-}).listen(80);
+}).listen(8085);
 
 
 // Expose app
