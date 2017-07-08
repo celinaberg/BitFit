@@ -1,6 +1,6 @@
 # BitFit
-[![dependencies Status](https://david-dm.org/celinaberg/BitFit/prod/status.svg)](https://david-dm.org/celinaberg/BitFit)
-[![devDependencies Status](https://david-dm.org/celinaberg/BitFit/prod/dev-status.svg)](https://david-dm.org/celinaberg/BitFit?type=dev)
+[![dependencies Status](https://david-dm.org/celinaberg/BitFit/status.svg)](https://david-dm.org/celinaberg/BitFit)
+[![devDependencies Status](https://david-dm.org/celinaberg/BitFit/dev-status.svg)](https://david-dm.org/celinaberg/BitFit?type=dev)
 
 An app designed to help students learn to write and read C code.
 
