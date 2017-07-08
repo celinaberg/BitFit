@@ -6,17 +6,30 @@ var auth = require('../auth.service');
 
 var router = express.Router();
 
-router.post('/callback',
+router.get('/login',
   passport.authenticate('saml', { failureRedirect: '/login/fail' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/lessons');
   }
 );
 
-router.post('/',
-  passport.authenticate('saml', { failureRedirect: '/login/fail' }),
+router.get('/login/failed',
   function(req, res) {
-    res.redirect('/');
+    res.status(401).end('Login failed');
+  }
+);
+
+router.post('/login',
+  passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/fail' }),
+  function(req, res) {
+    res.redirect('/lessons');
+  }
+);
+
+router.post('/login/callback',
+  passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/fail' }),
+  function(req, res) {
+    res.redirect('/lessons');
   }
 );
 
