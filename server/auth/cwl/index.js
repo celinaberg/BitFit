@@ -8,32 +8,32 @@ var router = express.Router();
 
 router.get('/login',
   passport.authenticate('saml', { failureRedirect: '/login/fail' }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/lessons');
   }
 );
 
 router.get('/login/failed',
-  function(req, res) {
+  function (req, res) {
     res.status(401).end('Login failed');
   }
 );
 
 router.post('/login',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/fail' }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/lessons');
   }
 );
 
 router.post('/login/callback',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/fail' }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/lessons');
   }
 );
 
-/*router.post('/', function (req, res, next) {
+/* router.post('/', function (req, res, next) {
   passport.authenticate('saml', function (err, user, info) {
     var error = err || info;
     if (error) return res.json(401, error);
