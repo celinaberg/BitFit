@@ -39,5 +39,5 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
   ```
 
 # Dependencies
- - Node v6.11.0
- - NPM v5
+ - Node 8
+ - NPM 5
