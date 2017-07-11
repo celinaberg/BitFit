@@ -1,18 +1,16 @@
 'use strict';
 
-describe('Service: topics', function() {
-
+describe('Service: topics', function () {
   // load the service's module
-  beforeEach(module('bitfit'));
+  beforeEach(module('its110App'));
 
   // instantiate service
   var topics;
-  beforeEach(inject(function(_topics_) {
+  beforeEach(inject(function (_topics_) {
     topics = _topics_;
   }));
 
-  it('should do something', function() {
+  it('should do something', function () {
     expect(!!topics).toBe(true);
   });
-
 });

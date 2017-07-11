@@ -1,2 +1,6 @@
 'use strict';
-angular.module('bitfit').controller('MainCtrl', function($scope, $http, socket) {});
+
+angular.module('its110App')
+  .controller('MainCtrl', function ($scope, $http) {
+
+  });

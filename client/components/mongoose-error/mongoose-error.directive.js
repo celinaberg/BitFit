@@ -3,13 +3,13 @@
 /**
  * Removes server error when user updates input
  */
-angular.module('bitfit')
-  .directive('mongooseError', function() {
+angular.module('its110App')
+  .directive('mongooseError', function () {
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function(scope, element, attrs, ngModel) {
-        element.on('keydown', function() {
+      link: function (scope, element, attrs, ngModel) {
+        element.on('keydown', function () {
           return ngModel.$setValidity('mongoose', true);
         });
       }

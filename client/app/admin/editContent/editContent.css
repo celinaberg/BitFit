@@ -1,38 +1,31 @@
 .ace_editor {
-  margin: auto;
-  height: 400px;
-  width: 600px;
+	margin: auto; 
+	height: 400px;
+	width: 600px;
 }
 
-.tab {
-  margin-left: 10px;
-}
+.tab { margin-left: 10px; }
 
 .command_line_output {
-  margin-top: 5px;
-  margin: auto;
-  height: 200px;
-  width: 600px;
-  overflow: scroll;
-  background-color: black;
-  color: white;
-  outline: 1px solid #gray;
-  box-shadow: 0 0 10px gray;
+	margin-top: 5px;
+	margin: auto;
+  	height: 200px;
+  	width: 600px;
+  	overflow: scroll;
+  	background-color: black;
+  	color: white;
+	outline: 1px solid #gray;
+	box-shadow: 0 0 10px gray;
+
 }
-
-
 /*	This selects all pre with a tab class in it's parent (only the pre that are embedded in the hints)	*/
-
-.tab>pre {
-  margin-top: 10px;
-  margin-bottom: -10px;
-}
-
-
-/**/
+.tab>pre{
+	margin-top:10px;
+	margin-bottom:-10px;
+}/**/
 
 .flash {
-  position: fixed;
-  width: 50%;
-  z-index: 4;
+	position:fixed;
+	width:50%;
+	z-index:4;
 }

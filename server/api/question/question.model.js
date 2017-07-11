@@ -12,10 +12,7 @@ var QuestionSchema = new Schema({
   tags: String,
   expectedOutput: String,
   codeEvaluator: String,
-  topic: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Topic'
-  }
+  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);

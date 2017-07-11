@@ -1,5 +1,7 @@
 'use strict';
-angular.module('bitfit').controller('loggerCtrl', function ($scope, $http) {
+
+angular.module('its110App')
+.controller('loggerCtrl', function ($scope, $http) {
   $scope.selectedUsers = [];
   $scope.options = {
     chart: {
@@ -13,9 +15,7 @@ angular.module('bitfit').controller('loggerCtrl', function ($scope, $http) {
         left: 10
       },
       dispatch: {
-        brush: function (e) {
-          $scope.updateList(e.active);
-        }
+        brush: function (e) { $scope.updateList(e.active); }
       },
       dimensions: [
         'Total # Compiles',
@@ -25,34 +25,29 @@ angular.module('bitfit').controller('loggerCtrl', function ($scope, $http) {
       ]
     }
   };
-  // $http.get('/api/loggers').then(function(data){
+
+  // $http.get('/api/loggers').success(function(data){
   //   $scope.data = data;
   // }).error(function(err){
   //   throw err;
   // });
-  $http.get('/api/loggers').then(function (data) {
-    var nested_data = d3.nest().key(function (d) {
-      return d.user;
-    }).rollup(function (leaves) {
-      return {
-        'Total # Compiles': d3.sum(leaves, function (d) {
-          return parseFloat(d.numCompiles);
-        }),
-        'Total Attempts': d3.sum(leaves, function (d) {
-          return parseFloat(d.totalAttempts);
-        }),
-        'Correct Attempts': d3.sum(leaves, function (d) {
-          return parseFloat(d.correctAttempts);
-        }),
-        'Hints Used': d3.sum(leaves, function (d) {
-          return parseFloat(d.numHints);
-        })
+
+  $http.get('/api/loggers').success(function (data) {
+    var nested_data = d3.nest()
+    .key(function (d) { return d.user; })
+    .rollup(function (leaves) {
+      return { 'Total # Compiles': d3.sum(leaves, function (d) { return parseFloat(d.numCompiles); }),
+        'Total Attempts': d3.sum(leaves, function (d) { return parseFloat(d.totalAttempts); }),
+        'Correct Attempts': d3.sum(leaves, function (d) { return parseFloat(d.correctAttempts); }),
+        'Hints Used': d3.sum(leaves, function (d) { return parseFloat(d.numHints); })
       };
-    }).entries(data);
+    })
+    .entries(data);
     $scope.data = nested_data;
-  }).catch(function (err) {
+  }).error(function (err) {
     throw err;
   });
+
   $scope.updateList = function (val) {
     if (val.length == $scope.data.length) {
       $scope.$apply(function () {

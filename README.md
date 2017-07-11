@@ -1,4 +1,7 @@
 # BitFit
+[![dependencies Status](https://david-dm.org/celinaberg/BitFit/status.svg)](https://david-dm.org/celinaberg/BitFit)
+[![devDependencies Status](https://david-dm.org/celinaberg/BitFit/dev-status.svg)](https://david-dm.org/celinaberg/BitFit?type=dev)
+
 An app designed to help students learn to write and read C code.
 
 BitFit is forked from Modsquad-AVA/BitFit, which was designed to help students learn Java.
@@ -13,15 +16,6 @@ BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS]
   - Create/delete/modify Questions, with hints and starter code
   - View and manage list of users
   - Explore logged data of student usage through a parallel coordinates graph
-
-## Development Environment
- - Install Vagrant and VirtualBox
-   - Use `script/bootstrap` to install dependencies with Brew on macOS
- - `vagrant up`
- - `vagrant ssh`
- - `cd /home/comped/BitFit`
- - `npm run serve`
- - Navigate to localhost:8080 to view site
 
 ## Run for Production
 I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and has a lot of cool features.
@@ -46,4 +40,7 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
   pm2 stop BitFit
   pm2 restart BitFit
   ```
-  
+
+# Dependencies
+ - Node v6.11.0
+ - NPM v5

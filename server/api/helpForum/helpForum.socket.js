@@ -6,14 +6,14 @@
 
 var HelpForum = require('./helpForum.model');
 
-exports.register = function(socket) {
-  HelpForum.schema.post('save', function(doc) {
+exports.register = function (socket) {
+  HelpForum.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  HelpForum.schema.post('remove', function(doc) {
+  HelpForum.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
-}
+};
 
 function onSave(socket, doc, cb) {
   socket.emit('helpForum:save', doc);

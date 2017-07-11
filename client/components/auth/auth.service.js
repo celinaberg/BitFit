@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bitfit')
+angular.module('its110App')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
     if ($cookieStore.get('token')) {
@@ -16,19 +16,21 @@ angular.module('bitfit')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      login: function(user, callback) {
+      login: function (user, callback) {
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
         $http.post('/auth/local', {
           email: user.email,
           password: user.password
-        }).then(function(data) {
+        })
+        .success(function (data) {
           $cookieStore.put('token', data.token);
           currentUser = User.get();
           deferred.resolve(data);
           return cb();
-        }).catch(function(err) {
+        })
+        .error(function (err) {
           this.logout();
           deferred.reject(err);
           return cb(err);
@@ -42,7 +44,7 @@ angular.module('bitfit')
        *
        * @param  {Function}
        */
-      logout: function() {
+      logout: function () {
         $cookieStore.remove('token');
         currentUser = {};
       },
@@ -54,16 +56,16 @@ angular.module('bitfit')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      createUser: function(user, callback) {
+      createUser: function (user, callback) {
         var cb = callback || angular.noop;
 
         return User.save(user,
-          function(data) {
+          function (data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get();
             return cb(user);
           },
-          function(err) {
+          function (err) {
             this.logout();
             return cb(err);
           }.bind(this)).$promise;
@@ -77,17 +79,15 @@ angular.module('bitfit')
        * @param  {Function} callback    - optional
        * @return {Promise}
        */
-      changePassword: function(oldPassword, newPassword, callback) {
+      changePassword: function (oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({
-          id: currentUser._id
-        }, {
+        return User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
-        }, function(user) {
+        }, function (user) {
           return cb(user);
-        }, function(err) {
+        }, function (err) {
           return cb(err);
         }).$promise;
       },
@@ -97,7 +97,7 @@ angular.module('bitfit')
        *
        * @return {Object} user
        */
-      getCurrentUser: function() {
+      getCurrentUser: function () {
         return currentUser;
       },
 
@@ -106,18 +106,18 @@ angular.module('bitfit')
        *
        * @return {Boolean}
        */
-      isLoggedIn: function() {
+      isLoggedIn: function () {
         return currentUser.hasOwnProperty('role');
       },
 
       /**
        * Waits for currentUser to resolve before checking if user is logged in
        */
-      isLoggedInAsync: function(cb) {
+      isLoggedInAsync: function (cb) {
         if (currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
+          currentUser.$promise.then(function () {
             cb(true);
-          }).catch(function() {
+          }).catch(function () {
             cb(false);
           });
         } else if (currentUser.hasOwnProperty('role')) {
@@ -132,19 +132,19 @@ angular.module('bitfit')
        *
        * @return {Boolean}
        */
-      isAdmin: function() {
+      isAdmin: function () {
         return currentUser.role === 'admin';
       },
 
-      isAdminAsync: function(cb) {
+      isAdminAsync: function (cb) {
         if (currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
+          currentUser.$promise.then(function () {
             if (currentUser.role === 'admin') {
               cb(true);
             } else {
               cb(false);
             }
-          }).catch(function() {
+          }).catch(function () {
             cb(false);
           });
         } else if (currentUser.role === 'admin') {
@@ -157,7 +157,7 @@ angular.module('bitfit')
       /**
        * Get auth token
        */
-      getToken: function() {
+      getToken: function () {
         return $cookieStore.get('token');
       }
     };
