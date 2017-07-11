@@ -2,14 +2,10 @@
 
 var express = require('express');
 var passport = require('passport');
-var config = require('../config/environment');
-var User = require('../api/user/user.model');
-
-// Passport Configuration
-require('./cwl/passport').setup(User, config);
+var cwl = require('./cwl');
 
 var router = express.Router();
 
-router.use('/cwl', require('./cwl'));
+router.use('/cwl', cwl);
 
 module.exports = router;

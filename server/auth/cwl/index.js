@@ -2,9 +2,17 @@
 
 var express = require('express');
 var passport = require('passport');
+var strategy = require('./passport');
 var auth = require('../auth.service');
 
 var router = express.Router();
+
+router.get('/metadata',
+  function (req, res) {
+    res.set('Content-Type', 'text/xml');
+    res.send(strategy.generateServiceProviderMetadata());
+  }
+);
 
 router.get('/login',
   passport.authenticate('saml', { failureRedirect: '/login/fail' }),
@@ -15,7 +23,7 @@ router.get('/login',
 
 router.get('/login/failed',
   function (req, res) {
-    res.status(401).end('Login failed');
+    res.status(401).send('Login failed');
   }
 );
 
