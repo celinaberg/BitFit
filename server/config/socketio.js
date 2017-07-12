@@ -18,9 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/helpForum/helpForum.socket').register(socket);
   require('../api/logger/logger.socket').register(socket);
-  require('../api/cli/cli.socket').register(socket);
   require('../api/topic/topic.socket').register(socket);
   require('../api/question/question.socket').register(socket);
 }

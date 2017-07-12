@@ -1,64 +1,12 @@
 'use strict';
 
 var _ = require('lodash');
-var Cli = require('./cli.model');
 var exec = require('child_process').exec;
 var jsesc = require('jsesc');
 
 function handleError(res, err) {
   return res.send(500, err);
 }
-
-// Get list of clis
-exports.index = function (req, res) {
-  Cli.find(function (err, clis) {
-    if (err) { return handleError(res, err); }
-    return res.json(200, clis);
-  });
-};
-
-// Get a single cli
-exports.show = function (req, res) {
-  Cli.findById(req.params.id, function (err, cli) {
-    if (err) { return handleError(res, err); }
-    if (!cli) { return res.send(404); }
-    return res.json(cli);
-  });
-};
-
-// Creates a new cli in the DB.
-exports.create = function (req, res) {
-  Cli.create(req.body, function (err, cli) {
-    if (err) { return handleError(res, err); }
-    return res.json(201, cli);
-  });
-};
-
-// Updates an existing cli in the DB.
-exports.update = function (req, res) {
-  if (req.body._id) { delete req.body._id; }
-  Cli.findById(req.params.id, function (err, cli) {
-    if (err) { return handleError(res, err); }
-    if (!cli) { return res.send(404); }
-    var updated = _.merge(cli, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, cli);
-    });
-  });
-};
-
-// Deletes a cli from the DB.
-exports.destroy = function (req, res) {
-  Cli.findById(req.params.id, function (err, cli) {
-    if (err) { return handleError(res, err); }
-    if (!cli) { return res.send(404); }
-    cli.remove(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
-};
 
 // Compile java code
 exports.compile = function (req, res) {
