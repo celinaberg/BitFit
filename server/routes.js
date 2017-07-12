@@ -4,7 +4,6 @@
 
 'use strict';
 
-var HelpForum = require('./api/helpForum');
 var Loggers = require('./api/logger');
 var CLIs = require('./api/cli');
 var Topic = require('./api/topic');
@@ -15,7 +14,6 @@ var errors = require('./components/errors');
 
 module.exports = function (app) {
   // Insert routes below
-  app.use('/api/helpForums', HelpForum);
   app.use('/api/loggers', Loggers);
   app.use('/api/clis', CLIs);
   app.use('/api/topic', Topic);
