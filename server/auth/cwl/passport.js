@@ -17,8 +17,8 @@ passport.deserializeUser(function (user, done) {
 
 var samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
-  callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
-  //callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
+  //callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
+  callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
   // URL that goes from the Service Provider -> Identity Provider
   // entryPoint: 'https://authentication.ubc.ca',
   entryPoint: 'https://authentication.stg.id.ubc.ca/idp/profile/SAML2/Redirect/SSO',
@@ -37,13 +37,7 @@ var samlStrategy = new SamlStrategy({
 }, function (profile, done) {
   console.log(profile);
   return done(null,
-    {
-      id: 12093810238,
-      email: 'test@example.com',
-      displayName: 'Test Account',
-      firstName: 'Test',
-      lastName: 'Account'
-    });
+    profile);
   /* User.findOne({
     email: profile.email.toLowerCase()
   }, function (err, user) {
