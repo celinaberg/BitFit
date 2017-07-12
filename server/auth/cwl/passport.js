@@ -18,10 +18,11 @@ passport.deserializeUser(function (user, done) {
 var samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
   callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
+  //callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
   // URL that goes from the Service Provider -> Identity Provider
   // entryPoint: 'https://authentication.ubc.ca',
-  // entryPoint: 'https://authentication.stg.id.ubc.ca/idp/profile/SAML2/Redirect/SSO',
-  entryPoint: 'https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO',
+  entryPoint: 'https://authentication.stg.id.ubc.ca/idp/profile/SAML2/Redirect/SSO',
+  //entryPoint: 'https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO',
   // Usually specified as `/shibboleth` from site root
   issuer: 'https://comped.cs.ubc.ca',
   identifierFormat: null,
