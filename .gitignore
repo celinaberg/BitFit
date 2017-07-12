@@ -6,11 +6,6 @@ client/bower_components
 dist
 /server/config/local.env.js
 /users
-/server/config/seed.js
-/users
-/server/config/seed.js
-*.csr
-*.key
-*.crt
 *.log
 .DS_Store
+/server/cert

@@ -4,7 +4,6 @@
 
 'use strict';
 
-var HelpForum = require('./api/helpForum');
 var Loggers = require('./api/logger');
 var CLIs = require('./api/cli');
 var Topic = require('./api/topic');
@@ -12,10 +11,14 @@ var Question = require('./api/question');
 var User = require('./api/user');
 var Auth = require('./auth');
 var errors = require('./components/errors');
+var path = require('path');
 
-module.exports = function (app) {
+function defaultRouteHandler(req, res) {
+  res.sendfile(path.join(__dirname, '../client/index.html'));
+}
+
+function init(app) {
   // Insert routes below
-  app.use('/api/helpForums', HelpForum);
   app.use('/api/loggers', Loggers);
   app.use('/api/clis', CLIs);
   app.use('/api/topic', Topic);
@@ -29,8 +32,7 @@ module.exports = function (app) {
    .get(errors[404]);
 
   // All other routes should redirect to the index.html
-  app.route('/*')
-    .get(function (req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
-    });
-};
+  app.route('/*').get(defaultRouteHandler);
+}
+
+module.exports = init;

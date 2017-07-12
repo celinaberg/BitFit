@@ -1,9 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
-    // Question = require('../question/question.model');
-
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var TopicSchema = new Schema({
   // title: String,
