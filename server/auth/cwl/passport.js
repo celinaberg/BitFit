@@ -5,6 +5,16 @@ var path = require('path');
 var config = require('../../config/environment');
 var User = require('../../api/user/user.model');
 
+passport.serializeUser(function(user, done) {
+  console.log("Serialize User");
+  console.log(user);
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 var samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
   callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
@@ -25,7 +35,14 @@ var samlStrategy = new SamlStrategy({
   disableRequestedAuthnContext: true
 }, function (profile, done) {
   console.log(profile);
-  return done(null, false, { message: 'Not Implemented' });
+  return done(null,
+    {
+      id: 12093810238,
+      email: "test@example.com",
+      displayName: "Test Account",
+      firstName: "Test",
+      lastName: "Account"
+    });
   /*User.findOne({
     email: profile.email.toLowerCase()
   }, function (err, user) {
