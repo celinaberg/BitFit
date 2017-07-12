@@ -4,8 +4,6 @@
 
 'use strict';
 
-var config = require('./environment');
-
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }

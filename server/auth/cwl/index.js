@@ -41,7 +41,7 @@ router.post('/login/callback',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/failed' }),
   function (req, res) {
     res.json(req.user);
-    //res.redirect('/lessons');
+    // res.redirect('/lessons');
   }
 );
 

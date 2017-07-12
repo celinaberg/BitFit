@@ -15,12 +15,14 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
+var ejs = require('ejs');
+var connectLivereload = require('connect-livereload');
 
-module.exports = function (app) {
+function init(app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
-  app.engine('html', require('ejs').renderFile);
+  app.engine('html', ejs.renderFile);
   app.set('view engine', 'html');
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,11 +39,13 @@ module.exports = function (app) {
   }
 
   if (env === 'development' || env === 'test') {
-    app.use(require('connect-livereload')());
+    app.use(connectLivereload());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
-};
+}
+
+module.exports = init;
