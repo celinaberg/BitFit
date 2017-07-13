@@ -2,26 +2,36 @@
 
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
-import ngResource from 'angular-resource';
-import ngSanitize from 'angular-sanitize';
-import ngFlash from 'angular-flash';
+//import ngResource from 'angular-resource';
+//import ngSanitize from 'angular-sanitize';
+//import ngFlash from 'angular-flash';
+//import btfordSocketIo from 'angular-socket-io';
+//import textAngular from 'textangular';
+import uiRouter from '@uirouter/angularjs';
+//import uiAce from 'angular-ui-ace';
+//import uiBootstrap from 'angular-ui-bootstrap';
+//import nvd3 from 'nvd3';
+//import googlechart from 'angular-google-chart';
 /*import main from './main';
 import account from './account';
 import admin from './admin';*/
 
+// Components
+import Auth from '../components/auth/auth.service.js';
+
 angular.module('its110App', [
   ngCookies,
-  ngResource,
-  ngSanitize,
-  ngFlash,
-  'btford.socket-io',
-  'textAngular',
-  'ui.router',
-  'ui.ace',
-  'ui.bootstrap',
-  'nvd3',
-  'googlechart'])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  //ngResource,
+  //ngSanitize,
+  //ngFlash,
+  //btfordSocketIo,
+  //textAngular,
+  uiRouter,
+  //uiAce,
+  //uiBootstrap,
+  //nvd3,
+  //googlechart
+]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/');
 
