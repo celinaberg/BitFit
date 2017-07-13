@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -10,13 +11,16 @@ fs.readdirSync('node_modules')
     nodeModules[mod] = 'commonjs ' + mod;
   });
 
-module.exports = {
+var serverConfig = {
   entry: './server/app.js',
   target: 'node',
   externals: nodeModules,
   module: {
     loaders: [
-      { test: /\.(html|pem|crt|key)$/, loader: "file-loader" }
+      {
+        test: /\.(html|pem|crt|key)$/,
+        loader: "file-loader"
+      }
     ]
   },
   output: {
@@ -25,3 +29,26 @@ module.exports = {
   },
   devtool: 'sourcemap'
 };
+
+var clientConfig = {
+  entry: './client/app/app.js',
+  target: 'web',
+  plugins: [
+    new ExtractTextPlugin('styles.css')
+  ],
+  module: {
+    loaders: [
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract(["css-loader"])
+      }
+    ]
+  },
+  output: {
+    path: path.resolve(__dirname, 'build/client'),
+    filename: 'app.js'
+  },
+  devtool: 'sourcemap'
+};
+
+module.exports = [ serverConfig, clientConfig ];

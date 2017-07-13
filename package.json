@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "server/app.js",
   "dependencies": {
+    "angular": "^1.6.5",
     "body-parser": "^1.17.2",
     "composable-middleware": "^0.3.0",
     "compression": "^1.7.0",
@@ -28,9 +29,11 @@
   },
   "devDependencies": {
     "connect-livereload": "^0.4.0",
+    "css-loader": "^0.28.4",
     "eslint": "^3",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-import": "^2.7.0",
+    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "grunt": "^0.4.4",
     "grunt-angular-templates": "^0.5.4",

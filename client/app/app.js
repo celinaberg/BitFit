@@ -1,5 +1,10 @@
 'use strict';
 
+import angular from 'angular';
+import main from './main';
+import account from './account';
+import admin from './admin';
+
 angular.module('its110App', [
   'ngCookies',
   'ngResource',

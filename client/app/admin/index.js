@@ -1,5 +1,7 @@
 'use strict';
 
+import styles from './admin.css';
+
 angular.module('its110App')
   .config(function ($stateProvider) {
     $stateProvider
