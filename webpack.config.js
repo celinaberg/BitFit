@@ -13,14 +13,15 @@ fs.readdirSync('node_modules')
 module.exports = {
   entry: './server/app.js',
   target: 'node',
+  externals: nodeModules,
+  module: {
+    loaders: [
+      { test: /\.(html|pem|crt|key)$/, loader: "file-loader" }
+    ]
+  },
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'backend.js'
   },
-  externals: nodeModules,
-  module: {
-    loaders: [
-      { test: /\.(pem|crt|key)$/, loader: "file-loader" }
-    ]
-  }
+  devtool: 'sourcemap'
 };

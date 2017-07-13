@@ -18,6 +18,8 @@ var routes = require('./routes');
 var configExpress = require('./config/express');
 var configSocketIo = require('./config/socketio');
 var SocketIo = require('socket.io');
+var certificate = require('./cert/certificate.crt');
+var serverKey = require('./cert/server.key');
 
 // Connect to database
 mongoose.Promise = global.Promise;
@@ -28,8 +30,8 @@ if (config.seedDB) { require('./config/seed'); }
 
 // new for HTTPS
 var options = {
-  cert: fs.readFileSync(path.join(__dirname, 'cert/certificate.crt')),
-  key: fs.readFileSync(path.join(__dirname, 'cert/server.key'))
+  cert: fs.readFileSync(certificate, 'utf8'),
+  key: fs.readFileSync(serverKey, 'utf8')
 };
 
 // Setup server

@@ -12,9 +12,10 @@ var User = require('./api/user');
 var Auth = require('./auth');
 var errors = require('./components/errors');
 var path = require('path');
+var indexHtml = require('../client/index.html');
 
 function defaultRouteHandler(req, res) {
-  res.sendfile(path.join(__dirname, '../client/index.html'));
+  res.sendfile(indexHtml);
 }
 
 function init(app) {

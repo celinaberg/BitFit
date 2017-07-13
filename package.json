@@ -93,6 +93,7 @@
     "start": "node server/app.js",
     "serve": "grunt serve",
     "test": "grunt test",
+    "wp": "webpack --watch",
     "lint-server": "eslint server --fix",
     "lint-client": "eslint client --ignore-pattern client/bower_components --fix",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
