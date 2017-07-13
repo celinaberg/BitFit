@@ -4,6 +4,8 @@ var fs = require('fs');
 var path = require('path');
 var config = require('../../config/environment');
 var User = require('../../api/user/user.model');
+var key = require('../../cert/key.pem');
+var cert = require('../../cert/idp_cert.pem');
 
 passport.serializeUser(function (user, done) {
   console.log('Serialize User');
@@ -27,11 +29,11 @@ var samlStrategy = new SamlStrategy({
   issuer: 'https://comped.cs.ubc.ca',
   identifierFormat: null,
   // Service Provider private key
-  decryptionPvk: fs.readFileSync(path.join(__dirname, '/../../cert/key.pem'), 'utf8'),
+  decryptionPvk: key,
   // Service Provider Certificate
-  privateCert: fs.readFileSync(path.join(__dirname, '/../../cert/key.pem'), 'utf8'),
+  privateCert: key,
   // Identity Provider's public key
-  cert: fs.readFileSync(path.join(__dirname, '/../../cert/idp_cert.pem'), 'utf8'),
+  cert: cert,
   validateInResponseTo: false,
   disableRequestedAuthnContext: true
 }, function (profile, done) {
