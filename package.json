@@ -4,6 +4,10 @@
   "main": "server/app.js",
   "dependencies": {
     "angular": "^1.6.5",
+    "angular-cookies": "^1.6.5",
+    "angular-flash": "^1.2.0",
+    "angular-resource": "^1.6.5",
+    "angular-sanitize": "^1.6.5",
     "body-parser": "^1.17.2",
     "composable-middleware": "^0.3.0",
     "compression": "^1.7.0",

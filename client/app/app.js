@@ -1,15 +1,19 @@
 'use strict';
 
 import angular from 'angular';
-import main from './main';
+import ngCookies from 'angular-cookies';
+import ngResource from 'angular-resource';
+import ngSanitize from 'angular-sanitize';
+import ngFlash from 'angular-flash';
+/*import main from './main';
 import account from './account';
-import admin from './admin';
+import admin from './admin';*/
 
 angular.module('its110App', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngFlash',
+  ngCookies,
+  ngResource,
+  ngSanitize,
+  ngFlash,
   'btford.socket-io',
   'textAngular',
   'ui.router',
