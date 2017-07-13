@@ -13,7 +13,11 @@ var all = {
   root: path.join(__dirname, '/../../..'),
 
   // Server port
-  port: process.env.PORT || 443,
+  httpsPort: 443,
+  httpPort: 80,
+
+  url: 'https://comped.cs.ubc.ca',
+
   // ip: '192.168.2.1',
   // Should we populate the DB with sample data?
   seedDB: false, // fixme?
@@ -25,6 +29,11 @@ var all = {
 
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
+
+  // CWL
+  callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
+  entryPoint: 'https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO',
+  idpCert: path.join(__dirname, '/../../..', 'server/cert/idp_cert.pem'),
 
   // MongoDB connection options
   mongo: {
