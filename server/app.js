@@ -37,7 +37,6 @@ var app = express();
 
 // new for HTTPS
 var server = https.createServer(options, app);
-// var server = require('http').createServer(app);
 var socketio = SocketIo(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
@@ -47,15 +46,15 @@ configExpress(app);
 routes(app);
 
 // Start server
-server.listen(config.port, config.ip, function () {
-  console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+server.listen(config.httpsPort, config.ip, function () {
+  console.log('Express server listening on %d, in %s mode', config.httpsPort, config.env);
 });
 
 // redirect to HTTPS
 http.createServer(function (req, res) {
-  res.writeHead(301, { Location: 'https://comped.cs.ubc.ca' });
+  res.writeHead(301, { Location: config.url });
   res.end();
-}).listen(8085);
+}).listen(config.httpPort);
 
 // Expose app
 module.exports = app;

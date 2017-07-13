@@ -8,5 +8,6 @@ dist
 /users
 *.log
 .DS_Store
-/server/cert
+/server/cert/*
+!/server/cert/idp_*
 build
