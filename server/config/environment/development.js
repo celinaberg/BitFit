@@ -1,6 +1,6 @@
 'use strict';
 
-var path = require('path');
+var cert = require('../../../server/cert/idp_cert-staging.pem');
 
 // Development specific configuration
 // ==================================
@@ -16,7 +16,7 @@ module.exports = {
   // CWL
   callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
   entryPoint: 'https://authentication.stg.id.ubc.ca/idp/profile/SAML2/Redirect/SSO',
-  idpCert: path.join(__dirname, '/../../..', 'server/cert/idp_cert-staging.pem'),
+  idpCert: cert,
 
   // MongoDB connection options
   mongo: {

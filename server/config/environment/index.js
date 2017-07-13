@@ -3,6 +3,7 @@
 var path = require('path');
 var _ = require('lodash');
 var environment = require('./' + process.env.NODE_ENV + '.js');
+var cert = require('../../../server/cert/idp_cert.pem');
 
 // All configurations will extend these options
 // ============================================
@@ -33,7 +34,7 @@ var all = {
   // CWL
   callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
   entryPoint: 'https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO',
-  idpCert: path.join(__dirname, '/../../..', 'server/cert/idp_cert.pem'),
+  idpCert: cert,
 
   // MongoDB connection options
   mongo: {

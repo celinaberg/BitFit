@@ -5,7 +5,6 @@ var path = require('path');
 var config = require('../../config/environment');
 var User = require('../../api/user/user.model');
 var key = require('../../cert/key.pem');
-var cert = require('../../cert/idp_cert.pem');
 
 passport.serializeUser(function (user, done) {
   console.log('Serialize User');
