@@ -32,7 +32,7 @@ function init(app) {
   if (env === 'production') {
     // app.use(express.static(path.join(config.root, '.tmp')));
     // app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
-    app.use(express.static('client'));
+    app.use(express.static('../client'));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
   }
@@ -40,7 +40,7 @@ function init(app) {
   if (env === 'development' || env === 'test') {
     app.use(connectLivereload());
     // app.use(express.static(path.join(config.root, '.tmp')));
-    app.use(express.static('client'));
+    app.use(express.static('../client'));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
