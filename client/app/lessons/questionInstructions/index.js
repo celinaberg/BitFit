@@ -1,9 +1,9 @@
 import angular from 'angular';
 
-import template from 'question-instructions.html';
-import 'questionInstructions.css;'
+import template from './question-instructions.html';
+import './questionInstructions.css';
 
-angular.module('bitfit.lessons.instructions')
+export default angular.module('bitfit.lessons.instructions', [])
   .directive('questionInstructions', function () {
     return {
       template: template,
@@ -11,4 +11,4 @@ angular.module('bitfit.lessons.instructions')
       link: function (scope, element, attrs) {
       }
     };
-  });
+  }).name;

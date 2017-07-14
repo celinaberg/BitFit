@@ -1,9 +1,9 @@
 import angular from 'angular'
 
-import template from 'background.html';
-import 'background.css';
+import template from './background.html';
+import './background.css';
 
-angular.module('bitfit.lessons.background')
+export default angular.module('bitfit.lessons.background', [])
   .directive('background', function () {
     return {
       template: template,
@@ -11,4 +11,4 @@ angular.module('bitfit.lessons.background')
       link: function (scope, element, attrs) {
       }
     };
-  });
+  }).name;
