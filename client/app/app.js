@@ -20,6 +20,7 @@ import routing from './app.config';
 import main from './main';
 //import account from './account';
 //import admin from './admin';
+import lessons from './lessons';
 
 // Components
 //import Auth from '../components/auth/auth.service.js';
@@ -36,13 +37,12 @@ angular.module('bitfit', [
   //uiBootstrap,
   //nvd3,
   //googlechart
-  main
-]).config(routing).run(function () {
-  console.log("Running BitFit");
-});
-
-
-  /*.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  main,
+  //account
+  //admin
+  lessons
+]).config(routing)
+.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -65,7 +65,9 @@ angular.module('bitfit', [
         return $q.reject(response);
       }
     };
-  });*/
+  }).run(function () {
+    console.log("Running BitFit");
+  });
 /*
   .run(function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in

@@ -9,4 +9,4 @@ export default function routes($stateProvider) {
       template: html,
       controller: 'MainCtrl'
     });
-}
+};
