@@ -1,6 +1,7 @@
 'use strict';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import './app.css';
 
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
