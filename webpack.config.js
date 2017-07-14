@@ -19,7 +19,12 @@ var serverConfig = {
     loaders: [
       {
         test: /\.(html|pem|crt|key)$/,
-        loader: "file-loader"
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: "data/[name].[ext]"
+          }
+        }
       }
     ]
   },
@@ -47,10 +52,23 @@ var clientConfig = {
         use: {
           loader: 'html-loader',
           options: {
-            attrs: [':data-src']
+            minimize: true
           }
         }
-      }
+      },
+      {
+        test: /\.(gifs)$/,
+        loader: "file-loader"
+      },
+      {
+        test: /\.(ttf|eot|woff2|woff|svg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: "fonts/[name].[ext]"
+          }
+        }
+      },
     ]
   },
   output: {
