@@ -17,6 +17,16 @@ BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS]
   - View and manage list of users
   - Explore logged data of student usage through a parallel coordinates graph
 
+## Development Environment
+
+Install [nodemon](https://github.com/remy/nodemon) globally with `npm install -g nodemon`.
+
+In two terminal windows run the following commands:
+  - `npm run build-watch` to have webpack watch and build the app
+  - `npm run start` to have nodemon restart the server when there are changes
+ 
+Currently there is no live reload in the browser. So, you will need to refresh yourself or submit a pull request to add this feature.
+
 ## Run for Production
 I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and has a lot of cool features.
  -  To install: 

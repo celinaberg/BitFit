@@ -110,11 +110,11 @@
     "node": "^8"
   },
   "scripts": {
-    "start": "node server/app.js",
-    "serve": "grunt serve",
-    "test": "grunt test",
-    "wp": "webpack --watch",
+    "start": "cd build/server && nodemon backend.js",
+    "buld": "webpack",
+    "build-watch": "webpack --watch",
     "lint": "eslint './server/**/*.js' './client/**/*.js'",
+    "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
