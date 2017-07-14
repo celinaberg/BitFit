@@ -1,5 +1,4 @@
-'use strict';
-
+import angular from 'angular';
 
 class Topics {
   constructor($http) {
