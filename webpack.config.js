@@ -18,6 +18,11 @@ var serverConfig = {
   module: {
     loaders: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loaders: ["babel-loader"]
+      },
+      {
         test: /\.(html|pem|crt|key)$/,
         use: {
           loader: 'file-loader',
@@ -44,11 +49,16 @@ var clientConfig = {
   module: {
     loaders: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loaders: ["babel-loader"]
+      },
+      {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(["css-loader"])
       },
       {
-        test: /\.(html)$/,
+        test: /\.html$/,
         use: {
           loader: 'html-loader',
           options: {
