@@ -16,6 +16,8 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
+var keyContents = fs.readFileSync(key, 'utf8');
+
 var samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
   //callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
@@ -28,9 +30,9 @@ var samlStrategy = new SamlStrategy({
   issuer: 'https://comped.cs.ubc.ca',
   identifierFormat: null,
   // Service Provider private key
-  decryptionPvk: key,
+  decryptionPvk: keyContents,
   // Service Provider Certificate
-  privateCert: key,
+  privateCert: keyContents,
   // Identity Provider's public key
   cert: fs.readFileSync(config.idpCert, 'utf8'),
   validateInResponseTo: false,
