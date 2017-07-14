@@ -24,7 +24,7 @@
     "express": "^4.15.3",
     "express-jwt": "^5.3.0",
     "express-session": "^1.15.3",
-    "jsesc": "^0.5.0",
+    "jsesc": "^2.5.1",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^2.4.1",
     "method-override": "^1.0.0",
