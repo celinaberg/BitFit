@@ -17,7 +17,6 @@ import routing from './main.routes';
 //import * as MainController from './main.controller';
 
 import './main.css';
-console.log("Main");
 
 export default angular.module('bitfit.main', [uiRouter])
   .config(routing)
