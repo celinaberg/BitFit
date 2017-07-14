@@ -1,5 +1,11 @@
-export default function ($scope) {
-    $scope.login = function () {
-      window.location.href = '/auth/cwl/login';
-    };
-  };
+export default class MainController {
+  constructor($scope) {
+    $scope.login = this.login;
+  }
+
+  login() {
+    window.location.href = '/auth/cwl/login';
+  }
+}
+
+MainController.$inject = ['$scope'];
