@@ -1,7 +1,12 @@
-'use strict';
+import angular from 'angular';
+import Flash from 'angular-flash';
+import Auth from '../../../components/auth/auth.service';
+import User from '../../../components/auth/auth.service';
+import socket from '../../../components/socket/socket.service';
+import topics from '../../../components/topics/topics.service';
 
-angular.module('its110App')
-  .controller('EditContentCtrl', function ($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, Flash) {
+export default class EditContentController {
+  constructor($scope, $http, Auth, User, socket, topics, topic, topicPromiseEC, $location, Flash) {
     $scope.topic = topic.data;
     $scope.topicsEC = topicPromiseEC.data;
 
@@ -346,4 +351,7 @@ angular.module('its110App')
       }
       // $scope.editTopic();
     };
-  });
+  }
+}
+
+EditContentController.$inject = ['$scope', '$http', Auth, User, socket, topics, 'topic', 'topicPromiseEC', '$location', Flash];
