@@ -31,7 +31,7 @@
     "mongoose": "^4.11.2",
     "morgan": "^1.8.2",
     "nvd3": "^1.8.5",
-    "passport": "^0.2.0",
+    "passport": "^0.3.2",
     "passport-saml": "^0.15.0",
     "serve-favicon": "^2.4.3",
     "socket.io": "^1.0.6",
