@@ -1,6 +1,8 @@
-'use strict';
+import angular from 'angular';
+import template from 'modal.html';
+import 'modal.css';
 
-angular.module('its110App')
+angular.module('bitfit.components.modal')
   .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal
@@ -16,7 +18,7 @@ angular.module('its110App')
       angular.extend(modalScope, scope);
 
       return $modal.open({
-        templateUrl: 'components/modal/modal.html',
+        template: template,
         windowClass: modalClass,
         scope: modalScope
       });
