@@ -1,7 +1,5 @@
-'use strict';
-
-angular.module('its110App')
-  .controller('TopicsCtrl', function ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) { // topics is for manipulating questions
+export default class TopicsController {
+  constructor($scope) {
     $scope.topic = topic.data;
 	  $scope.topicsTC = topicPromiseTC.data;
 	  $scope.tab = 1;
@@ -352,4 +350,7 @@ angular.module('its110App')
   	};
 
   	$scope.init();
-  });
+  }
+}
+
+TopicsController.$inject = ['$scope', '$stateParams', '$location', '$http', 'Auth', 'topics', 'topic', 'topicPromiseTC', 'logging'];
