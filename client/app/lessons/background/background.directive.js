@@ -1,9 +1,12 @@
-'use strict';
+import angular from 'angular'
 
-angular.module('its110App')
+import template from 'background.html';
+import 'background.css';
+
+angular.module('bitfit.lessons.background')
   .directive('background', function () {
     return {
-      templateUrl: 'app/lessons/background/background.html',
+      template: template,
       restrict: 'EA',
       link: function (scope, element, attrs) {
       }
