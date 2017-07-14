@@ -11,19 +11,19 @@ class Questions {
     return $http.get('/api/questions').success(function (data) {
       angular.copy(data, o.questions);
     });
-  },
+  }
 
   create(question) {
     return $http.post('/api/questions', question).success(function (data) {
       o.questions.push(data);
     });
-  },
+  }
 
   import(questions) {
     return $http.post('/api/questions/import', questions).success(function (data) {
       angular.extend(o.questions, data);
     });
-  },
+  }
 
   // get: function(id) {
   //   /* this worked fine - with $scope.question = question; after the js resolve
@@ -52,7 +52,7 @@ class Questions {
         }
       });
     });
-  },
+  }
 
   // must delete question, and delete reference to it in question
   delete(question, questionID) {
