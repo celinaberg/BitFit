@@ -1,7 +1,7 @@
-'use strict';
 
-var fs = require('fs');
-var cert = require('../../../server/cert/idp_cert-staging.pem');
+
+const fs = require('fs');
+const cert = require('../../../server/cert/idp_cert-staging.pem');
 
 // Development specific configuration
 // ==================================
@@ -21,8 +21,8 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/its110-dev'
+    uri: 'mongodb://localhost/its110-dev',
   },
 
-  seedDB: true
+  seedDB: true,
 };

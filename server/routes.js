@@ -2,17 +2,16 @@
  * Main application routes
  */
 
-'use strict';
 
-var Loggers = require('./api/logger');
-var CLIs = require('./api/cli');
-var Topic = require('./api/topic');
-var Question = require('./api/question');
-var User = require('./api/user');
-var Auth = require('./auth');
-var errors = require('./components/errors');
-var path = require('path');
-var indexHtml = require('../client/index.html');
+const Loggers = require('./api/logger');
+const CLIs = require('./api/cli');
+const Topic = require('./api/topic');
+const Question = require('./api/question');
+const User = require('./api/user');
+const Auth = require('./auth');
+const errors = require('./components/errors');
+const path = require('path');
+const indexHtml = require('../client/index.html');
 
 function defaultRouteHandler(req, res) {
   res.sendfile(indexHtml);

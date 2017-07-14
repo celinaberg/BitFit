@@ -1,9 +1,10 @@
-'use strict';
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-var LoggerSchema = new Schema({
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const LoggerSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' },
   question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
@@ -14,7 +15,7 @@ var LoggerSchema = new Schema({
   numRuns: Number,
   numHints: Number,
   totalAttempts: Number,
-  correctAttempts: Number
+  correctAttempts: Number,
 });
 
 module.exports = mongoose.model('Logger', LoggerSchema);

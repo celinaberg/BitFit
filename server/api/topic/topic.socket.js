@@ -2,15 +2,14 @@
  * Broadcast updates to client when the model changes
  */
 
-'use strict';
 
-var Topic = require('./topic.model');
+const Topic = require('./topic.model');
 
 exports.register = function (socket) {
-  Topic.schema.post('save', function (doc) {
+  Topic.schema.post('save', (doc) => {
     onSave(socket, doc);
   });
-  Topic.schema.post('remove', function (doc) {
+  Topic.schema.post('remove', (doc) => {
     onRemove(socket, doc);
   });
 };

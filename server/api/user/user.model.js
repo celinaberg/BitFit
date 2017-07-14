@@ -1,23 +1,25 @@
-'use strict';
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var authTypes = ['github', 'twitter'];
 
-var UserSchema = new Schema({
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+const crypto = require('crypto');
+
+const authTypes = ['github', 'twitter'];
+
+const UserSchema = new Schema({
   name: String,
   email: { type: String, lowercase: true },
   role: {
     type: String,
-    default: 'user'
+    default: 'user',
   },
   hashedPassword: String,
   provider: String,
   salt: String,
   facebook: {},
   google: {},
-  github: {}
+  github: {},
 });
 
 /**
@@ -40,7 +42,7 @@ UserSchema
   .get(function () {
     return {
       name: this.name,
-      role: this.role
+      role: this.role,
     };
   });
 
@@ -50,7 +52,7 @@ UserSchema
   .get(function () {
     return {
       _id: this._id,
-      role: this.role
+      role: this.role,
     };
   });
 
@@ -78,8 +80,8 @@ UserSchema
 UserSchema
   .path('email')
   .validate(function (value, respond) {
-    var self = this;
-    this.constructor.findOne({ email: value }, function (err, user) {
+    const self = this;
+    this.constructor.findOne({ email: value }, (err, user) => {
       if (err) throw err;
       if (user) {
         if (self.id === user.id) return respond(true);
@@ -89,7 +91,7 @@ UserSchema
     });
   }, 'The specified email address is already in use.');
 
-var validatePresenceOf = function (value) {
+const validatePresenceOf = function (value) {
   return value && value.length;
 };
 
@@ -114,7 +116,7 @@ UserSchema.methods = {
    * @return {Boolean}
    * @api public
    */
-  authenticate: function (plainText) {
+  authenticate(plainText) {
     return this.encryptPassword(plainText) === this.hashedPassword;
   },
 
@@ -124,7 +126,7 @@ UserSchema.methods = {
    * @return {String}
    * @api public
    */
-  makeSalt: function () {
+  makeSalt() {
     return crypto.randomBytes(16).toString('base64');
   },
 
@@ -135,11 +137,11 @@ UserSchema.methods = {
    * @return {String}
    * @api public
    */
-  encryptPassword: function (password) {
+  encryptPassword(password) {
     if (!password || !this.salt) return '';
-    var salt = new Buffer(this.salt, 'base64');
+    const salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-  }
+  },
 };
 
 module.exports = mongoose.model('User', UserSchema);

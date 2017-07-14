@@ -1,9 +1,9 @@
-'use strict';
 
-var express = require('express');
-var cwl = require('./cwl');
 
-var router = express.Router();
+const express = require('express');
+const cwl = require('./cwl');
+
+const router = express.Router();
 
 router.use('/cwl', cwl);
 

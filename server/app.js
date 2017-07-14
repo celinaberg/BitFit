@@ -2,24 +2,23 @@
  * Main application file
  */
 
-'use strict';
 
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var express = require('express');
-var mongoose = require('mongoose');
-var config = require('./config/environment');
-var path = require('path');
-var https = require('https');
-var http = require('http');
-var fs = require('fs');
-var routes = require('./routes');
-var configExpress = require('./config/express');
-var configSocketIo = require('./config/socketio');
-var SocketIo = require('socket.io');
-var certificate = require('./cert/certificate.crt');
-var serverKey = require('./cert/server.key');
+const express = require('express');
+const mongoose = require('mongoose');
+const config = require('./config/environment');
+const path = require('path');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
+const routes = require('./routes');
+const configExpress = require('./config/express');
+const configSocketIo = require('./config/socketio');
+const SocketIo = require('socket.io');
+const certificate = require('./cert/certificate.crt');
+const serverKey = require('./cert/server.key');
 
 // Connect to database
 mongoose.Promise = global.Promise;
@@ -29,31 +28,31 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 if (config.seedDB) { require('./config/seed'); }
 
 // new for HTTPS
-var options = {
+const options = {
   cert: fs.readFileSync(certificate, 'utf8'),
-  key: fs.readFileSync(serverKey, 'utf8')
+  key: fs.readFileSync(serverKey, 'utf8'),
 };
 
 // Setup server
-var app = express();
+const app = express();
 
 // new for HTTPS
-var server = https.createServer(options, app);
-var socketio = SocketIo(server, {
+const server = https.createServer(options, app);
+const socketio = SocketIo(server, {
   serveClient: config.env !== 'production',
-  path: '/socket.io-client'
+  path: '/socket.io-client',
 });
 configSocketIo(socketio);
 configExpress(app);
 routes(app);
 
 // Start server
-server.listen(config.httpsPort, config.ip, function () {
+server.listen(config.httpsPort, config.ip, () => {
   console.log('Express server listening on %d, in %s mode', config.httpsPort, config.env);
 });
 
 // redirect to HTTPS
-http.createServer(function (req, res) {
+http.createServer((req, res) => {
   res.writeHead(301, { Location: config.url });
   res.end();
 }).listen(config.httpPort);
