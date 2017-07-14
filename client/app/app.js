@@ -12,14 +12,17 @@ import uiRouter from '@uirouter/angularjs';
 //import uiBootstrap from 'angular-ui-bootstrap';
 //import nvd3 from 'nvd3';
 //import googlechart from 'angular-google-chart';
-/*import main from './main';
-import account from './account';
-import admin from './admin';*/
+
+import routing from './app.config';
+
+import main from './main';
+//import account from './account';
+//import admin from './admin';
 
 // Components
-import Auth from '../components/auth/auth.service.js';
+//import Auth from '../components/auth/auth.service.js';
 
-angular.module('its110App', [
+angular.module('bitfit', [
   ngCookies,
   //ngResource,
   //ngSanitize,
@@ -31,15 +34,13 @@ angular.module('its110App', [
   //uiBootstrap,
   //nvd3,
   //googlechart
-]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-    $urlRouterProvider
-      .otherwise('/');
+  main
+]).config(routing).run(function () {
+  console.log("Running BitFit");
+});
 
-    $locationProvider.html5Mode(true);
-    $httpProvider.interceptors.push('authInterceptor');
-  })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  /*.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -62,8 +63,8 @@ angular.module('its110App', [
         return $q.reject(response);
       }
     };
-  })
-
+  });*/
+/*
   .run(function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -84,3 +85,4 @@ angular.module('its110App', [
       });
     });
   });
+*/

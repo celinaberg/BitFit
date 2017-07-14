@@ -41,6 +41,15 @@ var clientConfig = {
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(["css-loader"])
+      },
+      {
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: [':data-src']
+          }
+        }
       }
     ]
   },
