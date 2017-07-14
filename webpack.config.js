@@ -57,8 +57,13 @@ var clientConfig = {
         }
       },
       {
-        test: /\.(gifs)$/,
-        loader: "file-loader"
+        test: /\.(png|jpg|gif)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: "img/[name].[ext]"
+          }
+        }
       },
       {
         test: /\.(ttf|eot|woff2|woff|svg)$/,
