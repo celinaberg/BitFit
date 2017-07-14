@@ -114,8 +114,7 @@
     "serve": "grunt serve",
     "test": "grunt test",
     "wp": "webpack --watch",
-    "lint-server": "eslint server --fix",
-    "lint-client": "eslint client --ignore-pattern client/bower_components --fix",
+    "lint": "eslint './server/**/*.js' './client/**/*.js'",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
