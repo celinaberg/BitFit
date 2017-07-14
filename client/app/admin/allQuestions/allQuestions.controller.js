@@ -1,7 +1,13 @@
-'use strict';
+import angular from 'angular';
+import Flash from 'angular-flash';
+import Auth from '../../../components/auth/auth.service';
+import User from '../../../components/auth/auth.service';
+import socket from '../../../components/socket/socket.service';
+import topics from '../../../components/topics/topics.service';
+import questions from '../../../components/questions/questions.service';
 
-angular.module('its110App')
-  .controller('AllQuestionsCtrl', function ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
+export default class AllQuestionsController {
+  constructor($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data;
     $scope.topicsEC = topicPromiseEC.data;
 
@@ -401,4 +407,7 @@ angular.module('its110App')
         delete $scope.search;
       }
     };
-  });
+  }
+}
+
+AllQuestionsController.$inject = ['$scope', '$http', Auth, User, socket, topics, questions, 'questionPromiseEC', 'topicPromiseEC', '$location', Flash];
