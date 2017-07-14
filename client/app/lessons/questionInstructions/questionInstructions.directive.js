@@ -1,9 +1,12 @@
-'use strict';
+import angular from 'angular';
 
-angular.module('its110App')
+import template from 'question-instructions.html';
+import 'questionInstructions.css;'
+
+angular.module('bitfit.lessons.instructions')
   .directive('questionInstructions', function () {
     return {
-      templateUrl: 'app/lessons/questionInstructions/question-instructions.html',
+      template: template,
       restrict: 'EA',
       link: function (scope, element, attrs) {
       }
