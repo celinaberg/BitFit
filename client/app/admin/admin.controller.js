@@ -4,7 +4,7 @@ import socket from '../../components/socket/socket.service';
 import topics from '../../components/topics/topics.service';
 
 export default class AdminController {
-  constructor ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
+  constructor($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
     // $scope.topic = topic;
     $scope.topics = topicPromiseAC.data;
     // $scope.allTopics = [];
@@ -68,8 +68,8 @@ export default class AdminController {
               code: "for (int i = 0; i < 10; i++) { // do something }",
               hints: ['an', 'array', 'of', 'strings']
             } */
-        ]
-      }).success(function (topic) {
+        ],
+      }).success((topic) => {
           // $scope.topicsAC.push(topic);
         $scope.topics.push(topic);
       });
@@ -80,13 +80,13 @@ export default class AdminController {
 
     $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
-      return ('/lessons/topics/' + id) === $location.path();
+      return (`/lessons/topics/${id}`) === $location.path();
     };
 
 
     $scope.delete = function (user) {
       User.remove({ id: user._id });
-      angular.forEach($scope.users, function (u, i) {
+      angular.forEach($scope.users, (u, i) => {
         if (u === user) {
           $scope.users.splice(i, 1);
         }

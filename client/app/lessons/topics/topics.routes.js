@@ -15,7 +15,7 @@ export default function routes($stateProvider) {
         }],
         topicPromiseTC: ['topics', function (topics) { // gets all the topics before controller loads
           return topics.getAll();
-        }]
-      }
+        }],
+      },
     });
-};
+}

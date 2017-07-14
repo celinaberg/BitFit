@@ -3,18 +3,18 @@ import angular from 'angular';
 class Topics {
   constructor($http) {
     this.o = {
-      topics: []
+      topics: [],
     };
   }
 
   getAll() {
-    return $http.get('/api/topics').success(function (data) {
+    return $http.get('/api/topics').success((data) => {
       angular.copy(data, o.topics);
     });
   }
 
   create(topic) {
-    return $http.post('/api/topics', topic).success(function (data) {
+    return $http.post('/api/topics', topic).success((data) => {
       o.topics.push(data);
     });
   }
@@ -24,21 +24,19 @@ class Topics {
     return $http.get('/api/topics/' + id).then(function(res){
       return res.data;
     }); */
-    return $http.get('/api/topics/' + id).success(function (res) {
-      return res;
-    });
+    return $http.get(`/api/topics/${id}`).success(res => res);
   }
 
   addQuestion(topicID, question) {
-    return $http.post('/api/topics/' + topicID + '/questions', question);
+    return $http.post(`/api/topics/${topicID}/questions`, question);
     // FIXME: add question to o object here explicitly??
   }
 
   editQuestion(id, question) {
-    return $http.put('/api/questions/' + id, question).success(function (data) {
-      o.topics.forEach(function (ea) {
+    return $http.put(`/api/questions/${id}`, question).success((data) => {
+      o.topics.forEach((ea) => {
         if (ea._id === data.topic) {
-          ea.questions.forEach(function (q) {
+          ea.questions.forEach((q) => {
             if (q._id === data._id) {
               q = data;
             }
@@ -50,7 +48,7 @@ class Topics {
 
   // must delete question, and delete reference to it in topic
   deleteQuestion(question, topicID) {
-    $http.post('/api/topics/' + topicID + '/delquestion', question).success(function (data) {
+    $http.post(`/api/topics/${topicID}/delquestion`, question).success((data) => {
       // o.topics.forEach(function(ea) {
       console.log('successfully deleted q from topic');
       console.log(data);
@@ -60,13 +58,13 @@ class Topics {
   }
 
   editTopic(id, topic) {
-    topic.questions.forEach(function (ea, i) {
+    topic.questions.forEach((ea, i) => {
       topic.questions[i] = ea._id;
     });
 
-    return $http.put('/api/topics/' + id, topic).success(function (data) {
+    return $http.put(`/api/topics/${id}`, topic).success((data) => {
       // var index = o.topics.indexOf(data._id);
-      o.topics.forEach(function (ea) {
+      o.topics.forEach((ea) => {
         if (ea._id === data._id) {
           angular.copy(data, ea);
         }

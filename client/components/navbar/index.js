@@ -6,9 +6,7 @@ import html from './navbar.html';
 
 export default angular.module('bitfit.component.navbar', [])
   .controller('NavBarController', NavBarController)
-  .directive('navbar', function() {
-    return {
-      template: html
-    };
-  })
+  .directive('navbar', () => ({
+    template: html,
+  }))
   .name;

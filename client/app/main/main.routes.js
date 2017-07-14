@@ -7,6 +7,6 @@ export default function routes($stateProvider) {
     .state('main', {
       url: '/',
       template: html,
-      controller: 'MainCtrl'
+      controller: 'MainCtrl',
     });
-};
+}

@@ -15,7 +15,7 @@ export default function routes($stateProvider) {
         }],
         questionPromiseEC: ['questions', function (questions) { // gets all the questions before controller loads
           return questions.getAll();
-        }]
-      }
+        }],
+      },
     });
-};
+}

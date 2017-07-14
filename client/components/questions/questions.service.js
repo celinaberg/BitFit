@@ -3,24 +3,24 @@ import angular from 'angular';
 class Questions {
   constructor($http) {
     this.o = {
-      questions: []
+      questions: [],
     };
   }
 
   getAll() {
-    return $http.get('/api/questions').success(function (data) {
+    return $http.get('/api/questions').success((data) => {
       angular.copy(data, o.questions);
     });
   }
 
   create(question) {
-    return $http.post('/api/questions', question).success(function (data) {
+    return $http.post('/api/questions', question).success((data) => {
       o.questions.push(data);
     });
   }
 
   import(questions) {
-    return $http.post('/api/questions/import', questions).success(function (data) {
+    return $http.post('/api/questions/import', questions).success((data) => {
       angular.extend(o.questions, data);
     });
   }
@@ -41,10 +41,10 @@ class Questions {
   // },
 
   editQuestion(id, question) {
-    return $http.put('/api/questions/' + id, question).success(function (data) {
-      o.questions.forEach(function (ea) {
+    return $http.put(`/api/questions/${id}`, question).success((data) => {
+      o.questions.forEach((ea) => {
         if (ea._id === data.question) {
-          ea.questions.forEach(function (q) {
+          ea.questions.forEach((q) => {
             if (q._id === data._id) {
               q = data;
             }
@@ -56,7 +56,7 @@ class Questions {
 
   // must delete question, and delete reference to it in question
   delete(question, questionID) {
-    $http.delete('/api/questions/' + question._id);
+    $http.delete(`/api/questions/${question._id}`);
     console.log('successfully deleted q');
   }
 

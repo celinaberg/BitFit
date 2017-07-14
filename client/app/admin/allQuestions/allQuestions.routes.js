@@ -2,7 +2,7 @@ import template from './allQuestions.html';
 
 routes.$inject = ['$stateProvider'];
 
-export default function routes ($stateProvider) {
+export default function routes($stateProvider) {
   $stateProvider
     .state('allQuestions', {
       url: '/admin/allQuestions',
@@ -15,7 +15,7 @@ export default function routes ($stateProvider) {
         }],
         questionPromiseEC: ['questions', function (questions) { // gets all the questions before controller loads
           return questions.getAll();
-        }]
-      }
+        }],
+      },
     });
 }

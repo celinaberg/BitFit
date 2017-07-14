@@ -3,7 +3,7 @@ import User from './user.service';
 
 class Auth {
   constructor($location, $rootScope, $http, User, $cookieStore, $q) {
-    var currentUser = {};
+    let currentUser = {};
     if ($cookieStore.get('token')) {
       currentUser = User.get();
     }
@@ -17,24 +17,24 @@ class Auth {
    * @return {Promise}
    */
   login(user, callback) {
-    var cb = callback || angular.noop;
-    var deferred = $q.defer();
+    const cb = callback || angular.noop;
+    const deferred = $q.defer();
 
     $http.post('/auth/local', {
       email: user.email,
-      password: user.password
+      password: user.password,
     })
-    .success(function (data) {
+    .success((data) => {
       $cookieStore.put('token', data.token);
       currentUser = User.get();
       deferred.resolve(data);
       return cb();
     })
-    .error(function (err) {
+    .error((err) => {
       this.logout();
       deferred.reject(err);
       return cb(err);
-    }.bind(this));
+    });
 
     return deferred.promise;
   }
@@ -57,18 +57,18 @@ class Auth {
    * @return {Promise}
    */
   createUser(user, callback) {
-    var cb = callback || angular.noop;
+    const cb = callback || angular.noop;
 
     return User.save(user,
-      function (data) {
+      (data) => {
         $cookieStore.put('token', data.token);
         currentUser = User.get();
         return cb(user);
       },
-      function (err) {
+      (err) => {
         this.logout();
         return cb(err);
-      }.bind(this)).$promise;
+      }).$promise;
   }
 
   /**
@@ -80,16 +80,12 @@ class Auth {
    * @return {Promise}
    */
   changePassword(oldPassword, newPassword, callback) {
-    var cb = callback || angular.noop;
+    const cb = callback || angular.noop;
 
     return User.changePassword({ id: currentUser._id }, {
-      oldPassword: oldPassword,
-      newPassword: newPassword
-    }, function (user) {
-      return cb(user);
-    }, function (err) {
-      return cb(err);
-    }).$promise;
+      oldPassword,
+      newPassword,
+    }, user => cb(user), err => cb(err)).$promise;
   }
 
   /**
@@ -115,9 +111,9 @@ class Auth {
    */
   isLoggedInAsync(cb) {
     if (currentUser.hasOwnProperty('$promise')) {
-      currentUser.$promise.then(function () {
+      currentUser.$promise.then(() => {
         cb(true);
-      }).catch(function () {
+      }).catch(() => {
         cb(false);
       });
     } else if (currentUser.hasOwnProperty('role')) {
@@ -138,13 +134,13 @@ class Auth {
 
   isAdminAsync(cb) {
     if (currentUser.hasOwnProperty('$promise')) {
-      currentUser.$promise.then(function () {
+      currentUser.$promise.then(() => {
         if (currentUser.role === 'admin') {
           cb(true);
         } else {
           cb(false);
         }
-      }).catch(function () {
+      }).catch(() => {
         cb(false);
       });
     } else if (currentUser.role === 'admin') {

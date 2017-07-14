@@ -2,7 +2,7 @@ import template from './editContent.html';
 
 routes.$inject = ['$stateProvider'];
 
-export default function routes ($stateProvider) {
+export default function routes($stateProvider) {
   $stateProvider
     .state('editContent', {
       url: '/admin/editContent/{id}',
@@ -15,7 +15,7 @@ export default function routes ($stateProvider) {
         }],
         topicPromiseEC: ['topics', function (topics) { // gets all the topics before controller loads
           return topics.getAll();
-        }]
-      }
+        }],
+      },
     });
 }

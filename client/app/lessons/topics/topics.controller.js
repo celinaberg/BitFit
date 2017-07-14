@@ -7,12 +7,12 @@ export default class TopicsController {
     if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
       $scope.qInfo = {
         currentQuestion: $location.search().q,
-        totalQuestions: $scope.topic.questions.length * 10
+        totalQuestions: $scope.topic.questions.length * 10,
       };
     } else {
       $scope.qInfo = {
         currentQuestion: 1,
-        totalQuestions: $scope.topic.questions.length * 10
+        totalQuestions: $scope.topic.questions.length * 10,
       };
     }
 
@@ -25,18 +25,18 @@ export default class TopicsController {
       className: '',
       compileOutput: '',
       runOutput: '',
-      expectedOutput: ''
+      expectedOutput: '',
     };
 
     $scope.showComments = false;
     $scope.feedback = '';
 
-    var endsWith = function (str, suffix) {
+    const endsWith = function (str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
 
-    var getClassName = function () {
+    const getClassName = function () {
       if (endsWith($scope.output.className, '.c')) {
         $scope.output.className.slice(0, -5);
         return $scope.output.className.slice(0, -5);
@@ -44,35 +44,35 @@ export default class TopicsController {
       return $scope.output.className;
     };
 
-    var getFileName = function () {
+    const getFileName = function () {
       if (endsWith($scope.output.className, '.c')) {
         return $scope.output.className;
       }
-      return $scope.output.className + '.c';
+      return `${$scope.output.className}.c`;
     };
 
     // FIXME: this functionality should be moved into topics service
     $scope.compileCode = function () {
       $scope.showComments = false;
-      var code = $scope.editor.getValue();
+      const code = $scope.editor.getValue();
       if (typeof (code) === 'undefined' || code === '') {
         $scope.output.compileOutput = 'In order to compile your program, please enter code in the code editor.\n';
         return;
       }
       // var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
-      var className = getClassName();
-      var fileName = getFileName();
+      const className = getClassName();
+      const fileName = getFileName();
       if (fileName === '.c') {
         $scope.output.compileOutput = 'In order to compile your program, please enter a name for your C file.\n';
         return;
       }
-      var obj = { className: className,
-        fileName: fileName,
-        code: code, // editedCode,
+      const obj = { className,
+        fileName,
+        code, // editedCode,
         user: Auth.getCurrentUser(),
-        questionNum: $scope.qInfo.currentQuestion
+        questionNum: $scope.qInfo.currentQuestion,
       };
-      $http.post('api/clis/compile', obj).success(function (data) {
+      $http.post('api/clis/compile', obj).success((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n';
@@ -92,11 +92,11 @@ export default class TopicsController {
       // var obj = { 'className': className,
       //             'user': Auth.getCurrentUser()
       //           };
-      var fileName = getFileName();
-      var obj = { fileName: fileName,
-        user: Auth.getCurrentUser()
+      const fileName = getFileName();
+      const obj = { fileName,
+        user: Auth.getCurrentUser(),
       };
-      $http.post('api/clis/run', obj).success(function (data) {
+      $http.post('api/clis/run', obj).success((data) => {
         if (typeof (data) === 'object') { // Likely error
           $scope.output.runOutput += $scope.handleError(data);
         } else {
@@ -108,7 +108,7 @@ export default class TopicsController {
 
 
     $scope.handleError = function (data) {
-      var str = JSON.stringify(data);
+      const str = JSON.stringify(data);
       if (str.search('"killed"') !== -1) {
         if (str.search('"killed":true') !== -1) {
           return '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.';
@@ -137,30 +137,30 @@ export default class TopicsController {
       $scope.showComments = true;
       $scope.feedback = 'Checking answer...';
       logging.progress.totalAttempts++;
-      var className = getClassName();
-      var fileName = getFileName();
-      var code = $scope.editor.getValue();
+      const className = getClassName();
+      const fileName = getFileName();
+      const code = $scope.editor.getValue();
       // var editedCode = code.replace(/\\/g, '\\\\');
 
-      var obj = { className: className,
-        fileName: fileName,
-        code: code, // editedCode,
+      const obj = { className,
+        fileName,
+        code, // editedCode,
         user: Auth.getCurrentUser(),
-        questionNum: $scope.qInfo.currentQuestion
+        questionNum: $scope.qInfo.currentQuestion,
       };
       if (typeof (code) === 'undefined' || code === '') {
         $scope.showComments = false;
         $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n';
         return;
       }
-      $http.post('api/clis/compile', obj).success(function (data) {
+      $http.post('api/clis/compile', obj).success((data) => {
         if (data === '') {
           $scope.output.compileOutput = 'Successfully compiled code.\n';
         } else {
           $scope.output.compileOutput = data;
         }
 
-        $http.post('api/clis/run', obj).success(function (data) {
+        $http.post('api/clis/run', obj).success((data) => {
           if (typeof (data) === 'object') { // Likely an error
             $scope.showComments = false;
             $scope.output.runOutput += $scope.handleError(data);
@@ -256,14 +256,14 @@ export default class TopicsController {
 
     $scope.isActive = function (id) {
     	// this function is dependent on the URL set in topics.js
-    	return ('/lessons/topics/' + id) === $location.path();
+    	return (`/lessons/topics/${id}`) === $location.path();
     };
 
     $scope.aceLoaded = function (_editor) {
 	    // Editor part
       // _editor.getSession().setUseWorker(false);
-	    var _session = _editor.getSession();
-	    var _renderer = _editor.renderer;
+	    const _session = _editor.getSession();
+	    const _renderer = _editor.renderer;
 
 
 	    // Options
@@ -298,7 +298,7 @@ export default class TopicsController {
           typeof ($scope.topic.questions[$scope.qInfo.currentQuestion - 1]) === 'undefined') {
     return;
   }
-    var currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1];
+    const currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1];
 
       // Set starter code, if this question has any
     	if (typeof (currQuestion.code) !== 'undefined') {
@@ -333,11 +333,11 @@ export default class TopicsController {
   	// };
 
   	$scope.init = function () {
-		  for (var i = 0; i < $scope.topic.questions.length; i++) {
+		  for (let i = 0; i < $scope.topic.questions.length; i++) {
   			$scope.status.push(
   			{
   				hintIndex: 0,
-  				hintRequested: false
+  				hintRequested: false,
   			});
   		}
 

@@ -3,11 +3,11 @@ export default class NavBarController {
     $scope.menu = [
       {
         title: 'Home',
-        link: '/'
+        link: '/',
       },
       {
         title: 'Lessons',
-        link: '/lessons'
+        link: '/lessons',
       }];
 
     $scope.navbarCollapsed = true;

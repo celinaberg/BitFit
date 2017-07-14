@@ -1,7 +1,7 @@
-'use strict';
+
 
 angular.module('its110App')
-  .controller('LoginCtrl', function ($scope, Auth, $location) {
+  .controller('LoginCtrl', ($scope, Auth, $location) => {
     $scope.user = {};
     $scope.errors = {};
 
@@ -11,13 +11,13 @@ angular.module('its110App')
       if (form.$valid) {
         Auth.login({
           email: $scope.user.email,
-          password: $scope.user.password
+          password: $scope.user.password,
         })
-        .then(function () {
+        .then(() => {
           // Logged in, redirect to home
           $location.path('/');
         })
-        .catch(function (err) {
+        .catch((err) => {
           $scope.errors.other = err.message;
         });
       }

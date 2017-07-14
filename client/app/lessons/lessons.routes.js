@@ -12,7 +12,7 @@ export default function routes($stateProvider) {
       resolve: {
         topicPromise: ['topics', function (topics) {
           return topics.getAll();
-        }]
-    }
-  });
-};
+        }],
+      },
+    });
+}

@@ -1,7 +1,7 @@
-'use strict';
+
 
 angular.module('its110App')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window) {
+  .controller('SignupCtrl', ($scope, Auth, $location, $window) => {
     $scope.user = {};
     $scope.errors = {};
 
@@ -12,18 +12,18 @@ angular.module('its110App')
         Auth.createUser({
           name: $scope.user.name,
           email: $scope.user.email,
-          password: $scope.user.password
+          password: $scope.user.password,
         })
-        .then(function () {
+        .then(() => {
           // Account created, redirect to home
           $location.path('/');
         })
-        .catch(function (err) {
+        .catch((err) => {
           err = err.data;
           $scope.errors = {};
 
           // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function (error, field) {
+          angular.forEach(err.errors, (error, field) => {
             form[field].$setValidity('mongoose', false);
             $scope.errors[field] = error.message;
           });
@@ -32,6 +32,6 @@ angular.module('its110App')
     };
 
     $scope.loginOauth = function (provider) {
-      $window.location.href = '/auth/' + provider;
+      $window.location.href = `/auth/${provider}`;
     };
   });

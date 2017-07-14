@@ -1,26 +1,26 @@
 import angular from 'angular';
 import ngResource from 'angular-resource';
 
-function User ($resource) {
+function User($resource) {
   // $resource(url, [paramDefaults], [actions], options);
 
   return $resource('/api/users/:id/:controller', {
-    id: '@_id'
+    id: '@_id',
   },
     {
       changePassword: {
         method: 'PUT',
         params: {
-          controller: 'password'
-        }
+          controller: 'password',
+        },
       },
       get: {
         method: 'GET',
         params: {
-          id: 'me'
-        }
-      }
-  });
+          id: 'me',
+        },
+      },
+    });
 }
 
 export default angular.module('bitfit.services.user', [ngResource])

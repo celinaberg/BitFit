@@ -34,8 +34,8 @@ export default class EditContentController {
       * @return {} fixme
       */
     $scope.toggleReadOnly = function (index) {
-    	var editor = {};
-    	var q = {};
+    	let editor = {};
+    	let q = {};
     	if (index < 0) {
     		// use newQuestion
     		q = $scope.newQuestion;
@@ -60,13 +60,13 @@ export default class EditContentController {
      * @param {string} suffix the suffix to look for in |str|.
      * @return {} fixme
      */
-    var endsWith = function (str, suffix) {
+    const endsWith = function (str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
     // |useEditQuestion| - Boolean, whether to use the edit question variable
-    var getClassName = function (useEditQuestion) {
-    	var className = '';
+    const getClassName = function (useEditQuestion) {
+    	let className = '';
     	if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
     		className = $scope.questionToEdit.className;
     	} else {
@@ -81,8 +81,8 @@ export default class EditContentController {
       return className;
     };
 
-    var getFileName = function (useEditQuestion) {
-    	var className = '';
+    const getFileName = function (useEditQuestion) {
+    	let className = '';
   		if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
   			className = $scope.questionToEdit.className;
   		} else {
@@ -94,16 +94,16 @@ export default class EditContentController {
   			return className;
   		}
   			// return className + '.java';
-      return className + '.c';
+      return `${className}.c`;
     };
 
     // FIXME: this functionality should be moved into topics service
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.compileCode = function (index) {
-    	var editor = {};
-    	var className = '';
-    	var fileName = '';
+    	let editor = {};
+    	let className = '';
+    	let fileName = '';
     	if (index < 0) { // adding a new question
     		editor = $scope.editor;
     		className = getClassName(false);
@@ -116,17 +116,17 @@ export default class EditContentController {
 
   		console.log('in compile func');
       console.log('heres code:');
-		  var code = editor.getValue();
+		  const code = editor.getValue();
       console.log(code);
   		// var editedCode = code.replace(/\\/g, '\\\\');
       // console.log(editedCode);
-		  var obj = { className: className,
-    fileName: fileName,
-    code: code, // editedCode,
+		  const obj = { className,
+    fileName,
+    code, // editedCode,
     user: Auth.getCurrentUser(),
-    questionNum: $scope.questionIndex
+    questionNum: $scope.questionIndex,
   };
-      	$http.post('api/clis/compile', obj).success(function (data) {
+      	$http.post('api/clis/compile', obj).success((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -141,17 +141,17 @@ export default class EditContentController {
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.runCode = function (index) {
-    	var fileName = '';
+    	let fileName = '';
     	if (index < 0) { // adding new question
     		fileName = getFileName(false);
     	} else { // editing existing question
     		fileName = getFileName(true);
     	}
 
-      var obj = { fileName: fileName,
-        user: Auth.getCurrentUser()
+      const obj = { fileName,
+        user: Auth.getCurrentUser(),
       };
-   		$http.post('api/clis/run', obj).success(function (data) {
+   		$http.post('api/clis/run', obj).success((data) => {
         	$scope.runOutput = data;
       	});
       	// logging.progress.numRuns++;
@@ -161,14 +161,14 @@ export default class EditContentController {
       // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       // var editedTopic = $scope.allTopics[i];
       // editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success(function (data) {
+      topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
         $scope.topic = data;
-        $scope.topicsEC.forEach(function (ea) {
+        $scope.topicsEC.forEach((ea) => {
         	if (ea._id === data._id) {
         		angular.copy(data, ea);
         	}
         });
-        var message = 'Topic successfully updated!';
+        const message = 'Topic successfully updated!';
         Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true);
       });
     };
@@ -229,11 +229,11 @@ export default class EditContentController {
     // }
     $scope.populateEditQForm = function (index) {
     	// Set up an editor for the question
-    	var editor = ace.edit('editor' + index);
+    	const editor = ace.edit(`editor${index}`);
       // editor.getSession().setUseWorker(false);
 		// Editor part
-      var _session = editor.getSession();
-      var _renderer = editor.renderer;
+      const _session = editor.getSession();
+      const _renderer = editor.renderer;
 
 		// Options
 		// _editor.setReadOnly(false);
@@ -252,15 +252,15 @@ export default class EditContentController {
 
     $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
-      return ('/admin/editContent/' + id) === $location.path();
+      return (`/admin/editContent/${id}`) === $location.path();
     };
 
 
     $scope.aceLoaded = function (_editor) {
       // Editor part
       // _editor.getSession().setUseWorker(false);
-      var _session = _editor.getSession();
-      var _renderer = _editor.renderer;
+      const _session = _editor.getSession();
+      const _renderer = _editor.renderer;
 
 
       // Options
@@ -294,10 +294,10 @@ export default class EditContentController {
         	readOnly: $scope.newQuestion.readOnly,
         	expectedOutput: $scope.newQuestion.expectedOutput,
         	hints: $scope.newQuestion.hints,
-    tags: $scope.newQuestion.tags
-  		}).success(function (question) {
+    tags: $scope.newQuestion.tags,
+  		}).success((question) => {
         	$scope.topic.questions.push(question);
-    var message = 'Question successfully added!';
+    const message = 'Question successfully added!';
     Flash.create('success', message, 5000, { class: 'custom-class', id: 'custom-id' }, true);
       	});
 
@@ -308,7 +308,7 @@ export default class EditContentController {
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-      topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function () {
+      topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
         	// update scope array of questions?
         $scope.questionToEdit = {};
         	$scope.questionToEdit.hints = [];
@@ -330,14 +330,14 @@ export default class EditContentController {
     	// $http.delete('/api/questions/' + id);
     };
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', () => {
   		socket.unsyncUpdates('question');
     });
 
     // / trying question reordering http://stackoverflow.com/a/27709541
     $scope.moveQUp = function (index) {
       if (index > -1 && index < $scope.topic.questions.length - 1) {
-        var tmp = $scope.topic.questions[index + 1];
+        const tmp = $scope.topic.questions[index + 1];
         $scope.topic.questions[index + 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
@@ -345,7 +345,7 @@ export default class EditContentController {
     };
     $scope.moveQDown = function (index) {
       if (index > 0 && index < $scope.topic.questions.length) {
-        var tmp = $scope.topic.questions[index - 1];
+        const tmp = $scope.topic.questions[index - 1];
         $scope.topic.questions[index - 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
