@@ -24,7 +24,7 @@ import main from './main';
 import lessons from './lessons';
 
 // Components
-//import Auth from '../components/auth/auth.service.js';
+import Auth from '../components/auth/auth.service.js';
 
 angular.module('bitfit', [
   ngCookies,
@@ -41,7 +41,8 @@ angular.module('bitfit', [
   main,
   //account
   //admin
-  lessons
+  lessons,
+  Auth
 ]).config(routing)
 .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
@@ -66,11 +67,8 @@ angular.module('bitfit', [
         return $q.reject(response);
       }
     };
-  }).run(function () {
+  }).run(function ($rootScope, $location, Auth) {
     console.log("Running BitFit");
-  });
-/*
-  .run(function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function (loggedIn) {
@@ -90,4 +88,3 @@ angular.module('bitfit', [
       });
     });
   });
-*/
