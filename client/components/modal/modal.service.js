@@ -1,7 +1,9 @@
-'use strict';
+import angular from 'angular';
+import template from 'modal.html';
+import 'modal.css';
 
-angular.module('its110App')
-  .factory('Modal', function ($rootScope, $modal) {
+angular.module('bitfit.components.modal')
+  .factory('Modal', ($rootScope, $modal) => {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -9,16 +11,16 @@ angular.module('its110App')
      * @return {Object}            - the instance $modal.open() returns
      */
     function openModal(scope, modalClass) {
-      var modalScope = $rootScope.$new();
+      const modalScope = $rootScope.$new();
       scope = scope || {};
       modalClass = modalClass || 'modal-default';
 
       angular.extend(modalScope, scope);
 
       return $modal.open({
-        templateUrl: 'components/modal/modal.html',
+        template,
         windowClass: modalClass,
-        scope: modalScope
+        scope: modalScope,
       });
     }
 
@@ -33,7 +35,7 @@ angular.module('its110App')
          * @param  {Function} del - callback, ran when delete is confirmed
          * @return {Function}     - the function to open the modal (ex. myModalFn)
          */
-        delete: function (del) {
+        delete(del) {
           del = del || angular.noop;
 
           /**
@@ -42,7 +44,7 @@ angular.module('its110App')
            * @param  {All}           - any additional args are passed staight to del callback
            */
           return function () {
-            var args = Array.prototype.slice.call(arguments),
+            let args = Array.prototype.slice.call(arguments),
               name = args.shift(),
               deleteModal;
 
@@ -50,28 +52,28 @@ angular.module('its110App')
               modal: {
                 dismissable: true,
                 title: 'Confirm Delete',
-                html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>',
+                html: `<p>Are you sure you want to delete <strong>${name}</strong> ?</p>`,
                 buttons: [{
                   classes: 'btn-danger',
                   text: 'Delete',
-                  click: function (e) {
+                  click(e) {
                     deleteModal.close(e);
-                  }
+                  },
                 }, {
                   classes: 'btn-default',
                   text: 'Cancel',
-                  click: function (e) {
+                  click(e) {
                     deleteModal.dismiss(e);
-                  }
-                }]
-              }
+                  },
+                }],
+              },
             }, 'modal-danger');
 
-            deleteModal.result.then(function (event) {
+            deleteModal.result.then((event) => {
               del.apply(event, args);
             });
           };
-        }
-      }
+        },
+      },
     };
   });

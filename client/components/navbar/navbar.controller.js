@@ -1,15 +1,13 @@
-'use strict';
-
-angular.module('its110App')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+export default class NavBarController {
+  constructor($scope, $location, Auth) {
     $scope.menu = [
       {
         title: 'Home',
-        link: '/'
+        link: '/',
       },
       {
         title: 'Lessons',
-        link: '/lessons'
+        link: '/lessons',
       }];
 
     $scope.navbarCollapsed = true;
@@ -27,4 +25,7 @@ angular.module('its110App')
        ($location.path().includes('/admin') && route.includes('/admin')) ||
         ($location.path().includes('/lessons') && route.includes('/lessons'));
     };
-  });
+  }
+}
+
+NavBarController.$inject = ['$scope', '$location', 'Auth'];

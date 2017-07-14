@@ -1,24 +1,28 @@
-'use strict';
+import angular from 'angular';
+import ngResource from 'angular-resource';
 
-angular.module('its110App')
-  .factory('User', function ($resource) {
-    // $resource(url, [paramDefaults], [actions], options);
+function User($resource) {
+  // $resource(url, [paramDefaults], [actions], options);
 
-    return $resource('/api/users/:id/:controller', {
-      id: '@_id'
-    },
-      {
-        changePassword: {
-          method: 'PUT',
-          params: {
-            controller: 'password'
-          }
+  return $resource('/api/users/:id/:controller', {
+    id: '@_id',
+  },
+    {
+      changePassword: {
+        method: 'PUT',
+        params: {
+          controller: 'password',
         },
-        get: {
-          method: 'GET',
-          params: {
-            id: 'me'
-          }
-        }
-	  });
-  });
+      },
+      get: {
+        method: 'GET',
+        params: {
+          id: 'me',
+        },
+      },
+    });
+}
+
+export default angular.module('bitfit.services.user', [ngResource])
+  .factory('User', User)
+  .name;

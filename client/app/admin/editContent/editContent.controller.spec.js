@@ -1,21 +1,21 @@
-'use strict';
 
-describe('Controller: EditContentCtrl', function () {
+
+describe('Controller: EditContentCtrl', () => {
   // load the controller's module
   beforeEach(module('its110App'));
 
-  var EditContentCtrl,
+  let EditContentCtrl,
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(($controller, $rootScope) => {
     scope = $rootScope.$new();
     EditContentCtrl = $controller('EditContentCtrl', {
-      $scope: scope
+      $scope: scope,
     });
   }));
 
-  it('should ...', function () {
+  it('should ...', () => {
     expect(1).toEqual(1);
   });
 });

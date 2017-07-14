@@ -1,21 +1,21 @@
-'use strict';
 
-describe('Controller: LessonsCtrl', function () {
+
+describe('Controller: LessonsCtrl', () => {
   // load the controller's module
   beforeEach(module('its110App'));
 
-  var LessonsCtrl,
+  let LessonsCtrl,
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(($controller, $rootScope) => {
     scope = $rootScope.$new();
     LessonsCtrl = $controller('LessonsCtrl', {
-      $scope: scope
+      $scope: scope,
     });
   }));
 
-  it('should ...', function () {
+  it('should ...', () => {
     expect(1).toEqual(1);
   });
 });

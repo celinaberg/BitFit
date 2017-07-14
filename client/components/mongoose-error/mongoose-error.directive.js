@@ -1,17 +1,13 @@
-'use strict';
+
 
 /**
  * Removes server error when user updates input
  */
-angular.module('its110App')
-  .directive('mongooseError', function () {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function (scope, element, attrs, ngModel) {
-        element.on('keydown', function () {
-          return ngModel.$setValidity('mongoose', true);
-        });
-      }
-    };
-  });
+angular.module('bitfit.directives.mongoose-error')
+  .directive('mongooseError', () => ({
+    restrict: 'A',
+    require: 'ngModel',
+    link(scope, element, attrs, ngModel) {
+      element.on('keydown', () => ngModel.$setValidity('mongoose', true));
+    },
+  }));

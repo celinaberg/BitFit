@@ -1,8 +1,11 @@
-'use strict';
+export default class MainController {
+  constructor($scope) {
+    $scope.login = this.login;
+  }
 
-angular.module('its110App')
-  .controller('MainCtrl', function ($scope, $http, $location) {
-    $scope.login = function () {
-      window.location.href = '/auth/cwl/login';
-    };
-  });
+  login() {
+    window.location.href = '/auth/cwl/login';
+  }
+}
+
+MainController.$inject = ['$scope'];

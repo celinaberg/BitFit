@@ -1,9 +1,9 @@
-'use strict';
 
-var express = require('express');
-var controller = require('./question.controller');
 
-var router = express.Router();
+const express = require('express');
+const controller = require('./question.controller');
+
+const router = express.Router();
 
 router.get('/export', controller.export);
 router.get('/', controller.index);

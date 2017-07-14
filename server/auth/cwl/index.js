@@ -1,48 +1,48 @@
-'use strict';
 
-var express = require('express');
-var passport = require('passport');
-var strategy = require('./passport');
-var auth = require('../auth.service');
-var fs = require('fs');
-var path = require('path');
 
-var router = express.Router();
+const express = require('express');
+const passport = require('passport');
+const strategy = require('./passport');
+const auth = require('../auth.service');
+const fs = require('fs');
+const path = require('path');
+
+const router = express.Router();
 
 router.get('/metadata',
-  function (req, res) {
+  (req, res) => {
     res.set('Content-Type', 'text/xml');
-    var cert = fs.readFileSync(path.join(__dirname, '/../../cert/cert.pem'), 'utf8');
+    const cert = fs.readFileSync(path.join(__dirname, '/../../cert/cert.pem'), 'utf8');
     res.send(strategy.generateServiceProviderMetadata(cert));
-  }
+  },
 );
 
 router.get('/login',
   passport.authenticate('saml', { failureRedirect: '/login/failed' }),
-  function (req, res) {
+  (req, res) => {
     res.redirect('/lessons');
-  }
+  },
 );
 
 router.get('/login/failed',
-  function (req, res) {
+  (req, res) => {
     res.status(401).send('You are not authorized to use BitFit.');
-  }
+  },
 );
 
 router.post('/login',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/failed' }),
-  function (req, res) {
+  (req, res) => {
     res.redirect('/lessons');
-  }
+  },
 );
 
 router.post('/login/callback',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/failed' }),
-  function (req, res) {
+  (req, res) => {
     res.json(req.user);
     // res.redirect('/lessons');
-  }
+  },
 );
 
 /* router.post('/', function (req, res, next) {

@@ -2,11 +2,10 @@ node_modules
 public
 .tmp
 .idea
-client/bower_components
-dist
 /server/config/local.env.js
 /users
 *.log
 .DS_Store
 /server/cert/*
 !/server/cert/idp_*
+build

@@ -2,15 +2,14 @@
  * Broadcast updates to client when the model changes
  */
 
-'use strict';
 
-var Logger = require('./logger.model');
+const Logger = require('./logger.model');
 
 exports.register = function (socket) {
-  Logger.schema.post('save', function (doc) {
+  Logger.schema.post('save', (doc) => {
     onSave(socket, doc);
   });
-  Logger.schema.post('remove', function (doc) {
+  Logger.schema.post('remove', (doc) => {
     onRemove(socket, doc);
   });
 };

@@ -1,16 +1,16 @@
-'use strict';
 
-describe('Service: topics', function () {
+
+describe('Service: topics', () => {
   // load the service's module
   beforeEach(module('its110App'));
 
   // instantiate service
-  var topics;
-  beforeEach(inject(function (_topics_) {
+  let topics;
+  beforeEach(inject((_topics_) => {
     topics = _topics_;
   }));
 
-  it('should do something', function () {
+  it('should do something', () => {
     expect(!!topics).toBe(true);
   });
 });

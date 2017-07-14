@@ -1,11 +1,11 @@
-'use strict';
 
-var _ = require('lodash');
-var Question = require('./question.model');
+
+const _ = require('lodash');
+const Question = require('./question.model');
 
 // Get list of questions
 exports.index = function (req, res) {
-  Question.find(function (err, questions) {
+  Question.find((err, questions) => {
     if (err) { return handleError(res, err); }
     return res.json(200, questions);
   });
@@ -13,7 +13,7 @@ exports.index = function (req, res) {
 
 // Get list of questions for export
 exports.export = function (req, res) {
-  Question.find({}, { _id: 0, topic: 0 }, function (err, questions) {
+  Question.find({}, { _id: 0, topic: 0 }, (err, questions) => {
     if (err) { return handleError(res, err); }
     return res.json(200, questions);
   });
@@ -21,7 +21,7 @@ exports.export = function (req, res) {
 
 // Get a single question
 exports.show = function (req, res) {
-  Question.findById(req.params.id, function (err, question) {
+  Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err); }
     if (!question) { return res.send(404); }
     return res.json(question);
@@ -30,7 +30,7 @@ exports.show = function (req, res) {
 
 // Creates a new question in the DB.
 exports.create = function (req, res) {
-  Question.create(req.body, function (err, question) {
+  Question.create(req.body, (err, question) => {
     if (err) { return handleError(res, err); }
     return res.json(201, question);
   });
@@ -38,7 +38,7 @@ exports.create = function (req, res) {
 
 // Import many questions to DB.
 exports.import = function (req, res) {
-  Question.collection.insert(req.body, function (err, questions) {
+  Question.collection.insert(req.body, (err, questions) => {
     if (err) { return handleError(res, err); }
     return res.json(201, questions);
   });
@@ -47,15 +47,15 @@ exports.import = function (req, res) {
 // Updates an existing question in the DB.
 exports.update = function (req, res) {
   if (req.body._id) { delete req.body._id; }
-  Question.findById(req.params.id, function (err, question) {
+  Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err); }
     if (!question) { return res.send(404); }
     // if (question.hints.length > req.body.hints.length) {
       // there was a hint deleted. copy req.body.hints into question.hints
     question.hints = req.body.hints; // manually copy as merge doesn't
     // }
-    var updated = _.merge(question, req.body);
-    updated.save(function (err) {
+    const updated = _.merge(question, req.body);
+    updated.save((err) => {
       if (err) { return handleError(res, err); }
       return res.json(200, question);
     });
@@ -64,10 +64,10 @@ exports.update = function (req, res) {
 
 // Deletes a question from the DB.
 exports.destroy = function (req, res) {
-  Question.findById(req.params.id, function (err, question) {
+  Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err); }
     if (!question) { return res.send(404); }
-    question.remove(function (err) {
+    question.remove((err) => {
       if (err) { return handleError(res, err); }
       return res.send(204);
     });

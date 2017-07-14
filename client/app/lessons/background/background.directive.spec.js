@@ -1,18 +1,18 @@
-'use strict';
 
-describe('Directive: background', function () {
+
+describe('Directive: background', () => {
   // load the directive's module and view
   beforeEach(module('its110App'));
   beforeEach(module('app/lessons/background/background.html'));
 
-  var element,
+  let element,
     scope;
 
-  beforeEach(inject(function ($rootScope) {
+  beforeEach(inject(($rootScope) => {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
+  it('should make hidden element visible', inject(($compile) => {
     element = angular.element('<background></background>');
     element = $compile(element)(scope);
     scope.$apply();

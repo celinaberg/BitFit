@@ -1,8 +1,8 @@
-'use strict';
 
-var _ = require('lodash');
-var Topic = require('./topic.model');
-var Question = require('../question/question.model');
+
+const _ = require('lodash');
+const Topic = require('./topic.model');
+const Question = require('../question/question.model');
 
 // Add a question to this topic
 exports.addQuestion = function (req, res) {
@@ -27,32 +27,32 @@ exports.addQuestion = function (req, res) {
   // question.topic = req.topic; // this is the problem line cuz there's no topic
 
   // if question already exists, only add it to topic
-  Question.findById(req.body._id, function (err, question) {
+  Question.findById(req.body._id, (err, question) => {
     if (err) { return handleError(res, err); }
     if (question) {
-      Topic.findById(req.params.id, function (err, topic) {
+      Topic.findById(req.params.id, (err, topic) => {
         if (err) { return handleError(res, err); }
         if (!topic) { return res.send(404); }
 
         topic.questions.push(question);
 
-        topic.save(function (err, topic) {
+        topic.save((err, topic) => {
           if (err) { return handleError(err); }
           return res.json(question);
         });
       });
     } else { // if not, create the new question
       var question = new Question(req.body);
-      question.save(function (err, question) {
+      question.save((err, question) => {
         if (err) { return handleError(res, err); }
         console.log('in save question success func');
-        Topic.findById(req.params.id, function (err, topic) {
+        Topic.findById(req.params.id, (err, topic) => {
           if (err) { return handleError(res, err); }
           if (!topic) { return res.send(404); }
 
           topic.questions.push(question);
 
-          topic.save(function (err, topic) {
+          topic.save((err, topic) => {
             if (err) { return handleError(err); }
             return res.json(question);
           });
@@ -64,15 +64,15 @@ exports.addQuestion = function (req, res) {
 
 exports.deleteQuestion = function (req, res) {
   console.log('in delete q server');
-  var question = req.body;
+  const question = req.body;
   console.log(question);
-  Topic.findById(req.params.id, function (err, topic) {
+  Topic.findById(req.params.id, (err, topic) => {
     if (err) { return handleError(res, err); }
     if (!topic) { return res.send(404); }
 
     // var doc = topic.questions.id(question._id).remove();
     topic.questions.pull(question._id);
-    topic.save(function (err) {
+    topic.save((err) => {
       if (err) return handleError(err);
       console.log('the sub-doc was removed');
     });
@@ -95,11 +95,10 @@ exports.index = function (req, res) {
       //console.log(ea);
     });
 */
-  Topic.find().populate('topic.questions').exec(function (err, topics) {
+  Topic.find().populate('topic.questions').exec((err, topics) =>
       // console.log('found topics...');
       // console.log(topics);
-    return res.json(200, topics);
-  });
+     res.json(200, topics));
     // console.log('in get list of topics');
     // console.log(topics);
     // return res.json(200, topics);
@@ -108,11 +107,11 @@ exports.index = function (req, res) {
 // Get a single topic
 exports.show = function (req, res) {
   // Topic.findById(req.params.id, function (err, topic) {
-  Topic.findOne({ title: req.params.title }, function (err, topic) {
+  Topic.findOne({ title: req.params.title }, (err, topic) => {
     if (err) { return handleError(res, err); }
     if (!topic) { return res.send(404); }
 
-    topic.populate('questions', function (err, topic) {
+    topic.populate('questions', (err, topic) => {
       if (err) { return handleError(res, err); }
       return res.json(topic);
     });
@@ -121,7 +120,7 @@ exports.show = function (req, res) {
 
 // Creates a new topic in the DB.
 exports.create = function (req, res) {
-  Topic.create(req.body, function (err, topic) {
+  Topic.create(req.body, (err, topic) => {
     if (err) { return handleError(res, err); }
     return res.json(201, topic);
   });
@@ -131,19 +130,19 @@ exports.create = function (req, res) {
 exports.update = function (req, res) {
   console.log('in update');
   if (req.body._id) { delete req.body._id; }
-  Topic.findById(req.params.id, function (err, topic) {
+  Topic.findById(req.params.id, (err, topic) => {
     console.log('in update found topic by id');
     if (err) { return handleError(res, err); }
     if (!topic) { return res.send(404); }
 
     topic.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
 
-    var updated = _.merge(topic, req.body);
-    updated.save(function (err) {
+    const updated = _.merge(topic, req.body);
+    updated.save((err) => {
       // console.log(updated);
       if (err) { return handleError(res, err); }
       console.log('updated topic now about to populate qs');
-      topic.populate('questions', function (err, topic) {
+      topic.populate('questions', (err, topic) => {
         if (err) {
           console.log('error populating questions of updated topic');
           return handleError(res, err);
@@ -158,10 +157,10 @@ exports.update = function (req, res) {
 
 // Deletes a topic from the DB.
 exports.destroy = function (req, res) {
-  Topic.findById(req.params.id, function (err, topic) {
+  Topic.findById(req.params.id, (err, topic) => {
     if (err) { return handleError(res, err); }
     if (!topic) { return res.send(404); }
-    topic.remove(function (err) {
+    topic.remove((err) => {
       if (err) { return handleError(res, err); }
       return res.send(204);
     });

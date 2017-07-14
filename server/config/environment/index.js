@@ -1,12 +1,14 @@
-'use strict';
 
-var path = require('path');
-var _ = require('lodash');
-var environment = require('./' + process.env.NODE_ENV + '.js');
+
+const path = require('path');
+const _ = require('lodash');
+
+const environment = require(`./${process.env.NODE_ENV}.js`);
+const cert = require('../../../server/cert/idp_cert.pem');
 
 // All configurations will extend these options
 // ============================================
-var all = {
+const all = {
   env: process.env.NODE_ENV,
 
   // Root path of server
@@ -24,7 +26,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'its110-secret'
+    session: 'its110-secret',
   },
 
   // List of user roles
@@ -33,16 +35,16 @@ var all = {
   // CWL
   callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
   entryPoint: 'https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO',
-  idpCert: path.join(__dirname, '/../../..', 'server/cert/idp_cert.pem'),
+  idpCert: cert,
 
   // MongoDB connection options
   mongo: {
     options: {
       db: {
-        safe: true
-      }
-    }
-  }
+        safe: true,
+      },
+    },
+  },
 };
 
 // Export the config object based on the NODE_ENV

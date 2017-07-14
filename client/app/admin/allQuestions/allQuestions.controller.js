@@ -1,7 +1,13 @@
-'use strict';
+import angular from 'angular';
+import Flash from 'angular-flash';
+import Auth from '../../../components/auth/auth.service';
+import User from '../../../components/auth/auth.service';
+import socket from '../../../components/socket/socket.service';
+import topics from '../../../components/topics/topics.service';
+import questions from '../../../components/questions/questions.service';
 
-angular.module('its110App')
-  .controller('AllQuestionsCtrl', function ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
+export default class AllQuestionsController {
+  constructor($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data;
     $scope.topicsEC = topicPromiseEC.data;
 
@@ -30,8 +36,8 @@ angular.module('its110App')
       * @return {} fixme
       */
     $scope.toggleReadOnly = function (index) {
-      var editor = {};
-      var q = {};
+      let editor = {};
+      let q = {};
       if (index < 0) {
         // use newQuestion
         q = $scope.newQuestion;
@@ -56,13 +62,13 @@ angular.module('its110App')
      * @param {string} suffix the suffix to look for in |str|.
      * @return {} fixme
      */
-    var endsWith = function (str, suffix) {
+    const endsWith = function (str, suffix) {
       return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
     // |useEditQuestion| - Boolean, whether to use the edit question variable
-    var getClassName = function (useEditQuestion) {
-      var className = '';
+    const getClassName = function (useEditQuestion) {
+      let className = '';
       if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
         className = $scope.questionToEdit.className;
       } else {
@@ -77,8 +83,8 @@ angular.module('its110App')
       return className;
     };
 
-    var getFileName = function (useEditQuestion) {
-      var className = '';
+    const getFileName = function (useEditQuestion) {
+      let className = '';
       if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
         className = $scope.questionToEdit.className;
       } else {
@@ -90,16 +96,16 @@ angular.module('its110App')
         return className;
       }
         // return className + '.java';
-      return className + '.c';
+      return `${className}.c`;
     };
 
     // FIXME: this functionality should be moved into topics service
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.compileCode = function (index) {
-      var editor = {};
-      var className = '';
-      var fileName = '';
+      let editor = {};
+      let className = '';
+      let fileName = '';
       if (index < 0) { // adding a new question
         editor = $scope.editor;
         className = getClassName(false);
@@ -112,17 +118,17 @@ angular.module('its110App')
 
       console.log('in compile func');
       console.log('heres code:');
-      var code = editor.getValue();
+      const code = editor.getValue();
       console.log(code);
       // var editedCode = code.replace(/\\/g, '\\\\');
       // console.log(editedCode);
-      var obj = { className: className,
-        fileName: fileName,
-        code: code, // editedCode,
+      const obj = { className,
+        fileName,
+        code, // editedCode,
         user: Auth.getCurrentUser(),
-        questionNum: $scope.questionIndex
+        questionNum: $scope.questionIndex,
       };
-      $http.post('api/clis/compile', obj).success(function (data) {
+      $http.post('api/clis/compile', obj).success((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n';
@@ -137,17 +143,17 @@ angular.module('its110App')
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.runCode = function (index) {
-      var fileName = '';
+      let fileName = '';
       if (index < 0) { // adding new question
         fileName = getFileName(false);
       } else { // editing existing question
         fileName = getFileName(true);
       }
 
-      var obj = { fileName: fileName,
-        user: Auth.getCurrentUser()
+      const obj = { fileName,
+        user: Auth.getCurrentUser(),
       };
-      $http.post('api/clis/run', obj).success(function (data) {
+      $http.post('api/clis/run', obj).success((data) => {
         $scope.runOutput = data;
       });
         // logging.progress.numRuns++;
@@ -157,9 +163,9 @@ angular.module('its110App')
       // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       // var editedTopic = $scope.allTopics[i];
       // editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success(function (data) {
+      topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
         $scope.topic = data;
-        $scope.topicsEC.forEach(function (ea) {
+        $scope.topicsEC.forEach((ea) => {
           if (ea._id === data._id) {
             angular.copy(data, ea);
           }
@@ -223,11 +229,11 @@ angular.module('its110App')
     // }
     $scope.populateEditQForm = function (index) {
       // Set up an editor for the question
-      var editor = ace.edit('editor' + index);
+      const editor = ace.edit(`editor${index}`);
       // editor.getSession().setUseWorker(false);
     // Editor part
-      var _session = editor.getSession();
-      var _renderer = editor.renderer;
+      const _session = editor.getSession();
+      const _renderer = editor.renderer;
 
     // Options
     // _editor.setReadOnly(false);
@@ -246,11 +252,11 @@ angular.module('its110App')
 
     $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
-      return ('/admin/allQuestions/' + id) === $location.path();
+      return (`/admin/allQuestions/${id}`) === $location.path();
     };
 
     $scope.getQTopic = function (questionID) {
-      for (var i = 0; i < $scope.topicsEC.length; i++) {
+      for (let i = 0; i < $scope.topicsEC.length; i++) {
         if ($scope.topicsEC[i].questions.indexOf(questionID) !== -1) {
           return $scope.topicsEC[i];
         }
@@ -262,8 +268,8 @@ angular.module('its110App')
     $scope.aceLoaded = function (_editor) {
       // Editor part
       // _editor.getSession().setUseWorker(false);
-      var _session = _editor.getSession();
-      var _renderer = _editor.renderer;
+      const _session = _editor.getSession();
+      const _renderer = _editor.renderer;
 
 
       // Options
@@ -297,8 +303,8 @@ angular.module('its110App')
         readOnly: $scope.newQuestion.readOnly,
         expectedOutput: $scope.newQuestion.expectedOutput,
         hints: $scope.newQuestion.hints,
-        tags: $scope.newQuestion.tags
-      }).success(function (question) {
+        tags: $scope.newQuestion.tags,
+      }).success((question) => {
         $scope.questions.push(question);
       });
 
@@ -309,11 +315,11 @@ angular.module('its110App')
     // FIXME: strange error
     $scope.importQuestions = function () {
       if ($scope.questionsToImport === '') { return; }
-      questions.import($scope.questionsToImport).success(function (newQuestions) {
-        for (var i = 0; i < newQuestions.length; i++) {
+      questions.import($scope.questionsToImport).success((newQuestions) => {
+        for (let i = 0; i < newQuestions.length; i++) {
           $scope.questions.push(newQuestions[i]);
         }
-        var message = 'You have successfully imported new questions! Scroll to the bottom of the page to see.';
+        const message = 'You have successfully imported new questions! Scroll to the bottom of the page to see.';
         Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true);
       });
       $scope.questionsToImport = '';
@@ -322,7 +328,7 @@ angular.module('its110App')
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue();
-      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(function () {
+      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
           // update scope array of questions?
         $scope.questionToEdit = {};
         $scope.questionToEdit.hints = [];
@@ -333,7 +339,7 @@ angular.module('its110App')
     $scope.deleteQuestion = function (index) {
       // console.log(index);
       // console.log($scope.topic.questions);
-      var conf = confirm('Are you sure you want to permanantly delete that question?');
+      const conf = confirm('Are you sure you want to permanantly delete that question?');
       if (conf == true) {
         questions.delete($scope.questions[index], $scope.questions[index]._id);// .success(function(question) {
         // why does this success function not get called?
@@ -355,7 +361,7 @@ angular.module('its110App')
           topics.deleteQuestion(question, $scope.getQTopic(question._id)._id);
         }
 
-        var message = 'The question has been removed from its topic.';
+        const message = 'The question has been removed from its topic.';
         Flash.create('info', message, 3500, { class: 'flash', id: 'flash-id' }, true);
       } else if ($scope.getQTopic(question._id)) {
         // if has current topic, remove from current topic
@@ -365,23 +371,23 @@ angular.module('its110App')
       }
       if (newTopic !== null) {
         // add to new topic
-        topics.addQuestion(newTopic._id, question).success(function (question) {
+        topics.addQuestion(newTopic._id, question).success((question) => {
           newTopic.questions.push(question);
           console.log('added q to new topic');
-          var message = "You have successfully changed the question's topic!";
+          const message = "You have successfully changed the question's topic!";
           Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true);
         });
       }
     };
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', () => {
       socket.unsyncUpdates('question');
     });
 
     // / trying question reordering http://stackoverflow.com/a/27709541
     $scope.moveQUp = function (index) {
       if (index > -1 && index < $scope.topic.questions.length - 1) {
-        var tmp = $scope.topic.questions[index + 1];
+        const tmp = $scope.topic.questions[index + 1];
         $scope.topic.questions[index + 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
@@ -389,7 +395,7 @@ angular.module('its110App')
     };
     $scope.moveQDown = function (index) {
       if (index > 0 && index < $scope.topic.questions.length) {
-        var tmp = $scope.topic.questions[index - 1];
+        const tmp = $scope.topic.questions[index - 1];
         $scope.topic.questions[index - 1] = $scope.topic.questions[index];
         $scope.topic.questions[index] = tmp;
       }
@@ -401,4 +407,7 @@ angular.module('its110App')
         delete $scope.search;
       }
     };
-  });
+  }
+}
+
+AllQuestionsController.$inject = ['$scope', '$http', Auth, User, socket, topics, questions, 'questionPromiseEC', 'topicPromiseEC', '$location', Flash];
