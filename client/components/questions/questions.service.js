@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-class Auth {
+class Questions {
   constructor($http) {
     this.o = {
       questions: []
