@@ -20,7 +20,7 @@ import routing from './app.config';
 
 import main from './main';
 //import account from './account';
-//import admin from './admin';
+import admin from './admin';
 import lessons from './lessons';
 
 // Components
@@ -39,9 +39,9 @@ angular.module('bitfit', [
   //nvd3,
   //googlechart
   main,
-  //account
-  //admin
   lessons,
+  //account
+  admin,
   Auth
 ]).config(routing)
 .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

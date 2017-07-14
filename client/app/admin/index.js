@@ -1,22 +1,12 @@
-'use strict';
+import angular from 'angular';
+import Logger from './logger';
 
 import styles from './admin.css';
 
-angular.module('its110App')
-  .config(function ($stateProvider) {
-    $stateProvider
-      .state('admin', {
-        url: '/admin',
-        templateUrl: 'app/admin/admin.html',
-        controller: 'AdminCtrl',
-        authenticate: true,
-        resolve: {
-			/* topic: ['$stateParams', 'topics', function($stateParams, topics) { // gets current topic before controller loads
-    			return topics.get($stateParams.id);
-  			}],*/
-  			  topicPromiseAC: ['topics', function (topics) { // gets all the topics before controller loads
-				    return topics.getAll();
-			     }]
-		    }
-      });
-  });
+import routing from './admin.routes';
+import AdminController from './admin.controller';
+
+export default angular.module('bitfit.admin', [Logger])
+  .config(routing)
+  .controller('AdminCtrl', AdminController)
+  .name;

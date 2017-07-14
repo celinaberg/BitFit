@@ -1,7 +1,10 @@
-'use strict';
+import Auth from '../../components/auth/auth.service';
+import User from '../../components/auth/user.service';
+import socket from '../../components/socket/socket.service';
+import topics from '../../components/topics/topics.service';
 
-angular.module('its110App')
-  .controller('AdminCtrl', function ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
+export default class AdminController {
+  constructor ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
     // $scope.topic = topic;
     $scope.topics = topicPromiseAC.data;
     // $scope.allTopics = [];
@@ -89,4 +92,7 @@ angular.module('its110App')
         }
       });
     };
-  });
+  }
+}
+
+AdminController.$inject = ['$scope', '$http', Auth, User, socket, topics, 'topicPromiseAC', '$location'];

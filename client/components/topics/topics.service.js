@@ -17,7 +17,7 @@ class Topics {
     return $http.post('/api/topics', topic).success(function (data) {
       o.topics.push(data);
     });
-  },
+  }
 
   get(id) {
     /* this worked fine - with $scope.topic = topic; after the js resolve
