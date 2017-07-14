@@ -3,6 +3,10 @@
 const _ = require('lodash');
 const Question = require('./question.model');
 
+function handleError(res, err) {
+  return res.send(500, err);
+}
+
 // Get list of questions
 exports.index = function (req, res) {
   Question.find((err, questions) => {
@@ -73,7 +77,3 @@ exports.destroy = function (req, res) {
     });
   });
 };
-
-function handleError(res, err) {
-  return res.send(500, err);
-}

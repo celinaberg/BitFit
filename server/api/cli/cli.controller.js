@@ -1,6 +1,5 @@
 
 
-const _ = require('lodash');
 const exec = require('child_process').exec;
 const jsesc = require('jsesc');
 
