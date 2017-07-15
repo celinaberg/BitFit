@@ -1,6 +1,6 @@
 import angular from 'angular';
-import template from 'modal.html';
-import 'modal.css';
+import template from './modal.html';
+import './modal.css';
 
 angular.module('bitfit.components.modal')
   .factory('Modal', ($rootScope, $modal) => {
