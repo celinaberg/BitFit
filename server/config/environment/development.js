@@ -7,8 +7,6 @@ const cert = require('../../../server/cert/idp_cert-staging.pem');
 // ==================================
 module.exports = {
 
-  ip: '127.0.0.1',
-
   httpsPort: 4343,
   httpPort: 8080,
 

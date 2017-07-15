@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "cd build/server && nodemon backend.js",
-    "buld": "webpack",
+    "build": "NODE_ENV=production webpack",
     "build-watch": "webpack --watch",
     "lint": "eslint './server/**/*.js' './client/**/*.js'",
     "test": "echo 'Not implemented'",
