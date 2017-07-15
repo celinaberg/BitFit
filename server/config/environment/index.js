@@ -14,6 +14,8 @@ const all = {
   // Root path of server
   root: path.join(__dirname, '/../../..'),
 
+  ip: '0.0.0.0',
+
   // Server port
   httpsPort: 443,
   httpPort: 80,
