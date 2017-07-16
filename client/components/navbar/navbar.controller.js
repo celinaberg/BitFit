@@ -1,31 +1,31 @@
 export default class NavBarController {
-  constructor($scope, $location, Auth) {
+  constructor ($scope, $location, Auth) {
     $scope.menu = [
       {
         title: 'Home',
-        link: '/',
+        link: '/'
       },
       {
         title: 'Lessons',
-        link: '/lessons',
-      }];
+        link: '/lessons'
+      }]
 
-    $scope.navbarCollapsed = true;
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.navbarCollapsed = true
+    $scope.isLoggedIn = Auth.isLoggedIn
+    $scope.isAdmin = Auth.isAdmin
+    $scope.getCurrentUser = Auth.getCurrentUser
 
     $scope.logout = function () {
-      Auth.logout();
-      $location.path('/');
-    };
+      Auth.logout()
+      $location.path('/')
+    }
 
     $scope.isActive = function (route) {
       return route === $location.path() ||
        ($location.path().includes('/admin') && route.includes('/admin')) ||
-        ($location.path().includes('/lessons') && route.includes('/lessons'));
-    };
+        ($location.path().includes('/lessons') && route.includes('/lessons'))
+    }
   }
 }
 
-NavBarController.$inject = ['$scope', '$location', 'Auth'];
+NavBarController.$inject = ['$scope', '$location', 'Auth']

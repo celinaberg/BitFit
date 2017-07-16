@@ -1,37 +1,36 @@
 
-
 angular.module('its110App')
   .controller('SignupCtrl', ($scope, Auth, $location, $window) => {
-    $scope.user = {};
-    $scope.errors = {};
+    $scope.user = {}
+    $scope.errors = {}
 
     $scope.register = function (form) {
-      $scope.submitted = true;
+      $scope.submitted = true
 
       if (form.$valid) {
         Auth.createUser({
           name: $scope.user.name,
           email: $scope.user.email,
-          password: $scope.user.password,
+          password: $scope.user.password
         })
         .then(() => {
           // Account created, redirect to home
-          $location.path('/');
+          $location.path('/')
         })
         .catch((err) => {
-          err = err.data;
-          $scope.errors = {};
+          err = err.data
+          $scope.errors = {}
 
           // Update validity of form fields that match the mongoose errors
           angular.forEach(err.errors, (error, field) => {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
-          });
-        });
+            form[field].$setValidity('mongoose', false)
+            $scope.errors[field] = error.message
+          })
+        })
       }
-    };
+    }
 
     $scope.loginOauth = function (provider) {
-      $window.location.href = `/auth/${provider}`;
-    };
-  });
+      $window.location.href = `/auth/${provider}`
+    }
+  })

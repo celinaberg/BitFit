@@ -1,21 +1,20 @@
 
-
 describe('Controller: LessonsCtrl', () => {
   // load the controller's module
-  beforeEach(module('its110App'));
+  beforeEach(module('its110App'))
 
   let LessonsCtrl,
-    scope;
+    scope
 
   // Initialize the controller and a mock scope
   beforeEach(inject(($controller, $rootScope) => {
-    scope = $rootScope.$new();
+    scope = $rootScope.$new()
     LessonsCtrl = $controller('LessonsCtrl', {
-      $scope: scope,
-    });
-  }));
+      $scope: scope
+    })
+  }))
 
   it('should ...', () => {
-    expect(1).toEqual(1);
-  });
-});
+    expect(1).toEqual(1)
+  })
+})

@@ -1,8 +1,8 @@
-import html from './lessons.html';
+import html from './lessons.html'
 
-routes.$inject = ['$stateProvider'];
+routes.$inject = ['$stateProvider']
 
-export default function routes($stateProvider) {
+export default function routes ($stateProvider) {
   $stateProvider
     .state('lessons', {
       url: '/lessons',
@@ -11,8 +11,8 @@ export default function routes($stateProvider) {
       authenticate: true,
       resolve: {
         topicPromise: ['topics', function (topics) {
-          return topics.getAll();
-        }],
-      },
-    });
+          return topics.getAll()
+        }]
+      }
+    })
 }

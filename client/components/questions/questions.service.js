@@ -1,28 +1,28 @@
-import angular from 'angular';
+import angular from 'angular'
 
 class Questions {
-  constructor($http) {
+  constructor ($http) {
     this.o = {
-      questions: [],
-    };
+      questions: []
+    }
   }
 
-  getAll() {
+  getAll () {
     return $http.get('/api/questions').success((data) => {
-      angular.copy(data, o.questions);
-    });
+      angular.copy(data, o.questions)
+    })
   }
 
-  create(question) {
+  create (question) {
     return $http.post('/api/questions', question).success((data) => {
-      o.questions.push(data);
-    });
+      o.questions.push(data)
+    })
   }
 
-  import(questions) {
+  import (questions) {
     return $http.post('/api/questions/import', questions).success((data) => {
-      angular.extend(o.questions, data);
-    });
+      angular.extend(o.questions, data)
+    })
   }
 
   // get: function(id) {
@@ -40,24 +40,24 @@ class Questions {
   //   // FIXME: add question to o object here explicitly??
   // },
 
-  editQuestion(id, question) {
+  editQuestion (id, question) {
     return $http.put(`/api/questions/${id}`, question).success((data) => {
       o.questions.forEach((ea) => {
         if (ea._id === data.question) {
           ea.questions.forEach((q) => {
             if (q._id === data._id) {
-              q = data;
+              q = data
             }
-          });
+          })
         }
-      });
-    });
+      })
+    })
   }
 
   // must delete question, and delete reference to it in question
-  delete(question, questionID) {
-    $http.delete(`/api/questions/${question._id}`);
-    console.log('successfully deleted q');
+  delete (question, questionID) {
+    $http.delete(`/api/questions/${question._id}`)
+    console.log('successfully deleted q')
   }
 
   // editquestion: function(id, question) {
@@ -78,4 +78,4 @@ class Questions {
 
 export default angular.module('bitfit.services.questions', ['$http'])
   .service('Questions', Questions)
-  .name;
+  .name

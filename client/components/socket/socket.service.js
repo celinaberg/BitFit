@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from 'angular'
 
 angular.module('bitfit.services.socket', ['socketFactory'])
   .factory('socket', (socketFactory) => {
@@ -6,12 +6,12 @@ angular.module('bitfit.services.socket', ['socketFactory'])
     const ioSocket = io('', {
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
-      path: '/socket.io-client',
-    });
+      path: '/socket.io-client'
+    })
 
     const socket = socketFactory({
-      ioSocket,
-    });
+      ioSocket
+    })
 
     return {
       socket,
@@ -26,37 +26,37 @@ angular.module('bitfit.services.socket', ['socketFactory'])
        * @param {Array} array
        * @param {Function} cb
        */
-      syncUpdates(modelName, array, cb) {
-        cb = cb || angular.noop;
+      syncUpdates (modelName, array, cb) {
+        cb = cb || angular.noop
 
         /**
          * Syncs item creation/updates on 'model:save'
          */
         socket.on(`${modelName}:save`, (item) => {
-          const oldItem = _.find(array, { _id: item._id });
-          const index = array.indexOf(oldItem);
-          let event = 'created';
+          const oldItem = _.find(array, { _id: item._id })
+          const index = array.indexOf(oldItem)
+          let event = 'created'
 
           // replace oldItem if it exists
           // otherwise just add item to the collection
           if (oldItem) {
-            array.splice(index, 1, item);
-            event = 'updated';
+            array.splice(index, 1, item)
+            event = 'updated'
           } else {
-            array.push(item);
+            array.push(item)
           }
 
-          cb(event, item, array);
-        });
+          cb(event, item, array)
+        })
 
         /**
          * Syncs removed items on 'model:remove'
          */
         socket.on(`${modelName}:remove`, (item) => {
-          const event = 'deleted';
-          _.remove(array, { _id: item._id });
-          cb(event, item, array);
-        });
+          const event = 'deleted'
+          _.remove(array, { _id: item._id })
+          cb(event, item, array)
+        })
       },
 
       /**
@@ -64,9 +64,9 @@ angular.module('bitfit.services.socket', ['socketFactory'])
        *
        * @param modelName
        */
-      unsyncUpdates(modelName) {
-        socket.removeAllListeners(`${modelName}:save`);
-        socket.removeAllListeners(`${modelName}:remove`);
-      },
-    };
-  });
+      unsyncUpdates (modelName) {
+        socket.removeAllListeners(`${modelName}:save`)
+        socket.removeAllListeners(`${modelName}:remove`)
+      }
+    }
+  })

@@ -2,22 +2,21 @@
  * Socket.io configuration
  */
 
-
 // When the user disconnects.. perform this
-function onDisconnect(socket) {
+function onDisconnect (socket) {
 }
 
 // When the user connects.. perform this
-function onConnect(socket) {
+function onConnect (socket) {
   // When the client emits 'info', this listens and executes
   socket.on('info', (data) => {
-    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
-  });
+    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2))
+  })
 
   // Insert sockets below
-  require('../api/logger/logger.socket').register(socket);
-  require('../api/topic/topic.socket').register(socket);
-  require('../api/question/question.socket').register(socket);
+  require('../api/logger/logger.socket').register(socket)
+  require('../api/topic/topic.socket').register(socket)
+  require('../api/question/question.socket').register(socket)
 }
 
 module.exports = function (socketio) {
@@ -37,20 +36,20 @@ module.exports = function (socketio) {
   // }));
 
   socketio.on('connection', (socket) => {
-    socket.address = socket.handshake.address !== null ?
-            `${socket.handshake.address.address}:${socket.handshake.address.port}` :
-            process.env.DOMAIN;
+    socket.address = socket.handshake.address !== null
+            ? `${socket.handshake.address.address}:${socket.handshake.address.port}`
+            : process.env.DOMAIN
 
-    socket.connectedAt = new Date();
+    socket.connectedAt = new Date()
 
     // Call onDisconnect.
     socket.on('disconnect', () => {
-      onDisconnect(socket);
-      console.info('[%s] DISCONNECTED', socket.address);
-    });
+      onDisconnect(socket)
+      console.info('[%s] DISCONNECTED', socket.address)
+    })
 
     // Call onConnect.
-    onConnect(socket);
-    console.info('[%s] CONNECTED', socket.address);
-  });
-};
+    onConnect(socket)
+    console.info('[%s] CONNECTED', socket.address)
+  })
+}

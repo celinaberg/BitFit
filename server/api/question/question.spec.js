@@ -1,8 +1,7 @@
 
-
-const should = require('should');
-const app = require('../../app');
-const request = require('supertest');
+const should = require('should')
+const app = require('../../app')
+const request = require('supertest')
 
 describe('GET /api/questions', () => {
   it('should respond with JSON array', (done) => {
@@ -11,9 +10,9 @@ describe('GET /api/questions', () => {
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
-        if (err) return done(err);
-        res.body.should.be.instanceof(Array);
-        done();
-      });
-  });
-});
+        if (err) return done(err)
+        res.body.should.be.instanceof(Array)
+        done()
+      })
+  })
+})

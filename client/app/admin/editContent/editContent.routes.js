@@ -1,8 +1,8 @@
-import template from './editContent.html';
+import template from './editContent.html'
 
-routes.$inject = ['$stateProvider'];
+routes.$inject = ['$stateProvider']
 
-export default function routes($stateProvider) {
+export default function routes ($stateProvider) {
   $stateProvider
     .state('editContent', {
       url: '/admin/editContent/{id}',
@@ -11,11 +11,11 @@ export default function routes($stateProvider) {
       authenticate: true,
       resolve: {
         topic: ['$stateParams', 'topics', function ($stateParams, topics) { // gets current topic before controller loads
-          return topics.get($stateParams.id);
+          return topics.get($stateParams.id)
         }],
         topicPromiseEC: ['topics', function (topics) { // gets all the topics before controller loads
-          return topics.getAll();
-        }],
-      },
-    });
+          return topics.getAll()
+        }]
+      }
+    })
 }

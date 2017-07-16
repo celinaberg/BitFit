@@ -1,6 +1,6 @@
 export default class LoggerController {
-  constructor($scope, $http) {
-    $scope.selectedUsers = [];
+  constructor ($scope, $http) {
+    $scope.selectedUsers = []
     $scope.options = {
       chart: {
         type: 'parallelCoordinates',
@@ -10,19 +10,19 @@ export default class LoggerController {
           top: 30,
           right: 10,
           bottom: 10,
-          left: 10,
+          left: 10
         },
         dispatch: {
-          brush(e) { $scope.updateList(e.active); },
+          brush (e) { $scope.updateList(e.active) }
         },
         dimensions: [
           'Total # Compiles',
           'Total Attempts',
           'Correct Attempts',
-          'Hints Used',
-        ],
-      },
-    };
+          'Hints Used'
+        ]
+      }
+    }
 
     // $http.get('/api/loggers').success(function(data){
     //   $scope.data = data;
@@ -36,26 +36,26 @@ export default class LoggerController {
       .rollup(leaves => ({ 'Total # Compiles': d3.sum(leaves, d => parseFloat(d.numCompiles)),
         'Total Attempts': d3.sum(leaves, d => parseFloat(d.totalAttempts)),
         'Correct Attempts': d3.sum(leaves, d => parseFloat(d.correctAttempts)),
-        'Hints Used': d3.sum(leaves, d => parseFloat(d.numHints)),
+        'Hints Used': d3.sum(leaves, d => parseFloat(d.numHints))
       }))
-      .entries(data);
-      $scope.data = nested_data;
+      .entries(data)
+      $scope.data = nested_data
     }).error((err) => {
-      throw err;
-    });
+      throw err
+    })
 
     $scope.updateList = function (val) {
       if (val.length == $scope.data.length) {
         $scope.$apply(() => {
-          $scope.selectedUsers = [];
-        });
+          $scope.selectedUsers = []
+        })
       } else {
         $scope.$apply(() => {
-          $scope.selectedUsers = val;
-        });
+          $scope.selectedUsers = val
+        })
       }
-    };
+    }
   }
 }
 
-LoggerController.$inject = ['$scope', '$http'];
+LoggerController.$inject = ['$scope', '$http']

@@ -1,15 +1,15 @@
-var fs = require('fs');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var fs = require('fs')
+var path = require('path')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-var nodeModules = {};
+var nodeModules = {}
 fs.readdirSync('node_modules')
-  .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
+  .filter(function (x) {
+    return ['.bin'].indexOf(x) === -1
   })
-  .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod;
-  });
+  .forEach(function (mod) {
+    nodeModules[mod] = 'commonjs ' + mod
+  })
 
 var serverConfig = {
   entry: './server/app.js',
@@ -20,14 +20,14 @@ var serverConfig = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ["babel-loader"]
+        loaders: ['babel-loader']
       },
       {
         test: /\.(html|pem|crt|key)$/,
         use: {
           loader: 'file-loader',
           options: {
-            name: "data/[name].[ext]"
+            name: 'data/[name].[ext]'
           }
         }
       }
@@ -38,7 +38,7 @@ var serverConfig = {
     filename: 'backend.js'
   },
   devtool: 'sourcemap'
-};
+}
 
 var clientConfig = {
   entry: './client/app/app.js',
@@ -51,11 +51,11 @@ var clientConfig = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ["babel-loader"]
+        loaders: ['babel-loader']
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract(["css-loader"])
+        loader: ExtractTextPlugin.extract(['css-loader'])
       },
       {
         test: /\.html$/,
@@ -71,7 +71,7 @@ var clientConfig = {
         use: {
           loader: 'file-loader',
           options: {
-            name: "img/[name].[ext]"
+            name: 'img/[name].[ext]'
           }
         }
       },
@@ -80,10 +80,10 @@ var clientConfig = {
         use: {
           loader: 'file-loader',
           options: {
-            name: "fonts/[name].[ext]"
+            name: 'fonts/[name].[ext]'
           }
         }
-      },
+      }
     ]
   },
   output: {
@@ -91,6 +91,6 @@ var clientConfig = {
     filename: 'app.js'
   },
   devtool: 'sourcemap'
-};
+}
 
-module.exports = [ serverConfig, clientConfig ];
+module.exports = [ serverConfig, clientConfig ]

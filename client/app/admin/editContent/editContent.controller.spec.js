@@ -1,21 +1,20 @@
 
-
 describe('Controller: EditContentCtrl', () => {
   // load the controller's module
-  beforeEach(module('its110App'));
+  beforeEach(module('its110App'))
 
   let EditContentCtrl,
-    scope;
+    scope
 
   // Initialize the controller and a mock scope
   beforeEach(inject(($controller, $rootScope) => {
-    scope = $rootScope.$new();
+    scope = $rootScope.$new()
     EditContentCtrl = $controller('EditContentCtrl', {
-      $scope: scope,
-    });
-  }));
+      $scope: scope
+    })
+  }))
 
   it('should ...', () => {
-    expect(1).toEqual(1);
-  });
-});
+    expect(1).toEqual(1)
+  })
+})

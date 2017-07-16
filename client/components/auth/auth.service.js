@@ -1,11 +1,11 @@
-import angular from 'angular';
-import User from './user.service';
+import angular from 'angular'
+import User from './user.service'
 
 class Auth {
-  constructor($location, $rootScope, $http, User, $cookieStore, $q) {
-    let currentUser = {};
+  constructor ($location, $rootScope, $http, User, $cookieStore, $q) {
+    let currentUser = {}
     if ($cookieStore.get('token')) {
-      currentUser = User.get();
+      currentUser = User.get()
     }
   }
 
@@ -16,27 +16,27 @@ class Auth {
    * @param  {Function} callback - optional
    * @return {Promise}
    */
-  login(user, callback) {
-    const cb = callback || angular.noop;
-    const deferred = $q.defer();
+  login (user, callback) {
+    const cb = callback || angular.noop
+    const deferred = $q.defer()
 
     $http.post('/auth/local', {
       email: user.email,
-      password: user.password,
+      password: user.password
     })
     .success((data) => {
-      $cookieStore.put('token', data.token);
-      currentUser = User.get();
-      deferred.resolve(data);
-      return cb();
+      $cookieStore.put('token', data.token)
+      currentUser = User.get()
+      deferred.resolve(data)
+      return cb()
     })
     .error((err) => {
-      this.logout();
-      deferred.reject(err);
-      return cb(err);
-    });
+      this.logout()
+      deferred.reject(err)
+      return cb(err)
+    })
 
-    return deferred.promise;
+    return deferred.promise
   }
 
   /**
@@ -44,9 +44,9 @@ class Auth {
    *
    * @param  {Function}
    */
-  logout() {
-    $cookieStore.remove('token');
-    currentUser = {};
+  logout () {
+    $cookieStore.remove('token')
+    currentUser = {}
   }
 
   /**
@@ -56,19 +56,19 @@ class Auth {
    * @param  {Function} callback - optional
    * @return {Promise}
    */
-  createUser(user, callback) {
-    const cb = callback || angular.noop;
+  createUser (user, callback) {
+    const cb = callback || angular.noop
 
     return User.save(user,
       (data) => {
-        $cookieStore.put('token', data.token);
-        currentUser = User.get();
-        return cb(user);
+        $cookieStore.put('token', data.token)
+        currentUser = User.get()
+        return cb(user)
       },
       (err) => {
-        this.logout();
-        return cb(err);
-      }).$promise;
+        this.logout()
+        return cb(err)
+      }).$promise
   }
 
   /**
@@ -79,13 +79,13 @@ class Auth {
    * @param  {Function} callback    - optional
    * @return {Promise}
    */
-  changePassword(oldPassword, newPassword, callback) {
-    const cb = callback || angular.noop;
+  changePassword (oldPassword, newPassword, callback) {
+    const cb = callback || angular.noop
 
     return User.changePassword({ id: currentUser._id }, {
       oldPassword,
-      newPassword,
-    }, user => cb(user), err => cb(err)).$promise;
+      newPassword
+    }, user => cb(user), err => cb(err)).$promise
   }
 
   /**
@@ -93,8 +93,8 @@ class Auth {
    *
    * @return {Object} user
    */
-  getCurrentUser() {
-    return currentUser;
+  getCurrentUser () {
+    return currentUser
   }
 
   /**
@@ -102,24 +102,24 @@ class Auth {
    *
    * @return {Boolean}
    */
-  isLoggedIn() {
-    return currentUser.hasOwnProperty('role');
+  isLoggedIn () {
+    return currentUser.hasOwnProperty('role')
   }
 
   /**
    * Waits for currentUser to resolve before checking if user is logged in
    */
-  isLoggedInAsync(cb) {
+  isLoggedInAsync (cb) {
     if (currentUser.hasOwnProperty('$promise')) {
       currentUser.$promise.then(() => {
-        cb(true);
+        cb(true)
       }).catch(() => {
-        cb(false);
-      });
+        cb(false)
+      })
     } else if (currentUser.hasOwnProperty('role')) {
-      cb(true);
+      cb(true)
     } else {
-      cb(false);
+      cb(false)
     }
   }
 
@@ -128,36 +128,36 @@ class Auth {
    *
    * @return {Boolean}
    */
-  isAdmin() {
-    return currentUser.role === 'admin';
+  isAdmin () {
+    return currentUser.role === 'admin'
   }
 
-  isAdminAsync(cb) {
+  isAdminAsync (cb) {
     if (currentUser.hasOwnProperty('$promise')) {
       currentUser.$promise.then(() => {
         if (currentUser.role === 'admin') {
-          cb(true);
+          cb(true)
         } else {
-          cb(false);
+          cb(false)
         }
       }).catch(() => {
-        cb(false);
-      });
+        cb(false)
+      })
     } else if (currentUser.role === 'admin') {
-      cb(true);
+      cb(true)
     } else {
-      cb(false);
+      cb(false)
     }
   }
 
   /**
    * Get auth token
    */
-  getToken() {
-    return $cookieStore.get('token');
+  getToken () {
+    return $cookieStore.get('token')
   }
 }
 
 export default angular.module('bitfit.services.auth', [User])
   .service('Auth', Auth)
-  .name;
+  .name

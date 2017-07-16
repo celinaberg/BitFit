@@ -1,25 +1,24 @@
 
-
 angular.module('its110App')
   .controller('LoginCtrl', ($scope, Auth, $location) => {
-    $scope.user = {};
-    $scope.errors = {};
+    $scope.user = {}
+    $scope.errors = {}
 
     $scope.login = function (form) {
-      $scope.submitted = true;
+      $scope.submitted = true
 
       if (form.$valid) {
         Auth.login({
           email: $scope.user.email,
-          password: $scope.user.password,
+          password: $scope.user.password
         })
         .then(() => {
           // Logged in, redirect to home
-          $location.path('/');
+          $location.path('/')
         })
         .catch((err) => {
-          $scope.errors.other = err.message;
-        });
+          $scope.errors.other = err.message
+        })
       }
-    };
-  });
+    }
+  })
