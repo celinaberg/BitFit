@@ -7,7 +7,7 @@
     "learn",
     "teach"
   ],
-  "homepage": "https://comped.cs.ubc.ca/",
+  "homepage": "https://github.com/celinaberg/BitFit",
   "bugs": "https://github.com/celinaberg/BitFit/issues",
   "license": "MIT",
   "main": "server/app.js",
