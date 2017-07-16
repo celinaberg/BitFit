@@ -1,7 +1,22 @@
 {
   "name": "bitfit",
   "version": "0.1.0",
+  "description": "An app designed to help students learn to write and read C code.",
+  "keywords": [
+    "C",
+    "learn",
+    "teach"
+  ],
+  "homepage": "https://github.com/celinaberg/BitFit",
+  "bugs": "https://github.com/celinaberg/BitFit/issues",
+  "license": "MIT",
   "main": "server/app.js",
+  "scripts": {
+    "test": "standard | snazzy",
+    "start": "cd build/server && nodemon backend.js",
+    "build": "NODE_ENV=production webpack --progress",
+    "build-watch": "webpack --watch"
+  },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.5",
     "angular": "^1.6.5",
@@ -69,15 +84,8 @@
     "webpack": "^3.2.0"
   },
   "engines": {
-    "node": "^8"
-  },
-  "scripts": {
-    "start": "cd build/server && nodemon backend.js",
-    "build": "NODE_ENV=production webpack --progress",
-    "build-watch": "webpack --watch",
-    "lint": "standard | snazzy",
-    "test": "echo 'Not implemented'",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "node": "^8",
+    "npm": "^5"
   },
   "private": true
 }
