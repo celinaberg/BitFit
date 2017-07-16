@@ -44,11 +44,9 @@ angular.module('bitfit.components.modal')
            * @param  {All}           - any additional args are passed staight to del callback
            */
           return function () {
-            let args = Array.prototype.slice.call(arguments),
-              name = args.shift(),
-              deleteModal
-
-            deleteModal = openModal({
+            let args = Array.prototype.slice.call(arguments)
+            let name = args.shift()
+            let deleteModal = openModal({
               modal: {
                 dismissable: true,
                 title: 'Confirm Delete',

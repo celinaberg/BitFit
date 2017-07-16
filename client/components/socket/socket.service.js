@@ -1,4 +1,6 @@
 import angular from 'angular'
+import _ from 'lodash'
+import io from 'angular-socket-io'
 
 angular.module('bitfit.services.socket', ['socketFactory'])
   .factory('socket', (socketFactory) => {

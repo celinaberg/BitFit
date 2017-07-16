@@ -65,14 +65,18 @@ exports.changePassword = function (req, res, next) {
   const newPass = String(req.body.newPassword)
 
   User.findById(userId, (err, user) => {
+    if (err) {
+      res.sendStatus(500)
+      return
+    }
     if (user.authenticate(oldPass)) {
       user.password = newPass
       user.save((err) => {
         if (err) return validationError(res, err)
-        res.send(200)
+        res.sendStatus(200)
       })
     } else {
-      res.send(403)
+      res.sendStatus(403)
     }
   })
 }

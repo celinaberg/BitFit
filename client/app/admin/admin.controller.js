@@ -1,3 +1,4 @@
+import angular from 'angular'
 import Auth from '../../components/auth/auth.service'
 import User from '../../components/auth/user.service'
 import socket from '../../components/socket/socket.service'

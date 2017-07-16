@@ -1,6 +1,5 @@
-
+/* eslint-env mocha */
 const should = require('should')
-const app = require('../../app')
 const User = require('./user.model')
 
 const user = new User({
@@ -26,6 +25,9 @@ describe('User Model', () => {
 
   it('should begin with no users', (done) => {
     User.find({}, (err, users) => {
+      if (err) {
+        throw new Error()
+      }
       users.should.have.length(0)
       done()
     })

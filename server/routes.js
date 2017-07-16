@@ -9,7 +9,6 @@ const Question = require('./api/question')
 const User = require('./api/user')
 const Auth = require('./auth')
 const errors = require('./components/errors')
-const path = require('path')
 const indexHtml = require('../client/index.html')
 
 function defaultRouteHandler (req, res) {

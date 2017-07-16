@@ -1,6 +1,6 @@
 import angular from 'angular'
 
-import styles from './editContent.css'
+import './editContent.css'
 
 import routing from './editContent.routes'
 import EditContentController from './editContent.controller'

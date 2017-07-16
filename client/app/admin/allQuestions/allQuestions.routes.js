@@ -6,7 +6,7 @@ export default function routes ($stateProvider) {
   $stateProvider
     .state('allQuestions', {
       url: '/admin/allQuestions',
-      templateUrl: 'app/admin/allQuestions/allQuestions.html',
+      template: template,
       controller: 'AllQuestionsCtrl',
       authenticate: true,
       resolve: {

@@ -1,3 +1,4 @@
+import angular from 'angular'
 
 angular.module('socketMock', [])
   .factory('socket', () => ({

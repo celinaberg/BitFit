@@ -1,8 +1,10 @@
+import logging from '../../../components/logging/logging.service'
+
 export default class TopicsController {
-  constructor ($scope) {
+  constructor ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) {
     $scope.topic = topic.data
-	  $scope.topicsTC = topicPromiseTC.data
-	  $scope.tab = 1
+    $scope.topicsTC = topicPromiseTC.data
+    $scope.tab = 1
 
     if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
       $scope.qInfo = {
@@ -16,9 +18,9 @@ export default class TopicsController {
       }
     }
 
-  	$scope.status = []
+    $scope.status = []
     $scope.noMoreHints = 'Sorry, there are no more hints for this question'
-  	$scope.editor = {}
+    $scope.editor = {}
 
     $scope.output = {
       className: '',
@@ -114,13 +116,13 @@ export default class TopicsController {
       }
     }
 
-  	$scope.hintRequested = function () {
-  		return $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested
-  	}
+    $scope.hintRequested = function () {
+      return $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested
+    }
 
-  	$scope.isSet = function (checkTab) {
-    return $scope.tab === checkTab
-  }
+    $scope.isSet = function (checkTab) {
+      return $scope.tab === checkTab
+    }
 
     $scope.setTab = function (activeTab) {
       $scope.tab = activeTab
@@ -176,14 +178,14 @@ export default class TopicsController {
     }
 
     $scope.showHint = function () {
-    	// Increment hint index for this question
-    	if ($scope.status[$scope.qInfo.currentQuestion - 1].hintRequested === true) {
-    		if ($scope.status[$scope.qInfo.currentQuestion - 1].hintIndex < $scope.topic.questions[$scope.qInfo.currentQuestion - 1].hints.length) {
-    			$scope.status[$scope.qInfo.currentQuestion - 1].hintIndex += 1
-    		}
-    	} else {
-    		$scope.status[$scope.qInfo.currentQuestion - 1].hintRequested = true
-    	}
+      // Increment hint index for this question
+      if ($scope.status[$scope.qInfo.currentQuestion - 1].hintRequested === true) {
+        if ($scope.status[$scope.qInfo.currentQuestion - 1].hintIndex < $scope.topic.questions[$scope.qInfo.currentQuestion - 1].hints.length) {
+          $scope.status[$scope.qInfo.currentQuestion - 1].hintIndex += 1
+        }
+      } else {
+        $scope.status[$scope.qInfo.currentQuestion - 1].hintRequested = true
+      }
       logging.progress.numHints++
     }
 
@@ -212,7 +214,7 @@ export default class TopicsController {
       $location.search('q', $scope.qInfo.currentQuestion)
     }
 
-   	// $scope.nextQuestion = function() {
+     // $scope.nextQuestion = function() {
     //     if ($scope.questionIndex >= $scope.topic.questions.length -1) {
     //         $scope.questionIndex = 0;
     //     }
@@ -252,101 +254,101 @@ export default class TopicsController {
     // };
 
     $scope.isActive = function (id) {
-    	// this function is dependent on the URL set in topics.js
-    	return (`/lessons/topics/${id}`) === $location.path()
+      // this function is dependent on the URL set in topics.js
+      return (`/lessons/topics/${id}`) === $location.path()
     }
 
     $scope.aceLoaded = function (_editor) {
-	    // Editor part
+      // Editor part
       // _editor.getSession().setUseWorker(false);
-	    const _session = _editor.getSession()
-	    const _renderer = _editor.renderer
+      const _session = _editor.getSession()
+      const _renderer = _editor.renderer
 
-	    // Options
-	    // _editor.setReadOnly(false);
-	    // _session.setUndoManager(new ace.UndoManager());
-	    _renderer.setShowGutter(true)
-		  _editor.setTheme('ace/theme/crimson_editor')
+      // Options
+      // _editor.setReadOnly(false);
+      // _session.setUndoManager(new ace.UndoManager());
+      _renderer.setShowGutter(true)
+      _editor.setTheme('ace/theme/crimson_editor')
       _editor.setFontSize('11')
       _editor.setShowPrintMargin(false)
-    	// _session.setMode('ace/mode/java');
+      // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
 
-    	$scope.editor = _editor
+      $scope.editor = _editor
 
-    	$scope.updatePageWithNewQuestion()
-    	_editor.focus()
+      $scope.updatePageWithNewQuestion()
+      _editor.focus()
 
-	    // Events
-	    // _editor.on("changeSession", function(){ //...
-	    // });
-	    // _session.on("change", function(){
-	    //	alert(_session.getValue());
-	    // });
-  	}
+      // Events
+      // _editor.on("changeSession", function(){ //...
+      // });
+      // _session.on("change", function(){
+      // alert(_session.getValue());
+      // });
+    }
 
-  	$scope.updatePageWithNewQuestion = function () {
-    $scope.showComments = false
-    $scope.output.runOutput = ''
-    $scope.output.compileOutput = ''
+    $scope.updatePageWithNewQuestion = function () {
+      $scope.showComments = false
+      $scope.output.runOutput = ''
+      $scope.output.compileOutput = ''
       // Return if there are no questions
-  		if (typeof ($scope.topic.questions) === 'undefined' ||
-          typeof ($scope.topic.questions[$scope.qInfo.currentQuestion - 1]) === 'undefined') {
-    return
-  }
-    const currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]
+      if (typeof ($scope.topic.questions) === 'undefined' ||
+        typeof ($scope.topic.questions[$scope.qInfo.currentQuestion - 1]) === 'undefined') {
+        return
+      }
+      const currQuestion = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]
 
       // Set starter code, if this question has any
-    	if (typeof (currQuestion.code) !== 'undefined') {
-	    	$scope.editor.setValue($scope.topic.questions[$scope.qInfo.currentQuestion - 1].code, -1) // -1 is document start
-    	}
+      if (typeof (currQuestion.code) !== 'undefined') {
+        $scope.editor.setValue($scope.topic.questions[$scope.qInfo.currentQuestion - 1].code, -1) // -1 is document start
+      }
 
       // Set class name variable, if provided
-    if (typeof (currQuestion.className) !== 'undefined') {
-      $scope.output.className = currQuestion.className
-    } else {
-      $scope.output.className = ''
-    }
+      if (typeof (currQuestion.className) !== 'undefined') {
+        $scope.output.className = currQuestion.className
+      } else {
+        $scope.output.className = ''
+      }
 
       // Set expected output, if provided
-    if (typeof (currQuestion.expectedOutput) !== 'undefined') {
-      $scope.output.expectedOutput = currQuestion.expectedOutput
-    } else {
-      $scope.output.expectedOutput = ''
-    }
+      if (typeof (currQuestion.expectedOutput) !== 'undefined') {
+        $scope.output.expectedOutput = currQuestion.expectedOutput
+      } else {
+        $scope.output.expectedOutput = ''
+      }
 
       // Set editor to read only if question requires it
-    if (currQuestion.readOnly) {
-      $scope.editor.setReadOnly(true)
-    } else {
-      $scope.editor.setReadOnly(false)
+      if (currQuestion.readOnly) {
+        $scope.editor.setReadOnly(true)
+      } else {
+        $scope.editor.setReadOnly(false)
+      }
     }
-  	}
 
-  	// Reset button on code editor: resets the starter code (if any) given for this question
- 	 //  $scope.reset = function(week, q) {
-  	// 	$scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
-  	// };
+    // Reset button on code editor: resets the starter code (if any) given for this question
+    //  $scope.reset = function(week, q) {
+    //  $scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
+    // };
 
-  	$scope.init = function () {
-		  for (let i = 0; i < $scope.topic.questions.length; i++) {
-  			$scope.status.push(
-  			{
-  				hintIndex: 0,
-  				hintRequested: false
-  			})
-  		}
+    $scope.init = function () {
+      for (let i = 0; i < $scope.topic.questions.length; i++) {
+        $scope.status.push(
+          {
+            hintIndex: 0,
+            hintRequested: false
+          })
+      }
 
-    logging.progress.topic = $scope.topic._id
+      logging.progress.topic = $scope.topic._id
 
-    if ($scope.topic.questions.length > 0) {
-      logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id // for first question only
-      logging.progress.startTime = Date.now()
+      if ($scope.topic.questions.length > 0) {
+        logging.progress.question = $scope.topic.questions[$scope.qInfo.currentQuestion - 1]._id // for first question only
+        logging.progress.startTime = Date.now()
+      }
     }
-  	}
 
-  	$scope.init()
+    $scope.init()
   }
 }
 
-TopicsController.$inject = ['$scope', '$stateParams', '$location', '$http', 'Auth', 'topics', 'topic', 'topicPromiseTC', 'logging']
+TopicsController.$inject = ['$scope', '$stateParams', '$location', '$http', 'Auth', 'topics', 'topic', 'topicPromiseTC', logging]

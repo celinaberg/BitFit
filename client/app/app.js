@@ -68,7 +68,10 @@ angular.module('bitfit', [
   console.log('Running BitFit')
     // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', (event, next) => {
-    Auth.isLoggedInAsync((loggedIn) => {
+    Auth.isLoggedInAsync((err, loggedIn) => {
+      if (err) {
+        $location.path('/login')
+      }
       if (next.authenticate && !loggedIn) {
         $location.path('/login')
       }
@@ -78,7 +81,10 @@ angular.module('bitfit', [
       //     console.log('redirecting as not admin!!!');
       //     $location.path('/');
       //   }
-    Auth.isAdminAsync((isAdmin) => {
+    Auth.isAdminAsync((err, isAdmin) => {
+      if (err) {
+        $location.path('/login')
+      }
       if ($location.path().includes('/admin') && !isAdmin) {
         $location.path('/')
       }

@@ -1,3 +1,4 @@
+import angular from 'angular'
 
 /**
  * Removes server error when user updates input

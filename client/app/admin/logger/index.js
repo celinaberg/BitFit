@@ -1,6 +1,6 @@
 import angular from 'angular'
 
-import styles from './logger.css'
+import './logger.css'
 
 import routing from './logger.routes'
 import LoggerController from './logger.controller'

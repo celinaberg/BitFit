@@ -1,9 +1,8 @@
 const passport = require('passport')
 const SamlStrategy = require('passport-saml').Strategy
 const fs = require('fs')
-const path = require('path')
 const config = require('../../config/environment')
-const User = require('../../api/user/user.model')
+// const User = require('../../api/user/user.model')
 const key = require('../../cert/key.pem')
 
 passport.serializeUser((user, done) => {

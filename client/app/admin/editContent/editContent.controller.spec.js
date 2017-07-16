@@ -1,4 +1,4 @@
-
+/* eslint-env mocha */
 describe('Controller: EditContentCtrl', () => {
   // load the controller's module
   beforeEach(module('its110App'))

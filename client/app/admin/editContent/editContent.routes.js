@@ -6,7 +6,7 @@ export default function routes ($stateProvider) {
   $stateProvider
     .state('editContent', {
       url: '/admin/editContent/{id}',
-      templateUrl: 'app/admin/editContent/editContent.html',
+      template: template,
       controller: 'EditContentCtrl',
       authenticate: true,
       resolve: {

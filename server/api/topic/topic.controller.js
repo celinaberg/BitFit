@@ -41,7 +41,7 @@ exports.addQuestion = function (req, res) {
         })
       })
     } else { // if not, create the new question
-      var question = new Question(req.body)
+      question = new Question(req.body)
       question.save((err, question) => {
         if (err) { return handleError(res, err) }
         console.log('in save question success func')
@@ -93,13 +93,13 @@ exports.index = function (req, res) {
       //console.log(ea);
     });
 */
-  Topic.find().populate('topic.questions').exec((err, topics) =>
-      // console.log('found topics...');
-      // console.log(topics);
-     res.json(200, topics))
-    // console.log('in get list of topics');
-    // console.log(topics);
-    // return res.json(200, topics);
+  Topic.find().populate('topic.questions').exec(function (err, topics) {
+    if (err) {
+      res.status(500)
+      return
+    }
+    res.status(200).json(topics)
+  })
 }
 
 // Get a single topic

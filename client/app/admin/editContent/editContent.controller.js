@@ -1,7 +1,8 @@
 import angular from 'angular'
 import Flash from 'angular-flash'
+import ace from 'angular-ui-ace'
 import Auth from '../../../components/auth/auth.service'
-import User from '../../../components/auth/auth.service'
+import User from '../../../components/auth/user.service'
 import socket from '../../../components/socket/socket.service'
 import topics from '../../../components/topics/topics.service'
 
@@ -34,24 +35,24 @@ export default class EditContentController {
       * @return {} fixme
       */
     $scope.toggleReadOnly = function (index) {
-    	let editor = {}
-    	let q = {}
-    	if (index < 0) {
-    		// use newQuestion
-    		q = $scope.newQuestion
-    		editor = $scope.editor
-    	} else {
-    		// use questionToEdit
-    		q = $scope.questionToEdit
-    		editor = $scope.editors[index]
-    	}
-    	if (editor.getReadOnly()) {
-    		editor.setReadOnly(false)
-    		q.readOnly = false
-    	} else {
-    		editor.setReadOnly(true)
-    		q.readOnly = true
-    	}
+      let editor = {}
+      let q = {}
+      if (index < 0) {
+        // use newQuestion
+        q = $scope.newQuestion
+        editor = $scope.editor
+      } else {
+        // use questionToEdit
+        q = $scope.questionToEdit
+        editor = $scope.editors[index]
+      }
+      if (editor.getReadOnly()) {
+        editor.setReadOnly(false)
+        q.readOnly = false
+      } else {
+        editor.setReadOnly(true)
+        q.readOnly = true
+      }
     }
 
     /**
@@ -66,14 +67,14 @@ export default class EditContentController {
 
     // |useEditQuestion| - Boolean, whether to use the edit question variable
     const getClassName = function (useEditQuestion) {
-    	let className = ''
-    	if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
-    		className = $scope.questionToEdit.className
-    	} else {
-    		className = $scope.className
-    	}
+      let className = ''
+      if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
+        className = $scope.questionToEdit.className
+      } else {
+        className = $scope.className
+      }
 
-		// if (endsWith(className, '.java')) {
+    // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
         className.slice(0, -5)
         return className.slice(0, -5)
@@ -82,18 +83,18 @@ export default class EditContentController {
     }
 
     const getFileName = function (useEditQuestion) {
-    	let className = ''
-  		if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
-  			className = $scope.questionToEdit.className
-  		} else {
-  			className = $scope.className
-  		}
+      let className = ''
+      if (useEditQuestion && typeof ($scope.questionToEdit.className) !== 'undefined') {
+        className = $scope.questionToEdit.className
+      } else {
+        className = $scope.className
+      }
 
-  		// if (endsWith(className, '.java')) {
+      // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
-  			return className
-  		}
-  			// return className + '.java';
+        return className
+      }
+        // return className + '.java';
       return `${className}.c`
     }
 
@@ -101,32 +102,32 @@ export default class EditContentController {
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.compileCode = function (index) {
-    	let editor = {}
-    	let className = ''
-    	let fileName = ''
-    	if (index < 0) { // adding a new question
-    		editor = $scope.editor
-    		className = getClassName(false)
-    		fileName = getFileName(false)
-    	} else { // editing existing q
-    		editor = $scope.editors[index]
-    		className = getClassName(true)
-    		fileName = getFileName(true)
-    	}
+      let editor = {}
+      let className = ''
+      let fileName = ''
+      if (index < 0) { // adding a new question
+        editor = $scope.editor
+        className = getClassName(false)
+        fileName = getFileName(false)
+      } else { // editing existing q
+        editor = $scope.editors[index]
+        className = getClassName(true)
+        fileName = getFileName(true)
+      }
 
-  		console.log('in compile func')
+      console.log('in compile func')
       console.log('heres code:')
-		  const code = editor.getValue()
+      const code = editor.getValue()
       console.log(code)
-  		// var editedCode = code.replace(/\\/g, '\\\\');
+      // var editedCode = code.replace(/\\/g, '\\\\');
       // console.log(editedCode);
-		  const obj = { className,
-    fileName,
-    code, // editedCode,
-    user: Auth.getCurrentUser(),
-    questionNum: $scope.questionIndex
-  }
-      	$http.post('api/clis/compile', obj).success((data) => {
+      const obj = { className,
+        fileName,
+        code, // editedCode,
+        user: Auth.getCurrentUser(),
+        questionNum: $scope.questionIndex
+      }
+      $http.post('api/clis/compile', obj).success((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n'
@@ -141,20 +142,20 @@ export default class EditContentController {
     // index is the index of the code editor for this question
     // use -1 for adding a new question
     $scope.runCode = function (index) {
-    	let fileName = ''
-    	if (index < 0) { // adding new question
-    		fileName = getFileName(false)
-    	} else { // editing existing question
-    		fileName = getFileName(true)
-    	}
+      let fileName = ''
+      if (index < 0) { // adding new question
+        fileName = getFileName(false)
+      } else { // editing existing question
+        fileName = getFileName(true)
+      }
 
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-   		$http.post('api/clis/run', obj).success((data) => {
-        	$scope.runOutput = data
-      	})
-      	// logging.progress.numRuns++;
+      $http.post('api/clis/run', obj).success((data) => {
+        $scope.runOutput = data
+      })
+        // logging.progress.numRuns++;
     }
 
     $scope.editTopic = function () {
@@ -164,9 +165,9 @@ export default class EditContentController {
       topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
         $scope.topic = data
         $scope.topicsEC.forEach((ea) => {
-        	if (ea._id === data._id) {
-        		angular.copy(data, ea)
-        	}
+          if (ea._id === data._id) {
+            angular.copy(data, ea)
+          }
         })
         const message = 'Topic successfully updated!'
         Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
@@ -174,80 +175,80 @@ export default class EditContentController {
     }
 
     $scope.addHintToNewQ = function () {
-    	$scope.newQuestion.hints.push('')
+      $scope.newQuestion.hints.push('')
     }
 
     $scope.deleteHintFromNewQ = function (index) {
-    	$scope.newQuestion.hints.splice(index, 1)
+      $scope.newQuestion.hints.splice(index, 1)
     }
     // FIXME hints aren't working...
     $scope.addHintToExistingQ = function () {
-    	$scope.questionToEdit.hints.push('')
-    	// $scope.topic.questions[questionIndex].hints.push("");
+      $scope.questionToEdit.hints.push('')
+      // $scope.topic.questions[questionIndex].hints.push("");
     }
 
     $scope.deleteHintFromExistingQ = function (hintIndex) {
-    	// $scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
-    	$scope.questionToEdit.hints.splice(hintIndex, 1)
+      // $scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
+      $scope.questionToEdit.hints.splice(hintIndex, 1)
     }
 
     $scope.focusEditor = function () {
-    	$scope.editor.focus()
+      $scope.editor.focus()
     }
 
     // $scope.compileCode = function() { // this is in add question, so use $scope.editor
-    // 	console.log($scope.editor.getValue());
-    // 	var obj = {'code': $scope.editor.getValue(),
-    // 				'user': Auth.getCurrentUser(),
-    // 				'questionNum': $scope.topic.questions.length // since this is a new q to be added
-    // 			}
-    // 	$http.post('api/clis/compile', obj).success(function(data) {
-    // 		console.log('in compile code success func');
-    // 		console.log(data);
+    //   console.log($scope.editor.getValue());
+    //   var obj = {'code': $scope.editor.getValue(),
+    //         'user': Auth.getCurrentUser(),
+    //         'questionNum': $scope.topic.questions.length // since this is a new q to be added
+    //       }
+    //   $http.post('api/clis/compile', obj).success(function(data) {
+    //     console.log('in compile code success func');
+    //     console.log(data);
 
-    // 		if (data === '') {
-    // 			$scope.CLOutput += 'Successfully compiled code.\n';
-    // 		} else {
-    // 			data.trim();
-    // 			$scope.CLOutput += data;
-    // 			console.log($scope.CLOutput);
-    // 		}
+    //     if (data === '') {
+    //       $scope.CLOutput += 'Successfully compiled code.\n';
+    //     } else {
+    //       data.trim();
+    //       $scope.CLOutput += data;
+    //       console.log($scope.CLOutput);
+    //     }
 
-    // 	})
+    //   })
     // }
 
     // $scope.runCode = function() { // this is in add question, so use $scope.editor
-    // 	var obj = {'className': 'Test',
-    // 			   'user': Auth.getCurrentUser()
-    // 			}
+    //   var obj = {'className': 'Test',
+    //          'user': Auth.getCurrentUser()
+    //       }
 
-    // 	$http.post('api/clis/run', obj).success(function(data) {
-    // 		console.log('in run code success function');
-    // 		console.log(data);
-    // 		$scope.CLOutput += data;
-    // 	})
+    //   $http.post('api/clis/run', obj).success(function(data) {
+    //     console.log('in run code success function');
+    //     console.log(data);
+    //     $scope.CLOutput += data;
+    //   })
     // }
     $scope.populateEditQForm = function (index) {
-    	// Set up an editor for the question
-    	const editor = ace.edit(`editor${index}`)
+      // Set up an editor for the question
+      const editor = ace.edit(`editor${index}`)
       // editor.getSession().setUseWorker(false);
-		// Editor part
+    // Editor part
       const _session = editor.getSession()
       const _renderer = editor.renderer
 
-		// Options
-		// _editor.setReadOnly(false);
-		// _session.setUndoManager(new ace.UndoManager());
+    // Options
+    // _editor.setReadOnly(false);
+    // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
       editor.setTheme('ace/theme/crimson_editor')
-		// _session.setMode('ace/mode/java');
+    // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
-    	$scope.editors[index] = editor
+      $scope.editors[index] = editor
 
-    	$scope.questionToEdit = $scope.topic.questions[index]
-    	$scope.editors[index].setValue($scope.questionToEdit.code)
-    	$scope.compileOutput = ''
-    	$scope.runOutput = ''
+      $scope.questionToEdit = $scope.topic.questions[index]
+      $scope.editors[index].setValue($scope.questionToEdit.code)
+      $scope.compileOutput = ''
+      $scope.runOutput = ''
     }
 
     $scope.isActive = function (id) {
@@ -284,51 +285,51 @@ export default class EditContentController {
     }
 
     $scope.addQuestion = function () {
-  		if ($scope.newQuestion.instructions === '') { return }
-  		topics.addQuestion($scope.topic._id, {
-        	instructions: $scope.newQuestion.instructions,
-        	code: $scope.newQuestion.code,
-        	className: getClassName(false),
-        	readOnly: $scope.newQuestion.readOnly,
-        	expectedOutput: $scope.newQuestion.expectedOutput,
-        	hints: $scope.newQuestion.hints,
-    tags: $scope.newQuestion.tags
-  		}).success((question) => {
-        	$scope.topic.questions.push(question)
-    const message = 'Question successfully added!'
-    Flash.create('success', message, 5000, { class: 'custom-class', id: 'custom-id' }, true)
-      	})
+      if ($scope.newQuestion.instructions === '') { return }
+      topics.addQuestion($scope.topic._id, {
+        instructions: $scope.newQuestion.instructions,
+        code: $scope.newQuestion.code,
+        className: getClassName(false),
+        readOnly: $scope.newQuestion.readOnly,
+        expectedOutput: $scope.newQuestion.expectedOutput,
+        hints: $scope.newQuestion.hints,
+        tags: $scope.newQuestion.tags
+      }).success((question) => {
+        $scope.topic.questions.push(question)
+        const message = 'Question successfully added!'
+        Flash.create('success', message, 5000, { class: 'custom-class', id: 'custom-id' }, true)
+      })
 
-  		$scope.newQuestion = {}
-  		$scope.newQuestion.hints = []
+      $scope.newQuestion = {}
+      $scope.newQuestion.hints = []
     }
 
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue()
       topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
-        	// update scope array of questions?
+          // update scope array of questions?
         $scope.questionToEdit = {}
-        	$scope.questionToEdit.hints = []
-      	})
+        $scope.questionToEdit.hints = []
+      })
     }
 
     $scope.deleteQuestion = function (id, index) {
-    	// console.log(index);
-    	// console.log($scope.topic.questions);
-    	topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)// .success(function(question) {
-    		// why does this success function not get called?
-    		// console.log('successfully deleted question: ' + question);
-    	// });
-    	console.log('deleted q in edit content controller now')
-    	// $scope.topic.questions[index].splice(index, 1);
-    	$scope.topic.questions.splice(index, 1)
+      // console.log(index);
+      // console.log($scope.topic.questions);
+      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)// .success(function(question) {
+        // why does this success function not get called?
+        // console.log('successfully deleted question: ' + question);
+      // });
+      console.log('deleted q in edit content controller now')
+      // $scope.topic.questions[index].splice(index, 1);
+      $scope.topic.questions.splice(index, 1)
 
-    	// $http.delete('/api/questions/' + id);
+      // $http.delete('/api/questions/' + id);
     }
 
     $scope.$on('$destroy', () => {
-  		socket.unsyncUpdates('question')
+      socket.unsyncUpdates('question')
     })
 
     // / trying question reordering http://stackoverflow.com/a/27709541

@@ -2,7 +2,7 @@
 const express = require('express')
 const passport = require('passport')
 const strategy = require('./passport')
-const auth = require('../auth.service')
+// const auth = require('../auth.service')
 const fs = require('fs')
 const path = require('path')
 

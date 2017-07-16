@@ -1,3 +1,5 @@
+import d3 from 'd3'
+
 export default class LoggerController {
   constructor ($scope, $http) {
     $scope.selectedUsers = []
@@ -31,7 +33,7 @@ export default class LoggerController {
     // });
 
     $http.get('/api/loggers').success((data) => {
-      const nested_data = d3.nest()
+      const nestedData = d3.nest()
       .key(d => d.user)
       .rollup(leaves => ({ 'Total # Compiles': d3.sum(leaves, d => parseFloat(d.numCompiles)),
         'Total Attempts': d3.sum(leaves, d => parseFloat(d.totalAttempts)),
@@ -39,13 +41,13 @@ export default class LoggerController {
         'Hints Used': d3.sum(leaves, d => parseFloat(d.numHints))
       }))
       .entries(data)
-      $scope.data = nested_data
+      $scope.data = nestedData
     }).error((err) => {
       throw err
     })
 
     $scope.updateList = function (val) {
-      if (val.length == $scope.data.length) {
+      if (val.length === $scope.data.length) {
         $scope.$apply(() => {
           $scope.selectedUsers = []
         })

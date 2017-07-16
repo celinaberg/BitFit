@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+import angular from 'angular'
 
 describe('Directive: background', () => {
   // load the directive's module and view

@@ -8,7 +8,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 const express = require('express')
 const mongoose = require('mongoose')
 const config = require('./config/environment')
-const path = require('path')
 const https = require('https')
 const http = require('http')
 const fs = require('fs')

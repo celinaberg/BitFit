@@ -1,6 +1,6 @@
 import angular from 'angular'
 
-import styles from './allQuestions.css'
+import './allQuestions.css'
 
 import routing from './allQuestions.routes'
 import AllQuestionsController from './allQuestions.controller'

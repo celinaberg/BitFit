@@ -1,4 +1,4 @@
-
+/* eslint-env mocha */
 describe('Service: logging', () => {
   // load the service's module
   beforeEach(module('its110App'))

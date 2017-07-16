@@ -6,7 +6,7 @@ export default function routes ($stateProvider) {
   $stateProvider
     .state('logger', {
       url: '/admin/logger',
-      templateUrl: 'app/admin/logger/logger.html',
+      template: template,
       controller: 'loggerCtrl',
       authenticate: true,
       resolve: {

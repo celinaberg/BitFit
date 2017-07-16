@@ -1,7 +1,8 @@
 import angular from 'angular'
 import Flash from 'angular-flash'
+import ace from 'angular-ui-ace'
 import Auth from '../../../components/auth/auth.service'
-import User from '../../../components/auth/auth.service'
+import User from '../../../components/auth/user.service'
 import socket from '../../../components/socket/socket.service'
 import topics from '../../../components/topics/topics.service'
 import questions from '../../../components/questions/questions.service'
@@ -337,8 +338,8 @@ export default class AllQuestionsController {
     $scope.deleteQuestion = function (index) {
       // console.log(index);
       // console.log($scope.topic.questions);
-      const conf = confirm('Are you sure you want to permanantly delete that question?')
-      if (conf == true) {
+      const conf = window.confirm('Are you sure you want to permanantly delete that question?')
+      if (conf === true) {
         questions.delete($scope.questions[index], $scope.questions[index]._id)// .success(function(question) {
         // why does this success function not get called?
         // console.log('successfully deleted question: ' + question);
@@ -400,7 +401,7 @@ export default class AllQuestionsController {
     }
 
     $scope.clearSearch = function () {
-      if ($scope.search.tags.length == 0) {
+      if ($scope.search.tags.length === 0) {
         delete $scope.search
       }
     }

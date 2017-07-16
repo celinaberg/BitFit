@@ -1,4 +1,4 @@
-
+/* eslint-env mocha */
 describe('Controller: loggerCtrl', () => {
   // load the controller's module
   beforeEach(module('its110App'))

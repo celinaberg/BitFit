@@ -1,3 +1,4 @@
+import angular from 'angular'
 
 angular.module('its110App')
   .controller('SignupCtrl', ($scope, Auth, $location, $window) => {

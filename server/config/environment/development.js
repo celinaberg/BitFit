@@ -1,5 +1,3 @@
-
-const fs = require('fs')
 const cert = require('../../../server/cert/idp_cert-staging.pem')
 
 // Development specific configuration
