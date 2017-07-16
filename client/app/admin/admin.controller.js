@@ -1,12 +1,13 @@
-import Auth from '../../components/auth/auth.service';
-import User from '../../components/auth/user.service';
-import socket from '../../components/socket/socket.service';
-import topics from '../../components/topics/topics.service';
+import angular from 'angular'
+import Auth from '../../components/auth/auth.service'
+import User from '../../components/auth/user.service'
+import socket from '../../components/socket/socket.service'
+import topics from '../../components/topics/topics.service'
 
 export default class AdminController {
-  constructor($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
+  constructor ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
     // $scope.topic = topic;
-    $scope.topics = topicPromiseAC.data;
+    $scope.topics = topicPromiseAC.data
     // $scope.allTopics = [];
     // the following should really be in the topics service file, and then pre loaded via admin.js resolve...
     /* $scope.topicsAC.forEach(function(ea) {
@@ -15,15 +16,15 @@ export default class AdminController {
         });
     });
 */
-    $scope.editedTopic = {};
+    $scope.editedTopic = {}
 
-    $scope.newQuestion = {}; // this will go in admin functionality
-    $scope.newTopic = {};
+    $scope.newQuestion = {} // this will go in admin functionality
+    $scope.newTopic = {}
     // $scope.tab = 1;
-    $scope.questionIndex = 0; // keeps track of which question the user is on
+    $scope.questionIndex = 0 // keeps track of which question the user is on
 
     // Use the User $resource to fetch all users
-    $scope.users = User.query();
+    $scope.users = User.query()
     // $scope.questions = Question.query();
     // $scope.newQuestion = {};
     // $scope.questions = [];
@@ -44,11 +45,10 @@ export default class AdminController {
 
     $scope.setTab = function(activeTab) {
           $scope.tab = activeTab;
-    };*/
-
+    }; */
 
     $scope.addTopic = function () {
-      if (!$scope.newTopic.topicTitle || $scope.newTopic.topicTitle === '') { return; }
+      if (!$scope.newTopic.topicTitle || $scope.newTopic.topicTitle === '') { return }
       topics.create({
         title: $scope.newTopic.topicTitle,
         background: $scope.newTopic.topicBackground,
@@ -68,31 +68,29 @@ export default class AdminController {
               code: "for (int i = 0; i < 10; i++) { // do something }",
               hints: ['an', 'array', 'of', 'strings']
             } */
-        ],
+        ]
       }).success((topic) => {
           // $scope.topicsAC.push(topic);
-        $scope.topics.push(topic);
-      });
+        $scope.topics.push(topic)
+      })
 
-      $scope.newTopic = {};
-    };
-
+      $scope.newTopic = {}
+    }
 
     $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
-      return (`/lessons/topics/${id}`) === $location.path();
-    };
-
+      return (`/lessons/topics/${id}`) === $location.path()
+    }
 
     $scope.delete = function (user) {
-      User.remove({ id: user._id });
+      User.remove({ id: user._id })
       angular.forEach($scope.users, (u, i) => {
         if (u === user) {
-          $scope.users.splice(i, 1);
+          $scope.users.splice(i, 1)
         }
-      });
-    };
+      })
+    }
   }
 }
 
-AdminController.$inject = ['$scope', '$http', Auth, User, socket, topics, 'topicPromiseAC', '$location'];
+AdminController.$inject = ['$scope', '$http', Auth, User, socket, topics, 'topicPromiseAC', '$location']

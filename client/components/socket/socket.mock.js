@@ -1,14 +1,14 @@
-
+import angular from 'angular'
 
 angular.module('socketMock', [])
   .factory('socket', () => ({
     socket: {
-      connect() {},
-      on() {},
-      emit() {},
-      receive() {},
+      connect () {},
+      on () {},
+      emit () {},
+      receive () {}
     },
 
-    syncUpdates() {},
-    unsyncUpdates() {},
-  }));
+    syncUpdates () {},
+    unsyncUpdates () {}
+  }))

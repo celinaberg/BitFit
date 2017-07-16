@@ -54,3 +54,5 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
 # Dependencies
  - Node 8
  - NPM 5
+
+ [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)

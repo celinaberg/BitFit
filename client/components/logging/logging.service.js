@@ -1,8 +1,8 @@
-import angular from 'angular';
-import Auth from '../auth/auth.service';
+import angular from 'angular'
+import Auth from '../auth/auth.service'
+import _ from 'lodash'
 
-
-function Logging($http, Auth) {
+function Logging ($http, Auth) {
   // Public API
   return {
     progress: { // update this throughout user's progress in a question
@@ -20,9 +20,9 @@ function Logging($http, Auth) {
     },
     logProgress: function () { // call this after user finishes a question
       // temporary fix: clone a copy of progress so it can be reset immediately
-      var tmp = _.cloneDeep(this.progress);
+      var tmp = _.cloneDeep(this.progress)
       $http.post('/api/loggers', tmp).success(function () { // do we need |data| passed in?
-      });
+      })
       this.progress = {
         user: Auth.getCurrentUser()._id,
         topic: '',
@@ -35,12 +35,12 @@ function Logging($http, Auth) {
         numHints: 0,
         totalAttempts: 0,
         correctAttempts: 0
-      };
-      console.log('reset prog obj');
+      }
+      console.log('reset prog obj')
     }
-  }; // end return object
-});
+  }
+}
 
 export default angular.module('bitfit.services.logging', ['$http', Auth])
   .service('Logging', Logging)
-  .name;
+  .name

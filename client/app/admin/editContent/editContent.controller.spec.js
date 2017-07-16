@@ -1,21 +1,18 @@
-
-
+/* eslint-env mocha */
+/* global inject expect */
 describe('Controller: EditContentCtrl', () => {
   // load the controller's module
-  beforeEach(module('its110App'));
-
-  let EditContentCtrl,
-    scope;
+  beforeEach(module('its110App'))
 
   // Initialize the controller and a mock scope
   beforeEach(inject(($controller, $rootScope) => {
-    scope = $rootScope.$new();
-    EditContentCtrl = $controller('EditContentCtrl', {
-      $scope: scope,
-    });
-  }));
+    let scope = $rootScope.$new()
+    $controller('EditContentCtrl', {
+      $scope: scope
+    })
+  }))
 
   it('should ...', () => {
-    expect(1).toEqual(1);
-  });
-});
+    expect(1).toEqual(1)
+  })
+})

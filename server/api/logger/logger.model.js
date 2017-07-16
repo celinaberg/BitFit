@@ -1,8 +1,7 @@
 
+const mongoose = require('mongoose')
 
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const LoggerSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -15,7 +14,7 @@ const LoggerSchema = new Schema({
   numRuns: Number,
   numHints: Number,
   totalAttempts: Number,
-  correctAttempts: Number,
-});
+  correctAttempts: Number
+})
 
-module.exports = mongoose.model('Logger', LoggerSchema);
+module.exports = mongoose.model('Logger', LoggerSchema)

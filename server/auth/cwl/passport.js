@@ -1,22 +1,21 @@
-const passport = require('passport');
-const SamlStrategy = require('passport-saml').Strategy;
-const fs = require('fs');
-const path = require('path');
-const config = require('../../config/environment');
-const User = require('../../api/user/user.model');
-const key = require('../../cert/key.pem');
+const passport = require('passport')
+const SamlStrategy = require('passport-saml').Strategy
+const fs = require('fs')
+const config = require('../../config/environment')
+// const User = require('../../api/user/user.model')
+const key = require('../../cert/key.pem')
 
 passport.serializeUser((user, done) => {
-  console.log('Serialize User');
-  console.log(user);
-  done(null, user);
-});
+  console.log('Serialize User')
+  console.log(user)
+  done(null, user)
+})
 
 passport.deserializeUser((user, done) => {
-  done(null, user);
-});
+  done(null, user)
+})
 
-const keyContents = fs.readFileSync(key, 'utf8');
+const keyContents = fs.readFileSync(key, 'utf8')
 
 const samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
@@ -36,11 +35,11 @@ const samlStrategy = new SamlStrategy({
   // Identity Provider's public key
   cert: fs.readFileSync(config.idpCert, 'utf8'),
   validateInResponseTo: false,
-  disableRequestedAuthnContext: true,
+  disableRequestedAuthnContext: true
 }, (profile, done) => {
-  console.log(profile);
+  console.log(profile)
   return done(null,
-    profile);
+    profile)
   /* User.findOne({
     email: profile.email.toLowerCase()
   }, function (err, user) {
@@ -53,9 +52,9 @@ const samlStrategy = new SamlStrategy({
       return done(null, false, { message: 'This password is not correct.' });
     }
     return done(null, user);
-  });*/
-});
+  }); */
+})
 
-passport.use(samlStrategy);
+passport.use(samlStrategy)
 
-module.exports = samlStrategy;
+module.exports = samlStrategy

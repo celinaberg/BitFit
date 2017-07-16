@@ -1,10 +1,8 @@
+const path = require('path')
+const _ = require('lodash')
 
-
-const path = require('path');
-const _ = require('lodash');
-
-const environment = require(`./${process.env.NODE_ENV}.js`);
-const cert = require('../../../server/cert/idp_cert.pem');
+const environment = require(`./${process.env.NODE_ENV}.js`)
+const cert = require('../../../server/cert/idp_cert.pem')
 
 // All configurations will extend these options
 // ============================================
@@ -28,7 +26,7 @@ const all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'its110-secret',
+    session: 'its110-secret'
   },
 
   // List of user roles
@@ -43,12 +41,12 @@ const all = {
   mongo: {
     options: {
       db: {
-        safe: true,
-      },
-    },
-  },
-};
+        safe: true
+      }
+    }
+  }
+}
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(all, environment || {});
+module.exports = _.merge(all, environment || {})

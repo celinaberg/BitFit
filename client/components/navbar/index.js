@@ -1,12 +1,12 @@
-import angular from 'angular';
+import angular from 'angular'
 
-import NavBarController from './navbar.controller';
+import NavBarController from './navbar.controller'
 
-import html from './navbar.html';
+import html from './navbar.html'
 
 export default angular.module('bitfit.component.navbar', [])
   .controller('NavBarController', NavBarController)
   .directive('navbar', () => ({
-    template: html,
+    template: html
   }))
-  .name;
+  .name

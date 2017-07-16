@@ -1,6 +1,6 @@
-import angular from 'angular';
-import template from './modal.html';
-import './modal.css';
+import angular from 'angular'
+import template from './modal.html'
+import './modal.css'
 
 angular.module('bitfit.components.modal')
   .factory('Modal', ($rootScope, $modal) => {
@@ -10,18 +10,18 @@ angular.module('bitfit.components.modal')
      * @param  {String} modalClass - (optional) class(es) to be applied to the modal
      * @return {Object}            - the instance $modal.open() returns
      */
-    function openModal(scope, modalClass) {
-      const modalScope = $rootScope.$new();
-      scope = scope || {};
-      modalClass = modalClass || 'modal-default';
+    function openModal (scope, modalClass) {
+      const modalScope = $rootScope.$new()
+      scope = scope || {}
+      modalClass = modalClass || 'modal-default'
 
-      angular.extend(modalScope, scope);
+      angular.extend(modalScope, scope)
 
       return $modal.open({
         template,
         windowClass: modalClass,
-        scope: modalScope,
-      });
+        scope: modalScope
+      })
     }
 
     // Public API here
@@ -35,8 +35,8 @@ angular.module('bitfit.components.modal')
          * @param  {Function} del - callback, ran when delete is confirmed
          * @return {Function}     - the function to open the modal (ex. myModalFn)
          */
-        delete(del) {
-          del = del || angular.noop;
+        delete (del) {
+          del = del || angular.noop
 
           /**
            * Open a delete confirmation modal
@@ -44,11 +44,9 @@ angular.module('bitfit.components.modal')
            * @param  {All}           - any additional args are passed staight to del callback
            */
           return function () {
-            let args = Array.prototype.slice.call(arguments),
-              name = args.shift(),
-              deleteModal;
-
-            deleteModal = openModal({
+            let args = Array.prototype.slice.call(arguments)
+            let name = args.shift()
+            let deleteModal = openModal({
               modal: {
                 dismissable: true,
                 title: 'Confirm Delete',
@@ -56,24 +54,24 @@ angular.module('bitfit.components.modal')
                 buttons: [{
                   classes: 'btn-danger',
                   text: 'Delete',
-                  click(e) {
-                    deleteModal.close(e);
-                  },
+                  click (e) {
+                    deleteModal.close(e)
+                  }
                 }, {
                   classes: 'btn-default',
                   text: 'Cancel',
-                  click(e) {
-                    deleteModal.dismiss(e);
-                  },
-                }],
-              },
-            }, 'modal-danger');
+                  click (e) {
+                    deleteModal.dismiss(e)
+                  }
+                }]
+              }
+            }, 'modal-danger')
 
             deleteModal.result.then((event) => {
-              del.apply(event, args);
-            });
-          };
-        },
-      },
-    };
-  });
+              del.apply(event, args)
+            })
+          }
+        }
+      }
+    }
+  })

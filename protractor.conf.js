@@ -1,7 +1,7 @@
 // Protractor configuration
 // https://github.com/angular/protractor/blob/master/referenceConf.js
 
-'use strict';
+'use strict'
 
 exports.config = {
   // The timeout for each script run on the browser. This should be longer
@@ -47,4 +47,4 @@ exports.config = {
   jasmineNodeOpts: {
     defaultTimeoutInterval: 30000
   }
-};
+}

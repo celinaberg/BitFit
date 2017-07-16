@@ -1,95 +1,99 @@
+import Auth from '../../components/auth/auth.service'
+
 export default class LessonsController {
-  constructor($http, $scope, $location, $stateParams, Auth, socket, topics, topicPromise) {
-    $scope.editor = {};
-  	$scope.questionIndex = 0;
-  	$scope.tab = 1;
-  	$scope.topics = topicPromise.data;
+  constructor ($http, $scope, $location, $stateParams, Auth, socket, topics, topicPromise) {
+    this.scope = $scope
+    this.scope.editor = {}
+    this.scope.questionIndex = 0
+    this.scope.tab = 1
+    this.scope.topics = topicPromise.data
+
+    this.location = $location
 
     $http.get('/api/questions').success(() => {
-  		// $scope.questions = allQs;
-    	socket.syncUpdates('question', $scope.questions);
-    });
+      // this.scope.questions = allQs;
+      socket.syncUpdates('question', this.scope.questions)
+    })
 
+    this.scope.$on('$destroy', () => {
+      socket.unsyncUpdates('question')
+    })
 
-    $scope.$on('$destroy', () => {
-      socket.unsyncUpdates('question');
-    });
-
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
-    $scope.isSet = isSet;
-    $scope.setTab = setTab;
-    $scope.aceLoaded = aceLoaded;
-    $scope.nextQuestion = nextQuestion;
-    $scope.prevQuestion = prevQuestion;
-    $scope.getPath = getPath;
-    $scope.logout = logout;
-    $scope.isActive = isActive;
+    this.scope.isLoggedIn = Auth.isLoggedIn
+    this.scope.isAdmin = Auth.isAdmin
+    this.scope.getCurrentUser = Auth.getCurrentUser
+    this.scope.isSet = this.isSet
+    this.scope.setTab = this.setTab
+    this.scope.aceLoaded = this.aceLoaded
+    this.scope.nextQuestion = this.nextQuestion
+    this.scope.prevQuestion = this.prevQuestion
+    this.scope.getPath = this.getPath
+    this.scope.logout = this.logout
+    this.scope.isActive = this.isActive
   }
 
-  isSet(checkTab) {
-    return $scope.tab === checkTab;
+  isSet (checkTab) {
+    return this.scope.tab === checkTab
   }
 
-  setTab(activeTab) {
-    $scope.tab = activeTab;
+  setTab (activeTab) {
+    this.scope.tab = activeTab
   }
 
-  aceLoaded(_editor) {
+  aceLoaded (_editor) {
     // Editor part
-    const _session = _editor.getSession();
-    const _renderer = _editor.renderer;
+    const _session = _editor.getSession()
+    const _renderer = _editor.renderer
 
     // Options
     // _editor.setReadOnly(false);
     // _session.setUndoManager(new ace.UndoManager());
-    _renderer.setShowGutter(true);
-    _editor.setTheme('ace/theme/idle_fingers');
+    _renderer.setShowGutter(true)
+    _editor.setTheme('ace/theme/idle_fingers')
     // _session.setMode('ace/mode/java');
-    _session.setMode('ace/mode/c_cpp');
+    _session.setMode('ace/mode/c_cpp')
 
-    // _editor.setValue($scope.questions[0][0].code, -1) // -1 is document start
-    $scope.editor = _editor;
-    _editor.focus();
+    // _editor.setValue(this.scope.questions[0][0].code, -1) // -1 is document start
+    this.scope.editor = _editor
+    _editor.focus()
 
     // Events
     // _editor.on("changeSession", function(){ //...
     // });
     // _session.on("change", function(){
-    // //	alert(_session.getValue());
+    // //alert(_session.getValue());
     // });
   }
 
-  nextQuestion() {
-    if ($scope.questionIndex >= $scope.questions.length - 1) {
-      $scope.questionIndex = 0;
+  nextQuestion () {
+    if (this.scope.questionIndex >= this.scope.questions.length - 1) {
+      this.scope.questionIndex = 0
     } else {
-      $scope.questionIndex ++;
+      this.scope.questionIndex ++
     }
   }
 
-  prevQuestion() {
-    if ($scope.questionIndex === 0) {
-      $scope.questionIndex = $scope.questions.length - 1;
+  prevQuestion () {
+    if (this.scope.questionIndex === 0) {
+      this.scope.questionIndex = this.scope.questions.length - 1
     } else {
-      $scope.questionIndex --;
+      this.scope.questionIndex --
     }
   }
 
-  getPath() {
-    return $location.path();
+  getPath () {
+    return this.location.path()
   }
 
-  logout() {
-    Auth.logout();
-    $location.path('/login');
+  logout () {
+    Auth.logout()
+    this.location.path('/login')
   }
 
-  isActive(route) {
+  isActive (route) {
     // ???
-    return `/lessons/topics/${route}` === $location.path();
+    return `/lessons/topics/${route}` === this.location.path()
   }
 }
 
-LessonsController.$inject = ['$http', '$scope', '$location', '$stateParams', 'Auth', 'socket', 'topics', 'topicPromise'];
+LessonsController.$inject = ['$http', '$scope', '$location', '$stateParams', Auth, 'socket', 'topics', 'topicPromise']

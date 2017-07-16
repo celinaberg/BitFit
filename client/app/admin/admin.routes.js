@@ -1,8 +1,8 @@
-import template from './admin.html';
+import template from './admin.html'
 
-routes.$inject = ['$stateProvider'];
+routes.$inject = ['$stateProvider']
 
-export default function routes($stateProvider) {
+export default function routes ($stateProvider) {
   $stateProvider
     .state('admin', {
       url: '/admin',
@@ -12,10 +12,10 @@ export default function routes($stateProvider) {
       resolve: {
     /* topic: ['$stateParams', 'topics', function($stateParams, topics) { // gets current topic before controller loads
         return topics.get($stateParams.id);
-      }],*/
+      }], */
         topicPromiseAC: ['topics', function (topics) { // gets all the topics before controller loads
-          return topics.getAll();
-        }],
-      },
-    });
+          return topics.getAll()
+        }]
+      }
+    })
 }

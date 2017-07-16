@@ -1,14 +1,13 @@
 
-
-const _ = require('lodash');
-const Topic = require('./topic.model');
-const Question = require('../question/question.model');
+const _ = require('lodash')
+const Topic = require('./topic.model')
+const Question = require('../question/question.model')
 
 // Add a question to this topic
 exports.addQuestion = function (req, res) {
-  console.log('in add question in server');
-  console.log(req.body);
-  req.body.topic = req.params.id; // is this necessary?
+  console.log('in add question in server')
+  console.log(req.body)
+  req.body.topic = req.params.id // is this necessary?
 
    // express's body parser middleware populates body for me
 
@@ -28,57 +27,56 @@ exports.addQuestion = function (req, res) {
 
   // if question already exists, only add it to topic
   Question.findById(req.body._id, (err, question) => {
-    if (err) { return handleError(res, err); }
+    if (err) { return handleError(res, err) }
     if (question) {
       Topic.findById(req.params.id, (err, topic) => {
-        if (err) { return handleError(res, err); }
-        if (!topic) { return res.send(404); }
+        if (err) { return handleError(res, err) }
+        if (!topic) { return res.send(404) }
 
-        topic.questions.push(question);
+        topic.questions.push(question)
 
         topic.save((err, topic) => {
-          if (err) { return handleError(err); }
-          return res.json(question);
-        });
-      });
+          if (err) { return handleError(err) }
+          return res.json(question)
+        })
+      })
     } else { // if not, create the new question
-      var question = new Question(req.body);
+      question = new Question(req.body)
       question.save((err, question) => {
-        if (err) { return handleError(res, err); }
-        console.log('in save question success func');
+        if (err) { return handleError(res, err) }
+        console.log('in save question success func')
         Topic.findById(req.params.id, (err, topic) => {
-          if (err) { return handleError(res, err); }
-          if (!topic) { return res.send(404); }
+          if (err) { return handleError(res, err) }
+          if (!topic) { return res.send(404) }
 
-          topic.questions.push(question);
+          topic.questions.push(question)
 
           topic.save((err, topic) => {
-            if (err) { return handleError(err); }
-            return res.json(question);
-          });
-        });
-      });
+            if (err) { return handleError(err) }
+            return res.json(question)
+          })
+        })
+      })
     }
-  });
-};
+  })
+}
 
 exports.deleteQuestion = function (req, res) {
-  console.log('in delete q server');
-  const question = req.body;
-  console.log(question);
+  console.log('in delete q server')
+  const question = req.body
+  console.log(question)
   Topic.findById(req.params.id, (err, topic) => {
-    if (err) { return handleError(res, err); }
-    if (!topic) { return res.send(404); }
+    if (err) { return handleError(res, err) }
+    if (!topic) { return res.send(404) }
 
     // var doc = topic.questions.id(question._id).remove();
-    topic.questions.pull(question._id);
+    topic.questions.pull(question._id)
     topic.save((err) => {
-      if (err) return handleError(err);
-      console.log('the sub-doc was removed');
-    });
-  });
-};
-
+      if (err) return handleError(err)
+      console.log('the sub-doc was removed')
+    })
+  })
+}
 
 // Get list of topics
 exports.index = function (req, res) {
@@ -95,78 +93,78 @@ exports.index = function (req, res) {
       //console.log(ea);
     });
 */
-  Topic.find().populate('topic.questions').exec((err, topics) =>
-      // console.log('found topics...');
-      // console.log(topics);
-     res.json(200, topics));
-    // console.log('in get list of topics');
-    // console.log(topics);
-    // return res.json(200, topics);
-};
+  Topic.find().populate('topic.questions').exec(function (err, topics) {
+    if (err) {
+      res.status(500)
+      return
+    }
+    res.status(200).json(topics)
+  })
+}
 
 // Get a single topic
 exports.show = function (req, res) {
   // Topic.findById(req.params.id, function (err, topic) {
   Topic.findOne({ title: req.params.title }, (err, topic) => {
-    if (err) { return handleError(res, err); }
-    if (!topic) { return res.send(404); }
+    if (err) { return handleError(res, err) }
+    if (!topic) { return res.send(404) }
 
     topic.populate('questions', (err, topic) => {
-      if (err) { return handleError(res, err); }
-      return res.json(topic);
-    });
-  });
-};
+      if (err) { return handleError(res, err) }
+      return res.json(topic)
+    })
+  })
+}
 
 // Creates a new topic in the DB.
 exports.create = function (req, res) {
   Topic.create(req.body, (err, topic) => {
-    if (err) { return handleError(res, err); }
-    return res.json(201, topic);
-  });
-};
+    if (err) { return handleError(res, err) }
+    return res.json(201, topic)
+  })
+}
 
 // Updates an existing topic in the DB.
 exports.update = function (req, res) {
-  console.log('in update');
-  if (req.body._id) { delete req.body._id; }
+  console.log('in update')
+  if (req.body._id) { delete req.body._id }
   Topic.findById(req.params.id, (err, topic) => {
-    console.log('in update found topic by id');
-    if (err) { return handleError(res, err); }
-    if (!topic) { return res.send(404); }
+    console.log('in update found topic by id')
+    if (err) { return handleError(res, err) }
+    if (!topic) { return res.send(404) }
 
-    topic.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
+    topic.questions = req.body.questions // without this, reordering doesn't work (found in question.controller)
 
-    const updated = _.merge(topic, req.body);
+    const updated = _.merge(topic, req.body)
     updated.save((err) => {
       // console.log(updated);
-      if (err) { return handleError(res, err); }
-      console.log('updated topic now about to populate qs');
+      if (err) { return handleError(res, err) }
+      console.log('updated topic now about to populate qs')
       topic.populate('questions', (err, topic) => {
         if (err) {
-          console.log('error populating questions of updated topic');
-          return handleError(res, err);
+          console.log('error populating questions of updated topic')
+          return handleError(res, err)
         }
-        console.log('looks like populate was successful?');
-        console.log(topic);
-        return res.json(200, topic);
-      });
-    });
-  });
-};
+        console.log('looks like populate was successful?')
+        console.log(topic)
+        return res.json(200, topic)
+      })
+    })
+  })
+}
 
 // Deletes a topic from the DB.
 exports.destroy = function (req, res) {
   Topic.findById(req.params.id, (err, topic) => {
-    if (err) { return handleError(res, err); }
-    if (!topic) { return res.send(404); }
+    if (err) { return handleError(res, err) }
+    if (!topic) { return res.send(404) }
     topic.remove((err) => {
-      if (err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
-};
+      if (err) { return handleError(res, err) }
+      return res.send(204)
+    })
+  })
+}
 
-function handleError(res, err) {
-  return res.send(500, err);
+function handleError (res, err) {
+  return res.send(500, err)
 }
