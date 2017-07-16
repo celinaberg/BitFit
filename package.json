@@ -63,6 +63,7 @@
     "karma-script-launcher": "^0.1.0",
     "open": "0.0.5",
     "should": "^11.2.1",
+    "snazzy": "^7.0.0",
     "standard": "^10.0.2",
     "supertest": "^3.0.0",
     "webpack": "^3.2.0"
@@ -74,7 +75,7 @@
     "start": "cd build/server && nodemon backend.js",
     "build": "NODE_ENV=production webpack --progress",
     "build-watch": "webpack --watch",
-    "lint": "standard",
+    "lint": "standard | snazzy",
     "test": "echo 'Not implemented'",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
