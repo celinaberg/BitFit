@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* global inject expect */
 import angular from 'angular'
 
 describe('Directive: background', () => {

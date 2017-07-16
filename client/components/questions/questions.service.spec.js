@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* global inject expect */
 describe('Service: questions', () => {
   // load the service's module
   beforeEach(module('its110App'))

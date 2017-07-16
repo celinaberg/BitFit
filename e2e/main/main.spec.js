@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* global expect browser */
 'use strict'
 
 describe('Main View', function () {

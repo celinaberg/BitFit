@@ -1,15 +1,13 @@
 /* eslint-env mocha */
+/* global inject expect */
 describe('Controller: EditContentCtrl', () => {
   // load the controller's module
   beforeEach(module('its110App'))
 
-  let EditContentCtrl,
-    scope
-
   // Initialize the controller and a mock scope
   beforeEach(inject(($controller, $rootScope) => {
-    scope = $rootScope.$new()
-    EditContentCtrl = $controller('EditContentCtrl', {
+    let scope = $rootScope.$new()
+    $controller('EditContentCtrl', {
       $scope: scope
     })
   }))

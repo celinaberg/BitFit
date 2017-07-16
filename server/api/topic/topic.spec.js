@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-const should = require('should')
+import 'should'
 const app = require('../../app')
 const request = require('supertest')
 
