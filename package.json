@@ -12,12 +12,10 @@
   "license": "MIT",
   "main": "server/app.js",
   "scripts": {
+    "test": "standard | snazzy",
     "start": "cd build/server && nodemon backend.js",
     "build": "NODE_ENV=production webpack --progress",
-    "build-watch": "webpack --watch",
-    "lint": "standard | snazzy",
-    "test": "echo 'Not implemented'",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "build-watch": "webpack --watch"
   },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.5",
