@@ -19,6 +19,7 @@ const connectLivereload = require('connect-livereload')
 function init (app) {
   const env = app.get('env')
 
+  app.disable('x-powered-by')
   app.set('views', path.join(config.root, '/server/views'))
   app.engine('html', ejs.renderFile)
   app.set('view engine', 'html')
@@ -28,6 +29,7 @@ function init (app) {
   app.use(methodOverride())
   app.use(cookieParser())
   app.use(passport.initialize())
+  app.use(passport.session())
   app.use(express.static(path.join(__dirname, '../../build/client')))
   if (env === 'production') {
     app.set('appPath', 'client')
@@ -40,6 +42,11 @@ function init (app) {
     app.use(morgan('dev'))
     app.use(errorHandler()) // Error handler - has to be last
   }
+
+  app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Internal error. Please try again later.')
+  })
 }
 
 module.exports = init
