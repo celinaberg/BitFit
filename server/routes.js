@@ -9,10 +9,10 @@ const Question = require('./api/question')
 const User = require('./api/user')
 const Auth = require('./auth')
 const errors = require('./components/errors')
-const indexHtml = require('../client/index.html')
+const path = require('path')
 
 function defaultRouteHandler (req, res) {
-  res.sendfile(indexHtml)
+  res.render(path.join(__dirname, '../client/index.html'))
 }
 
 function init (app) {

@@ -1,9 +1,9 @@
 const passport = require('passport')
 const SamlStrategy = require('passport-saml').Strategy
 const fs = require('fs')
+const path = require('path')
 const config = require('../../config/environment')
 const User = require('../../api/user/user.model')
-const key = require('../../cert/key.pem')
 
 const uid = 'urn:oid:0.9.2342.19200300.100.1.1'
 const memberOf = 'urn:oid:1.3.6.1.4.1.5923.1.5.1.1'
@@ -27,7 +27,7 @@ passport.deserializeUser((user, done) => {
   done(null, user)
 })
 
-const keyContents = fs.readFileSync(key, 'utf8')
+const keyContents = fs.readFileSync(path.join(__dirname, '../../cert/key.pem'), 'utf8')
 
 const samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider

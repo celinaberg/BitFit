@@ -13,7 +13,7 @@
   "main": "server/app.js",
   "scripts": {
     "test": "standard | snazzy",
-    "start": "cd build/server && nodemon backend.js",
+    "start": "nodemon server/app.js",
     "build": "NODE_ENV=production webpack --progress",
     "build-watch": "webpack --watch"
   },

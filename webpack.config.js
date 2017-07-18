@@ -11,35 +11,6 @@ fs.readdirSync('node_modules')
     nodeModules[mod] = 'commonjs ' + mod
   })
 
-var serverConfig = {
-  entry: './server/app.js',
-  target: 'node',
-  externals: nodeModules,
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loaders: ['babel-loader']
-      },
-      {
-        test: /\.(html|pem|crt|key)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: 'data/[name].[ext]'
-          }
-        }
-      }
-    ]
-  },
-  output: {
-    path: path.join(__dirname, 'build/server'),
-    filename: 'backend.js'
-  },
-  devtool: 'sourcemap'
-}
-
 var clientConfig = {
   entry: './client/app/app.js',
   target: 'web',
@@ -93,4 +64,4 @@ var clientConfig = {
   devtool: 'sourcemap'
 }
 
-module.exports = [ serverConfig, clientConfig ]
+module.exports = [ clientConfig ]

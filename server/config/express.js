@@ -28,18 +28,14 @@ function init (app) {
   app.use(methodOverride())
   app.use(cookieParser())
   app.use(passport.initialize())
+  app.use(express.static(path.join(__dirname, '../../build/client')))
   if (env === 'production') {
-    // app.use(express.static(path.join(config.root, '.tmp')));
-    // app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
-    app.use(express.static('../client'))
     app.set('appPath', 'client')
     app.use(morgan('dev'))
   }
 
   if (env === 'development' || env === 'test') {
     app.use(connectLivereload())
-    // app.use(express.static(path.join(config.root, '.tmp')));
-    app.use(express.static('../client'))
     app.set('appPath', 'client')
     app.use(morgan('dev'))
     app.use(errorHandler()) // Error handler - has to be last
