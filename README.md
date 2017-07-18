@@ -39,7 +39,7 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
 
   ```
   sudo su
-  pm2 start server/app.js --name BitFit
+  pm2 start ecosystem.config.js
   ```
   
  - To start/stop/restart:
