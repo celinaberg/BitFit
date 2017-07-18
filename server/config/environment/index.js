@@ -29,7 +29,7 @@ const all = {
   },
 
   // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
+  userRoles: ['guest', 'student', 'teaching-assistant', 'instructor'],
 
   // CWL
   callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
