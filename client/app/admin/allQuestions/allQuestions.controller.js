@@ -3,8 +3,8 @@ import ace from 'angular-ui-ace'
 
 export default class AllQuestionsController {
   constructor ($scope, $http, Auth, User, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
-    $scope.questions = questionPromiseEC.data
-    $scope.topicsEC = topicPromiseEC.data
+    $scope.questions = questionPromiseEC
+    $scope.topicsEC = topicPromiseEC
 
     $scope.editor = {}
     $scope.editors = []

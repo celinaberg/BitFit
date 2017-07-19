@@ -1,11 +1,10 @@
 import angular from 'angular'
-import Flash from 'angular-flash'
 import ace from 'angular-ui-ace'
 
 export default class EditContentController {
   constructor ($scope, $http, Auth, User, topics, topic, topicPromiseEC, $location, Flash) {
     $scope.topic = topic.data
-    $scope.topicsEC = topicPromiseEC.data
+    $scope.topicsEC = topicPromiseEC
 
     $scope.editor = {}
     $scope.editors = []
@@ -344,4 +343,4 @@ export default class EditContentController {
   }
 }
 
-EditContentController.$inject = ['$scope', '$http', 'Auth', 'User', 'Topics', 'topic', 'topicPromiseEC', '$location', Flash]
+EditContentController.$inject = ['$scope', '$http', 'Auth', 'User', 'Topics', 'topic', 'topicPromiseEC', '$location', 'flash']
