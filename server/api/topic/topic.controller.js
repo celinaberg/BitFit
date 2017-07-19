@@ -120,7 +120,7 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
   Topic.create(req.body, (err, topic) => {
     if (err) { return handleError(res, err) }
-    return res.json(201, topic)
+    return res.status(201).json(topic)
   })
 }
 
@@ -147,7 +147,7 @@ exports.update = function (req, res) {
         }
         console.log('looks like populate was successful?')
         console.log(topic)
-        return res.json(200, topic)
+        return res.status(200).json(topic)
       })
     })
   })
@@ -166,5 +166,5 @@ exports.destroy = function (req, res) {
 }
 
 function handleError (res, err) {
-  return res.send(500, err)
+  return res.status(500).send(err)
 }

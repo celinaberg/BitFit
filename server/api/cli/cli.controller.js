@@ -14,7 +14,7 @@ exports.compile = function (req, res) {
   exec(`mkdir -p ${dirName}`, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
-        return res.send(200, stderr)
+        return res.status(200).send(stderr)
       }
 
       const escapedCode = jsesc(req.body.code, {
@@ -23,7 +23,7 @@ exports.compile = function (req, res) {
       exec(`echo ${escapedCode} > ${dirName}/${fileName}`, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
           (error, stdout, stderr) => {
             if (error) {
-              return res.send(200, stderr)
+              return res.status(200).send(stderr)
             }
             compileJavaFile(`${dirName}/${fileName}`, dirName, res)
           })
@@ -42,11 +42,11 @@ exports.run = function (req, res) {
   exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
-        return res.send(200, error)
+        return res.status(200).send(error)
       }
       if (error !== null) {
       }
-      return res.send(200, stdout)
+      return res.status(200).send(stdout)
     })
 }
 
@@ -56,7 +56,7 @@ function compileJavaFile (srcFile, dirName, res) {
   exec(`gcc "${srcFile}" -o "${execFile}"`, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
-        return res.send(200, stderr)
+        return res.status(200).send(stderr)
       }
       return res.send(stdout)
     })

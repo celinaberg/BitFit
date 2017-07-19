@@ -6,8 +6,8 @@ const User = require('./user.model')
  */
 exports.index = function (req, res) {
   User.find({}, (err, users) => {
-    if (err) return res.send(500, err)
-    res.json(200, users)
+    if (err) return res.status(500).send(err)
+    res.status(200).json(users)
   })
 }
 
@@ -30,7 +30,7 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function (req, res) {
   User.findByIdAndRemove(req.params.id, (err, user) => {
-    if (err) return res.send(500, err)
+    if (err) return res.status(500).send(err)
     return res.send(204)
   })
 }
