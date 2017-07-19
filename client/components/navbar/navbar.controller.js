@@ -1,4 +1,4 @@
-export default class NavBarController {
+class NavBarController {
   constructor ($scope, $location, Auth) {
     $scope.menu = [
       {
@@ -29,3 +29,5 @@ export default class NavBarController {
 }
 
 NavBarController.$inject = ['$scope', '$location', 'Auth']
+
+module.exports = NavBarController
