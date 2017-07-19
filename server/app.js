@@ -33,11 +33,6 @@ const app = express()
 
 // new for HTTPS
 const server = https.createServer(options, app)
-const socketio = SocketIo(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-})
-configSocketIo(socketio)
 configExpress(app)
 routes(app)
 
