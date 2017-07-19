@@ -18,14 +18,10 @@ const memberOfInstructors = 'cn=instructors,ou=comped.cs.ubc.ca,ou=applications,
 const memberOfTeachingAssistants = 'cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca'
 
 passport.serializeUser((user, done) => {
-  console.log('Serialize User')
-  console.log(user)
   done(null, user.uid)
 })
 
 passport.deserializeUser((user, done) => {
-  console.log('Deserialize User')
-  console.log(user)
   User.findOne({
     uid: user
   }, (err, user) => {
@@ -34,7 +30,6 @@ passport.deserializeUser((user, done) => {
     if (!user) {
       done(null, false)
     } else {
-      console.log(user)
       done(null, user)
     }
   })

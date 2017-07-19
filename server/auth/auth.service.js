@@ -11,7 +11,6 @@ function isAuthenticated () {
     if (req.hasOwnProperty('user')) {
       next()
     } else {
-      console.log('user ' + req.user)
       return res.status(403).json({error: 'You are not allowed to access this page.'})
     }
   }
