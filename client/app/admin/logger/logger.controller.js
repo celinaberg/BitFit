@@ -26,13 +26,13 @@ export default class LoggerController {
       }
     }
 
-    // $http.get('/api/loggers').success(function(data){
+    // $http.get('/api/loggers').then(function(data){
     //   $scope.data = data;
     // }).error(function(err){
     //   throw err;
     // });
 
-    $http.get('/api/loggers').success((data) => {
+    $http.get('/api/loggers').then((data) => {
       const nestedData = d3.nest()
       .key(d => d.user)
       .rollup(leaves => ({ 'Total # Compiles': d3.sum(leaves, d => parseFloat(d.numCompiles)),

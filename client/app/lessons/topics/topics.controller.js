@@ -71,7 +71,7 @@ export default class TopicsController {
         user: Auth.getCurrentUser(),
         questionNum: $scope.qInfo.currentQuestion
       }
-      $http.post('api/clis/compile', obj).success((data) => {
+      $http.post('api/clis/compile', obj).then((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n'
@@ -95,7 +95,7 @@ export default class TopicsController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).success((data) => {
+      $http.post('api/clis/run', obj).then((data) => {
         if (typeof (data) === 'object') { // Likely error
           $scope.output.runOutput += $scope.handleError(data)
         } else {
@@ -151,14 +151,14 @@ export default class TopicsController {
         $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n'
         return
       }
-      $http.post('api/clis/compile', obj).success((data) => {
+      $http.post('api/clis/compile', obj).then((data) => {
         if (data === '') {
           $scope.output.compileOutput = 'Successfully compiled code.\n'
         } else {
           $scope.output.compileOutput = data
         }
 
-        $http.post('api/clis/run', obj).success((data) => {
+        $http.post('api/clis/run', obj).then((data) => {
           if (typeof (data) === 'object') { // Likely an error
             $scope.showComments = false
             $scope.output.runOutput += $scope.handleError(data)

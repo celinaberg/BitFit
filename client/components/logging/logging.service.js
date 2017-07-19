@@ -21,7 +21,7 @@ function Logging ($http, Auth) {
     logProgress: function () { // call this after user finishes a question
       // temporary fix: clone a copy of progress so it can be reset immediately
       var tmp = _.cloneDeep(this.progress)
-      $http.post('/api/loggers', tmp).success(function () { // do we need |data| passed in?
+      $http.post('/api/loggers', tmp).then(function () { // do we need |data| passed in?
       })
       this.progress = {
         user: Auth.getCurrentUser()._id,

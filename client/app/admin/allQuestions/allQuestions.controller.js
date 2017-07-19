@@ -129,7 +129,7 @@ export default class AllQuestionsController {
         user: Auth.getCurrentUser(),
         questionNum: $scope.questionIndex
       }
-      $http.post('api/clis/compile', obj).success((data) => {
+      $http.post('api/clis/compile', obj).then((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n'
@@ -154,7 +154,7 @@ export default class AllQuestionsController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).success((data) => {
+      $http.post('api/clis/run', obj).then((data) => {
         $scope.runOutput = data
       })
         // logging.progress.numRuns++;
@@ -164,7 +164,7 @@ export default class AllQuestionsController {
       // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       // var editedTopic = $scope.allTopics[i];
       // editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
+      topics.editTopic($scope.topic._id, $scope.topic).then((data) => {
         $scope.topic = data
         $scope.topicsEC.forEach((ea) => {
           if (ea._id === data._id) {
@@ -202,7 +202,7 @@ export default class AllQuestionsController {
     //        'user': Auth.getCurrentUser(),
     //        'questionNum': $scope.topic.questions.length // since this is a new q to be added
     //      }
-    //  $http.post('api/clis/compile', obj).success(function(data) {
+    //  $http.post('api/clis/compile', obj).then(function(data) {
     //    console.log('in compile code success func');
     //    console.log(data);
 
@@ -222,7 +222,7 @@ export default class AllQuestionsController {
     //         'user': Auth.getCurrentUser()
     //      }
 
-    //  $http.post('api/clis/run', obj).success(function(data) {
+    //  $http.post('api/clis/run', obj).then(function(data) {
     //    console.log('in run code success function');
     //    console.log(data);
     //    $scope.CLOutput += data;
@@ -304,7 +304,7 @@ export default class AllQuestionsController {
         expectedOutput: $scope.newQuestion.expectedOutput,
         hints: $scope.newQuestion.hints,
         tags: $scope.newQuestion.tags
-      }).success((question) => {
+      }).then((question) => {
         $scope.questions.push(question)
       })
 
@@ -315,7 +315,7 @@ export default class AllQuestionsController {
     // FIXME: strange error
     $scope.importQuestions = function () {
       if ($scope.questionsToImport === '') { return }
-      questions.import($scope.questionsToImport).success((newQuestions) => {
+      questions.import($scope.questionsToImport).then((newQuestions) => {
         for (let i = 0; i < newQuestions.length; i++) {
           $scope.questions.push(newQuestions[i])
         }
@@ -328,7 +328,7 @@ export default class AllQuestionsController {
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue()
-      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
+      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(() => {
           // update scope array of questions?
         $scope.questionToEdit = {}
         $scope.questionToEdit.hints = []
@@ -340,7 +340,7 @@ export default class AllQuestionsController {
       // console.log($scope.topic.questions);
       const conf = window.confirm('Are you sure you want to permanantly delete that question?')
       if (conf === true) {
-        questions.delete($scope.questions[index], $scope.questions[index]._id)// .success(function(question) {
+        questions.delete($scope.questions[index], $scope.questions[index]._id)// .then(function(question) {
         // why does this success function not get called?
         // console.log('successfully deleted question: ' + question);
         // });
@@ -369,7 +369,7 @@ export default class AllQuestionsController {
       }
       if (newTopic !== null) {
         // add to new topic
-        topics.addQuestion(newTopic._id, question).success((question) => {
+        topics.addQuestion(newTopic._id, question).then((question) => {
           newTopic.questions.push(question)
           console.log('added q to new topic')
           const message = "You have successfully changed the question's topic!"

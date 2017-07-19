@@ -9,19 +9,19 @@ class Questions {
   }
 
   getAll () {
-    return this.http.get('/api/questions').success((data) => {
+    return this.http.get('/api/questions').then((data) => {
       angular.copy(data, this.o.questions)
     })
   }
 
   create (question) {
-    return this.http.post('/api/questions', question).success((data) => {
+    return this.http.post('/api/questions', question).then((data) => {
       this.o.questions.push(data)
     })
   }
 
   import (questions) {
-    return this.http.post('/api/questions/import', questions).success((data) => {
+    return this.http.post('/api/questions/import', questions).then((data) => {
       angular.extend(this.o.questions, data)
     })
   }
@@ -31,7 +31,7 @@ class Questions {
   //   return this.http.get('/api/questions/' + id).then(function(res){
   //     return res.data;
   //   }); */
-  //   return this.http.get('/api/questions/' + id).success(function(res){
+  //   return this.http.get('/api/questions/' + id).then(function(res){
   //     return res;
   //   });
   // },
@@ -42,7 +42,7 @@ class Questions {
   // },
 
   editQuestion (id, question) {
-    return this.http.put(`/api/questions/${id}`, question).success((data) => {
+    return this.http.put(`/api/questions/${id}`, question).then((data) => {
       this.o.questions.forEach((ea) => {
         if (ea._id === data.question) {
           ea.questions.forEach((q) => {
@@ -66,7 +66,7 @@ class Questions {
   //     question.questions[i] = ea._id;
   //   });
 
-  //   return this.http.put('/api/questions/' + id, question).success(function(data) {
+  //   return this.http.put('/api/questions/' + id, question).then(function(data) {
   //     //var index = o.questions.indexOf(data._id);
   //     o.questions.forEach(function(ea) {
   //       if (ea._id === data._id) {

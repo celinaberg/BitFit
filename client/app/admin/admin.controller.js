@@ -11,7 +11,7 @@ export default class AdminController {
     // $scope.allTopics = [];
     // the following should really be in the topics service file, and then pre loaded via admin.js resolve...
     /* $scope.topicsAC.forEach(function(ea) {
-      $http.get('/api/topics/' + ea._id).success(function(res){ // this http call SHOULD be in topics service... but it wasn't working there
+      $http.get('/api/topics/' + ea._id).then(function(res){ // this http call SHOULD be in topics service... but it wasn't working there
           $scope.allTopics.push(res);
         });
     });
@@ -33,7 +33,7 @@ export default class AdminController {
     // $scope.topics = topics.getAll();
     // $log.log($scope.topics);
 /*
-    $http.get('/api/questions').success(function(questions) {
+    $http.get('/api/questions').then(function(questions) {
       $scope.questions = questions;
       socket.syncUpdates('question', $scope.questions);
     });
@@ -69,7 +69,7 @@ export default class AdminController {
               hints: ['an', 'array', 'of', 'strings']
             } */
         ]
-      }).success((topic) => {
+      }).then((topic) => {
           // $scope.topicsAC.push(topic);
         $scope.topics.push(topic)
       })

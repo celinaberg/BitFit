@@ -127,7 +127,7 @@ export default class EditContentController {
         user: Auth.getCurrentUser(),
         questionNum: $scope.questionIndex
       }
-      $http.post('api/clis/compile', obj).success((data) => {
+      $http.post('api/clis/compile', obj).then((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n'
@@ -152,7 +152,7 @@ export default class EditContentController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).success((data) => {
+      $http.post('api/clis/run', obj).then((data) => {
         $scope.runOutput = data
       })
         // logging.progress.numRuns++;
@@ -162,7 +162,7 @@ export default class EditContentController {
       // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
       // var editedTopic = $scope.allTopics[i];
       // editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
+      topics.editTopic($scope.topic._id, $scope.topic).then((data) => {
         $scope.topic = data
         $scope.topicsEC.forEach((ea) => {
           if (ea._id === data._id) {
@@ -202,7 +202,7 @@ export default class EditContentController {
     //         'user': Auth.getCurrentUser(),
     //         'questionNum': $scope.topic.questions.length // since this is a new q to be added
     //       }
-    //   $http.post('api/clis/compile', obj).success(function(data) {
+    //   $http.post('api/clis/compile', obj).then(function(data) {
     //     console.log('in compile code success func');
     //     console.log(data);
 
@@ -222,7 +222,7 @@ export default class EditContentController {
     //          'user': Auth.getCurrentUser()
     //       }
 
-    //   $http.post('api/clis/run', obj).success(function(data) {
+    //   $http.post('api/clis/run', obj).then(function(data) {
     //     console.log('in run code success function');
     //     console.log(data);
     //     $scope.CLOutput += data;
@@ -294,7 +294,7 @@ export default class EditContentController {
         expectedOutput: $scope.newQuestion.expectedOutput,
         hints: $scope.newQuestion.hints,
         tags: $scope.newQuestion.tags
-      }).success((question) => {
+      }).then((question) => {
         $scope.topic.questions.push(question)
         const message = 'Question successfully added!'
         Flash.create('success', message, 5000, { class: 'custom-class', id: 'custom-id' }, true)
@@ -307,7 +307,7 @@ export default class EditContentController {
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue()
-      topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
+      topics.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(() => {
           // update scope array of questions?
         $scope.questionToEdit = {}
         $scope.questionToEdit.hints = []
@@ -317,7 +317,7 @@ export default class EditContentController {
     $scope.deleteQuestion = function (id, index) {
       // console.log(index);
       // console.log($scope.topic.questions);
-      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)// .success(function(question) {
+      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)// .then(function(question) {
         // why does this success function not get called?
         // console.log('successfully deleted question: ' + question);
       // });
