@@ -1,34 +1,13 @@
-
 const User = require('./user.model')
-const config = require('../../config/environment')
-const jwt = require('jsonwebtoken')
-
-const validationError = function (res, err) {
-  return res.json(422, err)
-}
 
 /**
  * Get list of users
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  User.find({}, '-salt -hashedPassword', (err, users) => {
+  User.find({}, (err, users) => {
     if (err) return res.send(500, err)
     res.json(200, users)
-  })
-}
-
-/**
- * Creates a new user
- */
-exports.create = function (req, res, next) {
-  const newUser = new User(req.body)
-  newUser.provider = 'local'
-  newUser.role = 'user'
-  newUser.save((err, user) => {
-    if (err) return validationError(res, err)
-    const token = jwt.sign({ _id: user._id }, config.secrets.session, { expiresInMinutes: 60 * 5 })
-    res.json({ token })
   })
 }
 
@@ -57,38 +36,13 @@ exports.destroy = function (req, res) {
 }
 
 /**
- * Change a user's password
- */
-exports.changePassword = function (req, res, next) {
-  const userId = req.user._id
-  const oldPass = String(req.body.oldPassword)
-  const newPass = String(req.body.newPassword)
-
-  User.findById(userId, (err, user) => {
-    if (err) {
-      res.sendStatus(500)
-      return
-    }
-    if (user.authenticate(oldPass)) {
-      user.password = newPass
-      user.save((err) => {
-        if (err) return validationError(res, err)
-        res.sendStatus(200)
-      })
-    } else {
-      res.sendStatus(403)
-    }
-  })
-}
-
-/**
  * Get my info
  */
 exports.me = function (req, res, next) {
   const uid = req.user.uid
   User.findOne({
     uid: uid
-  }, '-salt -hashedPassword', (err, user) => { // don't ever give out the password or salt
+  }, (err, user) => { // don't ever give out the password or salt
     if (err) return next(err)
     if (!user) return res.json(401)
     res.json(user)
