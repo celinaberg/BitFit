@@ -10,7 +10,8 @@ class Questions {
 
   getAll () {
     return this.http.get('/api/questions').then((data) => {
-      angular.copy(data, this.o.questions)
+      angular.copy(data.data, this.o.questions)
+      return this.o.questions
     })
   }
 
