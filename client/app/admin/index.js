@@ -9,8 +9,9 @@ import routing from './admin.routes'
 import AdminController from './admin.controller'
 
 import Topics from '../../components/topics/topics.service'
+import NavBar from '../../components/navbar'
 
-export default angular.module('bitfit.admin', [Logger, EditContent, AllQuestions, Topics])
+export default angular.module('bitfit.admin', [Logger, EditContent, AllQuestions, Topics, NavBar])
   .config(routing)
   .controller('AdminCtrl', AdminController)
   .name
