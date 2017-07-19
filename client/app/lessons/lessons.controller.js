@@ -7,7 +7,11 @@ export default class LessonsController {
     this.scope.tab = 1
     this.scope.topics = topicPromise
 
-    this.location = $location
+    console.log('location')
+    console.log($location)
+    console.log($location.path())
+
+    console.log(this.location)
     this.auth = Auth
 
     this.scope.isLoggedIn = Auth.isLoggedIn

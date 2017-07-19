@@ -9,10 +9,11 @@ import LessonsController from './lessons.controller'
 
 import Auth from '../../components/auth/auth.service'
 import Topics from '../../components/topics/topics.service'
+import NavBar from '../../components/navbar'
 
 import './lessons.css'
 
-export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, Auth, Topics])
+export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, Auth, Topics, NavBar])
   .config(routing)
   .controller('LessonsCtrl', LessonsController)
   .name
