@@ -42,7 +42,7 @@ export default class LoggerController {
       }))
       .entries(data)
       $scope.data = nestedData
-    }).error((err) => {
+    }).catch((err) => {
       throw err
     })
 

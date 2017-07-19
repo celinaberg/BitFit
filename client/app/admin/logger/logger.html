@@ -1,0 +1,44 @@
+<div navbar>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- sidebar content -->
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
+        <li class="active"><a ng-href="/admin/logger">Logger</a></li>
+        <li><a ng-href="/admin">Add a Topic</a></li>
+      </ul>
+    </div>
+    <div class="col-xs-9 col-sm-10 col-xs-offset-3 col-mid-10 col-lg-offset-2 main">
+      <h2 class="page-header">Student statistics</h1>
+	    	<div id="chartContainer">
+		    	<div id="loading">
+			    	<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+					<span class="sr-only">Loading...</span>
+		    	</div>
+	        	<nvd3 options="options" data="data"></nvd3>
+	        </div>
+        <h3>Users selected:
+        <small ng-show="selectedUsers.length > 0">{{selectedUsers.length}} users selected</small>
+        </h3>
+        <span ng-show="selectedUsers.length < 1">No users selected</span>
+        <div class="user-info" ng-repeat="u in selectedUsers">{{u.key}}
+	        <ul>
+	        	<li ng-repeat="(key,val) in u.values">{{key}}: {{val}}</li>
+	        </ul>
+        </div>
+
+
+  <div class="btn-group">
+	  <!-- <button ng-click="updateGraph('y', 'numRuns')" class="graph-button btn btn-default">y = num runs</button>
+	  <button ng-click="updateGraph('y', 'numCompiles')" class="graph-button btn btn-default">y = num compile</button>
+	  <button ng-click="updateGraph('y', 'totalAttempts')" class="graph-button btn btn-default">y = total attempts</button>
+	  <button ng-click="updateGraph('x', 'question')" class="graph-button btn btn-default">x = question</button> -->
+	  <!-- <button ng-click="resetBrush()" class="btn btn-default">reset brush</button> -->
+  </div>
+		</div>
+	</div>
+</div>

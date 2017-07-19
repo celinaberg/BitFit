@@ -3,7 +3,7 @@ import angular from 'angular'
 export default class AdminController {
   constructor ($scope, $http, Auth, User, Topics, topicPromiseAC, $location) {
     // $scope.topic = topic;
-    $scope.topics = topicPromiseAC.data
+    $scope.topics = topicPromiseAC
     // $scope.allTopics = [];
     // the following should really be in the topics service file, and then pre loaded via admin.js resolve...
     /* $scope.topicsAC.forEach(function(ea) {
