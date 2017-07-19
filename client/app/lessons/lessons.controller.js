@@ -1,5 +1,4 @@
-
-export default class LessonsController {
+class LessonsController {
   constructor ($http, $scope, $location, $stateParams, Auth, topicPromise) {
     this.scope = $scope
     this.scope.editor = {}
@@ -7,15 +6,11 @@ export default class LessonsController {
     this.scope.tab = 1
     this.scope.topics = topicPromise
 
-    console.log('location')
-    console.log($location)
-    console.log($location.path())
-
-    console.log(this.location)
+    this.location = $location
     this.auth = Auth
 
-    this.scope.isLoggedIn = Auth.isLoggedIn
-    this.scope.isAdmin = Auth.isAdmin
+    this.scope.isLoggedIn = Auth.isLoggedIn.bind(this)
+    this.scope.isAdmin = Auth.isAdmin.bind(this)
     this.scope.getCurrentUser = Auth.getCurrentUser
     this.scope.isSet = this.isSet
     this.scope.setTab = this.setTab
@@ -24,7 +19,7 @@ export default class LessonsController {
     this.scope.prevQuestion = this.prevQuestion
     this.scope.getPath = this.getPath
     this.scope.logout = this.logout
-    this.scope.isActive = this.isActive
+    this.scope.isActive = this.isActive.bind(this)
   }
 
   isSet (checkTab) {
@@ -92,3 +87,5 @@ export default class LessonsController {
 }
 
 LessonsController.$inject = ['$http', '$scope', '$location', '$stateParams', 'Auth', 'topicPromise']
+
+module.exports = LessonsController

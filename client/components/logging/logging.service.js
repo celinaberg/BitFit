@@ -41,6 +41,8 @@ function Logging ($http, Auth) {
   }
 }
 
-export default angular.module('bitfit.services.logging', ['$http', Auth])
+Logging.$inject = ['$http', 'Auth']
+
+export default angular.module('bitfit.services.logging', [Auth])
   .service('Logging', Logging)
   .name

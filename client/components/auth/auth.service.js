@@ -8,9 +8,15 @@ class Auth {
     this.cookieStore = $cookieStore
     this.q = $q
     this.currentUser = {}
-    if ($cookieStore.get('token')) {
-      this.currentUser = User.get()
-    }
+    $http.get('/api/users/me').then(data => {
+      this.currentUser = data
+    }).catch(err => {
+      if (err) {
+        this.currentUser = {}
+      }
+    })
+    this.isLoggedIn = this.isLoggedIn.bind(this)
+    this.isAdmin = this.isAdmin.bind(this)
   }
 
   /**
@@ -28,13 +34,13 @@ class Auth {
       email: user.email,
       password: user.password
     })
-    .success((data) => {
+    .then((data) => {
       this.cookieStore.put('token', data.token)
       this.currentUser = User.get()
       deferred.resolve(data)
       return cb()
     })
-    .error((err) => {
+    .catch((err) => {
       this.logout()
       deferred.reject(err)
       return cb(err)
@@ -161,6 +167,8 @@ class Auth {
     return this.cookieStore.get('token')
   }
 }
+
+Auth.$inject = ['$location', '$rootScope', '$http', 'User', '$cookieStore', '$q']
 
 export default angular.module('bitfit.services.auth', [User])
   .service('Auth', Auth)

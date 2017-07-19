@@ -61,7 +61,10 @@ var clientConfig = {
     path: path.resolve(__dirname, 'build/client'),
     filename: 'app.js'
   },
-  devtool: 'sourcemap'
+  devtool: 'sourcemap',
+  node: {
+    fs: 'empty'
+  }
 }
 
 module.exports = [ clientConfig ]

@@ -1,4 +1,3 @@
-import logging from '../../../components/logging/logging.service'
 
 export default class TopicsController {
   constructor ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) {
@@ -351,4 +350,4 @@ export default class TopicsController {
   }
 }
 
-TopicsController.$inject = ['$scope', '$stateParams', '$location', '$http', 'Auth', 'topics', 'topic', 'topicPromiseTC', logging]
+TopicsController.$inject = ['$scope', '$stateParams', '$location', '$http', 'Auth', 'Topics', 'topic', 'topicPromiseTC', 'Logging']
