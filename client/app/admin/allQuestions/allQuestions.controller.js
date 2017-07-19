@@ -329,7 +329,7 @@ export default class AllQuestionsController {
       })
     }
 
-    $scope.deleteQuestion = function (index) {
+    $scope.deleteQuestion = (index) => {
       // console.log(index);
       // console.log($scope.topic.questions);
       const conf = window.confirm('Are you sure you want to permanantly delete that question?')
@@ -346,7 +346,7 @@ export default class AllQuestionsController {
       // $http.delete('/api/questions/' + id);
     }
 
-    $scope.changeQTopic = function (question, index, newTopic) {
+    $scope.changeQTopic = (question, index, newTopic) => {
       // if no new topic, remove from current topic
       if (newTopic === null) {
         if ($scope.getQTopic(question._id)) {
@@ -367,7 +367,8 @@ export default class AllQuestionsController {
           newTopic.questions.push(question)
           console.log('added q to new topic')
           const message = "You have successfully changed the question's topic!"
-          Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
+          console.log(Flash)
+          Flash('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
         })
       }
     }

@@ -5,11 +5,12 @@ import routing from './topics.routes'
 import TopicsController from './topics.controller'
 import Logging from '../../../components/logging/logging.service'
 import NavBar from '../../../components/navbar'
-import ngSanitize from 'angular-sanitize'
+// import ngSanitize from 'angular-sanitize'
+import ngSanitize from 'textAngular/dist/textAngular-sanitize'
 
 import './topics.css'
 
-export default angular.module('bitfit.topics', [uiRouter, Topics, Logging, NavBar, ngSanitize])
+export default angular.module('bitfit.topics', [uiRouter, Topics, Logging, NavBar])
   .config(routing)
   .controller('TopicsCtrl', TopicsController)
   .name
