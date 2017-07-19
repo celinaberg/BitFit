@@ -77,6 +77,8 @@ class Questions {
   // }
 }
 
-export default angular.module('bitfit.services.questions', ['$http'])
+Questions.$inject = ['$http']
+
+export default angular.module('bitfit.services.questions', [])
   .service('Questions', Questions)
   .name

@@ -1,11 +1,7 @@
 import angular from 'angular'
-import Auth from '../../components/auth/auth.service'
-import User from '../../components/auth/user.service'
-import socket from '../../components/socket/socket.service'
-import topics from '../../components/topics/topics.service'
 
 export default class AdminController {
-  constructor ($scope, $http, Auth, User, socket, topics, topicPromiseAC, $location) {
+  constructor ($scope, $http, Auth, User, Topics, topicPromiseAC, $location) {
     // $scope.topic = topic;
     $scope.topics = topicPromiseAC.data
     // $scope.allTopics = [];
@@ -32,12 +28,7 @@ export default class AdminController {
     // $scope.topicBackground = '';
     // $scope.topics = topics.getAll();
     // $log.log($scope.topics);
-/*
-    $http.get('/api/questions').then(function(questions) {
-      $scope.questions = questions;
-      socket.syncUpdates('question', $scope.questions);
-    });
-*/
+
 /*
     $scope.isSet = function(checkTab) {
           return $scope.tab === checkTab;
@@ -93,4 +84,4 @@ export default class AdminController {
   }
 }
 
-AdminController.$inject = ['$scope', '$http', Auth, User, socket, topics, 'topicPromiseAC', '$location']
+AdminController.$inject = ['$scope', '$http', 'Auth', 'User', 'Topics', 'topicPromiseAC', '$location']

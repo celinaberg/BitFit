@@ -139,7 +139,7 @@ class Auth {
      * @return {Boolean}
      */
     this.isAdmin = () => {
-      return this.currentUser.role === 'admin'
+      return this.currentUser.role === 'instructor'
     }
 
     this.isAdminAsync = (cb) => {

@@ -6,7 +6,6 @@ import ngCookies from 'angular-cookies'
 // import ngResource from 'angular-resource';
 // import ngSanitize from 'angular-sanitize';
 // import ngFlash from 'angular-flash';
-// import btfordSocketIo from 'angular-socket-io';
 // import textAngular from 'textangular';
 import uiRouter from '@uirouter/angularjs'
 // import uiAce from 'angular-ui-ace';
@@ -18,7 +17,7 @@ import routing from './app.config'
 
 import main from './main'
 // import account from './account';
-// import admin from './admin'
+import Admin from './admin'
 import lessons from './lessons'
 
 // Components
@@ -39,7 +38,7 @@ angular.module('bitfit', [
   main,
   lessons,
   // account
-  // admin,
+  Admin,
   Auth
 ]).config(routing)
 .factory('authInterceptor', ($rootScope, $q, $cookieStore, $location) => ({

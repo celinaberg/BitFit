@@ -1,14 +1,8 @@
 import angular from 'angular'
-import Flash from 'angular-flash'
 import ace from 'angular-ui-ace'
-import Auth from '../../../components/auth/auth.service'
-import User from '../../../components/auth/user.service'
-import socket from '../../../components/socket/socket.service'
-import topics from '../../../components/topics/topics.service'
-import questions from '../../../components/questions/questions.service'
 
 export default class AllQuestionsController {
-  constructor ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
+  constructor ($scope, $http, Auth, User, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
     $scope.questions = questionPromiseEC.data
     $scope.topicsEC = topicPromiseEC.data
 
@@ -378,10 +372,6 @@ export default class AllQuestionsController {
       }
     }
 
-    $scope.$on('$destroy', () => {
-      socket.unsyncUpdates('question')
-    })
-
     // / trying question reordering http://stackoverflow.com/a/27709541
     $scope.moveQUp = function (index) {
       if (index > -1 && index < $scope.topic.questions.length - 1) {
@@ -408,4 +398,4 @@ export default class AllQuestionsController {
   }
 }
 
-AllQuestionsController.$inject = ['$scope', '$http', Auth, User, socket, topics, questions, 'questionPromiseEC', 'topicPromiseEC', '$location', Flash]
+AllQuestionsController.$inject = ['$scope', '$http', 'Auth', 'User', 'Topics', 'Questions', 'questionPromiseEC', 'topicPromiseEC', '$location', 'flash']
