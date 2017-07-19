@@ -19,7 +19,10 @@ class LessonsController {
     this.scope.prevQuestion = this.prevQuestion
     this.scope.getPath = this.getPath
     this.scope.logout = this.logout
-    this.scope.isActive = this.isActive.bind(this)
+    $scope.isActive = (route) => {
+      // ???
+      return `/lessons/topics/${route}` === $location.path
+    }
   }
 
   isSet (checkTab) {
@@ -78,11 +81,6 @@ class LessonsController {
   logout () {
     this.auth.logout()
     this.location.path('/')
-  }
-
-  isActive (route) {
-    // ???
-    return `/lessons/topics/${route}` === this.location.path()
   }
 }
 
