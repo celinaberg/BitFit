@@ -1,6 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import './app.css'
-
 import angular from 'angular'
 import ngCookies from 'angular-cookies'
 // import ngResource from 'angular-resource';
@@ -22,6 +19,10 @@ import lessons from './lessons'
 
 // Components
 import Auth from '../components/auth/auth.service.js'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'font-awesome/css/font-awesome.css'
+import './app.css'
 
 angular.module('bitfit', [
   ngCookies,
