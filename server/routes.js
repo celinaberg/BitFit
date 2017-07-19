@@ -19,7 +19,7 @@ function init (app) {
   // Insert routes below
   app.use('/api/loggers', Loggers)
   app.use('/api/clis', CLIs)
-  app.use('/api/topic', Topic)
+  app.use('/api/topics', Topic)
   app.use('/api/questions', Question)
   app.use('/api/users', User)
 

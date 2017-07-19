@@ -1,23 +1,14 @@
-import Auth from '../../components/auth/auth.service'
 
 export default class LessonsController {
-  constructor ($http, $scope, $location, $stateParams, Auth, socket, topics, topicPromise) {
+  constructor ($http, $scope, $location, $stateParams, Auth, topicPromise) {
     this.scope = $scope
     this.scope.editor = {}
     this.scope.questionIndex = 0
     this.scope.tab = 1
-    this.scope.topics = topicPromise.data
+    this.scope.topics = topicPromise
 
     this.location = $location
-
-    $http.get('/api/questions').success(() => {
-      // this.scope.questions = allQs;
-      socket.syncUpdates('question', this.scope.questions)
-    })
-
-    this.scope.$on('$destroy', () => {
-      socket.unsyncUpdates('question')
-    })
+    this.auth = Auth
 
     this.scope.isLoggedIn = Auth.isLoggedIn
     this.scope.isAdmin = Auth.isAdmin
@@ -86,8 +77,8 @@ export default class LessonsController {
   }
 
   logout () {
-    Auth.logout()
-    this.location.path('/login')
+    this.auth.logout()
+    this.location.path('/')
   }
 
   isActive (route) {
@@ -96,4 +87,4 @@ export default class LessonsController {
   }
 }
 
-LessonsController.$inject = ['$http', '$scope', '$location', '$stateParams', Auth, 'socket', 'topics', 'topicPromise']
+LessonsController.$inject = ['$http', '$scope', '$location', '$stateParams', 'Auth', 'topicPromise']
