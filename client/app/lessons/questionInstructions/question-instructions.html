@@ -9,38 +9,10 @@
 		        	<button type="button" href="#" ng-click="showHint()" class="btn btn-sm btn-danger">
 							<span class="fa fa-flag"></span> Hint
       </button>
-      <!--		<button ng-click="askQuestionForm=!askQuestionForm" class="btn btn-sm btn-warning">
-						<span class="fa fa-question-sign"></span> <span ng-if="!askQuestionForm"> Ask a Question</span> <span ng-if="askQuestionForm">Hide Question Form</span>
-					</button>
-				--></div>
+    </div>
     </span>
     <br>
     <br>
-    <!--
-			<div ng-controller="AskQuestionCtrl" ng-show="askQuestionForm">
-				<span class="pull-right askAQ">
-					<form class="span3" ng-submit="askAQuestion($parent.topic.title, $parent.q.instructions)">
-						 <button type="button" class="close" ng-model="askQuestionForm" ng-click="askQuestionForm=false">&times;</button>
-						<legend>Ask a Question</legend>
-						<p class="help-block">Please enter your question below, giving as much detail as possible:</p>
-						<div class="form-group">
-					    	<label for="inputEmail">Email address</label>
-					    	<input ng-model="user.email" type="email" class="form-control" id="inputEmail" placeholder="Enter email" required>
-					  	</div>
-					  	<div class="form-group">
-					    	<label for="inputName">Name</label>
-					    	<input ng-model="user.name" type="text" class="form-control" id="inputName" placeholder="Enter your name" required>
-					  	</div>
-					  	<div class="form-group">
-							<label for="inputQuestion">Question: </label>
-							<textarea ng-model="user.userQuestion" class="form-control" id="inputQuestion" rows="3" type="text" placeholder="Enter your question" required></textarea>
-					  	</div>
-					  	<button type="submit" class="btn btn-default">Submit</button>
-					  	<br>{{ feedback }}
-					</form>
-				</span>
-			</div>
--->
     <div ng-bind-html="q.instructions"></div>
 
     <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
@@ -88,9 +60,6 @@
             </div>
           </form>
         </div>
-
-        <hr>
-
       </div>
     </div>
 
@@ -98,8 +67,7 @@
     <div class="row">
       <hr>
       <div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
-        <h4>{{ feedback }}
-		    		<!--<button type="button" class="close" ng-click="showComments=!showComments">&times;</button>--></h4>
+        <h4>{{ feedback }}</h4>
       </div>
       <div ng-hide="q.readOnly" class="col-sm-6">
         <div id="commandLineOutput" class="command_line_output_s compile">
