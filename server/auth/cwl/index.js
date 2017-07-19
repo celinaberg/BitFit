@@ -2,7 +2,7 @@
 const express = require('express')
 const passport = require('passport')
 const strategy = require('./passport')
-// const auth = require('../auth.service')
+const auth = require('../auth.service')
 const fs = require('fs')
 const path = require('path')
 
@@ -25,7 +25,7 @@ router.get('/login',
 
 router.get('/login/failed',
   (req, res) => {
-    res.status(401).send('You are not authorized to use BitFit.')
+    res.status(401).send('You are not authorized to use BitFit. If you think this is an error, please contact the course instructor.')
   }
 )
 
@@ -37,12 +37,20 @@ router.post('/login',
 )
 
 router.post('/login/callback',
+  passport.authenticate('saml', { successRedirect: '/lessons', failureRedirect: '/auth/cwl/login/failed' }))
+
+/*router.post('/login/callback',
   passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/failed' }),
   (req, res) => {
-    res.json(req.user)
-    // res.redirect('/lessons');
+    req.login(req.user, (err) => {
+      if (err) {
+        res.status(500).send('There was an issue with your login. Please try again later.')
+      } else {
+        res.redirect('/auth/cwl/session')
+      }
+    })
   }
-)
+)*/
 
 /* router.post('/', function (req, res, next) {
   passport.authenticate('saml', function (err, user, info) {

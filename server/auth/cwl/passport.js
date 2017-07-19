@@ -20,11 +20,24 @@ const memberOfTeachingAssistants = 'cn=teaching-assistants,ou=comped.cs.ubc.ca,o
 passport.serializeUser((user, done) => {
   console.log('Serialize User')
   console.log(user)
-  done(null, user)
+  done(null, user.uid)
 })
 
 passport.deserializeUser((user, done) => {
-  done(null, user)
+  console.log('Deserialize User')
+  console.log(user)
+  User.findOne({
+    uid: user
+  }, (err, user) => {
+    if (err) return done(err)
+
+    if (!user) {
+      done(null, false)
+    } else {
+      console.log(user)
+      done(null, user)
+    }
+  })
 })
 
 const keyContents = fs.readFileSync(path.join(__dirname, '../../cert/key.pem'), 'utf8')
@@ -60,7 +73,28 @@ const samlStrategy = new SamlStrategy({
 
   } else {
     // Unauthorized to access app
-    return done(null, false, { message: 'You are not registered in APSC 160' })
+    // TODO: Backdoor - remove
+    let user1 = new User({
+      uid: 'mycwl',
+      firstName: 'Rhys',
+      lastName: 'Bower',
+      role: 'instructor'
+    })
+    console.log('saving user')
+    user1.save((err, user) => {
+      if (err) {
+        console.error('could not save user')
+      } else {
+        console.log('saved user')
+      }
+    })
+    return done(null, {
+      uid: 'mycwl',
+      firstName: 'Rhys',
+      lastName: 'Bower',
+      role: 'instructor'
+    })
+    // return done(null, false, { message: 'You are not registered in APSC 160' })
   }
 
   User.findOne({
@@ -74,7 +108,6 @@ const samlStrategy = new SamlStrategy({
       user = new User({uid: profile[uid]})
     }
 
-    user.role = role
     user.firstName = profile[firstName]
     user.lastName = profile[lastName]
     user.displayName = profile[displayName]

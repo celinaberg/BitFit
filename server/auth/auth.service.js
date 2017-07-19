@@ -13,23 +13,14 @@ const validateJwt = expressJwt({ secret: config.secrets.session })
  */
 function isAuthenticated () {
   return compose()
-    // Validate jwt
-    .use((req, res, next) => {
-      // allow access_token to be passed through query parameter as well
-      if (req.query && req.query.hasOwnProperty('access_token')) {
-        req.headers.authorization = `Bearer ${req.query.access_token}`
-      }
-      validateJwt(req, res, next)
-    })
     // Attach user to request
     .use((req, res, next) => {
-      User.findById(req.user._id, (err, user) => {
-        if (err) return next(err)
-        if (!user) return res.send(401)
-
-        req.user = user
+      if (req.hasOwnProperty('user')) {
         next()
-      })
+      } else {
+        console.log(req)
+        return res.status(403).json({error: 'You are not allowed to access this page.'})
+      }
     })
 }
 
