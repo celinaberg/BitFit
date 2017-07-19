@@ -2,7 +2,7 @@
 export default class TopicsController {
   constructor ($scope, $stateParams, $location, $http, Auth, topics, topic, topicPromiseTC, logging) {
     $scope.topic = topic.data
-    $scope.topicsTC = topicPromiseTC.data
+    $scope.topicsTC = topicPromiseTC
     $scope.tab = 1
 
     if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
