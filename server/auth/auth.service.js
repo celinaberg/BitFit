@@ -12,16 +12,14 @@ const validateJwt = expressJwt({ secret: config.secrets.session })
  * Otherwise returns 403
  */
 function isAuthenticated () {
-  return compose()
-    // Attach user to request
-    .use((req, res, next) => {
-      if (req.hasOwnProperty('user')) {
-        next()
-      } else {
-        console.log(req)
-        return res.status(403).json({error: 'You are not allowed to access this page.'})
-      }
-    })
+  return (req, res, next) => {
+    if (req.hasOwnProperty('user')) {
+      next()
+    } else {
+      console.log('user ' + req.user)
+      return res.status(403).json({error: 'You are not allowed to access this page.'})
+    }
+  }
 }
 
 /**

@@ -85,9 +85,9 @@ exports.changePassword = function (req, res, next) {
  * Get my info
  */
 exports.me = function (req, res, next) {
-  const userId = req.user._id
+  const uid = req.user.uid
   User.findOne({
-    _id: userId
+    uid: uid
   }, '-salt -hashedPassword', (err, user) => { // don't ever give out the password or salt
     if (err) return next(err)
     if (!user) return res.json(401)
