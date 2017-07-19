@@ -13,8 +13,6 @@ const http = require('http')
 const fs = require('fs')
 const routes = require('./routes')
 const configExpress = require('./config/express')
-const configSocketIo = require('./config/socketio')
-const SocketIo = require('socket.io')
 const path = require('path')
 
 // Connect to database
