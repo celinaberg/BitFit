@@ -1,5 +1,4 @@
 import angular from 'angular'
-import ace from 'angular-ui-ace'
 
 export default class AllQuestionsController {
   constructor ($scope, $http, Auth, User, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
@@ -234,7 +233,7 @@ export default class AllQuestionsController {
     // _editor.setReadOnly(false);
     // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
-      editor.setTheme('ace/theme/crimson_editor')
+      editor.setTheme('ace/theme/tomorrow')
     // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
       $scope.editors[index] = editor
@@ -270,7 +269,7 @@ export default class AllQuestionsController {
       // _editor.setReadOnly(false);
       // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
-      _editor.setTheme('ace/theme/crimson_editor')
+      _editor.setTheme('ace/theme/tomorrow')
       // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
 

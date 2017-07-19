@@ -1,86 +1,72 @@
 class LessonsController {
   constructor ($http, $scope, $location, $stateParams, Auth, topicPromise) {
-    this.scope = $scope
-    this.scope.editor = {}
-    this.scope.questionIndex = 0
-    this.scope.tab = 1
-    this.scope.topics = topicPromise
+    $scope.editor = {}
+    $scope.questionIndex = 0
+    $scope.tab = 1
+    $scope.topics = topicPromise
 
-    this.location = $location
-    this.auth = Auth
+    $scope.isSet = (checkTab) => {
+      return $scope.tab === checkTab
+    }
 
-    this.scope.isLoggedIn = Auth.isLoggedIn.bind(this)
-    this.scope.isAdmin = Auth.isAdmin.bind(this)
-    this.scope.getCurrentUser = Auth.getCurrentUser
-    this.scope.isSet = this.isSet
-    this.scope.setTab = this.setTab
-    this.scope.aceLoaded = this.aceLoaded
-    this.scope.nextQuestion = this.nextQuestion
-    this.scope.prevQuestion = this.prevQuestion
-    this.scope.getPath = this.getPath
-    this.scope.logout = this.logout
+    $scope.setTab = (activeTab) => {
+      $scope.tab = activeTab
+    }
+
+    $scope.aceLoaded = (_editor) => {
+      // Editor part
+      const _session = _editor.getSession()
+      const _renderer = _editor.renderer
+
+      // Options
+      // _editor.setReadOnly(false);
+      // _session.setUndoManager(new ace.UndoManager());
+      _renderer.setShowGutter(true)
+      _editor.setTheme('ace/theme/tomorrow')
+      // _session.setMode('ace/mode/java');
+      _session.setMode('ace/mode/c_cpp')
+
+      // _editor.setValue($scope.questions[0][0].code, -1) // -1 is document start
+      $scope.editor = _editor
+      _editor.focus()
+
+      // Events
+      // _editor.on("changeSession", function(){ //...
+      // });
+      // _session.on("change", function(){
+      // //alert(_session.getValue());
+      // });
+    }
+
+    $scope.nextQuestion = () => {
+      if ($scope.questionIndex >= $scope.questions.length - 1) {
+        $scope.questionIndex = 0
+      } else {
+        $scope.questionIndex ++
+      }
+    }
+
+    $scope.prevQuestion = () => {
+      if ($scope.questionIndex === 0) {
+        $scope.questionIndex = $scope.questions.length - 1
+      } else {
+        $scope.questionIndex --
+      }
+    }
+
+    $scope.getPath = () => {
+      return this.location.path()
+    }
+
+    $scope.logout = () => {
+      Auth.logout()
+      $location.path('/')
+    }
+
     $scope.isActive = (route) => {
       // ???
       return `/lessons/topics/${route}` === $location.path
     }
-  }
-
-  isSet (checkTab) {
-    return this.scope.tab === checkTab
-  }
-
-  setTab (activeTab) {
-    this.scope.tab = activeTab
-  }
-
-  aceLoaded (_editor) {
-    // Editor part
-    const _session = _editor.getSession()
-    const _renderer = _editor.renderer
-
-    // Options
-    // _editor.setReadOnly(false);
-    // _session.setUndoManager(new ace.UndoManager());
-    _renderer.setShowGutter(true)
-    _editor.setTheme('ace/theme/idle_fingers')
-    // _session.setMode('ace/mode/java');
-    _session.setMode('ace/mode/c_cpp')
-
-    // _editor.setValue(this.scope.questions[0][0].code, -1) // -1 is document start
-    this.scope.editor = _editor
-    _editor.focus()
-
-    // Events
-    // _editor.on("changeSession", function(){ //...
-    // });
-    // _session.on("change", function(){
-    // //alert(_session.getValue());
-    // });
-  }
-
-  nextQuestion () {
-    if (this.scope.questionIndex >= this.scope.questions.length - 1) {
-      this.scope.questionIndex = 0
-    } else {
-      this.scope.questionIndex ++
-    }
-  }
-
-  prevQuestion () {
-    if (this.scope.questionIndex === 0) {
-      this.scope.questionIndex = this.scope.questions.length - 1
-    } else {
-      this.scope.questionIndex --
-    }
-  }
-
-  getPath () {
-    return this.location.path()
-  }
-
-  logout () {
-    this.auth.logout()
-    this.location.path('/')
   }
 }
 

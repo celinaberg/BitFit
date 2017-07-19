@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.5",
+    "ace-builds": "^1.2.8",
     "angular": "^1.6.5",
     "angular-cookies": "^1.6.5",
     "angular-flash": "^1.2.0",

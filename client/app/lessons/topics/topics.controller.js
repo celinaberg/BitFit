@@ -267,7 +267,7 @@ export default class TopicsController {
       // _editor.setReadOnly(false);
       // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
-      _editor.setTheme('ace/theme/crimson_editor')
+      _editor.setTheme('ace/theme/tomorrow')
       _editor.setFontSize('11')
       _editor.setShowPrintMargin(false)
       // _session.setMode('ace/mode/java');
