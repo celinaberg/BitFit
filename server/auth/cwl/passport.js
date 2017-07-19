@@ -69,27 +69,31 @@ const samlStrategy = new SamlStrategy({
   } else {
     // Unauthorized to access app
     // TODO: Backdoor - remove
-    let user1 = new User({
-      uid: 'mycwl',
-      firstName: 'Rhys',
-      lastName: 'Bower',
-      role: 'instructor'
-    })
-    console.log('saving user')
-    user1.save((err, user) => {
-      if (err) {
-        console.error('could not save user')
-      } else {
-        console.log('saved user')
-      }
-    })
-    return done(null, {
-      uid: 'mycwl',
-      firstName: 'Rhys',
-      lastName: 'Bower',
-      role: 'instructor'
-    })
-    // return done(null, false, { message: 'You are not registered in APSC 160' })
+    if (config.env === 'development') {
+      let user1 = new User({
+        uid: 'mycwl',
+        firstName: 'Rhys',
+        lastName: 'Bower',
+        displayName: 'Rhys Bower',
+        role: 'instructor'
+      })
+      console.log('saving user')
+      user1.save((err, user) => {
+        if (err) {
+          console.error('could not save user')
+        } else {
+          console.log('saved user')
+        }
+      })
+      return done(null, {
+        uid: 'mycwl',
+        firstName: 'Rhys',
+        lastName: 'Bower',
+        role: 'instructor'
+      })
+    } else {
+      return done(null, false, { message: 'You are not registered in APSC 160' })
+    }
   }
 
   User.findOne({
