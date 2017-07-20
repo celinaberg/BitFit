@@ -4,10 +4,6 @@
 
 An app designed to help students learn to write and read C code.
 
-BitFit is forked from Modsquad-AVA/BitFit, which was designed to help students learn Java.
-
-BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS](https://angularjs.org/). 
-
 ## Features
 - Student version of web app
   - Questions where students can write and run real C code
@@ -20,6 +16,8 @@ BitFit was built using the [Yeoman](http://yeoman.io/) generator for [AngularJS]
 ## Development Environment
 
 Install [nodemon](https://github.com/remy/nodemon) globally with `npm install -g nodemon`.
+
+Install local dependencies with `npm install`.
 
 In two terminal windows run the following commands:
   - `npm run build-watch` to have webpack watch and build the app
