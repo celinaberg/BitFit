@@ -11,7 +11,7 @@ function isAuthenticated () {
     if (req.hasOwnProperty('user')) {
       next()
     } else {
-      return res.status(403).json({error: 'You are not allowed to access this page.'})
+      return res.status(401).json({error: 'You are not allowed to access this page.'})
     }
   }
 }
@@ -28,7 +28,7 @@ function hasRole (roleRequired) {
       if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
         next()
       } else {
-        res.send(403)
+        res.send(401)
       }
     })
 }

@@ -28,7 +28,7 @@ exports.show = function (req, res, next) {
  * Deletes a user
  * restriction: 'admin'
  */
-exports.destroy = function (req, res) {
+exports.delete = function (req, res) {
   User.findByIdAndRemove(req.params.id, (err, user) => {
     if (err) return res.status(500).send(err)
     return res.send(204)
@@ -42,7 +42,7 @@ exports.me = function (req, res, next) {
   const uid = req.user.uid
   User.findOne({
     uid: uid
-  }, (err, user) => { // don't ever give out the password or salt
+  }, (err, user) => {
     if (err) return next(err)
     if (!user) return res.json(401)
     res.json(user)
