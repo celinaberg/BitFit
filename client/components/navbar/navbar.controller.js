@@ -1,15 +1,5 @@
 class NavBarController {
   constructor ($scope, $location, Auth, $window) {
-    $scope.menu = [
-      {
-        title: 'Home',
-        link: '/'
-      },
-      {
-        title: 'Lessons',
-        link: '/lessons'
-      }]
-
     $scope.navbarCollapsed = true
     $scope.isLoggedIn = Auth.isLoggedIn
     $scope.isAdmin = Auth.isAdmin
