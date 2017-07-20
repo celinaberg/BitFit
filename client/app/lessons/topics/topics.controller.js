@@ -58,7 +58,6 @@ export default class TopicsController {
         $scope.output.compileOutput = 'In order to compile your program, please enter code in the code editor.\n'
         return
       }
-      // var editedCode = code.replace(/\\/g, '\\\\'); // looks like we're getting one too many \ on newline chars
       const className = getClassName()
       const fileName = getFileName()
       if (fileName === '.c') {
@@ -87,10 +86,6 @@ export default class TopicsController {
     $scope.runCode = function () {
       $scope.showComments = false
       $scope.output.runOutput = 'Attempting to run code...'
-      // var className = getClassName();
-      // var obj = { 'className': className,
-      //             'user': Auth.getCurrentUser()
-      //           };
       const fileName = getFileName()
       const obj = { fileName,
         user: Auth.getCurrentUser()
@@ -138,7 +133,6 @@ export default class TopicsController {
       const className = getClassName()
       const fileName = getFileName()
       const code = $scope.editor.getValue()
-      // var editedCode = code.replace(/\\/g, '\\\\');
 
       const obj = { className,
         fileName,
@@ -213,45 +207,6 @@ export default class TopicsController {
       $location.search('q', $scope.qInfo.currentQuestion)
     }
 
-     // $scope.nextQuestion = function() {
-    //     if ($scope.questionIndex >= $scope.topic.questions.length -1) {
-    //         $scope.questionIndex = 0;
-    //     }
-    //     else {
-    //         $scope.questionIndex ++;
-    //     }
-    //     // Update ace editor on page
-    //     $scope.updatePageWithNewQuestion();
-
-    //     // Log previous question's data
-    //     logging.progress.endTime = Date.now();
-    //     logging.logProgress();
-
-    //     // Set up logging for new question
-    //     logging.progress.topic = $scope.topic._id;
-    //     logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
-    //     logging.progress.startTime = Date.now();
-    // };
-
-    // $scope.prevQuestion = function() {
-    //     if ($scope.questionIndex === 0) {
-    //         $scope.questionIndex = $scope.topic.questions.length -1;
-    //     } else {
-    //         $scope.questionIndex --;
-    //     }
-    //     // Update ace editor on page
-    //     $scope.updatePageWithNewQuestion();
-
-    //     // Log previous question's data
-    //     logging.progress.endTime = Date.now();
-    //     logging.logProgress();
-
-    //     // Set up logging for new question
-    //     logging.progress.topic = $scope.topic._id;
-    //     logging.progress.question = $scope.topic.questions[$scope.questionIndex]._id;
-    //     logging.progress.startTime = Date.now();
-    // };
-
     $scope.isActive = function (id) {
       // this function is dependent on the URL set in topics.js
       return (`/lessons/topics/${id}`) === $location.path()
@@ -259,31 +214,20 @@ export default class TopicsController {
 
     $scope.aceLoaded = function (_editor) {
       // Editor part
-      // _editor.getSession().setUseWorker(false);
       const _session = _editor.getSession()
       const _renderer = _editor.renderer
 
       // Options
-      // _editor.setReadOnly(false);
-      // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
       _editor.setTheme('ace/theme/tomorrow')
       _editor.setFontSize('11')
       _editor.setShowPrintMargin(false)
-      // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
 
       $scope.editor = _editor
 
       $scope.updatePageWithNewQuestion()
       _editor.focus()
-
-      // Events
-      // _editor.on("changeSession", function(){ //...
-      // });
-      // _session.on("change", function(){
-      // alert(_session.getValue());
-      // });
     }
 
     $scope.updatePageWithNewQuestion = function () {
@@ -323,11 +267,6 @@ export default class TopicsController {
         $scope.editor.setReadOnly(false)
       }
     }
-
-    // Reset button on code editor: resets the starter code (if any) given for this question
-    //  $scope.reset = function(week, q) {
-    //  $scope.editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1);
-    // };
 
     $scope.init = function () {
       for (let i = 0; i < $scope.topic.questions.length; i++) {

@@ -69,7 +69,6 @@ export default class EditContentController {
         className = $scope.className
       }
 
-    // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
         className.slice(0, -5)
         return className.slice(0, -5)
@@ -85,11 +84,9 @@ export default class EditContentController {
         className = $scope.className
       }
 
-      // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
         return className
       }
-        // return className + '.java';
       return `${className}.c`
     }
 
@@ -114,8 +111,6 @@ export default class EditContentController {
       console.log('heres code:')
       const code = editor.getValue()
       console.log(code)
-      // var editedCode = code.replace(/\\/g, '\\\\');
-      // console.log(editedCode);
       const obj = { className,
         fileName,
         code, // editedCode,
@@ -130,7 +125,6 @@ export default class EditContentController {
           $scope.compileOutput += data
         }
       })
-      // logging.progress.numCompiles++;
     }
 
     // FIXME: this functionality should be moved into topics service
@@ -150,13 +144,9 @@ export default class EditContentController {
       $http.post('api/clis/run', obj).then((data) => {
         $scope.runOutput = data
       })
-        // logging.progress.numRuns++;
     }
 
     $scope.editTopic = function () {
-      // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
-      // var editedTopic = $scope.allTopics[i];
-      // editedTopic.title = $scope.editedTopic.title;
       topics.editTopic($scope.topic._id, $scope.topic).then((data) => {
         $scope.topic = data
         $scope.topicsEC.forEach((ea) => {
@@ -179,11 +169,9 @@ export default class EditContentController {
     // FIXME hints aren't working...
     $scope.addHintToExistingQ = function () {
       $scope.questionToEdit.hints.push('')
-      // $scope.topic.questions[questionIndex].hints.push("");
     }
 
     $scope.deleteHintFromExistingQ = function (hintIndex) {
-      // $scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
       $scope.questionToEdit.hints.splice(hintIndex, 1)
     }
 
@@ -191,52 +179,16 @@ export default class EditContentController {
       $scope.editor.focus()
     }
 
-    // $scope.compileCode = function() { // this is in add question, so use $scope.editor
-    //   console.log($scope.editor.getValue());
-    //   var obj = {'code': $scope.editor.getValue(),
-    //         'user': Auth.getCurrentUser(),
-    //         'questionNum': $scope.topic.questions.length // since this is a new q to be added
-    //       }
-    //   $http.post('api/clis/compile', obj).then(function(data) {
-    //     console.log('in compile code success func');
-    //     console.log(data);
-
-    //     if (data === '') {
-    //       $scope.CLOutput += 'Successfully compiled code.\n';
-    //     } else {
-    //       data.trim();
-    //       $scope.CLOutput += data;
-    //       console.log($scope.CLOutput);
-    //     }
-
-    //   })
-    // }
-
-    // $scope.runCode = function() { // this is in add question, so use $scope.editor
-    //   var obj = {'className': 'Test',
-    //          'user': Auth.getCurrentUser()
-    //       }
-
-    //   $http.post('api/clis/run', obj).then(function(data) {
-    //     console.log('in run code success function');
-    //     console.log(data);
-    //     $scope.CLOutput += data;
-    //   })
-    // }
     $scope.populateEditQForm = function (index) {
       // Set up an editor for the question
       const editor = ace.edit(`editor${index}`)
-      // editor.getSession().setUseWorker(false);
-    // Editor part
+      // Editor part
       const _session = editor.getSession()
       const _renderer = editor.renderer
 
     // Options
-    // _editor.setReadOnly(false);
-    // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
       editor.setTheme('ace/theme/tomorrow')
-    // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
       $scope.editors[index] = editor
 
@@ -253,30 +205,18 @@ export default class EditContentController {
 
     $scope.aceLoaded = function (_editor) {
       // Editor part
-      // _editor.getSession().setUseWorker(false);
       const _session = _editor.getSession()
       const _renderer = _editor.renderer
 
       // Options
-      // _editor.setReadOnly(false);
-      // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
       _editor.setTheme('ace/theme/tomorrow')
-      // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
 
-      // _editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start
       $scope.editor = _editor
-      // _editor.focus();
 
       console.log('aceloaded func')
       console.log($scope.editor)
-      // Events
-      // _editor.on('changeSession', function(){ //...
-      // });
-      // _session.on("change", function(){
-      // //  alert(_session.getValue());
-      // });
     }
 
     $scope.addQuestion = function () {
@@ -310,17 +250,9 @@ export default class EditContentController {
     }
 
     $scope.deleteQuestion = function (id, index) {
-      // console.log(index);
-      // console.log($scope.topic.questions);
-      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)// .then(function(question) {
-        // why does this success function not get called?
-        // console.log('successfully deleted question: ' + question);
-      // });
+      topics.deleteQuestion($scope.topic.questions[index], $scope.topic._id)
       console.log('deleted q in edit content controller now')
-      // $scope.topic.questions[index].splice(index, 1);
       $scope.topic.questions.splice(index, 1)
-
-      // $http.delete('/api/questions/' + id);
     }
 
     // / trying question reordering http://stackoverflow.com/a/27709541
@@ -330,7 +262,6 @@ export default class EditContentController {
         $scope.topic.questions[index + 1] = $scope.topic.questions[index]
         $scope.topic.questions[index] = tmp
       }
-      // $scope.editTopic();
     }
     $scope.moveQDown = function (index) {
       if (index > 0 && index < $scope.topic.questions.length) {
@@ -338,7 +269,6 @@ export default class EditContentController {
         $scope.topic.questions[index - 1] = $scope.topic.questions[index]
         $scope.topic.questions[index] = tmp
       }
-      // $scope.editTopic();
     }
   }
 }

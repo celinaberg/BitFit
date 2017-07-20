@@ -53,10 +53,7 @@ exports.update = function (req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err) }
     if (!question) { return res.send(404) }
-    // if (question.hints.length > req.body.hints.length) {
-      // there was a hint deleted. copy req.body.hints into question.hints
     question.hints = req.body.hints // manually copy as merge doesn't
-    // }
     const updated = _.merge(question, req.body)
     updated.save((err) => {
       if (err) { return handleError(res, err) }

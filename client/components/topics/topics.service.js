@@ -47,12 +47,9 @@ class Topics {
   // must delete question, and delete reference to it in topic
   deleteQuestion (question, topicID) {
     this.http.post(`/api/topics/${topicID}/delquestion`, question).then((data) => {
-      // o.topics.forEach(function(ea) {
       console.log('thenfully deleted q from topic')
       console.log(data)
-      // })
     })
-    // this.http.delete('/api/questions/' + question._id); // is this correct? FIXME
   }
 
   editTopic (id, topic) {
@@ -61,7 +58,6 @@ class Topics {
     })
 
     return this.http.put(`/api/topics/${id}`, topic).then((data) => {
-      // var index = o.topics.indexOf(data._id);
       this.o.topics.forEach((ea) => {
         if (ea._id === data._id) {
           angular.copy(data, ea)

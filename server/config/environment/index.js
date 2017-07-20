@@ -19,7 +19,6 @@ const all = {
 
   url: 'https://comped.cs.ubc.ca',
 
-  // ip: '192.168.2.1',
   // Should we populate the DB with sample data?
   seedDB: false, // fixme?
 
@@ -38,6 +37,7 @@ const all = {
 
   // MongoDB connection options
   mongo: {
+    uri: 'mongodb://localhost/its110',
     options: {
       useMongoClient: true
     }

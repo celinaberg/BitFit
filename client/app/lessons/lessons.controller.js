@@ -19,23 +19,12 @@ class LessonsController {
       const _renderer = _editor.renderer
 
       // Options
-      // _editor.setReadOnly(false);
-      // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
       _editor.setTheme('ace/theme/tomorrow')
-      // _session.setMode('ace/mode/java');
       _session.setMode('ace/mode/c_cpp')
 
-      // _editor.setValue($scope.questions[0][0].code, -1) // -1 is document start
       $scope.editor = _editor
       _editor.focus()
-
-      // Events
-      // _editor.on("changeSession", function(){ //...
-      // });
-      // _session.on("change", function(){
-      // //alert(_session.getValue());
-      // });
     }
 
     $scope.nextQuestion = () => {

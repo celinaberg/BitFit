@@ -26,12 +26,6 @@ export default class LoggerController {
       }
     }
 
-    // $http.get('/api/loggers').then(function(data){
-    //   $scope.data = data;
-    // }).error(function(err){
-    //   throw err;
-    // });
-
     $http.get('/api/loggers').then((data) => {
       const nestedData = d3.nest()
       .key(d => d.user)

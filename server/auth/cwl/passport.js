@@ -39,12 +39,9 @@ const keyContents = fs.readFileSync(path.join(__dirname, '../../cert/key.pem'), 
 
 const samlStrategy = new SamlStrategy({
   // URL that goes from the Identity Provider -> Service Provider
-  // callbackUrl: 'https://127.0.0.1:4343/auth/cwl/login/callback',
   callbackUrl: config.callbackUrl,
   // URL that goes from the Service Provider -> Identity Provider
-  // entryPoint: 'https://authentication.ubc.ca',
   entryPoint: config.entryPoint,
-  // entryPoint: 'https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO',
   // Usually specified as `/shibboleth` from site root
   issuer: 'https://comped.cs.ubc.ca',
   identifierFormat: null,
