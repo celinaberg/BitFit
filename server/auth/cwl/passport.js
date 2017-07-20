@@ -71,23 +71,18 @@ const samlStrategy = new SamlStrategy({
         uid: 'buser',
         firstName: 'Backdoor',
         lastName: 'User',
-        displayName: 'Rhys Bower',
+        displayName: 'Backdoor User',
         role: 'instructor'
       })
       console.log('saving user')
       user1.save((err, user) => {
         if (err) {
           console.error('could not save user')
+          return done(err)
         } else {
           console.log('saved user')
+          return done(null, user)
         }
-      })
-      return done(null, {
-        uid: 'buser',
-        firstName: 'Backdoor',
-        lastName: 'User',
-        displayName: 'Backdoor User',
-        role: 'instructor'
       })
     } else {
       return done(null, false, { message: 'You are not registered in APSC 160' })
