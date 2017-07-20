@@ -54,7 +54,7 @@ const samlStrategy = new SamlStrategy({
   validateInResponseTo: false,
   disableRequestedAuthnContext: true
 }, (profile, done) => {
-  let role = 'student'
+  let role
   if (profile.hasOwnProperty(memberOf)) {
     if (profile[memberOf].includes(memberOfInstructors)) {
       role = 'instructor'
@@ -62,15 +62,15 @@ const samlStrategy = new SamlStrategy({
       role = 'teaching-assistant'
     }
   } else if (profile.hasOwnProperty(groupMembership)) {
-
+    role = 'student'
   } else {
     // Unauthorized to access app
     // TODO: Backdoor - remove
     if (config.env === 'development') {
       let user1 = new User({
-        uid: 'mycwl',
-        firstName: 'Rhys',
-        lastName: 'Bower',
+        uid: 'buser',
+        firstName: 'Backdoor',
+        lastName: 'User',
         displayName: 'Rhys Bower',
         role: 'instructor'
       })
@@ -83,9 +83,10 @@ const samlStrategy = new SamlStrategy({
         }
       })
       return done(null, {
-        uid: 'mycwl',
-        firstName: 'Rhys',
-        lastName: 'Bower',
+        uid: 'buser',
+        firstName: 'Backdoor',
+        lastName: 'User',
+        displayName: 'Backdoor User',
         role: 'instructor'
       })
     } else {
