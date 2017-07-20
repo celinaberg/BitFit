@@ -7,17 +7,19 @@ class Questions {
       questions: []
     }
   }
-
   getAll () {
     return this.http.get('/api/questions').then((data) => {
+      console.log(data.data)
       angular.copy(data.data, this.o.questions)
       return this.o.questions
     })
   }
 
   create (question) {
+    console.log('questions service create question')
     return this.http.post('/api/questions', question).then((data) => {
-      this.o.questions.push(data)
+      this.o.questions.push(data.data)
+      return data.data
     })
   }
 

@@ -24,12 +24,12 @@
       <flash-message></flash-message>
       <!-- Topic title and edit title form -->
       <h2 class="page-header">Manage All Questions
-				<button class="btn btn-success" ng-click="addQ=!addQ">
-					<span class="fa fa-plus"></span> Add question
-				</button>
-				<a class="btn btn-default" download='questions.json' target="_self" href='api/questions/export'>Export Questions</a>
-				<button class="btn btn-primary" ng-click="showImportInput=!showImportInput">Import Questions</button>
-			</h2>
+        <button class="btn btn-success" ng-click="addQ=!addQ">
+          <span class="fa fa-plus"></span> Add question
+        </button>
+        <a class="btn btn-default" download='questions.json' target="_self" href='api/questions/export'>Export Questions</a>
+        <button class="btn btn-primary" ng-click="showImportInput=!showImportInput">Import Questions</button>
+      </h2>
       <div class="col-xs-12">
         <div ng-show="showImportInput">
           <textarea class="form-control importTxt" ng-model="questionsToImport" placeholder="Copy &amp; Paste exported questions here"></textarea>
@@ -49,7 +49,7 @@
               <input class="form-control" type='text' ng-model="newQuestion.tags" placeholder="Add tags">
             </div>
             <button type="button" class="btn btn-success" ng-model="collapseCodeEditor" ng-click="focusEditor(); collapseCodeEditor=!collapseCodeEditor" data-target="#showCodeEditor">Show/Hide Starter Code Editor
-						</button><br>
+            </button><br>
 
             <!-- Code editor and buttons -->
             <div id="showCodeEditor" ng-show="collapseCodeEditor">
@@ -57,18 +57,18 @@
               <div class="row">
                 <div class="col-sm-8 vcenter">
                   <label for="inputCode">
-										Add Starter Code [optional]
-									</label>
+                    Add Starter Code [optional]
+                  </label>
                   <p>[Any code you enter here will appear in the student's code editor for this question]</p>
                   <div id="inputCode" class="ace_lessons" ng-model="newQuestion.code" ui-ace="{ onLoad: aceLoaded }"></div>
                 </div>
                 <!--
-					-->
+          -->
                 <div class="col-sm-4 vcenter">
                   <label for="javaFile">
-						<!--Please enter the name of your Java file (must match the class name in your code!):-->
-						Please enter the name of your C file:
-					</label>
+            <!--Please enter the name of your Java file (must match the class name in your code!):-->
+            Please enter the name of your C file:
+          </label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="className">
                     <span class="input-group-addon" id="basic-addon"><!--.java-->.c</span>
@@ -76,23 +76,23 @@
                   <hr>
                   <div class="btn-group-vertical ace_lessons" role="group">
                     <button type="button" class="btn btn-warning" ng-click="compileCode(-1)">
-							<span class="fa fa-flash"></span> Compile Code
-						</button>
+              <span class="fa fa-flash"></span> Compile Code
+            </button>
 
                     <button type="button" class="btn btn-success" ng-click="runCode(-1)">
-							<span class="fa fa-play"></span> Run Code
-						</button>
+              <span class="fa fa-play"></span> Run Code
+            </button>
                   </div>
                   <hr>
                   <div class="btn-group-vertical ace_lessons" role="group">
                     <div class="checkbox">
                       <label>
-								<input type="checkbox" ng-model="newQuestion.readOnly" ng-click="toggleReadOnly(-1)"> Check here to make code read-only
-							</label>
+                <input type="checkbox" ng-model="newQuestion.readOnly" ng-click="toggleReadOnly(-1)"> Check here to make code read-only
+              </label>
                     </div>
                     <!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-									Check My Answer <span class="fa fa-send"></span>
-								</button> -->
+                  Check My Answer <span class="fa fa-send"></span>
+                </button> -->
                   </div>
                 </div>
               </div>
@@ -102,7 +102,7 @@
                 <hr>
                 <div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
                   <h4>{{ feedback }}
-								<button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
+                <button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
                 </div>
                 <div class="col-sm-6">
                   <div id="commandLineOutput" class="command_line_output_s compile">
@@ -132,15 +132,15 @@
             <!-- Add new Q Hints Form -->
             <div class="form-group">
               <button type="button" class="btn btn-success" ng-click="addHintToNewQ()">
-							Add a hint to this question
-						</button>
+              Add a hint to this question
+            </button>
               <div ng-repeat="hint in newQuestion.hints track by $index">
                 <div class="input-group">
                   <!-- <label for="inputHints">Hint #{{$index + 1}}:</label> -->
                   <textarea class="form-control" type="text" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="newQuestion.hints[$index]"></textarea>
                   <span class="input-group-btn">
-									<button type="button" class="close" ng-click="deleteHintFromNewQ($index)">&times;</button>
-								</span>
+                  <button type="button" class="close" ng-click="deleteHintFromNewQ($index)">&times;</button>
+                </span>
                 </div>
               </div>
             </div>
@@ -159,47 +159,48 @@
         <input type="text" class="form-control" placeholder="Search questions" ng-change="clearSearch()" ng-model="search.tags">
       </div>
       <ul class="list-group">
-        <li class="list-group-item col-xs-6 question-item" ng-repeat="q in questions | filter:search">
+        <li class="list-group-item col-xs-6 question-item" ng-repeat="q in questions track by $index">
           <!-- Change question topic / Delete question permanently -->
           <span>
-	    			<label for="topicSelect">Topic:</label>
-	    			<select class="form-control" id="topicSelect" ng-init="q.newTopic=getQTopic(q._id)" ng-model="q.newTopic" style="width:45%; display:inline-block;" ng-options="t.title for t in topicsEC">
-	    				<option value="">No topic</option>
-	    			</select>
-	    			<button type="button" ng-click="changeQTopic(q, $index, q.newTopic)" class="btn btn-primary form-control" style="width:75px; display:inline-block">
-	    				Change
-	    			</button>
-	    			<div class="pull-right">
-	    			<button type="button" ng-click="editQuestionToggle=!editQuestionToggle; populateEditQForm($index)" class="btn btn-info">
-	    				<span class="fa fa-pencil"></span>
-          </button>
-          <button type="button" ng-click="deleteQuestion($index)" class="btn btn-danger">
-	    				<span class="fa fa-trash"></span>
-	    			</button>
-    </div>
-    </span>
-    <div>
-      <hr>
-      <b>Tags: </b>
-      <span>{{q.tags}}</span>
-      <span ng-hide="q.tags" class="text-muted">No tags</span>
-      <hr>
-    </div>
-    <!-- Question Instructions, starter code, hints etc -->
-    <div class="tab" ng-bind-html="q.instructions" ng-class="{'small-q':!readMore}"></div>
-    <button type="button" class="btn btn-link" ng-click="readMore=!readMore">
-	    			See All
-	    		</button>
+            <label for="topicSelect">Topic:</label>
+            <select class="form-control" id="topicSelect" ng-init="q.newTopic=getQTopic(q._id)" ng-model="q.newTopic" style="width:35%; display:inline-block;" ng-options="t.title for t in topicsEC">
+              <option value="">No topic</option>
+            </select>
+            <button type="button" ng-click="changeQTopic(q, $index, q.newTopic)" class="btn btn-primary form-control" style="width:75px; display:inline-block">
+              Change
+            </button>
+            <div class="pull-right">
+              <button type="button" ng-click="editQuestionToggle=!editQuestionToggle; populateEditQForm($index)" class="btn btn-info">
+                <span class="fa fa-pencil"></span>
+              </button>
+              <button type="button" ng-click="deleteQuestion($index)" class="btn btn-danger">
+                <span class="fa fa-trash"></span>
+              </button>
+              <button type="button" ng-click="duplicateQuestion($index)" class="btn btn-default">
+                <span class="fa fa-copy fa-inverted"></span>
+              </button>
+            </div>
+          </span>
+          <div>
+            <hr>
+            <b>Tags: </b>
+            <span>{{q.tags}}</span>
+            <span ng-hide="q.tags" class="text-muted">No tags</span>
+            <hr>
+          </div>
+          <!-- Question Instructions, starter code, hints etc -->
+          <div class="tab" ng-bind-html="q.instructions" ng-class="{'small-q':!readMore}"></div>
+          <button type="button" class="btn btn-link" ng-click="readMore=!readMore">See All</button>
     <div ng-show="readMore">
       <div>
         <strong>Starter Code: </strong><br /><pre><span ng-bind-html="q.code"></span>	<br /></pre>
-        <strong>Code is read-only?</strong> {{q.readOnly}}&nbsp&nbsp&nbsp&nbsp
+        <strong>Code is read-only?</strong> {{q.readOnly}}&nbsp;&nbsp;&nbsp;&nbsp;
         <strong>File Name: </strong> {{ q.className }}.c
         <span ng-hide="q.className" class="text-muted"><em>No class name given</em></span><br />
         <strong>Expected Output: </strong><br />
         <pre>{{q.expectedOutput}}
-	    					<span ng-hide="q.expectedOutput" class="text-muted"><em>No expected output given</em></span>
-	    				</pre>
+                <span ng-hide="q.expectedOutput" class="text-muted"><em>No expected output given</em></span>
+              </pre>
         <br />
       </div>
 
@@ -227,18 +228,18 @@
         <div class="form-group">
           <div class="col-sm-8 vcenter">
             <label for="editor{{$index}}">
-									Add Starter Code [optional]
-	                        	</label>
+                  Add Starter Code [optional]
+                            </label>
             <p>[Any code you enter here will appear in the student's code editor for this question]</p>
             <div ng-model="questionToEdit.code" id="editor{{$index}}" style="width:100%">{{questionToEdit.code}}</div>
           </div>
           <!--
-					    	-->
+                -->
           <div class="col-sm-4 vcenter">
             <label for="javaFileName">
-					    				<!--Please enter the name of your Java file (must match the class name in your code!):-->
-					    				Please enter the name of your C file:
-					    			</label>
+                      <!--Please enter the name of your Java file (must match the class name in your code!):-->
+                      Please enter the name of your C file:
+                    </label>
             <div class="input-group">
               <input type="text" class="form-control" placeholder="YourCFile" id="javaFileName" aria-describedby="basic-addon" ng-model="questionToEdit.className">
               <span class="input-group-addon" id="basic-addon"><!--java-->.c</span>
@@ -246,23 +247,23 @@
             <hr>
             <div class="btn-group-vertical ace_lessons" role="group">
               <button type="button" class="btn btn-warning" ng-click="compileCode($index)">
-										<span class="fa fa-flash"></span> Compile Code
-									</button>
+                    <span class="fa fa-flash"></span> Compile Code
+                  </button>
 
               <button type="button" class="btn btn-success" ng-click="runCode($index)">
-						        		<span class="fa fa-play"></span> Run Code
-						    		</button>
+                        <span class="fa fa-play"></span> Run Code
+                    </button>
             </div>
             <hr>
             <div class="btn-group-vertical ace_lessons" role="group">
               <div class="checkbox">
                 <label>
-									      <input type="checkbox" ng-model="questionToEdit.readOnly" ng-click="toggleReadOnly($index)"> Check here to make code read-only
-									    </label>
+                        <input type="checkbox" ng-model="questionToEdit.readOnly" ng-click="toggleReadOnly($index)"> Check here to make code read-only
+                      </label>
               </div>
               <!-- <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-										Check My Answer <span class="fa fa-send"></span>
-									</button> -->
+                    Check My Answer <span class="fa fa-send"></span>
+                  </button> -->
             </div>
           </div>
         </div>
@@ -273,7 +274,7 @@
           <hr>
           <div ng-model="showComments" ng-show="showComments" id="comments" class="feedback_section">
             <h4>{{ feedback }}
-					    		<button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
+                  <button type="button" class="close" ng-click="showComments=!showComments">&times;</button></h4>
           </div>
           <div class="col-sm-6">
             <div id="commandLineOutput" class="command_line_output_s compile">
@@ -302,13 +303,13 @@
         <!-- Add/Remove Hints form -->
         <div class="form-group">
           <button type="button" class="btn btn-success" ng-click="addHintToExistingQ($index)">
-                        		Add a hint to this question
-                    		</button>
+                            Add a hint to this question
+                        </button>
           <div class="input-group" ng-repeat="hint in questionToEdit.hints track by $index">
             <textarea class="form-control" type="text" id="editHints" placeholder="Add hint {{$index + 1}} here - Use <pre> code </pre> tages to include code." ng-model="questionToEdit.hints[$index]"></textarea>
             <span class="input-group-btn">
-						  			<button type="button" class="close" data-toggle="tooltip" data-placement="top" title="Delete this hint." ng-click="deleteHintFromExistingQ($index)">&times;</button>
-						  		</span>
+                    <button type="button" class="close" data-toggle="tooltip" data-placement="top" title="Delete this hint." ng-click="deleteHintFromExistingQ($index)">&times;</button>
+                  </span>
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Update Question</button>
