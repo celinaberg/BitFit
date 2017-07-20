@@ -5,8 +5,7 @@ import routing from './topics.routes'
 import TopicsController from './topics.controller'
 import Logging from '../../../components/logging/logging.service'
 import NavBar from '../../../components/navbar'
-// import ngSanitize from 'angular-sanitize'
-import ngSanitize from 'textAngular/dist/textAngular-sanitize'
+import 'textAngular/dist/textAngular-sanitize'
 
 import './topics.css'
 

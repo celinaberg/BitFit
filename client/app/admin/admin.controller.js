@@ -40,7 +40,7 @@ export default class AdminController {
 
     $scope.addTopic = function () {
       if (!$scope.newTopic.topicTitle || $scope.newTopic.topicTitle === '') { return }
-      topics.create({
+      Topics.create({
         title: $scope.newTopic.topicTitle,
         background: $scope.newTopic.topicBackground,
         questions: [ // not adding any questions....
