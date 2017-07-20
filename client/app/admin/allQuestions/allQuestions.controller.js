@@ -293,7 +293,6 @@ export default class AllQuestionsController {
       questions.create(newQuestion).then((question) => {
         console.log('duplicate question')
         console.log(question)
-        //$scope.questions.push(question)
       })
       /* questions.delete($scope.questions[index], $scope.questions[index]._id)
       console.log('deleted q in edit content controller now')
