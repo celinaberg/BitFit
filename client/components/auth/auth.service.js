@@ -2,10 +2,9 @@ import angular from 'angular'
 import User from './user.service'
 
 class Auth {
-  constructor ($location, $rootScope, $http, User, $cookieStore, $q) {
+  constructor ($location, $rootScope, $http, User, $q, $window) {
     this.http = $http
     this.rootScope = $rootScope
-    this.cookieStore = $cookieStore
     this.q = $q
     this.currentUser = {}
     $http.get('/api/users/me').then(data => {
@@ -20,33 +19,10 @@ class Auth {
     })
 
     /**
-     * Authenticate user and save token
-     *
-     * @param  {Object}   user     - login info
-     * @param  {Function} callback - optional
-     * @return {Promise}
+     * Redirect to login page
      */
-    this.login = (user, callback) => {
-      const cb = callback || angular.noop
-      const deferred = this.q.defer()
-
-      this.http.post('/auth/local', {
-        email: user.email,
-        password: user.password
-      })
-      .then((data) => {
-        this.cookieStore.put('token', data.token)
-        this.currentUser = User.get()
-        deferred.resolve(data)
-        return cb()
-      })
-      .catch((err) => {
-        this.logout()
-        deferred.reject(err)
-        return cb(err)
-      })
-
-      return deferred.promise
+    this.login = () => {
+      $window.location.href = '/auth/cwl/login'
     }
 
     /**
@@ -56,45 +32,6 @@ class Auth {
      */
     this.logout = () => {
       this.currentUser = {}
-    }
-
-    /**
-     * Create a new user
-     *
-     * @param  {Object}   user     - user info
-     * @param  {Function} callback - optional
-     * @return {Promise}
-     */
-    this.createUser = (user, callback) => {
-      const cb = callback || angular.noop
-
-      return User.save(user,
-        (data) => {
-          this.cookieStore.put('token', data.token)
-          this.currentUser = User.get()
-          return cb(user)
-        },
-        (err) => {
-          this.logout()
-          return cb(err)
-        }).$promise
-    }
-
-    /**
-     * Change password
-     *
-     * @param  {String}   oldPassword
-     * @param  {String}   newPassword
-     * @param  {Function} callback    - optional
-     * @return {Promise}
-     */
-    this.changePassword = (oldPassword, newPassword, callback) => {
-      const cb = callback || angular.noop
-
-      return User.changePassword({ id: this.currentUser._id }, {
-        oldPassword,
-        newPassword
-      }, user => cb(user), err => cb(err)).$promise
     }
 
     /**
@@ -158,17 +95,10 @@ class Auth {
         cb(null, false)
       }
     }
-
-    /**
-     * Get auth token
-     */
-    this.getToken = () => {
-      return this.cookieStore.get('token')
-    }
   }
 }
 
-Auth.$inject = ['$location', '$rootScope', '$http', 'User', '$cookieStore', '$q']
+Auth.$inject = ['$location', '$rootScope', '$http', 'User', '$q', '$window']
 
 export default angular.module('bitfit.services.auth', [User])
   .service('Auth', Auth)

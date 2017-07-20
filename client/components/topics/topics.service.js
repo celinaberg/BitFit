@@ -22,10 +22,6 @@ class Topics {
   }
 
   get (id) {
-    /* this worked fine - with $scope.topic = topic; after the js resolve
-    return this.http.get('/api/topics/' + id).then(function(res){
-      return res.data;
-    }); */
     return this.http.get(`/api/topics/${id}`).then(res => res)
   }
 
