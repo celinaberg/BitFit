@@ -33,4 +33,11 @@ router.post('/login',
 router.post('/login/callback',
   passport.authenticate('saml', { successRedirect: '/lessons', failureRedirect: '/auth/cwl/login/failed' }))
 
+router.get('/logout',
+  (req, res) => {
+    req.logout()
+    res.redirect('/')
+  }
+)
+
 module.exports = router

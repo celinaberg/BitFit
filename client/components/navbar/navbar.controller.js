@@ -1,5 +1,5 @@
 class NavBarController {
-  constructor ($scope, $location, Auth) {
+  constructor ($scope, $location, Auth, $window) {
     $scope.menu = [
       {
         title: 'Home',
@@ -17,7 +17,7 @@ class NavBarController {
 
     $scope.logout = function () {
       Auth.logout()
-      $location.path('/')
+      $window.location.href = '/auth/cwl/logout'
     }
 
     $scope.isActive = function (route) {
@@ -28,6 +28,6 @@ class NavBarController {
   }
 }
 
-NavBarController.$inject = ['$scope', '$location', 'Auth']
+NavBarController.$inject = ['$scope', '$location', 'Auth', '$window']
 
 module.exports = NavBarController

@@ -55,7 +55,6 @@ class Auth {
      * @param  {Function}
      */
     this.logout = () => {
-      this.cookieStore.remove('token')
       this.currentUser = {}
     }
 
