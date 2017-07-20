@@ -277,6 +277,29 @@ export default class AllQuestionsController {
       }
     }
 
+    $scope.duplicateQuestion = (index) => {
+      console.log('duplicateQuestion')
+      const oq = $scope.questions[index]
+      let newQuestion = {
+        instructions: oq.instructions,
+        code: oq.code,
+        className: oq.className,
+        readOnly: oq.readOnly,
+        hints: oq.hints,
+        tags: oq.tags,
+        expectedOutput: oq.expectedOutput,
+        codeEvaluator: oq.codeEvaluator
+      }
+      questions.create(newQuestion).then((question) => {
+        console.log('duplicate question')
+        console.log(question)
+        //$scope.questions.push(question)
+      })
+      /* questions.delete($scope.questions[index], $scope.questions[index]._id)
+      console.log('deleted q in edit content controller now')
+      $scope.questions.splice(index, 1) */
+    }
+
     $scope.changeQTopic = (question, index, newTopic) => {
       // if no new topic, remove from current topic
       if (newTopic === null) {
