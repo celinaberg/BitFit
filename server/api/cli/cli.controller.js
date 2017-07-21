@@ -42,17 +42,17 @@ exports.run = function (req, res) {
   var cp = exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
-        return res.send(200, {"info":error, "process":cp.pid});
+        return res.status(200).send({"info":error, "process":cp.pid});
       }
       if (error !== null) {
       }
-      return res.send(200, {"info":stdout, "process":cp.pid});
+      return res.status(200).send({"info":stdout, "process":cp.pid});
     })
 }
 
 exports.killProcess = function(req, res) {
 	var result = process.kill(req.body.process);
-	return res.send(200, result);
+	return res.status(200).send(result);
 };
 
 function compileJavaFile (srcFile, dirName, res) {
