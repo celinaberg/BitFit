@@ -7,42 +7,30 @@ class Questions {
       questions: []
     }
   }
-
   getAll () {
-    return this.http.get('/api/questions').success((data) => {
-      angular.copy(data, this.o.questions)
+    return this.http.get('/api/questions').then((data) => {
+      console.log(data.data)
+      angular.copy(data.data, this.o.questions)
+      return this.o.questions
     })
   }
 
   create (question) {
-    return this.http.post('/api/questions', question).success((data) => {
-      this.o.questions.push(data)
+    console.log('questions service create question')
+    return this.http.post('/api/questions', question).then((data) => {
+      this.o.questions.push(data.data)
+      return data.data
     })
   }
 
   import (questions) {
-    return this.http.post('/api/questions/import', questions).success((data) => {
+    return this.http.post('/api/questions/import', questions).then((data) => {
       angular.extend(this.o.questions, data)
     })
   }
 
-  // get: function(id) {
-  //   /* this worked fine - with $scope.question = question; after the js resolve
-  //   return this.http.get('/api/questions/' + id).then(function(res){
-  //     return res.data;
-  //   }); */
-  //   return this.http.get('/api/questions/' + id).success(function(res){
-  //     return res;
-  //   });
-  // },
-
-  // addQuestion: function(questionID, question) {
-  //   return this.http.post('/api/questions/' + questionID + '/questions', question);
-  //   // FIXME: add question to o object here explicitly??
-  // },
-
   editQuestion (id, question) {
-    return this.http.put(`/api/questions/${id}`, question).success((data) => {
+    return this.http.put(`/api/questions/${id}`, question).then((data) => {
       this.o.questions.forEach((ea) => {
         if (ea._id === data.question) {
           ea.questions.forEach((q) => {
@@ -60,23 +48,10 @@ class Questions {
     this.http.delete(`/api/questions/${question._id}`)
     console.log('successfully deleted q')
   }
-
-  // editquestion: function(id, question) {
-  //   question.questions.forEach(function(ea, i) {
-  //     question.questions[i] = ea._id;
-  //   });
-
-  //   return this.http.put('/api/questions/' + id, question).success(function(data) {
-  //     //var index = o.questions.indexOf(data._id);
-  //     o.questions.forEach(function(ea) {
-  //       if (ea._id === data._id) {
-  //         angular.copy(data, ea);
-  //       }
-  //     });
-  //   });
-  // }
 }
 
-export default angular.module('bitfit.services.questions', ['$http'])
+Questions.$inject = ['$http']
+
+export default angular.module('bitfit.services.questions', [])
   .service('Questions', Questions)
   .name

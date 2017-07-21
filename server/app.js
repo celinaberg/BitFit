@@ -13,10 +13,7 @@ const http = require('http')
 const fs = require('fs')
 const routes = require('./routes')
 const configExpress = require('./config/express')
-const configSocketIo = require('./config/socketio')
-const SocketIo = require('socket.io')
-const certificate = require('./cert/certificate.crt')
-const serverKey = require('./cert/server.key')
+const path = require('path')
 
 // Connect to database
 mongoose.Promise = global.Promise
@@ -27,8 +24,8 @@ if (config.seedDB) { require('./config/seed') }
 
 // new for HTTPS
 const options = {
-  cert: fs.readFileSync(certificate, 'utf8'),
-  key: fs.readFileSync(serverKey, 'utf8')
+  cert: fs.readFileSync(path.join(__dirname, './cert/certificate.crt'), 'utf8'),
+  key: fs.readFileSync(path.join(__dirname, './cert/server.key'), 'utf8')
 }
 
 // Setup server
@@ -36,11 +33,6 @@ const app = express()
 
 // new for HTTPS
 const server = https.createServer(options, app)
-const socketio = SocketIo(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
-})
-configSocketIo(socketio)
 configExpress(app)
 routes(app)
 

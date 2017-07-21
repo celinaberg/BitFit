@@ -3,14 +3,14 @@ const _ = require('lodash')
 const Question = require('./question.model')
 
 function handleError (res, err) {
-  return res.send(500, err)
+  return res.status(500).send(err)
 }
 
 // Get list of questions
 exports.index = function (req, res) {
   Question.find((err, questions) => {
     if (err) { return handleError(res, err) }
-    return res.json(200, questions)
+    return res.status(200).json(questions)
   })
 }
 
@@ -18,7 +18,7 @@ exports.index = function (req, res) {
 exports.export = function (req, res) {
   Question.find({}, { _id: 0, topic: 0 }, (err, questions) => {
     if (err) { return handleError(res, err) }
-    return res.json(200, questions)
+    return res.status(200).json(questions)
   })
 }
 
@@ -35,7 +35,7 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
   Question.create(req.body, (err, question) => {
     if (err) { return handleError(res, err) }
-    return res.json(201, question)
+    return res.status(201).json(question)
   })
 }
 
@@ -43,7 +43,7 @@ exports.create = function (req, res) {
 exports.import = function (req, res) {
   Question.collection.insert(req.body, (err, questions) => {
     if (err) { return handleError(res, err) }
-    return res.json(201, questions)
+    return res.status(201).json(questions)
   })
 }
 
@@ -53,14 +53,11 @@ exports.update = function (req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err) }
     if (!question) { return res.send(404) }
-    // if (question.hints.length > req.body.hints.length) {
-      // there was a hint deleted. copy req.body.hints into question.hints
     question.hints = req.body.hints // manually copy as merge doesn't
-    // }
     const updated = _.merge(question, req.body)
     updated.save((err) => {
       if (err) { return handleError(res, err) }
-      return res.json(200, question)
+      return res.status(200).json(question)
     })
   })
 }

@@ -10,7 +10,7 @@ export default function routes ($stateProvider) {
       controller: 'LessonsCtrl',
       authenticate: true,
       resolve: {
-        topicPromise: ['topics', function (topics) {
+        topicPromise: ['Topics', function (topics) {
           return topics.getAll()
         }]
       }

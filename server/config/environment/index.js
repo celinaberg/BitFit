@@ -2,7 +2,6 @@ const path = require('path')
 const _ = require('lodash')
 
 const environment = require(`./${process.env.NODE_ENV}.js`)
-const cert = require('../../../server/cert/idp_cert.pem')
 
 // All configurations will extend these options
 // ============================================
@@ -20,7 +19,6 @@ const all = {
 
   url: 'https://comped.cs.ubc.ca',
 
-  // ip: '192.168.2.1',
   // Should we populate the DB with sample data?
   seedDB: false, // fixme?
 
@@ -30,19 +28,18 @@ const all = {
   },
 
   // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
+  userRoles: ['guest', 'student', 'teaching-assistant', 'instructor'],
 
   // CWL
   callbackUrl: 'https://comped.cs.ubc.ca/auth/cwl/login/callback',
   entryPoint: 'https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO',
-  idpCert: cert,
+  idpCert: path.join(__dirname, '../../cert/idp_cert.pem'),
 
   // MongoDB connection options
   mongo: {
+    uri: 'mongodb://localhost/its110',
     options: {
-      db: {
-        safe: true
-      }
+      useMongoClient: true
     }
   }
 }

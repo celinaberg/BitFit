@@ -10,10 +10,7 @@ export default function routes ($stateProvider) {
       controller: 'AdminCtrl',
       authenticate: true,
       resolve: {
-    /* topic: ['$stateParams', 'topics', function($stateParams, topics) { // gets current topic before controller loads
-        return topics.get($stateParams.id);
-      }], */
-        topicPromiseAC: ['topics', function (topics) { // gets all the topics before controller loads
+        topicPromiseAC: ['Topics', function (topics) { // gets all the topics before controller loads
           return topics.getAll()
         }]
       }

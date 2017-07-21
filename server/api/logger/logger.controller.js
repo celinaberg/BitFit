@@ -6,7 +6,7 @@ const Logger = require('./logger.model')
 exports.index = function (req, res) {
   Logger.find((err, loggers) => {
     if (err) { return handleError(res, err) }
-    return res.json(200, loggers)
+    return res.status(200).json(loggers)
   })
 }
 
@@ -23,7 +23,7 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
   Logger.create(req.body, (err, logger) => {
     if (err) { return handleError(res, err) }
-    return res.json(201, logger)
+    return res.status(201).json(logger)
   })
 }
 
@@ -36,7 +36,7 @@ exports.update = function (req, res) {
     const updated = _.merge(logger, req.body)
     updated.save((err) => {
       if (err) { return handleError(res, err) }
-      return res.json(200, logger)
+      return res.status(200).json(logger)
     })
   })
 }
@@ -54,5 +54,5 @@ exports.destroy = function (req, res) {
 }
 
 function handleError (res, err) {
-  return res.send(500, err)
+  return res.status(500).send(err)
 }

@@ -1,16 +1,9 @@
 import angular from 'angular'
-import Flash from 'angular-flash'
-import ace from 'angular-ui-ace'
-import Auth from '../../../components/auth/auth.service'
-import User from '../../../components/auth/user.service'
-import socket from '../../../components/socket/socket.service'
-import topics from '../../../components/topics/topics.service'
-import questions from '../../../components/questions/questions.service'
 
 export default class AllQuestionsController {
-  constructor ($scope, $http, Auth, User, socket, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
-    $scope.questions = questionPromiseEC.data
-    $scope.topicsEC = topicPromiseEC.data
+  constructor ($scope, $http, Auth, User, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
+    $scope.questions = questionPromiseEC
+    $scope.topicsEC = topicPromiseEC
 
     $scope.editor = {}
     $scope.editors = []
@@ -76,7 +69,6 @@ export default class AllQuestionsController {
         className = $scope.className
       }
 
-    // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
         className.slice(0, -5)
         return className.slice(0, -5)
@@ -92,11 +84,9 @@ export default class AllQuestionsController {
         className = $scope.className
       }
 
-      // if (endsWith(className, '.java')) {
       if (endsWith(className, '.c')) {
         return className
       }
-        // return className + '.java';
       return `${className}.c`
     }
 
@@ -121,15 +111,13 @@ export default class AllQuestionsController {
       console.log('heres code:')
       const code = editor.getValue()
       console.log(code)
-      // var editedCode = code.replace(/\\/g, '\\\\');
-      // console.log(editedCode);
       const obj = { className,
         fileName,
         code, // editedCode,
         user: Auth.getCurrentUser(),
         questionNum: $scope.questionIndex
       }
-      $http.post('api/clis/compile', obj).success((data) => {
+      $http.post('api/clis/compile', obj).then((data) => {
         if (data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.compileOutput += 'Successfully compiled code.\n'
@@ -137,7 +125,6 @@ export default class AllQuestionsController {
           $scope.compileOutput += data
         }
       })
-      // logging.progress.numCompiles++;
     }
 
     // FIXME: this functionality should be moved into topics service
@@ -154,17 +141,13 @@ export default class AllQuestionsController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).success((data) => {
+      $http.post('api/clis/run', obj).then((data) => {
         $scope.runOutput = data
       })
-        // logging.progress.numRuns++;
     }
 
     $scope.editTopic = function () {
-      // if (!$scope.editedTopic.title || $scope.editedTopic.title === '') { return; }
-      // var editedTopic = $scope.allTopics[i];
-      // editedTopic.title = $scope.editedTopic.title;
-      topics.editTopic($scope.topic._id, $scope.topic).success((data) => {
+      topics.editTopic($scope.topic._id, $scope.topic).then((data) => {
         $scope.topic = data
         $scope.topicsEC.forEach((ea) => {
           if (ea._id === data._id) {
@@ -184,11 +167,9 @@ export default class AllQuestionsController {
     // FIXME hints aren't working...
     $scope.addHintToExistingQ = function () {
       $scope.questionToEdit.hints.push('')
-      // $scope.topic.questions[questionIndex].hints.push("");
     }
 
     $scope.deleteHintFromExistingQ = function (hintIndex) {
-      // $scope.topic.questions[questionIndex].hints.splice(hintIndex, 1);
       $scope.questionToEdit.hints.splice(hintIndex, 1)
     }
 
@@ -196,52 +177,16 @@ export default class AllQuestionsController {
       $scope.editor.focus()
     }
 
-    // $scope.compileCode = function() { // this is in add question, so use $scope.editor
-    //  console.log($scope.editor.getValue());
-    //  var obj = {'code': $scope.editor.getValue(),
-    //        'user': Auth.getCurrentUser(),
-    //        'questionNum': $scope.topic.questions.length // since this is a new q to be added
-    //      }
-    //  $http.post('api/clis/compile', obj).success(function(data) {
-    //    console.log('in compile code success func');
-    //    console.log(data);
-
-    //    if (data === '') {
-    //      $scope.CLOutput += 'Successfully compiled code.\n';
-    //    } else {
-    //      data.trim();
-    //      $scope.CLOutput += data;
-    //      console.log($scope.CLOutput);
-    //    }
-
-    //  })
-    // }
-
-    // $scope.runCode = function() { // this is in add question, so use $scope.editor
-    //  var obj = {'className': 'Test',
-    //         'user': Auth.getCurrentUser()
-    //      }
-
-    //  $http.post('api/clis/run', obj).success(function(data) {
-    //    console.log('in run code success function');
-    //    console.log(data);
-    //    $scope.CLOutput += data;
-    //  })
-    // }
     $scope.populateEditQForm = function (index) {
       // Set up an editor for the question
       const editor = ace.edit(`editor${index}`)
-      // editor.getSession().setUseWorker(false);
-    // Editor part
+      // Editor part
       const _session = editor.getSession()
       const _renderer = editor.renderer
 
-    // Options
-    // _editor.setReadOnly(false);
-    // _session.setUndoManager(new ace.UndoManager());
+      // Options
       _renderer.setShowGutter(true)
-      editor.setTheme('ace/theme/crimson_editor')
-    // _session.setMode('ace/mode/java');
+      editor.setTheme('ace/theme/tomorrow')
       _session.setMode('ace/mode/c_cpp')
       $scope.editors[index] = editor
 
@@ -268,30 +213,18 @@ export default class AllQuestionsController {
 
     $scope.aceLoaded = function (_editor) {
       // Editor part
-      // _editor.getSession().setUseWorker(false);
       const _session = _editor.getSession()
       const _renderer = _editor.renderer
 
       // Options
-      // _editor.setReadOnly(false);
-      // _session.setUndoManager(new ace.UndoManager());
       _renderer.setShowGutter(true)
-      _editor.setTheme('ace/theme/crimson_editor')
-      // _session.setMode('ace/mode/java');
+      _editor.setTheme('ace/theme/tomorrow')
       _session.setMode('ace/mode/c_cpp')
 
-      // _editor.setValue($scope.topic.questions[$scope.questionIndex].code, -1) // -1 is document start
       $scope.editor = _editor
-      // _editor.focus();
 
       console.log('aceloaded func')
       console.log($scope.editor)
-      // Events
-      // _editor.on('changeSession', function(){ //...
-      // });
-      // _session.on("change", function(){
-      // //  alert(_session.getValue());
-      // });
     }
 
     $scope.addQuestion = function () {
@@ -304,7 +237,7 @@ export default class AllQuestionsController {
         expectedOutput: $scope.newQuestion.expectedOutput,
         hints: $scope.newQuestion.hints,
         tags: $scope.newQuestion.tags
-      }).success((question) => {
+      }).then((question) => {
         $scope.questions.push(question)
       })
 
@@ -315,7 +248,7 @@ export default class AllQuestionsController {
     // FIXME: strange error
     $scope.importQuestions = function () {
       if ($scope.questionsToImport === '') { return }
-      questions.import($scope.questionsToImport).success((newQuestions) => {
+      questions.import($scope.questionsToImport).then((newQuestions) => {
         for (let i = 0; i < newQuestions.length; i++) {
           $scope.questions.push(newQuestions[i])
         }
@@ -328,31 +261,45 @@ export default class AllQuestionsController {
     // does this automatically propogate to the topic being updated??
     $scope.editQ = function (questionIndex) {
       $scope.questionToEdit.code = $scope.editors[questionIndex].getValue()
-      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).success(() => {
-          // update scope array of questions?
+      questions.editQuestion($scope.questionToEdit._id, $scope.questionToEdit).then(() => {
+        // update scope array of questions?
         $scope.questionToEdit = {}
         $scope.questionToEdit.hints = []
       })
     }
 
-    $scope.deleteQuestion = function (index) {
-      // console.log(index);
-      // console.log($scope.topic.questions);
+    $scope.deleteQuestion = (index) => {
       const conf = window.confirm('Are you sure you want to permanantly delete that question?')
       if (conf === true) {
-        questions.delete($scope.questions[index], $scope.questions[index]._id)// .success(function(question) {
-        // why does this success function not get called?
-        // console.log('successfully deleted question: ' + question);
-        // });
+        questions.delete($scope.questions[index], $scope.questions[index]._id)
         console.log('deleted q in edit content controller now')
-        // $scope.topic.questions[index].splice(index, 1);
         $scope.questions.splice(index, 1)
       }
-
-      // $http.delete('/api/questions/' + id);
     }
 
-    $scope.changeQTopic = function (question, index, newTopic) {
+    $scope.duplicateQuestion = (index) => {
+      console.log('duplicateQuestion')
+      const oq = $scope.questions[index]
+      let newQuestion = {
+        instructions: oq.instructions,
+        code: oq.code,
+        className: oq.className,
+        readOnly: oq.readOnly,
+        hints: oq.hints,
+        tags: oq.tags,
+        expectedOutput: oq.expectedOutput,
+        codeEvaluator: oq.codeEvaluator
+      }
+      questions.create(newQuestion).then((question) => {
+        console.log('duplicate question')
+        console.log(question)
+      })
+      /* questions.delete($scope.questions[index], $scope.questions[index]._id)
+      console.log('deleted q in edit content controller now')
+      $scope.questions.splice(index, 1) */
+    }
+
+    $scope.changeQTopic = (question, index, newTopic) => {
       // if no new topic, remove from current topic
       if (newTopic === null) {
         if ($scope.getQTopic(question._id)) {
@@ -369,18 +316,15 @@ export default class AllQuestionsController {
       }
       if (newTopic !== null) {
         // add to new topic
-        topics.addQuestion(newTopic._id, question).success((question) => {
+        topics.addQuestion(newTopic._id, question).then((question) => {
           newTopic.questions.push(question)
           console.log('added q to new topic')
           const message = "You have successfully changed the question's topic!"
-          Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
+          console.log(Flash)
+          Flash('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
         })
       }
     }
-
-    $scope.$on('$destroy', () => {
-      socket.unsyncUpdates('question')
-    })
 
     // / trying question reordering http://stackoverflow.com/a/27709541
     $scope.moveQUp = function (index) {
@@ -408,4 +352,4 @@ export default class AllQuestionsController {
   }
 }
 
-AllQuestionsController.$inject = ['$scope', '$http', Auth, User, socket, topics, questions, 'questionPromiseEC', 'topicPromiseEC', '$location', Flash]
+AllQuestionsController.$inject = ['$scope', '$http', 'Auth', 'User', 'Topics', 'Questions', 'questionPromiseEC', 'topicPromiseEC', '$location', 'flash']

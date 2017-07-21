@@ -9,12 +9,6 @@ module.exports = {
   DOMAIN: 'https://192.168.2.100',
   SESSION_SECRET: 'its110-secret',
 
-  FACEBOOK_ID: 'app-id',
-  FACEBOOK_SECRET: 'secret',
-
-  GOOGLE_ID: 'app-id',
-  GOOGLE_SECRET: 'secret',
-
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''
 }
