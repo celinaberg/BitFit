@@ -1,15 +1,5 @@
-export default class NavBarController {
-  constructor ($scope, $location, Auth) {
-    $scope.menu = [
-      {
-        title: 'Home',
-        link: '/'
-      },
-      {
-        title: 'Lessons',
-        link: '/lessons'
-      }]
-
+class NavBarController {
+  constructor ($scope, $location, Auth, $window) {
     $scope.navbarCollapsed = true
     $scope.isLoggedIn = Auth.isLoggedIn
     $scope.isAdmin = Auth.isAdmin
@@ -17,7 +7,7 @@ export default class NavBarController {
 
     $scope.logout = function () {
       Auth.logout()
-      $location.path('/')
+      $window.location.href = '/auth/cwl/logout'
     }
 
     $scope.isActive = function (route) {
@@ -28,4 +18,6 @@ export default class NavBarController {
   }
 }
 
-NavBarController.$inject = ['$scope', '$location', 'Auth']
+NavBarController.$inject = ['$scope', '$location', 'Auth', '$window']
+
+module.exports = NavBarController

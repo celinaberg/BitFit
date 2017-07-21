@@ -2,11 +2,11 @@
  * App-wide Styles
  */
 
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+
+body {
+  padding-top: 50px;
 }
 
 .navbar-inverse {

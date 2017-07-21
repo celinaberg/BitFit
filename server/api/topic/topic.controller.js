@@ -11,20 +11,6 @@ exports.addQuestion = function (req, res) {
 
    // express's body parser middleware populates body for me
 
-  /* var query = Topic.findById(req.params.id);
-
-  query.exec(function (err, topic){
-    if (err) { return handleError(err); }
-    if (!topic) { return next(new Error("can't find post")); }
-
-    question.topic = topic;
-    //req.post = post;
-    //return next();
-  });
-*/
-
-  // question.topic = req.topic; // this is the problem line cuz there's no topic
-
   // if question already exists, only add it to topic
   Question.findById(req.body._id, (err, question) => {
     if (err) { return handleError(res, err) }
@@ -69,7 +55,6 @@ exports.deleteQuestion = function (req, res) {
     if (err) { return handleError(res, err) }
     if (!topic) { return res.send(404) }
 
-    // var doc = topic.questions.id(question._id).remove();
     topic.questions.pull(question._id)
     topic.save((err) => {
       if (err) return handleError(err)
@@ -80,19 +65,6 @@ exports.deleteQuestion = function (req, res) {
 
 // Get list of topics
 exports.index = function (req, res) {
-  // Topic.find(function (err, topics) {
-    // if(err) { return handleError(res, err); }
-    /* topics.forEach(function(ea) {
-      ea.populate('questions', function(err, topic) {
-        if (err) { return handlError(res, err) }
-        // what do i do with the topic?
-        console.log('in populate success func');
-        console.log(topic.questions);
-      });
-      //console.log('in foreach');
-      //console.log(ea);
-    });
-*/
   Topic.find().populate('topic.questions').exec(function (err, topics) {
     if (err) {
       res.status(500)
@@ -104,7 +76,6 @@ exports.index = function (req, res) {
 
 // Get a single topic
 exports.show = function (req, res) {
-  // Topic.findById(req.params.id, function (err, topic) {
   Topic.findOne({ title: req.params.title }, (err, topic) => {
     if (err) { return handleError(res, err) }
     if (!topic) { return res.send(404) }
@@ -120,7 +91,7 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
   Topic.create(req.body, (err, topic) => {
     if (err) { return handleError(res, err) }
-    return res.json(201, topic)
+    return res.status(201).json(topic)
   })
 }
 
@@ -147,7 +118,7 @@ exports.update = function (req, res) {
         }
         console.log('looks like populate was successful?')
         console.log(topic)
-        return res.json(200, topic)
+        return res.status(200).json(topic)
       })
     })
   })
@@ -166,5 +137,5 @@ exports.destroy = function (req, res) {
 }
 
 function handleError (res, err) {
-  return res.send(500, err)
+  return res.status(500).send(err)
 }

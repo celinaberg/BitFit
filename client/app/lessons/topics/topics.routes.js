@@ -10,10 +10,10 @@ export default function routes ($stateProvider) {
       controller: 'TopicsCtrl',
       authenticate: true,
       resolve: {
-        topic: ['$stateParams', 'topics', function ($stateParams, topics) { // gets current topic before controller loads
+        topic: ['$stateParams', 'Topics', function ($stateParams, topics) { // gets current topic before controller loads
           return topics.get($stateParams.id)
         }],
-        topicPromiseTC: ['topics', function (topics) { // gets all the topics before controller loads
+        topicPromiseTC: ['Topics', function (topics) { // gets all the topics before controller loads
           return topics.getAll()
         }]
       }
