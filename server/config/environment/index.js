@@ -1,11 +1,11 @@
 const path = require('path')
 const _ = require('lodash')
 
-const environment = require(`./${process.env.NODE_ENV}.js`)
+const development = require(`./development`)
 
 // All configurations will extend these options
 // ============================================
-const all = {
+let all = {
   env: process.env.NODE_ENV,
 
   // Root path of server
@@ -44,6 +44,10 @@ const all = {
   }
 }
 
+if (all.env === 'development') {
+  all = _.merge(all, development)
+}
+
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(all, environment || {})
+module.exports = all
