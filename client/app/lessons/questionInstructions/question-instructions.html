@@ -15,9 +15,10 @@
     <br>
     <div ng-bind-html="q.instructions"></div>
 
-    <ul ng-show="hintRequested()" ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
-      <li><strong>Hint:</strong>
-        <div class="tab" style="white-space:pre-wrap;" ng-bind-html="hint"></div>
+    <ul ng-show="hintRequested()">
+      <li ng-repeat="hint in q.hints | limitTo: status[qInfo.currentQuestion - 1].hintIndex + 1">
+        <strong>Hint:</strong>
+        <span class="tab" style="white-space:pre-wrap;" ng-bind-html="hint"></span>
       </li>
     </ul>
     <p ng-if="hintRequested() && status[qInfo.currentQuestion - 1].hintIndex >= q.hints.length">{{noMoreHints}}</p>
@@ -45,20 +46,15 @@
               <button type="button" class="btn btn-success" ng-click="runCode()"><span class="fa fa-play"></span> Run Code</button>
             </div>
           </span>
-          <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
-  							Check My Answer <span class="fa fa-send"></span>
-  						</button>
+          <button type="button" class="btn btn-primary" ng-click="checkAnswer()">Check My Answer <span class="fa fa-send"></span></button>
         </div>
 
         <!-- show for questions requiring students to guess the output of provided code -->
         <div ng-show="q.readOnly">
           <form>
-            <label for="expectedOutputInputBox">
-			    				Please enter your answer here:
-		    				</label>
+            <label for="expectedOutputInputBox">Please enter your answer here:</label>
             <div class="form-group">
-              <textarea class="form-control" rows="3" id="expectedOutputInputBox" ng-model="output.expectedOutput">
-		    					</textarea>
+              <textarea class="form-control" rows="3" id="expectedOutputInputBox" ng-model="output.expectedOutput"></textarea>
             </div>
           </form>
         </div>
