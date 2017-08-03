@@ -1,7 +1,6 @@
-import angular from 'angular'
-
 export default class AdminSidebarController {
-  constructor (topics) {
+  constructor ($scope, $location, topics) {
+    console.log('sidebar topics: ', topics)
     $scope.topics = topics
 
     $scope.isActive = function (id) {
@@ -10,4 +9,4 @@ export default class AdminSidebarController {
   }
 }
 
-AdminSidebarController.$inject = ['topics']
+AdminSidebarController.$inject = ['$scope', '$location', 'topics']

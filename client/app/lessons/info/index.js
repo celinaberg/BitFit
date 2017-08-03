@@ -4,5 +4,5 @@ import template from './info.html'
 
 export default angular.module('bitfit.lessons.info', [])
   .directive('info', () => ({
-    template,
+    template
   })).name

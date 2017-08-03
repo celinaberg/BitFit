@@ -13,8 +13,9 @@ import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/mode-c_cpp'
 import 'ace-builds/src-noconflict/theme-tomorrow'
 import 'angular-ui-ace'
+import adminSidebar from '../adminSidebar'
 
-export default angular.module('bitfit.admin.all-questions', [NavBar, Topics, User, Auth, 'flash'])
+export default angular.module('bitfit.admin.all-questions', [NavBar, Topics, User, Auth, 'flash', adminSidebar])
   .config(routing)
   .controller('AllQuestionsCtrl', AllQuestionsController)
   .name
