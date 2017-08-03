@@ -1,6 +1,5 @@
 export default class AdminSidebarController {
   constructor ($scope, $location, Topics) {
-    console.log('in sb ctr')
     Topics.getAll().then((lessons) => {
       $scope.lessons = lessons
     })
