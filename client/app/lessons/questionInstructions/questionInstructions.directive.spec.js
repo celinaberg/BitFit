@@ -4,7 +4,7 @@ import angular from 'angular'
 
 describe('Directive: questionInstructions', () => {
   // load the directive's module and view
-  beforeEach(module('its110App'))
+  beforeEach(module('bitfit.lessons.instructions'))
   beforeEach(module('app/lessons/questionInstructions/question-instructions.html'))
 
   let element,
