@@ -2,19 +2,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <!-- sidebar content -->
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
-        <!-- put ng-repeat on here to nest menus for multiple q's per week -->
-        <li><a ng-href="/admin/allQuestions">Manage all Questions</a></li>
-        <li><a ng-href="/admin/logger">Logger</a></li>
-        <li class="active"><a ng-href="/admin">Add a Topic</a></li>
-        <li><span class="topics-to-edit">Click a Topic to Edit</span></li>
-        <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
-          <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a>
-        </li>
-      </ul>
-    </div>
+    <adminsidebar></adminsidebar>
 
     <div class="col-sm-9 col-md-10">
       <h2>Users</h2>

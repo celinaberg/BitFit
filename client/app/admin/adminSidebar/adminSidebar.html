@@ -1,0 +1,12 @@
+<div class="col-sm-3 col-md-2 sidebar">
+  <ul class="nav nav-sidebar">
+    <li><a ng-href="/admin/users">Users</a></li>
+    <li><a ng-href="/admin/logger">Logger</a></li>
+    <li><a ng-href="/admin/allQuestions">All Questions</a></li>
+    <li><a ng-href="/admin">Add a Lesson</a></li>
+    <li><span class="topics-to-edit">Lessons</span></li>
+    <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
+      <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a>
+    </li>
+  </ul>
+</div>

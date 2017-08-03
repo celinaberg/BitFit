@@ -7,8 +7,9 @@ import UsersController from './users.controller'
 
 import Topics from '../../../components/topics/topics.service'
 import NavBar from '../../../components/navbar'
+import adminSidebar from '../adminSidebar'
 
-export default angular.module('bitfit.admin.users', [Topics, NavBar, Auth, User])
+export default angular.module('bitfit.admin.users', [Topics, NavBar, Auth, User, adminSidebar])
   .config(routing)
   .controller('UsersCtrl', UsersController)
   .name
