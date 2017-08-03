@@ -32,17 +32,19 @@
       <div class="col-sm-12 vcenter">
         <!-- show for questions requiring student to write code -->
         <hr>
-        <div ng-hide="q.readOnly" class="form-inline pt-2">
-          <div class="form-group">
-            <div class="input-group" style="width: 300px;">
-              <input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
-              <span class="input-group-addon" id="basic-addon">.c</span>
+        <div class="form-inline pt-2">
+          <span ng-hide="q.readOnly">
+            <div class="form-group">
+              <div class="input-group" style="width: 300px;">
+                <input type="text" class="form-control" placeholder="YourCFile" id="javaFile" aria-describedby="basic-addon" ng-model="output.className">
+                <span class="input-group-addon" id="basic-addon">.c</span>
+              </div>
             </div>
-          </div>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-warning" ng-click="compileCode()"><span class="fa fa-flash"></span> Compile Code</button>
-            <button type="button" class="btn btn-success" ng-click="runCode()"><span class="fa fa-play"></span> Run Code</button>
-          </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-warning" ng-click="compileCode()"><span class="fa fa-flash"></span> Compile Code</button>
+              <button type="button" class="btn btn-success" ng-click="runCode()"><span class="fa fa-play"></span> Run Code</button>
+            </div>
+          </span>
           <button type="button" class="btn btn-primary" ng-click="checkAnswer()">
   							Check My Answer <span class="fa fa-send"></span>
   						</button>

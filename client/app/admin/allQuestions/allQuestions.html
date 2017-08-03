@@ -14,7 +14,7 @@
         <li ng-repeat="t in topicsEC" ng-class="{active: isActive(t._id)}">
           <!--<a ng-show="ng-class=active"-->
           <!-- <a ng-href="admin/allQuestions/{{t._id}}">{{t.title}}</a>  -->
-          <a ng-href="admin/editContent/{{t.title}}">{{t.title}}</a>
+          <a ng-href="admin/editContent/{{t._id}}">{{t.title}}</a>
         </li>
       </ul>
     </div>

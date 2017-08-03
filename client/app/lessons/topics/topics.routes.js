@@ -5,7 +5,7 @@ routes.$inject = ['$stateProvider']
 export default function routes ($stateProvider) {
   $stateProvider
     .state('topics', {
-      url: '/lessons/topics/{id}',
+      url: '/lessons/{id}',
       template: html,
       controller: 'TopicsCtrl',
       authenticate: true,
