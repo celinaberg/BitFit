@@ -5,8 +5,8 @@
     <li><a ng-href="/admin/allQuestions">All Questions</a></li>
     <li><a ng-href="/admin">Add Lesson</a></li>
     <li><span class="topics-to-edit">Lessons</span></li>
-    <li ng-repeat="topic in topics" ng-class="{active: isActive(topic._id)}">
-      <a ng-href="admin/editContent/{{topic._id}}">{{topic.title}}</a>
+    <li ng-repeat="lesson in lessons" ng-class="{active: isActive(lesson._id)}">
+      <a ng-href="admin/editContent/{{lesson._id}}">{{lesson.title}}</a>
     </li>
   </ul>
 </div>

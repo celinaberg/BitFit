@@ -1,7 +1,9 @@
 export default class AdminSidebarController {
-  constructor ($scope, $location, topics) {
-    console.log('sidebar topics: ', topics)
-    $scope.topics = topics
+  constructor ($scope, $location, Topics) {
+    console.log('in sb ctr')
+    Topics.getAll().then((lessons) => {
+      $scope.lessons = lessons
+    })
 
     $scope.isActive = function (id) {
       return (`/lessons/topics/${id}`) === $location.path()
@@ -9,4 +11,4 @@ export default class AdminSidebarController {
   }
 }
 
-AdminSidebarController.$inject = ['$scope', '$location', 'topics']
+AdminSidebarController.$inject = ['$scope', '$location', 'Topics']
