@@ -6,48 +6,20 @@
 
     <!-- main content -->
     <div class="col-sm-9 col-md-10 main">
-      <h2 class="page-header">Add a New Topic&nbsp;&nbsp;<small><a href="#users">Manage Users</a></small></h2>
+      <h2 class="page-header">New Lesson</h2>
 
-      <p>Click the links at left to edit a topic</p>
-
-      <div class="addTopicForm">
-        <h3>New Topic</h3>
+      <div>
         <form ng-submit="addTopic()">
           <div class="form-group">
-            <label for="inputTopicTitle">Topic Title (will be displayed as a clickable link in student sidebar)</label>
+            <label for="inputTopicTitle">Lesson Title</label>
             <input type="text" ng-model="newTopic.topicTitle" class="form-control" id="inputTopicTitle" placeholder="Title">
           </div>
           <div class="form-group">
             <label for="inputBackground">Topic Background</label>
             <text-angular ng-model="newTopic.topicBackground" placeholder="Add topic background info here"></text-angular>
           </div>
-          <button type="submit" class="btn btn-success">Add Topic</button>
+          <button type="submit" class="btn btn-success">Add Lesson</button>
         </form>
-      </div>
-
-      <a id="users"></a>
-      <h2>Manage Users</h2>
-      <p>Only Admin users can delete users and view a complete list of all users.</p>
-
-      <button type="button" class="btn btn-info" ng-model="collapseUsers" ng-click="collapseUsers=!collapseUsers" data-target="#showUsers">Show/Hide All Users</button><br>
-      <div id="showUsers" ng-show="collapseUsers">
-        <ul class="list-group">
-          <li class="list-group-item" ng-repeat="user in users">
-            <strong>{{user.displayName}}</strong><br>
-            <span class="text-muted">CWL: {{user.uid}}</span>
-            <span>&nbsp;</span>
-            <span class="text-muted">Student #: {{user.studentNumber}}</span>
-            <span>&nbsp;</span>
-            <span class="text-muted">First Name: {{user.firstName}}</span>
-            <span>&nbsp;</span>
-            <span class="text-muted">Last Name: {{user.lastName}}</span>
-            <span>&nbsp;</span>
-            <span class="text-muted">Role: {{user.role}}</span>
-            <span>&nbsp;</span>
-            <span class="text-muted">Account ID: {{user._id}}</span>
-            <a ng-click="delete(user)" class="trash"><span class="fa fa-trash pull-right"></span></a>
-          </li>
-        </ul>
       </div>
     </div>
     <!-- end main content -->

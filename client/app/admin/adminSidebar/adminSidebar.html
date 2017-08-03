@@ -3,7 +3,7 @@
     <li><a ng-href="/admin/users">Users</a></li>
     <li><a ng-href="/admin/logger">Logger</a></li>
     <li><a ng-href="/admin/allQuestions">All Questions</a></li>
-    <li><a ng-href="/admin">Add Lesson</a></li>
+    <li><a ng-href="/admin">New Lesson</a></li>
     <li><span class="topics-to-edit">Lessons</span></li>
     <li ng-repeat="lesson in lessons" ng-class="{active: isActive(lesson._id)}">
       <a ng-href="admin/editContent/{{lesson._id}}">{{lesson.title}}</a>
