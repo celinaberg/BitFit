@@ -4,8 +4,12 @@ export default class AdminSidebarController {
       $scope.lessons = lessons
     })
 
-    $scope.isActive = function (id) {
-      return (`/lessons/topics/${id}`) === $location.path()
+    $scope.isActive = function (url) {
+      return ('/admin' + url === $location.path())
+    }
+
+    $scope.isLessonActive = function (id) {
+      return (`/admin/editContent/${id}` === $location.path())
     }
   }
 }
