@@ -163,7 +163,8 @@ export default class EditContentController {
 		console.log("controller deleteTopic");
 		topics.deleteTopic($scope.topic._id).success(function(data) {
 			const message = "Successfully deleted topic: " + $scope.topic.title; 
-			Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true); 
+			Flash.create('success', message, 1000, {class: 'flash', id: 'flash-id'}, true); 
+			$location.path('/admin');
 		});	
 	}
 
