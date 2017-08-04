@@ -221,6 +221,7 @@ export default class TopicsController {
       _editor.setTheme('ace/theme/tomorrow')
       _editor.setFontSize('11')
       _editor.setShowPrintMargin(false)
+      _editor.$blockScrolling = Infinity
       _session.setMode('ace/mode/c_cpp')
 
       $scope.editor = _editor
