@@ -91,7 +91,6 @@ export default class TopicsController {
         user: Auth.getCurrentUser()
       }
       $http.post('api/clis/run', obj).then((res) => {
-        console.log(res);
         if (typeof (res.data) === 'object') { // Likely error
           $scope.output.runOutput += $scope.handleError(res)
         } else {
@@ -160,7 +159,6 @@ export default class TopicsController {
           } else {
             $scope.output.runOutput = res.data
             // now we compare runOutput to expected output for this question
-            console.log($scope.output);
             if ($scope.output.expectedOutput.trim() === $scope.output.runOutput.trim()) {
               $scope.feedback = 'Well done!'
               logging.progress.correctAttempts++
