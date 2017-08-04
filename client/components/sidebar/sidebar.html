@@ -1,0 +1,7 @@
+<div class="col-sm-3 col-md-2 sidebar">
+  <ul class="nav nav-sidebar">
+    <li ng-repeat="lesson in lessons" ng-class="{active: isLessonActive(lesson._id)}">
+      <a ng-href="/lessons/{{lesson._id}}">{{lesson.title}}</a>
+    </li>
+  </ul>
+</div>

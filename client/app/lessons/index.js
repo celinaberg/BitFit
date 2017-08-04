@@ -11,6 +11,7 @@ import LessonsController from './lessons.controller'
 import Auth from '../../components/auth/auth.service'
 import Topics from '../../components/topics/topics.service'
 import NavBar from '../../components/navbar'
+import Sidebar from '../../components/sidebar'
 
 import 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/mode-c_cpp'
@@ -19,7 +20,7 @@ import 'angular-ui-ace'
 
 import './lessons.css'
 
-export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, info, Auth, Topics, NavBar, 'ui.ace'])
+export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, info, Auth, Topics, NavBar, 'ui.ace', Sidebar])
   .config(routing)
   .controller('LessonsCtrl', LessonsController)
   .name

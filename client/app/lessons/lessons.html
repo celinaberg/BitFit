@@ -2,19 +2,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <!-- sidebar content -->
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
-        <!-- put ng-repeat on here to nest menus for multiple q's per week -->
-        <!-- <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"> -->
-        <li ng-repeat="topic in topics" ng-class="{active: isActive(topic.title)}">
-          <!--<a ng-href="{{topic.link}}">{{topic.title}}</a> -->
-          <!-- <a ng-href="lessons/topics/{{topic._id}}">{{topic.title}}</a> -->
-          <a ng-href="lessons/{{topic._id}}">{{topic.title}}</a>
-          <!--<a ui-sref="lessons.topics.{{topic._id}}">show the child view</a>-->
-        </li>
-      </ul>
-    </div>
+    <sidebar></sidebar>
 
     <!-- main content -->
     <div class="col-sm-9 col-md-10 main">
