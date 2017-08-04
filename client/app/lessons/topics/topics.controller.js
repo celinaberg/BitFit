@@ -5,9 +5,9 @@ export default class TopicsController {
     $scope.topicsTC = topicPromiseTC
     $scope.tab = 1
 
-    if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
+    if ($stateParams.qid) {
       $scope.qInfo = {
-        currentQuestion: $location.search().q,
+        currentQuestion: $stateParams.qid,
         totalQuestions: $scope.topic.questions.length * 10
       }
     } else {
@@ -207,9 +207,8 @@ export default class TopicsController {
       $location.search('q', $scope.qInfo.currentQuestion)
     }
 
-    $scope.isActive = function (id) {
-      // this function is dependent on the URL set in topics.js
-      return (`/lessons/topics/${id}`) === $location.path()
+    $scope.isQuestionActive = function (id) {
+      return (`/lessons/${$scope.topic._id}/${id}`) === $location.path()
     }
 
     $scope.aceLoaded = function (_editor) {

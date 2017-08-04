@@ -82,10 +82,11 @@
     </div>
     <hr>
 
-    <!-- Pagination buttons -->
-    <div class="text-center">
-      <pagination total-items="qInfo.totalQuestions" ng-model="qInfo.currentQuestion" ng-change="pageChanged()"></pagination>
-    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li ng-repeat="question in topic.questions" ng-class="{active: isQuestionActive($index + 1)}"><a href="/lessons/{{topic._id}}/{{$index + 1}}">{{$index + 1}}</a></li>
+      </ul>
+    </nav>
   </div>
   <!-- end current question  -->
 </div>
