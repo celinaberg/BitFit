@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Button } from 'reactstrap';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
 import NavBar from '../../components/navbar';
+import Home from '../home';
+import Lessons from '../lessons';
+import NotFound from '../not-found';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <NavBar></NavBar>
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <Router>
+        <div>
+          <NavBar></NavBar>
+
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route path="/lessons" component={Lessons}/>
+            <Route path="/topics" component={Home}/>
+            <Route component={NotFound}/>
+          </Switch>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button color="danger">Danger!</Button>
-      </div>
+      </Router>
     );
   }
 }
