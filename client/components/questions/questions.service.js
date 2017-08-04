@@ -25,7 +25,8 @@ class Questions {
 
   import (questions) {
     return this.http.post('/api/questions/import', questions).then((data) => {
-      angular.extend(this.o.questions, data)
+      angular.extend(this.o.questions, data.data)
+      return data.data
     })
   }
 
