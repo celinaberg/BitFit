@@ -71,7 +71,7 @@ export default class TopicsController {
         questionNum: $scope.qInfo.currentQuestion
       }
       $http.post('api/clis/compile', obj).then((res) => {
-        if (res === '') {
+        if (res.data === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n'
           logging.progress.numErrorFreeCompiles++
@@ -91,7 +91,8 @@ export default class TopicsController {
         user: Auth.getCurrentUser()
       }
       $http.post('api/clis/run', obj).then((res) => {
-        if (typeof (res) === 'object') { // Likely error
+        console.log(res);
+        if (typeof (res.data) === 'object') { // Likely error
           $scope.output.runOutput += $scope.handleError(res)
         } else {
           $scope.output.runOutput = res.data
@@ -145,20 +146,21 @@ export default class TopicsController {
         $scope.output.compileOutput = 'In order to check your answer, please enter code in the code editor.\n'
         return
       }
-      $http.post('api/clis/compile', obj).then((data) => {
-        if (data === '') {
+      $http.post('api/clis/compile', obj).then((res) => {
+        if (res.data === '') {
           $scope.output.compileOutput = 'Successfully compiled code.\n'
         } else {
-          $scope.output.compileOutput = data
+          $scope.output.compileOutput = res.data
         }
 
-        $http.post('api/clis/run', obj).then((data) => {
-          if (typeof (data) === 'object') { // Likely an error
+        $http.post('api/clis/run', obj).then((res) => {
+          if (typeof (res.data) === 'object') { // Likely an error
             $scope.showComments = false
-            $scope.output.runOutput += $scope.handleError(data)
+            $scope.output.runOutput += $scope.handleError(res.data)
           } else {
-            $scope.output.runOutput = data
+            $scope.output.runOutput = res.data
             // now we compare runOutput to expected output for this question
+            console.log($scope.output);
             if ($scope.output.expectedOutput.trim() === $scope.output.runOutput.trim()) {
               $scope.feedback = 'Well done!'
               logging.progress.correctAttempts++
