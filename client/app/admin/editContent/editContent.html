@@ -11,6 +11,11 @@
       <a ng-model="editTitle" ng-click="editTitle=!editTitle" class="editTopicTitle pull-right">
 	  		<span class="fa fa-pencil"></span>Edit
 		</a>
+	  <div ng-model="editTitle" class="editTopicTitle pull-right" style="margin-right: 30px">
+	  		<button class="btn btn-danger" >
+		  		<span class="fa fa-remove"></span> Delete topic
+			</button>
+		</div>
       <h2 ng-hide="editTitle" class="page-header">{{topic.title}} <small>{{topic.questions.length}} questions</small>
 			<button class="btn btn-success" ng-click="addQ=!addQ">
 		  		<span class="fa fa-plus"></span> Add question
