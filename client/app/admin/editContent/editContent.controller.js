@@ -158,6 +158,14 @@ export default class EditContentController {
         Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
       })
     }
+	
+	$scope.deleteTopic = function(){
+		console.log("controller deleteTopic");
+		topics.deleteTopic($scope.topic._id).success(function(data) {
+			const message = "Successfully deleted topic: " + $scope.topic.title; 
+			Flash.create('success', message, 3500, {class: 'flash', id: 'flash-id'}, true); 
+		});	
+	}
 
     $scope.addHintToNewQ = function () {
       $scope.newQuestion.hints.push('')

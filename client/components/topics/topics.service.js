@@ -65,6 +65,14 @@ class Topics {
       })
     })
   }
+  
+  deleteTopic: function(id) {
+	console.log("topics.service deleteTopic");
+    return $http.delete('/api/topics/' + id).success(function(data) { 
+		console.log('successfully deleted topic');
+		console.log(data);
+    });
+  }
 }
 
 Topics.$inject = ['$http']
