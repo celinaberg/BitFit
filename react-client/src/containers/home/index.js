@@ -22,7 +22,7 @@ class Home extends Component {
         </div>
         <footer className="footer">
           <div className="container">
-            <p>BitFit on <a href="https://github.com/celinaberg/BitFit" target="_blank">GitHub</a></p>
+            <p>BitFit on <a href="https://github.com/celinaberg/BitFit" target="_blank" rel="noopener noreferrer">GitHub</a></p>
           </div>
         </footer>
       </div>
