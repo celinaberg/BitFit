@@ -70,13 +70,13 @@ export default class TopicsController {
         user: Auth.getCurrentUser(),
         questionNum: $scope.qInfo.currentQuestion
       }
-      $http.post('api/clis/compile', obj).then((data) => {
-        if (data === '') {
+      $http.post('api/clis/compile', obj).then((res) => {
+        if (res === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n'
           logging.progress.numErrorFreeCompiles++
         } else {
-          $scope.output.compileOutput = data
+          $scope.output.compileOutput = res.data
         }
       })
       logging.progress.numCompiles++
@@ -90,11 +90,11 @@ export default class TopicsController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).then((data) => {
-        if (typeof (data) === 'object') { // Likely error
-          $scope.output.runOutput += $scope.handleError(data)
+      $http.post('api/clis/run', obj).then((res) => {
+        if (typeof (res) === 'object') { // Likely error
+          $scope.output.runOutput += $scope.handleError(res)
         } else {
-          $scope.output.runOutput = data
+          $scope.output.runOutput = res.data
         }
       })
       logging.progress.numRuns++
