@@ -3,6 +3,7 @@ import uiRouter from '@uirouter/angularjs'
 import topics from './topics'
 import questionInstructions from './questionInstructions'
 import background from './background'
+import info from './info'
 
 import routing from './lessons.routes'
 import LessonsController from './lessons.controller'
@@ -18,7 +19,7 @@ import 'angular-ui-ace'
 
 import './lessons.css'
 
-export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, Auth, Topics, NavBar, 'ui.ace'])
+export default angular.module('bitfit.lessons', [uiRouter, topics, questionInstructions, background, info, Auth, Topics, NavBar, 'ui.ace'])
   .config(routing)
   .controller('LessonsCtrl', LessonsController)
   .name

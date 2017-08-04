@@ -4,7 +4,7 @@ import angular from 'angular'
 
 describe('Directive: background', () => {
   // load the directive's module and view
-  beforeEach(module('its110App'))
+  beforeEach(module('bitfit.lessons.instructions'))
   beforeEach(module('app/lessons/background/background.html'))
 
   let element,

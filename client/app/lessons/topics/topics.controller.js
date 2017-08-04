@@ -5,9 +5,9 @@ export default class TopicsController {
     $scope.topicsTC = topicPromiseTC
     $scope.tab = 1
 
-    if ($location.search() !== {} && $scope.topic.questions.length >= $location.search().q) {
+    if ($stateParams.qid) {
       $scope.qInfo = {
-        currentQuestion: $location.search().q,
+        currentQuestion: $stateParams.qid,
         totalQuestions: $scope.topic.questions.length * 10
       }
     } else {
@@ -70,13 +70,13 @@ export default class TopicsController {
         user: Auth.getCurrentUser(),
         questionNum: $scope.qInfo.currentQuestion
       }
-      $http.post('api/clis/compile', obj).then((data) => {
-        if (data === '') {
+      $http.post('api/clis/compile', obj).then((res) => {
+        if (res === '') {
           // FIXME how to check if no file was actually compiled?
           $scope.output.compileOutput = 'Successfully compiled code.\n'
           logging.progress.numErrorFreeCompiles++
         } else {
-          $scope.output.compileOutput = data
+          $scope.output.compileOutput = res.data
         }
       })
       logging.progress.numCompiles++
@@ -90,11 +90,11 @@ export default class TopicsController {
       const obj = { fileName,
         user: Auth.getCurrentUser()
       }
-      $http.post('api/clis/run', obj).then((data) => {
-        if (typeof (data) === 'object') { // Likely error
-          $scope.output.runOutput += $scope.handleError(data)
+      $http.post('api/clis/run', obj).then((res) => {
+        if (typeof (res) === 'object') { // Likely error
+          $scope.output.runOutput += $scope.handleError(res)
         } else {
-          $scope.output.runOutput = data
+          $scope.output.runOutput = res.data
         }
       })
       logging.progress.numRuns++
@@ -207,9 +207,8 @@ export default class TopicsController {
       $location.search('q', $scope.qInfo.currentQuestion)
     }
 
-    $scope.isActive = function (id) {
-      // this function is dependent on the URL set in topics.js
-      return (`/lessons/topics/${id}`) === $location.path()
+    $scope.isQuestionActive = function (id) {
+      return (`/lessons/${$scope.topic._id}/${id}`) === $location.path()
     }
 
     $scope.aceLoaded = function (_editor) {
@@ -222,6 +221,7 @@ export default class TopicsController {
       _editor.setTheme('ace/theme/tomorrow')
       _editor.setFontSize('11')
       _editor.setShowPrintMargin(false)
+      _editor.$blockScrolling = Infinity
       _session.setMode('ace/mode/c_cpp')
 
       $scope.editor = _editor

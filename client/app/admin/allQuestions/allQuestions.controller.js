@@ -1,4 +1,5 @@
 import angular from 'angular'
+import ace from 'angular-ui-ace'
 
 export default class AllQuestionsController {
   constructor ($scope, $http, Auth, User, topics, questions, questionPromiseEC, topicPromiseEC, $location, Flash) {
@@ -249,11 +250,11 @@ export default class AllQuestionsController {
     $scope.importQuestions = function () {
       if ($scope.questionsToImport === '') { return }
       questions.import($scope.questionsToImport).then((newQuestions) => {
-        for (let i = 0; i < newQuestions.length; i++) {
-          $scope.questions.push(newQuestions[i])
+        for (let i = 0; i < newQuestions.ops.length; i++) {
+          $scope.questions.push(newQuestions.ops[i])
         }
         const message = 'You have successfully imported new questions! Scroll to the bottom of the page to see.'
-        Flash.create('success', message, 3500, { class: 'flash', id: 'flash-id' }, true)
+        window.alert(message)
       })
       $scope.questionsToImport = ''
     }

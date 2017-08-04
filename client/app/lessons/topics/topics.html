@@ -1,5 +1,4 @@
-<div navbar>
-</div>
+<navbar></navbar>
 
 <div class="container-fluid">
   <div class="row">
@@ -9,21 +8,14 @@
         <!-- put ng-repeat on here to nest menus for multiple q's per week -->
         <li ng-repeat="topic in topicsTC" ng-class="{active: isActive(topic.title)}">
           <!-- <a ng-href="lessons/topics/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a>  -->
-          <a ng-href="lessons/topics/{{topic.title}}" ng-click="topicNav()">{{topic.title}}</a>
+          <a ng-href="lessons/{{topic._id}}" ng-click="topicNav()">{{topic.title}}</a>
         </li>
       </ul>
-
-      <!-- user's progress content -->
-      <!-- <user-progress></user-progress> -->
     </div>
-
 
     <!-- main content -->
     <div class="col-sm-9 col-md-10 main">
       <h1 class="page-header">{{topic.title}}</h1>
-      <!-- <div class="row"> -->
-      <!-- Left Content -->
-      <!-- <div class="col-sm-5"> -->
 
       <!-- Tabs Content-->
       <section>
@@ -42,19 +34,6 @@
         <background ng-show="isSet(2)"></background>
       </section>
     </div>
-
-    <!--Right Content -->
-    <!--
-				<div class="col-sm-4">
-					<div ng-model="code" ui-ace="{ onLoad: aceLoaded }"></div>
-					<div class="editor-btns">
-						<button class="btn btn-primary "><span class="fa fa-play"></span> Run Code</button>
-						<a href="#" class="btn btn-warning "><span class="fa fa-flag"></span> I'm stuck!</a>
-						<a href="#" class="btn btn-danger " ng-click="reset()"><span class="fa fa-repeat"></span> Reset</a>
-
-					</div>
-				</div>
-				-->
   </div>
 </div>
 </div>

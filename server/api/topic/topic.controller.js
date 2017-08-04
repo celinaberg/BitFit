@@ -76,7 +76,7 @@ exports.index = function (req, res) {
 
 // Get a single topic
 exports.show = function (req, res) {
-  Topic.findOne({ title: req.params.title }, (err, topic) => {
+  Topic.findById(req.params.id, (err, topic) => {
     if (err) { return handleError(res, err) }
     if (!topic) { return res.send(404) }
 

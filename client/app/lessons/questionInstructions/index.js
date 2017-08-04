@@ -2,8 +2,9 @@ import angular from 'angular'
 
 import template from './question-instructions.html'
 import './questionInstructions.css'
+import angularUiBootstrap from 'angular-ui-bootstrap'
 
-export default angular.module('bitfit.lessons.instructions', [])
+export default angular.module('bitfit.lessons.instructions', [angularUiBootstrap])
   .directive('questionInstructions', () => ({
     template,
     restrict: 'EA',
