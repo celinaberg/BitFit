@@ -8,11 +8,6 @@ export default function routes ($stateProvider) {
       url: '/admin/users',
       template,
       controller: 'UsersCtrl',
-      authenticate: true,
-      resolve: {
-        topicPromiseAC: ['Topics', function (topics) { // gets all the topics before controller loads
-          return topics.getAll()
-        }]
-      }
+      authenticate: true
     })
 }
