@@ -6,10 +6,6 @@ import { connect } from 'react-redux';
 import { toggleNavBar } from '../../actions';
 
 class NavBar extends Component {
-  toggle = () => {
-    this.props.dispatch(toggleNavBar());
-  }
-
   render() {
     let links = null;
     if(this.props.loggedIn){
@@ -26,7 +22,7 @@ class NavBar extends Component {
     }
     return (
       <Navbar color="faded" light toggleable>
-        <NavbarToggler right onClick={this.toggle} />
+        <NavbarToggler right onClick={this.props.onToggleClick} />
         <NavbarBrand tag={Link} to="/">BitFit</NavbarBrand>
         <Collapse isOpen={this.props.isOpen} navbar>
           {links}
@@ -44,10 +40,20 @@ class NavBar extends Component {
   }
 }
 
-export default connect((store) => {
+const mapStateToProps = state => {
   return {
-    isOpen: store.navbar.isOpen,
-    loggedIn: store.user.loggedIn,
-    name: store.user.name
+    isOpen: state.navbar.isOpen,
+    loggedIn: state.user.loggedIn,
+    name: state.user.name
   }
-})(NavBar);
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleClick: () => {
+      dispatch(toggleNavBar())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
