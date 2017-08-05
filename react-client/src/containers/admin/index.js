@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import AdminSidebar from '../../components/admin-sidebar';
+import { Switch, Route } from 'react-router-dom'
+import ManageUsers from '../manage-users';
+import NewLesson from '../new-lesson';
 
 class Admin extends Component {
   render() {
-    console.log("in admin");
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to Admin</h2>
+      <div className="container-fluid">
+        <div className="row">
+          <AdminSidebar/>
+
+          <Switch>
+            <Route path="/admin/users" component={ManageUsers}/>
+            <Route path="/admin/lessons/new" component={NewLesson}/>
+          </Switch>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button color="danger">Danger!</Button>
       </div>
     );
   }

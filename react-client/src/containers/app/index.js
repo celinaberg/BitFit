@@ -12,7 +12,7 @@ import Home from '../home';
 import EnsureLogin from '../ensure-login';
 import EnsureInstructor from '../ensure-instructor';
 import Lessons from '../lessons';
-import Admin from '../lessons'
+import Admin from '../admin'
 import NotFound from '../not-found';
 
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <NavBar></NavBar>
+            <NavBar/>
 
             <Switch>
               <Route exact path="/" component={Home}/>
