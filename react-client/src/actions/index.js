@@ -25,3 +25,10 @@ export const toggleNavBar = () => {
     type: 'TOGGLE_NAVBAR'
   }
 }
+
+export const fetchUsers = () => {
+  return {
+    type: 'FETCH_USERS',
+    payload: axios.get('https://localhost:4343/api/users')
+  }
+}
