@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 
-class Lessons extends Component {
+class Admin extends Component {
   render() {
+    console.log("in admin");
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Welcome to Lessons</h2>
+          <h2>Welcome to Admin</h2>
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
@@ -17,4 +18,4 @@ class Lessons extends Component {
   }
 }
 
-export default Lessons;
+export default Admin;

@@ -9,7 +9,10 @@ import {
 } from 'react-router-dom'
 import NavBar from '../../components/navbar';
 import Home from '../home';
+import EnsureLogin from '../ensure-login';
+import EnsureInstructor from '../ensure-instructor';
 import Lessons from '../lessons';
+import Admin from '../lessons'
 import NotFound from '../not-found';
 
 class App extends Component {
@@ -22,8 +25,8 @@ class App extends Component {
 
             <Switch>
               <Route exact path="/" component={Home}/>
-              <Route path="/lessons" component={Lessons}/>
-              <Route path="/lessons" component={Home}/>
+              <EnsureLogin path="/lessons" component={Lessons} />
+              <EnsureInstructor path="/admin" component={Admin}/>
               <Route component={NotFound}/>
             </Switch>
           </div>
