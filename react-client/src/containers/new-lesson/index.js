@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 class NewLesson extends Component {
   render() {
     return (
-      <div className="col-sm-9 col-md-10 main">
+      <Col sm="9" md="10">
         <h2 className="page-header">New Lesson</h2>
 
         <div>
@@ -20,7 +20,7 @@ class NewLesson extends Component {
             <Button color="success">Add Lesson</Button>
           </Form>
         </div>
-      </div>
+      </Col>
     );
   }
 }

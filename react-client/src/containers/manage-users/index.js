@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Progress } from 'reactstrap';
+import { Col, ListGroup, ListGroupItem, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../../actions';
 
@@ -36,13 +36,13 @@ class ManageUsers extends Component {
       })
     }
     return (
-      <div className="col-sm-9 col-md-10 main">
+      <Col sm="9" md="10">
         <h2 className="page-header">Users</h2>
 
         <ListGroup>
           {users}
         </ListGroup>
-      </div>
+      </Col>
     );
   }
 }

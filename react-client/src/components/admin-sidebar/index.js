@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './AdminSidebar.css';
-import { Nav, NavItem, NavLink, Progress } from 'reactstrap';
+import { Col, Nav, NavItem, NavLink, Progress } from 'reactstrap';
 import { NavLink as Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchLessons } from '../../actions';
@@ -23,7 +23,7 @@ class AdminSidebar extends Component {
       })
     }
     return (
-      <div className="col-sm-3 col-md-2 sidebar">
+      <Col sm="3" md="2" className="sidebar">
         <Nav pills vertical>
           <NavItem>
             <NavLink tag={Link} to="/admin/users">Users</NavLink>
@@ -42,7 +42,7 @@ class AdminSidebar extends Component {
           </NavItem>
           {lessons}
         </Nav>
-      </div>
+      </Col>
     );
   }
 }
