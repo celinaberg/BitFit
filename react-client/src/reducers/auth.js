@@ -1,10 +1,10 @@
 const initialState = {
-  loggedIn: false,
+  loggedIn: true,
   firstName: null,
   lastName: null,
   displayName: null,
   cwl: null,
-  role: null
+  role: "instructor"
 }
 
 const user = (state=initialState, action) => {

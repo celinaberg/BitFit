@@ -15,7 +15,7 @@ class EnsureInstructor extends Component {
 
 function mapStateToProps(state) {
   return {
-    role: state.user.role
+    role: state.auth.role
   }
 }
 

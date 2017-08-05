@@ -43,8 +43,8 @@ class NavBar extends Component {
 const mapStateToProps = state => {
   return {
     isOpen: state.navbar.isOpen,
-    loggedIn: state.user.loggedIn,
-    name: state.user.name
+    loggedIn: state.auth.loggedIn,
+    name: state.auth.name
   }
 }
 

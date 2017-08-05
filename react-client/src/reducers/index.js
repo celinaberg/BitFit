@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import lessons from './lessons'
-import user from './user'
+import auth from './auth'
 import navbar from './navbar'
 
 const reducers = combineReducers({
   lessons,
-  user,
+  auth,
   navbar
 })
 

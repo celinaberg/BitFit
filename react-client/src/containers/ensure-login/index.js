@@ -15,7 +15,7 @@ class EnsureLogin extends Component {
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.user.loggedIn
+    isLoggedIn: state.auth.loggedIn
   }
 }
 

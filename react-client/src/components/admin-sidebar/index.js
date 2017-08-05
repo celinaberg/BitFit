@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
 import './AdminSidebar.css';
+import { Nav, NavItem, NavLink } from 'reactstrap';
 import { NavLink as Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleNavBar } from '../../actions';
+import { fetchLessons } from '../../actions';
 
 class AdminSidebar extends Component {
+  componentWillMount() {
+    this.props.fetchLessons();
+  }
+
   render() {
-    let lessons = this.props.lessons.map((lesson) => (
-      <li><Link to="/admin/editContent/{lesson._id}">{lesson.title}</Link></li>
-    ))
+    let lessons = this.props.lessons.map((lesson) => {
+      let url = "/admin/lessons/" + lesson._id;
+      return <NavItem key={lesson._id}><NavLink tag={Link} to={url}>{lesson.title}</NavLink></NavItem>
+    })
     return (
       <div className="col-sm-3 col-md-2 sidebar">
-        <ul className="nav nav-sidebar">
-          <li><Link to="/admin/users">Users</Link></li>
-          <li><Link to="/admin/logger">Logger</Link></li>
-          <li><Link to="/admin/allQuestions">All Questions</Link></li>
-          <li><Link to="/admin">New Lesson</Link></li>
-          <li><span className="topics-to-edit">Lessons</span></li>
+        <Nav pills vertical>
+          <NavItem>
+            <NavLink tag={Link} to="/admin/users">Users</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/admin/logger">Logger</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/admin/questions">All Questions</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/admin/lessons/new">New Lesson</NavLink>
+          </NavItem>
+          <NavItem>
+            Lessons
+          </NavItem>
           {lessons}
-        </ul>
+        </Nav>
       </div>
     );
   }
@@ -26,14 +42,14 @@ class AdminSidebar extends Component {
 
 const mapStateToProps = state => {
   return {
-    lessons: state.lessons
+    lessons: state.lessons.lessons
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onToggleClick: () => {
-      dispatch(toggleNavBar())
+    fetchLessons : () => {
+      dispatch(fetchLessons())
     }
   }
 }
