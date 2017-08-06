@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const QuestionSchema = new Schema({
+  title: String,
   instructions: String,
   code: String,
   className: String,
