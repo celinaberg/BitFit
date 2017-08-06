@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
 import './AdminSidebar.css';
-import { Col, Nav, NavItem, NavLink, Progress } from 'reactstrap';
+import { Col, Nav, NavItem, NavLink } from 'reactstrap';
 import { NavLink as Link} from 'react-router-dom';
-import { connect } from 'react-redux';
-import { fetchLessons } from '../../actions';
+import LessonSidebar from '../lesson-sidebar'
 
 class AdminSidebar extends Component {
-  componentWillMount() {
-    if(!this.props.lessons.fetched) {
-      this.props.fetchLessons();
-    }
-  }
-
   render() {
-    let lessons;
-    if(this.props.lessons.fetching) {
-      lessons = (<Progress animated color="muted" value="100"/>);
-    } else {
-      lessons = this.props.lessons.lessons.map((lesson) => {
-        let url = "/admin/lessons/" + lesson._id;
-        return <NavItem key={lesson._id}><NavLink tag={Link} to={url}>{lesson.title}</NavLink></NavItem>
-      })
-    }
     return (
       <Col sm="3" md="2" className="sidebar">
         <Nav pills vertical>
@@ -40,25 +24,11 @@ class AdminSidebar extends Component {
           <NavItem>
             Lessons
           </NavItem>
-          {lessons}
+          <LessonSidebar admin={true}/>
         </Nav>
       </Col>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    lessons: state.lessons
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchLessons : () => {
-      dispatch(fetchLessons())
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminSidebar);
+export default AdminSidebar;

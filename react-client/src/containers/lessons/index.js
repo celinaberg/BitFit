@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Container, Row, Col, Nav } from 'reactstrap';
+import { Switch, Route } from 'react-router';
+import LessonSidebar from '../../components/lesson-sidebar';
 
 class Lessons extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to Lessons</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button color="danger">Danger!</Button>
-      </div>
+      <Container fluid>
+        <Row>
+          <Col sm="3" md="2" className="sidebar">
+            <Nav pills vertical>
+              <LessonSidebar/>
+            </Nav>
+          </Col>
+
+          <Switch>
+
+          </Switch>
+        </Row>
+      </Container>
     );
   }
 }
+
+/*
+<Route path="/admin/users" component={ManageUsers}/>
+<Route path="/admin/lessons/new" component={NewLesson}/>
+<Route path="/admin/lessons/:id" component={EditLesson}/>
+*/
 
 export default Lessons;
