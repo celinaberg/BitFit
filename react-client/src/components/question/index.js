@@ -82,6 +82,7 @@ class Question extends Component {
                 enableLiveAutocompletion={true}
                 enableSnippets={true}
                 value={this.props.question.code}
+                width="100%"
               />
             </FormGroup>
             <FormGroup>
