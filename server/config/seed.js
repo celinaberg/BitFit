@@ -31,6 +31,7 @@ Topic.find({}).remove(function () {
 Question.find({}).remove(function () {
   console.log('Finished removing questions')
   Question.create({
+    title: 'Example Title',
     instructions: 'New, w1q1 from MongoDB!! Add code to the code editor to make the system output numbers 1 through 10.',
     code: 'for (int i = 0; i < 10; i ++) {\n\n}',
     hints: [ 'first hint', 'second hint', 'third hint! Do you get it now?' ]
