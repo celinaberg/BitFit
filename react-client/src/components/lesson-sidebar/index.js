@@ -16,7 +16,6 @@ class LessonSidebar extends Component {
     if(this.props.lessons.fetching) {
       return (<Progress animated color="muted" value="100"/>);
     } else {
-      console.log("bool", this.props.admin);
       let lessons = this.props.lessons.lessons.map((lesson) => {
         let url = "/lessons/" + lesson._id;
         if (this.props.admin) {
