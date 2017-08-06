@@ -3,7 +3,7 @@
 import type { QuestionState } from '../../types';
 
 import React, { Component } from 'react';
-import { Col, Progress, Card, CardBlock, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Col, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
 import EditQuestion from '../../components/edit-question';

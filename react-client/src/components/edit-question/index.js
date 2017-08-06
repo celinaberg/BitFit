@@ -4,8 +4,6 @@ import type { Question } from '../../types';
 
 import React, { Component } from 'react';
 import {
-  Col,
-  Progress,
   Card,
   CardBlock,
   CardTitle,
@@ -20,14 +18,12 @@ import {
   UncontrolledTooltip,
   Collapse
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { fetchQuestions } from '../../actions';
 import RichTextEditor from 'react-rte';
-import brace from 'brace';
 import AceEditor from 'react-ace';
 import FaTrash from 'react-icons/lib/fa/trash';
 import FaCopy from 'react-icons/lib/fa/copy';
 
+import 'brace';
 import 'brace/mode/c_cpp';
 import 'brace/snippets/c_cpp';
 import 'brace/ext/language_tools';
