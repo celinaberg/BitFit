@@ -1,10 +1,19 @@
+// @flow
+
+import type { QuestionState } from '../../types';
+
 import React, { Component } from 'react';
 import { Col, Progress, Card, CardBlock, Form, FormGroup, Label, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
-import Question from '../../components/question';
+import EditQuestion from '../../components/edit-question';
 
 class AllQuestions extends Component {
+  props: {
+    questions: QuestionState,
+    fetchQuestions: () => void
+  }
+
   componentWillMount() {
     if(!this.props.questions.fetched) {
       this.props.fetchQuestions();
@@ -17,7 +26,7 @@ class AllQuestions extends Component {
       questions = (<Progress animated color="muted" value="100"/>);
     } else {
       questions = this.props.questions.questions.map((question) => {
-        return (<Question key={question._id} question={question}/>)
+        return (<EditQuestion key={question.id} question={question}/>)
       })
     }
     return (

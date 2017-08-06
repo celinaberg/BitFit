@@ -1,3 +1,7 @@
+// @flow
+
+import type { Question } from '../../types';
+
 import React, { Component } from 'react';
 import {
   Col,
@@ -19,7 +23,6 @@ import {
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
 import RichTextEditor from 'react-rte';
-import PropTypes from 'prop-types';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 import FaTrash from 'react-icons/lib/fa/trash';
@@ -30,14 +33,20 @@ import 'brace/snippets/c_cpp';
 import 'brace/ext/language_tools';
 import 'brace/theme/tomorrow';
 
-class Question extends Component {
-  static propTypes = {
-    question: PropTypes.object,
-    onChange: PropTypes.func
+type Props = {
+  question: Question
+}
+
+class EditQuestion extends Component {
+  props: Props;
+
+  state: {
+    value: RichTextEditor,
+    collapse: bool
   };
 
-  constructor(state) {
-    super(state)
+  constructor(props:Props) {
+    super(props)
 
     this.state = {
       value: RichTextEditor.createValueFromString(this.props.question.instructions, 'html'),
@@ -45,7 +54,7 @@ class Question extends Component {
     }
   }
 
-  onChange = (value) => {
+  onChange = (value:RichTextEditor) => {
     this.setState({value});
   }
 
@@ -55,7 +64,7 @@ class Question extends Component {
 
   render() {
     return (
-      <Card key={this.props.question._id}>
+      <Card key={this.props.question.id}>
         <CardBlock>
           <CardTitle>{this.props.question.title} <Button onClick={this.toggle}>Edit</Button></CardTitle>
           <Collapse isOpen={this.state.collapse}>
@@ -100,7 +109,7 @@ class Question extends Component {
                 <AceEditor
                   mode="c_cpp"
                   theme="tomorrow"
-                  name={this.props.question._id}
+                  name={this.props.question.id}
                   editorProps={{$blockScrolling: true}}
                   enableBasicAutocompletion={true}
                   enableLiveAutocompletion={true}
@@ -119,12 +128,12 @@ class Question extends Component {
               </FormGroup>
               <Button color="primary">Save Question</Button>
               <ButtonGroup>
-                <Button id={"copy"+this.props.question._id}><FaCopy/></Button>
-                <UncontrolledTooltip placement="top" target={"copy"+this.props.question._id}>
+                <Button id={"copy"+this.props.question.id}><FaCopy/></Button>
+                <UncontrolledTooltip placement="top" target={"copy"+this.props.question.id}>
                   Copy
                 </UncontrolledTooltip>
-                <Button color="danger" id={"delete"+this.props.question._id}><FaTrash/></Button>
-                <UncontrolledTooltip placement="top" target={"delete"+this.props.question._id}>
+                <Button color="danger" id={"delete"+this.props.question.id}><FaTrash/></Button>
+                <UncontrolledTooltip placement="top" target={"delete"+this.props.question.id}>
                   Delete
                 </UncontrolledTooltip>
               </ButtonGroup>
@@ -141,4 +150,4 @@ hints: [String],
 topic: { type: mongoo
 */
 
-export default Question;
+export default EditQuestion;

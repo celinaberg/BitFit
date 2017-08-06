@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Col, Form, FormGroup, Label, Input, Button, Progress } from 'reactstrap';
 import RichTextEditor from 'react-rte';
@@ -5,6 +7,14 @@ import { connect } from 'react-redux';
 import { updateNewLesson, saveNewLesson } from '../../actions';
 
 class EditLesson extends Component {
+  props: {
+    id: string,
+    title: string,
+    background: RichTextEditor,
+    updateNewLesson: (title:string, background:RichTextEditor) => void,
+    saveNewLesson: (title:string, background:string) => void
+  }
+
   onTitleChange = (event) => {
     this.props.updateNewLesson(event.target.value, this.props.background);
   };
@@ -77,10 +87,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateNewLesson: (title, background) => {
+    updateNewLesson: (title:string, background:RichTextEditor) => {
       dispatch(updateNewLesson(title, background))
     },
-    saveNewLesson: (title, background) => {
+    saveNewLesson: (title:string, background:string) => {
       dispatch(saveNewLesson(title, background))
     }
   }

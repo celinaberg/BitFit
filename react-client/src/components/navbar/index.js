@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import './NavBar.css';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
@@ -6,6 +8,13 @@ import { connect } from 'react-redux';
 import { toggleNavBar } from '../../actions';
 
 class NavBar extends Component {
+  props: {
+    isOpen: bool,
+    loggedIn: bool,
+    name: string,
+    onToggleClick: () => void
+  }
+
   render() {
     let links = null;
     if(this.props.loggedIn){
@@ -28,7 +37,7 @@ class NavBar extends Component {
           {links}
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink disabled>{this.props.firstName}</NavLink>
+              <NavLink disabled>{this.props.name}</NavLink>
             </NavItem>
             <NavItem>
               <NavLink>Logout</NavLink>

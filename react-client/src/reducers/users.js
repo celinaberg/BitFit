@@ -1,24 +1,17 @@
 // @flow
-'use strict';
 
 import type { Action } from '../actions/types';
-import type { User } from '../types';
+import type { UserState } from '../types';
 
-type State = {
-  fetching: bool,
-  fetched: bool,
-  users: Array<User>,
-  error: null
-}
 
-const initialState:State = {
+const initialState:UserState = {
   fetching: false,
   fetched: false,
   users: [],
   error: null
 }
 
-const users = (state:State=initialState, action:Action) => {
+const users = (state:UserState=initialState, action:Action) => {
   switch (action.type) {
     case 'FETCH_USERS_PENDING':
       return {

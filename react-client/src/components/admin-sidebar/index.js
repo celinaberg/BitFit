@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import './AdminSidebar.css';
 import { Col, Nav, NavItem, NavLink } from 'reactstrap';

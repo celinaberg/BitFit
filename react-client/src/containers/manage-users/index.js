@@ -1,3 +1,7 @@
+// @flow
+
+import type { UserState } from '../../types';
+
 import React, { Component } from 'react';
 import { Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -6,6 +10,12 @@ import { Button } from 'reactstrap';
 import FaTrash from 'react-icons/lib/fa/trash';
 
 class ManageUsers extends Component {
+  props: {
+    users: UserState,
+    fetchUsers: () => void,
+    deleteUser: (id: string) => void
+  }
+
   componentWillMount() {
     if(!this.props.users.fetched) {
       this.props.fetchUsers();
@@ -24,10 +34,10 @@ class ManageUsers extends Component {
     } else {
       users = this.props.users.users.map((user) => {
         return (
-          <ListGroupItem key={user._id}>
+          <ListGroupItem key={user.id}>
             <ListGroupItemHeading>
               {user.displayName}
-              <Button color="danger" id={user._id} onClick={this.onDeleteClick}><FaTrash/></Button>
+              <Button color="danger" id={user.id} onClick={this.onDeleteClick}><FaTrash/></Button>
             </ListGroupItemHeading>
             <ListGroupItemText>
               <span className="text-muted">{user.firstName} {user.lastName}</span>
@@ -38,7 +48,7 @@ class ManageUsers extends Component {
               <span>&nbsp;</span>
               <span className="text-muted">Role: {user.role}</span>
               <span>&nbsp;</span>
-              <span className="text-muted">Account ID: {user._id}</span>
+              <span className="text-muted">Account ID: {user.id}</span>
             </ListGroupItemText>
           </ListGroupItem>
         )

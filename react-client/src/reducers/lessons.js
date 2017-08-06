@@ -1,22 +1,10 @@
 // @flow
-'use strict';
 
 import type { Action } from '../actions/types';
-import type { Lesson } from '../types';
+import type { LessonState } from '../types';
 import RichTextEditor from 'react-rte';
 
-type State = {
-  fetching: bool,
-  fetched: bool,
-  lessons: Array<Lesson>,
-  error: null,
-  new: {
-    title: string,
-    background: RichTextEditor
-  }
-}
-
-const initialState:State = {
+const initialState:LessonState = {
   fetching: false,
   fetched: false,
   lessons: [],
@@ -27,7 +15,7 @@ const initialState:State = {
   }
 }
 
-const lessons = (state:State=initialState, action:Action):State => {
+const lessons = (state:LessonState=initialState, action:Action):LessonState => {
   switch (action.type) {
     case 'FETCH_LESSONS_PENDING':
       return {

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import './Home.css';
 import CwlLoginButton from './CWL_login_button.gif';

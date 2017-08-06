@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Container, Row, Col, Nav } from 'reactstrap';
 import { Switch, Route } from 'react-router';
