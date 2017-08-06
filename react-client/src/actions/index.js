@@ -27,6 +27,16 @@ export const saveNewLesson = (title, background) => {
   }
 }
 
+export const saveLesson = (id, title, background) => {
+  return {
+    type: 'SAVE_NEW_LESSON',
+    payload: axios.put('https://127.0.0.1:4343/api/topics/' + id, {
+      title,
+      background
+    })
+  }
+}
+
 export const logIn = () => {
   return {
     type: 'LOGIN'
