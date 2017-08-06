@@ -17,7 +17,7 @@ class AllQuestions extends Component {
       questions = (<Progress animated color="muted" value="100"/>);
     } else {
       questions = this.props.questions.questions.map((question) => {
-        return (<Question question={question}/>)
+        return (<Question key={question._id} question={question}/>)
       })
     }
     return (

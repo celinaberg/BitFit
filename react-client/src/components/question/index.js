@@ -16,6 +16,13 @@ import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
 import RichTextEditor from 'react-rte';
 import PropTypes from 'prop-types';
+import brace from 'brace';
+import AceEditor from 'react-ace';
+
+import 'brace/mode/c_cpp';
+import 'brace/snippets/c_cpp';
+import 'brace/ext/language_tools';
+import 'brace/theme/tomorrow';
 
 class Question extends Component {
   static propTypes = {
@@ -45,7 +52,7 @@ class Question extends Component {
             </FormGroup>
             <FormGroup>
               <Label>Instructions</Label>
-              <RichTextEditor value={this.state.value} onChange={this.onChange}/>
+              <RichTextEditor onChange={this.onChange} value={this.state.value} />
             </FormGroup>
             <FormGroup>
               <Label>Tags</Label>
@@ -60,9 +67,22 @@ class Question extends Component {
             </FormGroup>
             <FormGroup check>
               <Label check>
-                <Input type="checkbox" />{' '}
+                <Input type="checkbox"/>
                 Read Only
               </Label>
+            </FormGroup>
+            <FormGroup>
+              <Label>Code</Label>
+              <AceEditor
+                mode="c_cpp"
+                theme="tomorrow"
+                name={this.props.question._id}
+                editorProps={{$blockScrolling: true}}
+                enableBasicAutocompletion={true}
+                enableLiveAutocompletion={true}
+                enableSnippets={true}
+                value={this.props.question.code}
+              />
             </FormGroup>
             <FormGroup>
               <Label>Expected Output</Label>
@@ -77,7 +97,6 @@ class Question extends Component {
 }
 
 /*
-code: String,
 hints: [String],
 codeEvaluator: String,
 topic: { type: mongoo
