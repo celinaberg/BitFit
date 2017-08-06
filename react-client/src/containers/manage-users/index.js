@@ -14,6 +14,7 @@ class ManageUsers extends Component {
 
   onDeleteClick = (event) => {
     this.props.deleteUser(event.currentTarget.id);
+    this.props.fetchUsers();
   };
 
   render() {
