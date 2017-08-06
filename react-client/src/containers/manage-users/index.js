@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, ListGroup, ListGroupItem, Progress } from 'reactstrap';
+import { Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchUsers, deleteUser } from '../../actions';
 import { Button } from 'reactstrap';
@@ -25,8 +25,11 @@ class ManageUsers extends Component {
       users = this.props.users.users.map((user) => {
         return (
           <ListGroupItem key={user._id}>
-            <div><strong>{user.displayName}</strong></div>
-            <div>
+            <ListGroupItemHeading>
+              {user.displayName}
+              <Button color="danger" id={user._id} onClick={this.onDeleteClick}><FaTrash/></Button>
+            </ListGroupItemHeading>
+            <ListGroupItemText>
               <span className="text-muted">{user.firstName} {user.lastName}</span>
               <span>&nbsp;</span>
               <span className="text-muted">CWL: {user.uid}</span>
@@ -36,8 +39,7 @@ class ManageUsers extends Component {
               <span className="text-muted">Role: {user.role}</span>
               <span>&nbsp;</span>
               <span className="text-muted">Account ID: {user._id}</span>
-              <Button color="danger" id={user._id} onClick={this.onDeleteClick}><FaTrash/></Button>
-            </div>
+            </ListGroupItemText>
           </ListGroupItem>
         )
       })
