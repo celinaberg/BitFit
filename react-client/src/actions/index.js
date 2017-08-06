@@ -3,14 +3,27 @@ import axios from 'axios';
 export const fetchLessons = () => {
   return {
     type: 'FETCH_LESSONS',
-    payload: axios.get('https://localhost:4343/api/topics')
+    payload: axios.get('https://127.0.0.1:4343/api/topics')
   }
 }
 
-export const addLesson = text => {
+export const updateNewLesson = (title, background) => {
   return {
-    type: 'ADD_LESSON',
-    text
+    type: 'UPDATE_NEW_LESSON',
+    payload: {
+      title,
+      background
+    }
+  }
+}
+
+export const saveNewLesson = (title, background) => {
+  return {
+    type: 'SAVE_NEW_LESSON',
+    payload: axios.post('https://127.0.0.1:4343/api/topics', {
+      title,
+      background
+    })
   }
 }
 
@@ -29,6 +42,6 @@ export const toggleNavBar = () => {
 export const fetchUsers = () => {
   return {
     type: 'FETCH_USERS',
-    payload: axios.get('https://localhost:4343/api/users')
+    payload: axios.get('https://127.0.0.1:4343/api/users')
   }
 }

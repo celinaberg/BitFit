@@ -1,8 +1,14 @@
+import RichTextEditor from 'react-rte';
+
 const initialState = {
   fetching: false,
   fetched: false,
   lessons: [],
-  error: null
+  error: null,
+  new: {
+    title: "",
+    background: RichTextEditor.createEmptyValue()
+  }
 }
 
 const lessons = (state=initialState, action) => {
@@ -26,14 +32,31 @@ const lessons = (state=initialState, action) => {
         fetching: false,
         error: action.payload
       }
-    case 'ADD_LESSON':
-      return [
+    case 'UPDATE_NEW_LESSON':
+      return {
         ...state,
-        {
-          id: action.id,
-          text: action.text
+        new: action.payload
+      }
+    case 'SAVE_NEW_LESSON_PENDING':
+      return {
+        ...state,
+        fetching: true
+      }
+    case 'SAVE_NEW_LESSON_FULFILLED':
+      return {
+        ...state,
+        fetching: false,
+        lessons: [...state.lessons, action.payload.data],
+        new: {
+          title: "",
+          background: RichTextEditor.createEmptyValue()
         }
-      ]
+      }
+    case 'SAVE_NEW_LESSON_REJECTED':
+      return {
+        ...state,
+        fetching: false
+      }
     default:
       return state
   }

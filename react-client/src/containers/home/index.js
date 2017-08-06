@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
 import CwlLoginButton from './CWL_login_button.gif';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { logIn } from '../../actions';
@@ -23,7 +22,7 @@ class Home extends Component {
         <Container>
           <Row>
             <Col className="text-center page-header">
-              <Link to="/auth/cwl/login"><img src={CwlLoginButton} alt="CWL Login"></img></Link>
+              <a href="/auth/cwl/login"><img src={CwlLoginButton} alt="CWL Login"></img></a>
               <Button color="primary" onClick={this.login}>Login</Button>
             </Col>
           </Row>
