@@ -10,7 +10,9 @@ import {
   Label,
   Input,
   Button,
-  InputGroupAddon
+  ButtonGroup,
+  InputGroupAddon,
+  UncontrolledTooltip
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
@@ -18,6 +20,8 @@ import RichTextEditor from 'react-rte';
 import PropTypes from 'prop-types';
 import brace from 'brace';
 import AceEditor from 'react-ace';
+import FaTrash from 'react-icons/lib/fa/trash';
+import FaCopy from 'react-icons/lib/fa/copy';
 
 import 'brace/mode/c_cpp';
 import 'brace/snippets/c_cpp';
@@ -90,6 +94,16 @@ class Question extends Component {
               <Input type="text" defaultValue={this.props.question.expectedOutput}/>
             </FormGroup>
             <Button color="primary">Save Question</Button>
+            <ButtonGroup>
+              <Button id={"copy"+this.props.question._id}><FaCopy/></Button>
+              <UncontrolledTooltip placement="top" target={"copy"+this.props.question._id}>
+                Copy
+              </UncontrolledTooltip>
+              <Button color="danger" id={"delete"+this.props.question._id}><FaTrash/></Button>
+              <UncontrolledTooltip placement="top" target={"delete"+this.props.question._id}>
+                Delete
+              </UncontrolledTooltip>
+            </ButtonGroup>
           </Form>
         </CardBlock>
       </Card>
