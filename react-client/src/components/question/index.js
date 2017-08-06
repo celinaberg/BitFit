@@ -48,7 +48,7 @@ class Question extends Component {
           <Form>
             <FormGroup>
               <Label>Title</Label>
-              <Input type="text" onChange={this.onTitleChange} value={this.props.question.title}/>
+              <Input type="text" defaultValue={this.props.question.title}/>
             </FormGroup>
             <FormGroup>
               <Label>Instructions</Label>
@@ -56,12 +56,12 @@ class Question extends Component {
             </FormGroup>
             <FormGroup>
               <Label>Tags</Label>
-              <Input type="text" onChange={this.onTitleChange} value={this.props.question.tags}/>
+              <Input type="text" defaultValue={this.props.question.tags}/>
             </FormGroup>
             <FormGroup>
               <Label>Class Name</Label>
               <InputGroup>
-                <Input type="text" onChange={this.onTitleChange} value={this.props.question.className}/>
+                <Input type="text" defaultValue={this.props.question.className}/>
                 <InputGroupAddon>.c</InputGroupAddon>
               </InputGroup>
             </FormGroup>
@@ -86,7 +86,7 @@ class Question extends Component {
             </FormGroup>
             <FormGroup>
               <Label>Expected Output</Label>
-              <Input type="text" onChange={this.onTitleChange} value={this.props.question.expectedOutput}/>
+              <Input type="text" defaultValue={this.props.question.expectedOutput}/>
             </FormGroup>
             <Button color="primary">Save Question</Button>
           </Form>
