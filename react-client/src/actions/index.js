@@ -1,4 +1,5 @@
-// @flow
+
+'use strict';
 
 import type { Action } from './types';
 import axios from 'axios';

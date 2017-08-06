@@ -1,8 +1,17 @@
-const initialState = {
+// @flow
+'use strict';
+
+import type { Action } from '../actions/types';
+
+type State = {
+  isOpen: bool
+}
+
+const initialState:State = {
   isOpen: false
 }
 
-const navbar = (state=initialState, action) => {
+const navbar = (state:State=initialState, action:Action) => {
   switch (action.type) {
     case 'TOGGLE_NAVBAR':
       return {...state, isOpen: !state.isOpen}

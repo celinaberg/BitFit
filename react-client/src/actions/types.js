@@ -1,4 +1,3 @@
-// @flow
 'use strict';
 
 import RichTextEditor from 'react-rte';

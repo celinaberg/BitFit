@@ -1,3 +1,6 @@
+// @flow
+'use strict';
+
 import { applyMiddleware, createStore } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import logger from 'redux-logger';

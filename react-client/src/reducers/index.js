@@ -1,3 +1,6 @@
+// @flow
+'use strict';
+
 import { combineReducers } from 'redux'
 import lessons from './lessons'
 import auth from './auth'
