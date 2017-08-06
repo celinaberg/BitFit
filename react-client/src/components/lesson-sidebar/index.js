@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavItem, NavLink, Progress } from 'reactstrap';
-import { NavLink as Link} from 'react-router-dom';
+import { Progress } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchLessons } from '../../actions';
+import LessonSidebarItem from '../lesson-sidebar-item';
 
 class LessonSidebar extends Component {
   componentWillMount() {
@@ -17,12 +17,7 @@ class LessonSidebar extends Component {
       return (<Progress animated color="muted" value="100"/>);
     } else {
       let lessons = this.props.lessons.lessons.map((lesson) => {
-        let url = "/lessons/" + lesson._id;
-        if (this.props.admin) {
-          url = "/admin/lessons/" + lesson._id;
-        }
-
-        return <NavItem key={lesson._id}><NavLink tag={Link} to={url}>{lesson.title}</NavLink></NavItem>
+        return <LessonSidebarItem key={lesson._id} id={lesson._id} title={lesson.title} admin={this.props.admin}/>
       });
       return (<div>{lessons}</div>)
     }
@@ -31,7 +26,7 @@ class LessonSidebar extends Component {
 
 LessonSidebar.propTypes = {
   admin: PropTypes.bool
-}
+};
 
 LessonSidebar.defaultProps = {
   admin: false

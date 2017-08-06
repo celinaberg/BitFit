@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`URL changes when admin 1`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    href="/lessons/testId"
+    onClick={[Function]}
+    style={undefined}
+  >
+    Test Lesson
+  </a>
+</li>
+`;
+
+exports[`URL changes when admin 2`] = `
+<li
+  className="nav-item"
+>
+  <a
+    className="nav-link"
+    href="/admin/lessons/testId"
+    onClick={[Function]}
+    style={undefined}
+  >
+    Test Lesson
+  </a>
+</li>
+`;
