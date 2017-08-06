@@ -25,7 +25,12 @@ const UserSchema = new Schema({
   term: Number,
   session: String,
   year: Number
-})
+},
+  {
+    toJSON: {
+      virtuals: true
+    }
+  })
 
 /**
  * Virtuals
