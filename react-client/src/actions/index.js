@@ -62,3 +62,10 @@ export const deleteUser = (id) => {
     payload: axios.delete('https://127.0.0.1:4343/api/users/'+id)
   }
 }
+
+export const fetchQuestions = () => {
+  return {
+    type: 'FETCH_QUESTIONS',
+    payload: axios.get('https://127.0.0.1:4343/api/questions')
+  }
+}
