@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Col, ListGroup, ListGroupItem, Progress } from 'reactstrap';
+import { Col, Progress, Card, CardBlock, Form, FormGroup, Label, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../actions';
-import { Button } from 'reactstrap';
-import FaTrash from 'react-icons/lib/fa/trash';
+import Question from '../../components/question';
 
 class AllQuestions extends Component {
   componentWillMount() {
@@ -18,20 +17,14 @@ class AllQuestions extends Component {
       questions = (<Progress animated color="muted" value="100"/>);
     } else {
       questions = this.props.questions.questions.map((question) => {
-        return (
-          <ListGroupItem key={question._id}>
-            <div dangerouslySetInnerHTML={{ __html: question.instructions }}></div>
-          </ListGroupItem>
-        )
+        return (<Question question={question}/>)
       })
     }
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">All Questions</h2>
 
-        <ListGroup>
-          {questions}
-        </ListGroup>
+        {questions}
       </Col>
     );
   }
