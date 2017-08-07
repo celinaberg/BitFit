@@ -12,7 +12,6 @@ const QuestionSchema = new Schema({
   hints: [String],
   tags: String,
   expectedOutput: String,
-  codeEvaluator: String,
   topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }
 })
 
