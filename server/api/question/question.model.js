@@ -16,4 +16,12 @@ const QuestionSchema = new Schema({
   topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }
 })
 
+QuestionSchema.methods.toJSON = function () {
+  var obj = this.toObject()
+  obj.id = obj._id
+  delete obj._id
+  delete obj.__v
+  return obj
+}
+
 module.exports = mongoose.model('Question', QuestionSchema)

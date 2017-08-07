@@ -25,12 +25,7 @@ const UserSchema = new Schema({
   term: Number,
   session: String,
   year: Number
-},
-  {
-    toJSON: {
-      virtuals: true
-    }
-  })
+})
 
 /**
  * Virtuals
@@ -62,8 +57,12 @@ UserSchema
 /**
  * Methods
  */
-UserSchema.methods = {
-
+UserSchema.methods.toJSON = function () {
+  var obj = this.toObject()
+  obj.id = obj._id
+  delete obj._id
+  delete obj.__v
+  return obj
 }
 
 module.exports = mongoose.model('User', UserSchema)
