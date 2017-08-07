@@ -62,7 +62,7 @@ class EditQuestion extends Component {
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
-          <CardTitle>{this.props.question.title} <Button onClick={this.toggle}>Edit</Button></CardTitle>
+          <CardTitle className="mb-0">{this.props.question.title} <Button onClick={this.toggle}>Edit</Button></CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>
               <FormGroup>
