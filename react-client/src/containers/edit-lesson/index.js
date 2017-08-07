@@ -66,12 +66,13 @@ const mapStateToProps = (state, ownProps) => {
   let id = ownProps.match.params.id;
   let lesson = null;
   for (let currentLesson of state.lessons.lessons) {
-    if(currentLesson._id === id) {
+    if(currentLesson.id === id) {
       lesson = currentLesson;
       break;
     }
   }
   if (lesson === null) {
+    console.error('Invalid lesson id: ', id);
     return {
       id: null,
       title: null,
@@ -79,7 +80,7 @@ const mapStateToProps = (state, ownProps) => {
     }
   }
   return {
-    id: lesson._id,
+    id: lesson.id,
     title: lesson.title,
     background: RichTextEditor.createValueFromString(lesson.background, 'html')
   }
