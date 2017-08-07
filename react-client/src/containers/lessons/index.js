@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Nav } from 'reactstrap';
 import { Switch, Route } from 'react-router';
 import LessonSidebar from '../../components/lesson-sidebar';
-import LessonInfo from '../lesson-info';
+import LessonsInfo from '../lessons-info';
 import Lesson from '../lesson';
 
 class Lessons extends Component {
@@ -19,7 +19,7 @@ class Lessons extends Component {
           </Col>
 
           <Switch>
-            <Route exact path="/lessons" component={LessonInfo}/>
+            <Route exact path="/lessons" component={LessonsInfo}/>
             <Route path="/lessons/:id" component={Lesson}/>
           </Switch>
         </Row>
