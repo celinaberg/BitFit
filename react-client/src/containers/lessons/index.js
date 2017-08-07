@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Nav } from 'reactstrap';
 import { Switch, Route } from 'react-router';
 import LessonSidebar from '../../components/lesson-sidebar';
+import LessonInfo from '../lesson-info';
+import Lesson from '../lesson';
 
 class Lessons extends Component {
   render() {
@@ -17,18 +19,13 @@ class Lessons extends Component {
           </Col>
 
           <Switch>
-
+            <Route exact path="/lessons" component={LessonInfo}/>
+            <Route path="/lessons/:id" component={Lesson}/>
           </Switch>
         </Row>
       </Container>
     );
   }
 }
-
-/*
-<Route path="/admin/users" component={ManageUsers}/>
-<Route path="/admin/lessons/new" component={NewLesson}/>
-<Route path="/admin/lessons/:id" component={EditLesson}/>
-*/
 
 export default Lessons;
