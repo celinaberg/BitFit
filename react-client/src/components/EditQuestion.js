@@ -1,6 +1,6 @@
 // @flow
 
-import type { Question } from '../types';
+import type { Question, Lesson } from '../types';
 
 import React, { Component } from 'react';
 import {
@@ -30,73 +30,172 @@ import 'brace/ext/language_tools';
 import 'brace/theme/tomorrow';
 
 type Props = {
-  question: Question
+  question: Question,
+  lessons: Array<Lesson>,
+  onSave: (Question) => void
 }
 
 class EditQuestion extends Component {
   props: Props;
 
   state: {
-    value: RichTextEditor,
-    collapse: bool
+    collapse: bool,
+    question: Question
   };
 
   constructor(props:Props) {
     super(props)
 
+    let newQuestion = Object.assign({}, this.props.question);
+    newQuestion.instructions = RichTextEditor.createValueFromString(this.props.question.instructions, 'html');
+    newQuestion.hints = newQuestion.hints.map((value) => {
+      return RichTextEditor.createValueFromString(value, 'html')
+    })
+
     this.state = {
-      value: RichTextEditor.createValueFromString(this.props.question.instructions, 'html'),
-      collapse: false
+      collapse: false,
+      question: newQuestion
     }
   }
 
-  onChange = (value:RichTextEditor) => {
-    this.setState({value});
+  toggle = ():void => {
+    this.setState({ collapse: !this.state.collapse });
   }
 
-  toggle = () => {
-    this.setState({ collapse: !this.state.collapse });
+  updateTitle = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLSelectElement) {
+      newQuestion.title = event.target.value;
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateLesson = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    console.log(typeof event.target);
+    console.log(event.target.value);
+    newQuestion.lesson = event.target.value;
+    this.setState({question: newQuestion});
+  }
+
+  updateInstructions = (value:RichTextEditor):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.instructions = value;
+    this.setState({question: newQuestion});
+  };
+
+  updateTags = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLInputElement) {
+      newQuestion.tags = event.target.value;
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateClassName = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLInputElement) {
+      newQuestion.className = event.target.value;
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateReadOnly = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLInputElement) {
+      newQuestion.readOnly = event.target.value === "on";
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateCode = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLInputElement) {
+      newQuestion.code = event.target.value;
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateExpectedOutput = (event:Event):void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    if (event.target instanceof HTMLInputElement) {
+      newQuestion.expectedOutput = event.target.value;
+      this.setState({question: newQuestion});
+    }
+  }
+
+  updateHint = (id:number):((value:RichTextEditor) => void) => {
+    return (value:RichTextEditor):void => {
+      let newQuestion = Object.assign({}, this.state.question);
+      newQuestion.hints[id] = value;
+      this.setState({question: newQuestion});
+    };
+  }
+
+  onDeleteHintClick = (id:number):((value:RichTextEditor) => void) => {
+    return ():void => {
+      let newQuestion = Object.assign({}, this.state.question);
+      newQuestion.hints.splice(id,1);
+      this.setState({question: newQuestion});
+    };
+  }
+
+  onAddHintClick = ():void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.hints = [...this.state.question.hints, RichTextEditor.createValueFromString("", 'html')];
+    this.setState({question: newQuestion});
+  }
+
+  onSaveClick = (event:Event):void => {
+    event.preventDefault()
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.instructions = newQuestion.instructions.toString('html');
+    newQuestion.hints = newQuestion.hints.map((value) => {
+      return value.toString('html')
+    })
+    this.props.saveQuestion(newQuestion);
   }
 
   render() {
     return (
-      <Card key={this.props.question.id}>
+      <Card key={this.state.question.id}>
         <CardBlock>
-          <CardTitle className="mb-0">{this.props.question.title} <Button onClick={this.toggle}>Edit</Button></CardTitle>
+          <CardTitle className="mb-0">{this.state.question.title} <Button onClick={this.toggle}>Edit</Button></CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>
               <FormGroup>
                 <Label>Title</Label>
-                <Input type="text" defaultValue={this.props.question.title}/>
+                <Input type="text" value={this.state.question.title} onChange={this.updateTitle}/>
               </FormGroup>
               <FormGroup>
                 <Label>Lesson</Label>
-                <Input type="select" name="select">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <Input type="select" name="select" onChange={this.updateLesson}>
+                  <option>No Lesson</option>
+                  {
+                    this.props.lessons.map((lesson: Lesson) => {
+                      return (<option key={lesson.id} value={lesson.id}>{lesson.title}</option>)
+                    })
+                  }
                 </Input>
               </FormGroup>
               <FormGroup>
                 <Label>Instructions</Label>
-                <RichTextEditor onChange={this.onChange} value={this.state.value} />
+                <RichTextEditor value={this.state.question.instructions} onChange={this.updateInstructions} />
               </FormGroup>
               <FormGroup>
                 <Label>Tags</Label>
-                <Input type="text" defaultValue={this.props.question.tags}/>
+                <Input type="text" value={this.state.question.tags} onChange={this.updateTags}/>
               </FormGroup>
               <FormGroup>
                 <Label>Class Name</Label>
                 <InputGroup>
-                  <Input type="text" defaultValue={this.props.question.className}/>
+                  <Input type="text" value={this.state.question.className} onChange={this.updateClassName}/>
                   <InputGroupAddon>.c</InputGroupAddon>
                 </InputGroup>
               </FormGroup>
               <FormGroup check>
                 <Label check>
-                  <Input type="checkbox"/>
+                  <Input type="checkbox" value={this.state.question.readOnly} onChange={this.updateReadOnly}/>
                   Read Only
                 </Label>
               </FormGroup>
@@ -105,31 +204,46 @@ class EditQuestion extends Component {
                 <AceEditor
                   mode="c_cpp"
                   theme="tomorrow"
-                  name={this.props.question.id}
+                  name={this.state.question.id}
                   editorProps={{$blockScrolling: true}}
                   enableBasicAutocompletion={true}
                   enableLiveAutocompletion={true}
                   enableSnippets={true}
-                  value={this.props.question.code}
+                  value={this.state.question.code}
+                  onChange={this.updateCode}
                   width="100%"
                 />
               </FormGroup>
               <FormGroup>
                 <Label>Expected Output</Label>
-                <Input type="text" defaultValue={this.props.question.expectedOutput}/>
+                <Input type="text" value={this.state.question.expectedOutput} onChange={this.updateExpectedOutput}/>
               </FormGroup>
               <FormGroup>
                 <Label>Hints</Label>
-                <Input type="text" defaultValue={this.props.question.expectedOutput}/>
+                {
+                  this.state.question.hints.map((hint, index) => {
+                    const id = this.state.question.id+"hint"+index;
+                    return (
+                      <div key={id}>
+                        <RichTextEditor value={hint} onChange={this.updateHint(index)}/>
+                        <Button color="danger" id={"delete"+id} onClick={this.onDeleteHintClick(index)}><FaTrash/></Button>
+                        <UncontrolledTooltip placement="top" target={"delete"+id}>
+                          Delete
+                        </UncontrolledTooltip>
+                      </div>
+                    )
+                  })
+                }
+                <Button onClick={this.onAddHintClick}>Add Hint</Button>
               </FormGroup>
-              <Button color="primary">Save Question</Button>
+              <Button color="primary" onClick={this.onSaveClick}>Save Question</Button>
               <ButtonGroup>
-                <Button id={"copy"+this.props.question.id}><FaCopy/></Button>
-                <UncontrolledTooltip placement="top" target={"copy"+this.props.question.id}>
+                <Button id={"copy"+this.state.question.id}><FaCopy/></Button>
+                <UncontrolledTooltip placement="top" target={"copy"+this.state.question.id}>
                   Copy
                 </UncontrolledTooltip>
-                <Button color="danger" id={"delete"+this.props.question.id}><FaTrash/></Button>
-                <UncontrolledTooltip placement="top" target={"delete"+this.props.question.id}>
+                <Button color="danger" id={"delete"+this.state.question.id}><FaTrash/></Button>
+                <UncontrolledTooltip placement="top" target={"delete"+this.state.question.id}>
                   Delete
                 </UncontrolledTooltip>
               </ButtonGroup>
@@ -140,10 +254,5 @@ class EditQuestion extends Component {
     )
   }
 }
-
-/*
-hints: [String],
-topic: { type: mongoo
-*/
 
 export default EditQuestion;

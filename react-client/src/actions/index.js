@@ -3,6 +3,7 @@
 import type { Action } from './types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
+import { Question } from '../types';
 
 export const fetchLessons = ():Action => {
   return {
@@ -71,5 +72,12 @@ export const fetchQuestions = ():Action => {
   return {
     type: 'FETCH_QUESTIONS',
     payload: axios.get('https://127.0.0.1:4343/api/questions')
+  }
+}
+
+export const saveQuestion = (question:Question):Action => {
+  return {
+    type: 'SAVE_QUESTION',
+    payload: axios.post('https://127.0.0.1:4343/api/questions/'+question.id, question)
   }
 }

@@ -31,9 +31,9 @@ export type Question = {
   title: string,
   instructions: string,
   code: string,
-  className: String,
+  className: string,
   readOnly: bool,
-  hints: Array<String>,
+  hints: Array<string>,
   tags: string,
   expectedOutput: string,
   topic: Lesson

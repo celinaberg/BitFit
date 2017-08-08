@@ -5,13 +5,18 @@ import type { QuestionState } from '../types';
 import React, { Component } from 'react';
 import { Col, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../actions';
+import { fetchQuestions, saveQuestion } from '../actions';
 import EditQuestion from '../components/EditQuestion';
 
 class AllQuestions extends Component {
   props: {
     questions: QuestionState,
     fetchQuestions: () => void
+  }
+
+  onSaveClick = (question: Question):void => {
+    this.saveQuestion(question);
+    this.fetchQuestions();
   }
 
   componentWillMount() {
@@ -26,7 +31,7 @@ class AllQuestions extends Component {
       questions = (<Progress animated color="muted" value="100"/>);
     } else {
       questions = this.props.questions.questions.map((question) => {
-        return (<EditQuestion key={question.id} question={question}/>)
+        return (<EditQuestion key={question.id} question={question} lessons={this.props.lessons} onSave={this.onSaveClick}/>)
       })
     }
     return (
@@ -41,7 +46,8 @@ class AllQuestions extends Component {
 
 const mapStateToProps = state => {
   return {
-    questions: state.questions
+    questions: state.questions,
+    lessons: state.lessons.lessons
   }
 }
 
@@ -49,6 +55,9 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchQuestions : () => {
       dispatch(fetchQuestions())
+    }
+    saveQuestion : (question:Question) => {
+      dispatch(saveQuestion(question))
     }
   }
 }
