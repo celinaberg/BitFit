@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import './AdminSidebar.css';
 import { Col, Nav, NavItem, NavLink } from 'reactstrap';
 import { NavLink as Link} from 'react-router-dom';
-import LessonSidebar from '../lesson-sidebar'
+import LessonSidebar from '../LessonSidebar'
 
 class AdminSidebar extends Component {
   render() {

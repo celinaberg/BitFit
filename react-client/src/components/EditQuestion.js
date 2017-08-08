@@ -1,6 +1,6 @@
 // @flow
 
-import type { Question } from '../../types';
+import type { Question } from '../types';
 
 import React, { Component } from 'react';
 import {

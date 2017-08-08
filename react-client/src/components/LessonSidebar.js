@@ -1,12 +1,12 @@
 // @flow
 
-import type { LessonState } from '../../types';
+import type { LessonState } from '../types';
 
 import React, { Component } from 'react';
 import { Progress } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fetchLessons } from '../../actions';
-import LessonSidebarItem from '../lesson-sidebar-item';
+import { fetchLessons } from '../actions';
+import LessonSidebarItem from './LessonSidebarItem';
 
 class LessonSidebar extends Component {
   props: {

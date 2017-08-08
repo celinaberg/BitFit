@@ -1,11 +1,11 @@
 // @flow
 
-import type { UserState } from '../../types';
+import type { UserState } from '../types';
 
 import React, { Component } from 'react';
 import { Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fetchUsers, deleteUser } from '../../actions';
+import { fetchUsers, deleteUser } from '../actions';
 import { Button } from 'reactstrap';
 import FaTrash from 'react-icons/lib/fa/trash';
 

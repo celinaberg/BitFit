@@ -1,5 +1,5 @@
 import React from 'react';
-import LessonSidebarItem from '../';
+import LessonSidebarItem from '../LessonSidebarItem';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router';
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { Role } from '../../types';
+import type { Role } from '../types';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

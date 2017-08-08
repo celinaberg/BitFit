@@ -1,18 +1,17 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Col, Form, FormGroup, Label, Input, Button, Progress } from 'reactstrap';
+import { Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import RichTextEditor from 'react-rte';
 import { connect } from 'react-redux';
-import { updateNewLesson, saveNewLesson } from '../../actions';
+import { updateNewLesson, saveNewLesson } from '../actions';
 
-class EditLesson extends Component {
+class NewLesson extends Component {
   props: {
-    id: string,
     title: string,
     background: RichTextEditor,
     updateNewLesson: (title:string, background:RichTextEditor) => void,
-    saveNewLesson: (title:string, background:string) => void
+    saveNewLesson: (title:string, background:RichTextEditor) => void
   }
 
   onTitleChange = (event) => {
@@ -29,20 +28,9 @@ class EditLesson extends Component {
   };
 
   render() {
-    if (this.props.id === null) {
-      return (
-        <Col sm="9" md="10">
-          <h2 className="page-header">Edit Lesson</h2>
-
-          <div>
-            <Progress animated color="muted" value="100"/>
-          </div>
-        </Col>
-      );
-    }
     return (
       <Col sm="9" md="10">
-        <h2 className="page-header">Edit Lesson</h2>
+        <h2 className="page-header">New Lesson</h2>
 
         <div>
           <Form>
@@ -62,27 +50,10 @@ class EditLesson extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  let id = ownProps.match.params.id;
-  let lesson = null;
-  for (let currentLesson of state.lessons.lessons) {
-    if(currentLesson.id === id) {
-      lesson = currentLesson;
-      break;
-    }
-  }
-  if (lesson === null) {
-    console.error('Invalid lesson id: ', id);
-    return {
-      id: null,
-      title: null,
-      background: null
-    }
-  }
+const mapStateToProps = state => {
   return {
-    id: lesson.id,
-    title: lesson.title,
-    background: RichTextEditor.createValueFromString(lesson.background, 'html')
+    title: state.lessons.new.title,
+    background: state.lessons.new.background
   }
 }
 
@@ -91,10 +62,10 @@ const mapDispatchToProps = dispatch => {
     updateNewLesson: (title:string, background:RichTextEditor) => {
       dispatch(updateNewLesson(title, background))
     },
-    saveNewLesson: (title:string, background:string) => {
+    saveNewLesson: (title:string, background:RichTextEditor) => {
       dispatch(saveNewLesson(title, background))
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditLesson);
+export default connect(mapStateToProps, mapDispatchToProps)(NewLesson);

@@ -1,12 +1,12 @@
 // @flow
 
-import type { QuestionState } from '../../types';
+import type { QuestionState } from '../types';
 
 import React, { Component } from 'react';
 import { Col, Progress } from 'reactstrap';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../../actions';
-import EditQuestion from '../../components/edit-question';
+import { fetchQuestions } from '../actions';
+import EditQuestion from '../components/EditQuestion';
 
 class AllQuestions extends Component {
   props: {

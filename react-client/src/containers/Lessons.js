@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Nav } from 'reactstrap';
 import { Switch, Route } from 'react-router';
-import LessonSidebar from '../../components/lesson-sidebar';
-import LessonsInfo from '../lessons-info';
-import Lesson from '../lesson';
+import LessonSidebar from '../components/LessonSidebar';
+import LessonsInfo from './LessonsInfo';
+import Lesson from './Lesson';
 
 class Lessons extends Component {
   render() {

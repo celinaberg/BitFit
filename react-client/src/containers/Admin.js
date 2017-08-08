@@ -1,10 +1,12 @@
+// @flow
+
 import React, { Component } from 'react';
-import AdminSidebar from '../../components/admin-sidebar';
+import AdminSidebar from '../components/AdminSidebar';
 import { Switch, Route } from 'react-router-dom'
-import ManageUsers from '../manage-users';
-import NewLesson from '../new-lesson';
-import EditLesson from '../edit-lesson';
-import AllQuestions from '../all-questions';
+import ManageUsers from './ManageUsers';
+import NewLesson from './NewLesson';
+import EditLesson from './EditLesson';
+import AllQuestions from './AllQuestions';
 import { Container, Row } from 'reactstrap';
 
 class Admin extends Component {

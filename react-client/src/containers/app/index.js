@@ -9,13 +9,13 @@ import {
   Route,
   Switch
 } from 'react-router-dom'
-import NavBar from '../../components/navbar';
-import Home from '../home';
-import EnsureLogin from '../ensure-login';
-import EnsureInstructor from '../ensure-instructor';
-import Lessons from '../lessons';
-import Admin from '../admin'
-import NotFound from '../not-found';
+import NavBar from '../../components/NavBar';
+import Home from '../Home';
+import EnsureLogin from '../EnsureLogin';
+import EnsureInstructor from '../EnsureInstructor';
+import Lessons from '../Lessons';
+import Admin from '../Admin'
+import NotFound from '../NotFound';
 
 class App extends Component {
   render() {
