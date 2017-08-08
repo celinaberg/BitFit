@@ -79,6 +79,6 @@ export const fetchQuestions = ():Action => {
 export const saveQuestion = (question:Question):Action => {
   return {
     type: 'SAVE_QUESTION',
-    payload: axios.post('https://127.0.0.1:4343/api/questions/'+question.id, question)
+    payload: axios.patch('https://127.0.0.1:4343/api/questions/'+question.id, question)
   }
 }
