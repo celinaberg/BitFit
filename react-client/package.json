@@ -6,7 +6,6 @@
     "axios": "^0.16.2",
     "bootstrap": "4.0.0-alpha.6",
     "flow-bin": "^0.52.0",
-    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-ace": "^5.1.2",
     "react-addons-css-transition-group": "^15.6.0",
