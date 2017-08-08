@@ -1,9 +1,10 @@
 // @flow
 
 import type { Action } from './types';
+import type { Question } from '../types';
+
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
-import { Question } from '../types';
 
 export const fetchLessons = ():Action => {
   return {

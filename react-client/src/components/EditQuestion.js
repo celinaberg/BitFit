@@ -153,7 +153,7 @@ class EditQuestion extends Component {
     newQuestion.hints = newQuestion.hints.map((value) => {
       return value.toString('html')
     })
-    this.props.saveQuestion(newQuestion);
+    this.props.onSave(newQuestion);
   }
 
   render() {

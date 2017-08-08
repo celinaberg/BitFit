@@ -11,5 +11,5 @@ export type Action =
   | { type: 'TOGGLE_NAVBAR' }
   | { type: 'FETCH_USERS', payload:any }
   | { type: 'DELETE_USER', payload:any }
-  | { type: 'FETCH_QUESTIONS', payload:any };
+  | { type: 'FETCH_QUESTIONS', payload:any }
   | { type: 'SAVE_QUESTION', payload:any };

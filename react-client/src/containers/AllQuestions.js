@@ -1,6 +1,6 @@
 // @flow
 
-import type { QuestionState } from '../types';
+import type { Question, QuestionState, Lesson } from '../types';
 
 import React, { Component } from 'react';
 import { Col, Progress } from 'reactstrap';
@@ -11,12 +11,14 @@ import EditQuestion from '../components/EditQuestion';
 class AllQuestions extends Component {
   props: {
     questions: QuestionState,
-    fetchQuestions: () => void
+    lessons: Array<Lesson>,
+    fetchQuestions: () => void,
+    saveQuestion: (Question) => void;
   }
 
   onSaveClick = (question: Question):void => {
-    this.saveQuestion(question);
-    this.fetchQuestions();
+    this.props.saveQuestion(question);
+    this.props.fetchQuestions();
   }
 
   componentWillMount() {
@@ -53,10 +55,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchQuestions : () => {
+    fetchQuestions: () => {
       dispatch(fetchQuestions())
-    }
-    saveQuestion : (question:Question) => {
+    },
+    saveQuestion: (question:Question) => {
       dispatch(saveQuestion(question))
     }
   }
