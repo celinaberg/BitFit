@@ -32,7 +32,7 @@ module.exports = {
       }
     },
     {
-      files: [ "react-client/**/*"],
+      files: [ "client/**/*"],
       env: {
         browser: true
       }

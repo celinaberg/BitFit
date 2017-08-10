@@ -1,5 +1,4 @@
 **/node_modules/**
 /build/**
-/react-client/build/**
-/react-client/coverage/**
-/client/**
+/client/build/**
+/client/coverage/**
