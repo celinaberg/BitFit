@@ -41,6 +41,13 @@ module.exports = {
       env: {
         jest: true
       }
-    }
+    },
+    {
+      files: ["webpack.config.js", "ecosystem.config.js"],
+      rules: {
+        "import/unambiguous": OFF,
+        "import/no-commonjs": OFF
+      }
+    },
   ]
 }
