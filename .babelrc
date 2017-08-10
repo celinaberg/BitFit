@@ -1,7 +1,6 @@
 {
   "presets": ["flow"],
   "plugins": [
-    "transform-strict-mode",
     "transform-es2015-modules-commonjs"
   ]
 }
