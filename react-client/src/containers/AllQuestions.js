@@ -1,6 +1,6 @@
 // @flow
 
-import type { Question, QuestionState, Lesson } from '../types';
+import type { Question, QuestionState, Lesson, State } from '../types';
 
 import React, { Component } from 'react';
 import { Col, Progress } from 'reactstrap';
@@ -18,7 +18,6 @@ class AllQuestions extends Component {
 
   onSaveClick = (question: Question):void => {
     this.props.saveQuestion(question);
-    this.props.fetchQuestions();
   }
 
   componentWillMount() {
@@ -46,7 +45,7 @@ class AllQuestions extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:State) => {
   return {
     questions: state.questions,
     lessons: state.lessons.lessons

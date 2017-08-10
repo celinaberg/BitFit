@@ -63,3 +63,9 @@ export type QuestionState = {
   questions: Array<Question>,
   error: null
 }
+
+export type State = {
+  users: UserState,
+  lessons: LessonState,
+  questions: QuestionState
+}

@@ -31,6 +31,11 @@ const questions = (state:QuestionState=initialState, action:Action) => {
         fetching: false,
         error: action.payload
       }
+    case 'SAVE_QUESTION':
+      return {
+        ...state,
+        error: action.payload
+      }
     default:
       return state
   }

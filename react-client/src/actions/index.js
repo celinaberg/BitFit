@@ -1,6 +1,6 @@
 // @flow
 
-import type { Action } from './types';
+import type { Action, ThunkAction } from './types';
 import type { Question } from '../types';
 
 import axios from 'axios';
@@ -76,9 +76,18 @@ export const fetchQuestions = ():Action => {
   }
 }
 
-export const saveQuestion = (question:Question):Action => {
-  return {
-    type: 'SAVE_QUESTION',
-    payload: axios.patch('https://127.0.0.1:4343/api/questions/'+question.id, question)
-  }
+export const saveQuestion = (question:Question):ThunkAction => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SAVE_QUESTION_PENDING'
+    });
+    axios.patch('https://127.0.0.1:4343/api/questions/'+question.id, question)
+      .then((rsp) => {
+        dispatch({
+          type: 'SAVE_QUESTION_FULFILLED',
+          payload: rsp.data
+        });
+        dispatch(fetchQuestions());
+      })
+  };
 }

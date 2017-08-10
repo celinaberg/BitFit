@@ -63,8 +63,9 @@ class EditQuestion extends Component {
   }
 
   updateTitle = (event:Event):void => {
+    console.log('updateTitle');
     let newQuestion = Object.assign({}, this.state.question);
-    if (event.target instanceof HTMLSelectElement) {
+    if (event.target instanceof HTMLInputElement) {
       newQuestion.title = event.target.value;
       this.setState({question: newQuestion});
     }
@@ -72,10 +73,10 @@ class EditQuestion extends Component {
 
   updateLesson = (event:Event):void => {
     let newQuestion = Object.assign({}, this.state.question);
-    console.log(typeof event.target);
-    console.log(event.target.value);
-    newQuestion.lesson = event.target.value;
-    this.setState({question: newQuestion});
+    if (event.target instanceof HTMLSelectElement) {
+      newQuestion.lesson = event.target.value;
+      this.setState({question: newQuestion});
+    }
   }
 
   updateInstructions = (value:RichTextEditor):void => {
