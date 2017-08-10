@@ -2,23 +2,16 @@ const OFF = 0;
 const ERROR = 2;
 
 module.exports = {
-  parserOptions: {
-    ecmaVersion: 2017,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true
-    }
-  },
+  parser: "babel-eslint",
   plugins: [
     "prettier",
-    "import",
-    "node"
+    "import"
   ],
   extends: [
     "eslint:recommended",
-    "plugin:node/recommended",
     "plugin:import/errors",
-    "prettier"
+    "prettier",
+    "prettier/flowtype"
   ],
   rules: {
     'prettier/prettier': ERROR,
@@ -26,13 +19,22 @@ module.exports = {
   },
   overrides: [
     {
-      files: [ "server/*.js"],
+      files: ["*.js", "server/**/*.js"],
+      plugins: [
+        "node"
+      ],
       env: {
         node: true
       }
     },
     {
-      files: [ "*/_tests__/*.js"],
+      files: [ "react-client/**/*.js"],
+      env: {
+        browser: true
+      }
+    },
+    {
+      files: [ "**/_tests__/**.js"],
       env: {
         jest: true
       }
