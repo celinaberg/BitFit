@@ -1,9 +1,16 @@
 // @flow
 
+import type { Lesson } from '../types'
+
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 
 class Lessons extends Component {
+  props: {
+    lesson: Lesson
+  }
+  
   state = {
     activeTab: '1'
   }
@@ -32,6 +39,7 @@ class Lessons extends Component {
             <Row>
               <Col sm="12">
                 <h4>Background</h4>
+                <div>{this.props.lesson.background}</div>
               </Col>
             </Row>
           </TabPane>
@@ -48,4 +56,24 @@ class Lessons extends Component {
   }
 }
 
-export default Lessons;
+const mapStateToProps = (state, ownProps) => {
+  let id = ownProps.match.params.id;
+  let lesson = null;
+  for (let currentLesson of state.lessons.lessons) {
+    if(currentLesson.id === id) {
+      lesson = currentLesson;
+      break;
+    }
+  }
+  return {
+    lesson: lesson
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lessons);
