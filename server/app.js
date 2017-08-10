@@ -5,15 +5,15 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
-const express = require("express");
-const mongoose = require("mongoose");
-const config = require("./config/environment");
-const https = require("https");
-const http = require("http");
-const fs = require("fs");
-const routes = require("./routes");
-const configExpress = require("./config/express");
-const path = require("path");
+import express from "express";
+import mongoose from "mongoose";
+import config from "./config/environment";
+import https from "https";
+import http from "http";
+import fs from "fs";
+import routes from "./routes";
+import configExpress from "./config/express";
+import path from "path";
 
 // Connect to database
 mongoose.Promise = global.Promise;

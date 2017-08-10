@@ -2,39 +2,42 @@ const OFF = 0;
 const ERROR = 2;
 
 module.exports = {
+  root: true,
   parser: "babel-eslint",
   plugins: [
+    "node",
+    "import",
+    "react",
+    "flowtype",
     "prettier",
-    "import"
   ],
   extends: [
     "eslint:recommended",
-    "plugin:import/errors",
+    "plugin:import/recommended",
+    "plugin:react/recommended",
     "prettier",
     "prettier/flowtype"
   ],
   rules: {
     'prettier/prettier': ERROR,
-    'no-console': OFF
+    'no-console': OFF,
+    'import/no-commonjs': ERROR
   },
   overrides: [
     {
-      files: ["*.js", "server/**/*.js"],
-      plugins: [
-        "node"
-      ],
+      files: ["*.js", "server/**/*"],
       env: {
         node: true
       }
     },
     {
-      files: [ "react-client/**/*.js"],
+      files: [ "react-client/**/*"],
       env: {
         browser: true
       }
     },
     {
-      files: [ "**/_tests__/**.js"],
+      files: [ "**/__tests__/**", "**.test.js"],
       env: {
         jest: true
       }
