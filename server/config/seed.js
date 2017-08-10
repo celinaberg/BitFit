@@ -7,15 +7,15 @@
 
 const User = require('../api/user/user.model')
 const Question = require('../api/question/question.model')
-const Topic = require('../api/topic/topic.model')
+const Lesson = require('../api/lesson/lesson.model')
 
 User.find({}).remove(function () {
   console.log('Finished removing users')
 })
 
-Topic.find({}).remove(function () {
-  console.log('Finished removing topics')
-  Topic.create(
+Lesson.find({}).remove(function () {
+  console.log('Finished removing lessons')
+  Lesson.create(
     {
       title: 'Screencast III',
       background: 'Variables are containers for storing many different types of information.'
@@ -24,7 +24,7 @@ Topic.find({}).remove(function () {
       title: 'Screencast IV',
       background: 'Methods are collections of statements that are executed in sequence, between curly braces.'
     }, function () {
-      console.log('Finished adding topics')
+      console.log('Finished adding lessons')
     })
 })
 

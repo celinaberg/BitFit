@@ -2,11 +2,7 @@
  * Main application routes
  */
 
-const Loggers = require('./api/logger')
-const CLIs = require('./api/cli')
-const Topic = require('./api/topic')
-const Question = require('./api/question')
-const User = require('./api/user')
+const Api = require('./api')
 const Auth = require('./auth')
 const errors = require('./components/errors')
 const path = require('path')
@@ -16,12 +12,7 @@ function defaultRouteHandler (req, res) {
 }
 
 function init (app) {
-  // Insert routes below
-  app.use('/api/loggers', Loggers)
-  app.use('/api/clis', CLIs)
-  app.use('/api/topics', Topic)
-  app.use('/api/questions', Question)
-  app.use('/api/users', User)
+  app.use('/api/v2.0', Api)
 
   app.use('/auth', Auth)
 

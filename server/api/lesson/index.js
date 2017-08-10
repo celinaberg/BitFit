@@ -1,6 +1,6 @@
 
 const express = require('express')
-const controller = require('./topic.controller')
+const controller = require('./lesson.controller')
 const auth = require('../../auth/auth.service')
 
 const router = express.Router()

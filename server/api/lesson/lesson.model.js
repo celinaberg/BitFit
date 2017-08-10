@@ -3,14 +3,13 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const TopicSchema = new Schema({
-  // title: String,
+const LessonSchema = new Schema({
   title: { type: String, unique: true, required: true },
   background: String,
   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }]
 })
 
-TopicSchema.methods.toJSON = function () {
+LessonSchema.methods.toJSON = function () {
   var obj = this.toObject()
   obj.id = obj._id
   delete obj._id
@@ -18,4 +17,4 @@ TopicSchema.methods.toJSON = function () {
   return obj
 }
 
-module.exports = mongoose.model('Topic', TopicSchema)
+module.exports = mongoose.model('Lesson', LessonSchema)

@@ -12,7 +12,7 @@ const QuestionSchema = new Schema({
   hints: [String],
   tags: String,
   expectedOutput: String,
-  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }
+  lesson: { type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' }
 })
 
 QuestionSchema.methods.toJSON = function () {

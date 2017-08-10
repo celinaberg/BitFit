@@ -9,7 +9,7 @@ import RichTextEditor from 'react-rte';
 export const fetchLessons = ():Action => {
   return {
     type: 'FETCH_LESSONS',
-    payload: axios.get('https://127.0.0.1:4343/api/topics')
+    payload: axios.get('https://127.0.0.1:4343/api/v2.0/lessons')
   }
 }
 
@@ -26,7 +26,7 @@ export const updateNewLesson = (title:string, background:RichTextEditor):Action 
 export const saveNewLesson = (title:string, background:string):Action => {
   return {
     type: 'SAVE_NEW_LESSON',
-    payload: axios.post('https://127.0.0.1:4343/api/topics', {
+    payload: axios.post('https://127.0.0.1:4343/api/v2.0/topics', {
       title,
       background
     })
@@ -36,7 +36,7 @@ export const saveNewLesson = (title:string, background:string):Action => {
 export const saveLesson = (id:string, title:string, background:string):Action => {
   return {
     type: 'SAVE_LESSON',
-    payload: axios.put('https://127.0.0.1:4343/api/topics/' + id, {
+    payload: axios.put('https://127.0.0.1:4343/api/v2.0/topics/' + id, {
       title,
       background
     })
@@ -58,21 +58,21 @@ export const toggleNavBar = ():Action => {
 export const fetchUsers = ():Action => {
   return {
     type: 'FETCH_USERS',
-    payload: axios.get('https://127.0.0.1:4343/api/users')
+    payload: axios.get('https://127.0.0.1:4343/api/v2.0/users')
   }
 }
 
 export const deleteUser = (id:string):Action => {
   return {
     type: 'DELETE_USER',
-    payload: axios.delete('https://127.0.0.1:4343/api/users/'+id)
+    payload: axios.delete('https://127.0.0.1:4343/api/v2.0/users/'+id)
   }
 }
 
 export const fetchQuestions = ():Action => {
   return {
     type: 'FETCH_QUESTIONS',
-    payload: axios.get('https://127.0.0.1:4343/api/questions')
+    payload: axios.get('https://127.0.0.1:4343/api/v2.0/questions')
   }
 }
 
@@ -81,7 +81,7 @@ export const saveQuestion = (question:Question):ThunkAction => {
     dispatch({
       type: 'SAVE_QUESTION_PENDING'
     });
-    axios.patch('https://127.0.0.1:4343/api/questions/'+question.id, question)
+    axios.patch('https://127.0.0.1:4343/api/v2.0/questions/'+question.id, question)
       .then((rsp) => {
         dispatch({
           type: 'SAVE_QUESTION_FULFILLED',
