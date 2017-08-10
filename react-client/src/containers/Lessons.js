@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Container, Row, Col, Nav } from 'reactstrap';
-import { Switch, Route } from 'react-router';
-import LessonSidebar from '../components/LessonSidebar';
-import LessonsInfo from './LessonsInfo';
-import Lesson from './Lesson';
+import React, { Component } from "react";
+import { Container, Row, Col, Nav } from "reactstrap";
+import { Switch, Route } from "react-router";
+import LessonSidebar from "../components/LessonSidebar";
+import LessonsInfo from "./LessonsInfo";
+import Lesson from "./Lesson";
 
 class Lessons extends Component {
   render() {
@@ -14,13 +14,13 @@ class Lessons extends Component {
         <Row>
           <Col sm="3" md="2" className="sidebar">
             <Nav pills vertical>
-              <LessonSidebar/>
+              <LessonSidebar />
             </Nav>
           </Col>
 
           <Switch>
-            <Route exact path="/lessons" component={LessonsInfo}/>
-            <Route path="/lessons/:id" component={Lesson}/>
+            <Route exact path="/lessons" component={LessonsInfo} />
+            <Route path="/lessons/:id" component={Lesson} />
           </Switch>
         </Row>
       </Container>

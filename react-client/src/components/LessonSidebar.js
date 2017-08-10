@@ -1,17 +1,17 @@
 // @flow
 
-import type { LessonState } from '../types';
+import type { LessonState } from "../types";
 
-import React, { Component } from 'react';
-import { Progress } from 'reactstrap';
-import { connect } from 'react-redux';
-import { fetchLessons } from '../actions';
-import LessonSidebarItem from './LessonSidebarItem';
+import React, { Component } from "react";
+import { Progress } from "reactstrap";
+import { connect } from "react-redux";
+import { fetchLessons } from "../actions";
+import LessonSidebarItem from "./LessonSidebarItem";
 
 class LessonSidebar extends Component {
   props: {
     lessons: LessonState,
-    admin: bool,
+    admin: boolean,
     fetchLessons: () => void
   };
 
@@ -20,19 +20,30 @@ class LessonSidebar extends Component {
   };
 
   componentWillMount() {
-    if(!this.props.lessons.fetched) {
+    if (!this.props.lessons.fetched) {
       this.props.fetchLessons();
     }
   }
 
   render() {
-    if(this.props.lessons.fetching) {
-      return (<Progress animated color="muted" value="100"/>);
+    if (this.props.lessons.fetching) {
+      return <Progress animated color="muted" value="100" />;
     } else {
-      let lessons = this.props.lessons.lessons.map((lesson) => {
-        return <LessonSidebarItem key={lesson.id} id={lesson.id} title={lesson.title} admin={this.props.admin}/>
+      let lessons = this.props.lessons.lessons.map(lesson => {
+        return (
+          <LessonSidebarItem
+            key={lesson.id}
+            id={lesson.id}
+            title={lesson.title}
+            admin={this.props.admin}
+          />
+        );
       });
-      return (<div>{lessons}</div>)
+      return (
+        <div>
+          {lessons}
+        </div>
+      );
     }
   }
 }
@@ -40,15 +51,15 @@ class LessonSidebar extends Component {
 const mapStateToProps = state => {
   return {
     lessons: state.lessons
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchLessons : () => {
-      dispatch(fetchLessons())
+    fetchLessons: () => {
+      dispatch(fetchLessons());
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonSidebar);

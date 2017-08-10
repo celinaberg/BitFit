@@ -1,12 +1,11 @@
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose')
-
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const LoggerSchema = new Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' },
-  question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  topic: { type: mongoose.Schema.Types.ObjectId, ref: "Topic" },
+  question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
   startTime: Date,
   endTime: { type: Date, default: Date.now },
   numCompiles: Number,
@@ -15,6 +14,6 @@ const LoggerSchema = new Schema({
   numHints: Number,
   totalAttempts: Number,
   correctAttempts: Number
-})
+});
 
-module.exports = mongoose.model('Logger', LoggerSchema)
+module.exports = mongoose.model("Logger", LoggerSchema);

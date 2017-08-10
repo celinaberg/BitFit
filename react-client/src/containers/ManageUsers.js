@@ -1,58 +1,77 @@
 // @flow
 
-import type { UserState } from '../types';
+import type { UserState } from "../types";
 
-import React, { Component } from 'react';
-import { Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Progress } from 'reactstrap';
-import { connect } from 'react-redux';
-import { fetchUsers, deleteUser } from '../actions';
-import { Button } from 'reactstrap';
-import FaTrash from 'react-icons/lib/fa/trash';
+import React, { Component } from "react";
+import {
+  Col,
+  ListGroup,
+  ListGroupItem,
+  ListGroupItemHeading,
+  ListGroupItemText,
+  Progress
+} from "reactstrap";
+import { connect } from "react-redux";
+import { fetchUsers, deleteUser } from "../actions";
+import { Button } from "reactstrap";
+import FaTrash from "react-icons/lib/fa/trash";
 
 class ManageUsers extends Component {
   props: {
     users: UserState,
     fetchUsers: () => void,
     deleteUser: (id: string) => void
-  }
+  };
 
   componentWillMount() {
-    if(!this.props.users.fetched) {
+    if (!this.props.users.fetched) {
       this.props.fetchUsers();
     }
   }
 
-  onDeleteClick = (event) => {
+  onDeleteClick = event => {
     this.props.deleteUser(event.currentTarget.id);
     this.props.fetchUsers();
   };
 
   render() {
     let users;
-    if(this.props.users.fetching) {
-      users = (<Progress animated color="muted" value="100"/>);
+    if (this.props.users.fetching) {
+      users = <Progress animated color="muted" value="100" />;
     } else {
-      users = this.props.users.users.map((user) => {
+      users = this.props.users.users.map(user => {
         return (
           <ListGroupItem key={user.id}>
             <ListGroupItemHeading>
               {user.displayName}
-              <Button color="danger" id={user.id} onClick={this.onDeleteClick}><FaTrash/></Button>
+              <Button color="danger" id={user.id} onClick={this.onDeleteClick}>
+                <FaTrash />
+              </Button>
             </ListGroupItemHeading>
             <ListGroupItemText>
-              <span className="text-muted">{user.firstName} {user.lastName}</span>
+              <span className="text-muted">
+                {user.firstName} {user.lastName}
+              </span>
               <span>&nbsp;</span>
-              <span className="text-muted">CWL: {user.uid}</span>
+              <span className="text-muted">
+                CWL: {user.uid}
+              </span>
               <span>&nbsp;</span>
-              <span className="text-muted">Student #: {user.studentNumber}</span>
+              <span className="text-muted">
+                Student #: {user.studentNumber}
+              </span>
               <span>&nbsp;</span>
-              <span className="text-muted">Role: {user.role}</span>
+              <span className="text-muted">
+                Role: {user.role}
+              </span>
               <span>&nbsp;</span>
-              <span className="text-muted">Account ID: {user.id}</span>
+              <span className="text-muted">
+                Account ID: {user.id}
+              </span>
             </ListGroupItemText>
           </ListGroupItem>
-        )
-      })
+        );
+      });
     }
     return (
       <Col sm="9" md="10">
@@ -69,18 +88,18 @@ class ManageUsers extends Component {
 const mapStateToProps = state => {
   return {
     users: state.users
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers : () => {
-      dispatch(fetchUsers())
+    fetchUsers: () => {
+      dispatch(fetchUsers());
     },
-    deleteUser : (id) => {
-      dispatch(deleteUser(id))
+    deleteUser: id => {
+      dispatch(deleteUser(id));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageUsers);

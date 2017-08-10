@@ -1,11 +1,11 @@
 // @flow
 
-import { combineReducers } from 'redux'
-import lessons from './lessons'
-import auth from './auth'
-import navbar from './navbar'
-import users from './users'
-import questions from './questions'
+import { combineReducers } from "redux";
+import lessons from "./lessons";
+import auth from "./auth";
+import navbar from "./navbar";
+import users from "./users";
+import questions from "./questions";
 
 const reducers = combineReducers({
   lessons,
@@ -13,6 +13,6 @@ const reducers = combineReducers({
   navbar,
   users,
   questions
-})
+});
 
-export default reducers
+export default reducers;

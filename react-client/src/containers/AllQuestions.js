@@ -1,39 +1,46 @@
 // @flow
 
-import type { Question, QuestionState, Lesson, State } from '../types';
+import type { Question, QuestionState, Lesson, State } from "../types";
 
-import React, { Component } from 'react';
-import { Col, Progress } from 'reactstrap';
-import { connect } from 'react-redux';
-import { fetchQuestions, saveQuestion } from '../actions';
-import EditQuestion from '../components/EditQuestion';
+import React, { Component } from "react";
+import { Col, Progress } from "reactstrap";
+import { connect } from "react-redux";
+import { fetchQuestions, saveQuestion } from "../actions";
+import EditQuestion from "../components/EditQuestion";
 
 class AllQuestions extends Component {
   props: {
     questions: QuestionState,
     lessons: Array<Lesson>,
     fetchQuestions: () => void,
-    saveQuestion: (Question) => void;
-  }
+    saveQuestion: Question => void
+  };
 
-  onSaveClick = (question: Question):void => {
+  onSaveClick = (question: Question): void => {
     this.props.saveQuestion(question);
-  }
+  };
 
   componentWillMount() {
-    if(!this.props.questions.fetched) {
+    if (!this.props.questions.fetched) {
       this.props.fetchQuestions();
     }
   }
 
   render() {
     let questions;
-    if(this.props.questions.fetching) {
-      questions = (<Progress animated color="muted" value="100"/>);
+    if (this.props.questions.fetching) {
+      questions = <Progress animated color="muted" value="100" />;
     } else {
-      questions = this.props.questions.questions.map((question) => {
-        return (<EditQuestion key={question.id} question={question} lessons={this.props.lessons} onSave={this.onSaveClick}/>)
-      })
+      questions = this.props.questions.questions.map(question => {
+        return (
+          <EditQuestion
+            key={question.id}
+            question={question}
+            lessons={this.props.lessons}
+            onSave={this.onSaveClick}
+          />
+        );
+      });
     }
     return (
       <Col sm="9" md="10">
@@ -45,22 +52,22 @@ class AllQuestions extends Component {
   }
 }
 
-const mapStateToProps = (state:State) => {
+const mapStateToProps = (state: State) => {
   return {
     questions: state.questions,
     lessons: state.lessons.lessons
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchQuestions: () => {
-      dispatch(fetchQuestions())
+      dispatch(fetchQuestions());
     },
-    saveQuestion: (question:Question) => {
-      dispatch(saveQuestion(question))
+    saveQuestion: (question: Question) => {
+      dispatch(saveQuestion(question));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllQuestions);

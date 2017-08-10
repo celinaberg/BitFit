@@ -1,7 +1,7 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import React, { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
 
 class NotFound extends Component {
   render() {
@@ -10,7 +10,11 @@ class NotFound extends Component {
         <Row>
           <Col>
             <h2>404: Not Found</h2>
-            <p>If you think this is a bug, file an <a href="https://github.com/celinaberg/BitFit/issues">issue</a> on GitHub.</p>
+            <p>
+              If you think this is a bug, file an{" "}
+              <a href="https://github.com/celinaberg/BitFit/issues">issue</a> on
+              GitHub.
+            </p>
           </Col>
         </Row>
       </Container>

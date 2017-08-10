@@ -1,28 +1,28 @@
 // @flow
 
-import type { Action } from '../actions/types';
+import type { Action } from "../actions/types";
 
 type State = {
-  loggedIn: bool,
+  loggedIn: boolean,
   firstName: ?string,
   lastName: ?string,
   displayName: ?string,
   cwl: ?string,
   role: "student" | "teaching-assistant" | "instructor"
-}
+};
 
-const initialState:State = {
+const initialState: State = {
   loggedIn: true,
   firstName: null,
   lastName: null,
   displayName: null,
   cwl: null,
   role: "instructor"
-}
+};
 
-const user = (state:State=initialState, action:Action):State => {
+const user = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case 'LOGIN':
+    case "LOGIN":
       return {
         ...state,
         loggedIn: !state.loggedIn,
@@ -31,10 +31,10 @@ const user = (state:State=initialState, action:Action):State => {
         displayName: "Backdoor User",
         cwl: "buser",
         role: "instructor"
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default user
+export default user;

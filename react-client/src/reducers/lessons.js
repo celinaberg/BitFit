@@ -1,10 +1,10 @@
 // @flow
 
-import type { Action } from '../actions/types';
-import type { LessonState } from '../types';
-import RichTextEditor from 'react-rte';
+import type { Action } from "../actions/types";
+import type { LessonState } from "../types";
+import RichTextEditor from "react-rte";
 
-const initialState:LessonState = {
+const initialState: LessonState = {
   fetching: false,
   fetched: false,
   lessons: [],
@@ -13,40 +13,43 @@ const initialState:LessonState = {
     title: "",
     background: RichTextEditor.createEmptyValue()
   }
-}
+};
 
-const lessons = (state:LessonState=initialState, action:Action):LessonState => {
+const lessons = (
+  state: LessonState = initialState,
+  action: Action
+): LessonState => {
   switch (action.type) {
-    case 'FETCH_LESSONS_PENDING':
+    case "FETCH_LESSONS_PENDING":
       return {
         ...state,
         fetching: true
-      }
-    case 'FETCH_LESSONS_FULFILLED':
+      };
+    case "FETCH_LESSONS_FULFILLED":
       return {
         ...state,
         fetching: false,
         fetched: true,
         lessons: action.payload.data,
         error: null
-      }
-    case 'FETCH_LESSONS_REJECTED':
+      };
+    case "FETCH_LESSONS_REJECTED":
       return {
         ...state,
         fetching: false,
         error: action.payload
-      }
-    case 'UPDATE_NEW_LESSON':
+      };
+    case "UPDATE_NEW_LESSON":
       return {
         ...state,
         new: action.payload
-      }
-    case 'SAVE_NEW_LESSON_PENDING':
+      };
+    case "SAVE_NEW_LESSON_PENDING":
       return {
         ...state,
         fetching: true
-      }
-    case 'SAVE_NEW_LESSON_FULFILLED':
+      };
+    case "SAVE_NEW_LESSON_FULFILLED":
       return {
         ...state,
         fetching: false,
@@ -55,15 +58,15 @@ const lessons = (state:LessonState=initialState, action:Action):LessonState => {
           title: "",
           background: RichTextEditor.createEmptyValue()
         }
-      }
-    case 'SAVE_NEW_LESSON_REJECTED':
+      };
+    case "SAVE_NEW_LESSON_REJECTED":
       return {
         ...state,
         fetching: false
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default lessons
+export default lessons;
