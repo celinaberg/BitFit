@@ -30,9 +30,9 @@ class LessonsInfo extends Component {
         <hr />
         <h4>Help</h4>
         <p>
-          There are a number of ways the tool can help you if you're feeling
-          stuck on a particular question. There are hint buttons for every
-          question, where we have added a series of hints should you be
+          There are a number of ways the tool can help you if you&apos;re
+          feeling stuck on a particular question. There are hint buttons for
+          every question, where we have added a series of hints should you be
           struggling to find a correct solution to the question.
         </p>
         <hr />

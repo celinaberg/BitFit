@@ -17,7 +17,7 @@ class EnsureInstructor extends Component {
     if (this.props.role === "instructor") {
       return <Route component={component} {...rest} />;
     } else {
-      return <Route render={props => <Redirect to="/" />} {...rest} />;
+      return <Route render={() => <Redirect to="/" />} {...rest} />;
     }
   }
 }

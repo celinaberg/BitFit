@@ -52,9 +52,7 @@ export function run(req, res) {
       if (error) {
         return res.status(200).send(error);
       }
-      if (error !== null) {
-      }
-      return res.status(200).send(stdout);
+      return res.status(200).send({ stdout, stderr });
     }
   );
 }

@@ -26,7 +26,7 @@ export function addQuestion(req, res) {
 
         lesson.questions.push(question);
 
-        lesson.save((err, lesson) => {
+        lesson.save(err => {
           if (err) {
             return handleError(err);
           }
