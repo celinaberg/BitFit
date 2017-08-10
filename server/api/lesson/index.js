@@ -1,19 +1,25 @@
 import express from "express";
-import controller from "./lesson.controller";
-import auth from "../../auth/auth.service";
+import {
+  index,
+  show,
+  create,
+  update,
+  destroy,
+  deleteQuestion,
+  addQuestion
+} from "./lesson.controller";
+import { hasRole } from "../../auth/auth.service";
 
-export default const router = express.Router();
+const router = express.Router();
 
-router.get("/", controller.index);
+router.get("/", index);
 // router.get('/:id', controller.show);
-router.get("/:id", controller.show);
-router.post("/", auth.hasRole("admin"), controller.create);
-router.put("/:id", auth.hasRole("admin"), controller.update);
-router.patch("/:id", auth.hasRole("admin"), controller.update);
-router.delete("/:id", auth.hasRole("admin"), controller.destroy);
-router.post(
-  "/:id/delquestion",
-  auth.hasRole("admin"),
-  controller.deleteQuestion
-);
-router.post("/:id/questions", auth.hasRole("admin"), controller.addQuestion);
+router.get("/:id", show);
+router.post("/", hasRole("admin"), create);
+router.put("/:id", hasRole("admin"), update);
+router.patch("/:id", hasRole("admin"), update);
+router.delete("/:id", hasRole("admin"), destroy);
+router.post("/:id/delquestion", hasRole("admin"), deleteQuestion);
+router.post("/:id/questions", hasRole("admin"), addQuestion);
+
+export default router;

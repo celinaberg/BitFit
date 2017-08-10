@@ -1,8 +1,10 @@
 import express from "express";
-import controller from "./cli.controller";
-import auth from "../../auth/auth.service";
+import { compile, run } from "./cli.controller";
+import { isAuthenticated } from "../../auth/auth.service";
 
-export default const router = express.Router();
+const router = express.Router();
 
-router.post("/compile", auth.isAuthenticated(), controller.compile);
-router.post("/run", auth.isAuthenticated(), controller.run);
+router.post("/compile", isAuthenticated(), compile);
+router.post("/run", isAuthenticated(), run);
+
+export default router;

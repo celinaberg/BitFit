@@ -1,15 +1,23 @@
 import express from "express";
-import controller from "./question.controller";
+import {
+  exportQuestions,
+  index,
+  show,
+  create,
+  importQuestions,
+  update,
+  destroy
+} from "./question.controller";
 
 const router = express.Router();
 
-router.get("/export", controller.exportQuestions);
-router.get("/", controller.index);
-router.get("/:id", controller.show);
-router.post("/", controller.create);
-router.post("/import", controller.importQuestions);
-router.put("/:id", controller.update);
-router.patch("/:id", controller.update);
-router.delete("/:id", controller.destroy);
+router.get("/export", exportQuestions);
+router.get("/", index);
+router.get("/:id", show);
+router.post("/", create);
+router.post("/import", importQuestions);
+router.put("/:id", update);
+router.patch("/:id", update);
+router.delete("/:id", destroy);
 
 export default router;

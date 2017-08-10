@@ -1,12 +1,14 @@
 import express from "express";
-import controller from "./logger.controller";
-import auth from "../../auth/auth.service";
+import { index, show, create, update, destroy } from "./logger.controller";
+import { hasRole, isAuthenticated } from "../../auth/auth.service";
 
-export default const router = express.Router();
+const router = express.Router();
 
-router.get("/", controller.index);
-router.get("/:id", auth.isAuthenticated(), controller.show);
-router.post("/", auth.isAuthenticated(), controller.create);
-router.put("/:id", auth.isAuthenticated(), controller.update);
-router.patch("/:id", auth.isAuthenticated(), controller.update);
-router.delete("/:id", auth.hasRole("admin"), controller.destroy);
+router.get("/", index);
+router.get("/:id", isAuthenticated(), show);
+router.post("/", isAuthenticated(), create);
+router.put("/:id", isAuthenticated(), update);
+router.patch("/:id", isAuthenticated(), update);
+router.delete("/:id", hasRole("admin"), destroy);
+
+export default router;

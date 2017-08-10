@@ -14,6 +14,7 @@ import fs from "fs";
 import routes from "./routes";
 import configExpress from "./config/express";
 import path from "path";
+import { seedTestData } from "./config/seed";
 
 // Connect to database
 mongoose.Promise = global.Promise;
@@ -21,7 +22,7 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 
 // Populate DB with sample data
 if (config.seedDB) {
-  require("./config/seed");
+  seedTestData();
 }
 
 // new for HTTPS
@@ -56,4 +57,4 @@ http
   .listen(config.httpPort);
 
 // Expose app
-module.exports = app;
+export default app;

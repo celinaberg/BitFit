@@ -9,11 +9,11 @@ import {
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText,
-  Progress
+  Progress,
+  Button
 } from "reactstrap";
 import { connect } from "react-redux";
 import { fetchUsers, deleteUser } from "../actions";
-import { Button } from "reactstrap";
 import FaTrash from "react-icons/lib/fa/trash";
 
 class ManageUsers extends Component {

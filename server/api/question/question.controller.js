@@ -13,7 +13,7 @@ export function index(req, res) {
     }
     return res.status(200).json(questions);
   });
-};
+}
 
 // Get list of questions for export
 export function exportQuestions(req, res) {
@@ -23,7 +23,7 @@ export function exportQuestions(req, res) {
     }
     return res.status(200).json(questions);
   });
-};
+}
 
 // Get a single question
 export function show(req, res) {
@@ -36,7 +36,7 @@ export function show(req, res) {
     }
     return res.json(question);
   });
-};
+}
 
 // Creates a new question in the DB.
 export function create(req, res) {
@@ -46,20 +46,20 @@ export function create(req, res) {
     }
     return res.status(201).json(question);
   });
-};
+}
 
 // Import many questions to DB.
-export function import(req, res) {
+export function importQuestions(req, res) {
   Question.collection.insert(req.body, (err, questions) => {
     if (err) {
       return handleError(res, err);
     }
     return res.status(201).json(questions);
   });
-};
+}
 
 // Updates an existing question in the DB.
-export function update( req, res) {
+export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
@@ -79,7 +79,7 @@ export function update( req, res) {
       return res.status(200).json(question);
     });
   });
-};
+}
 
 // Deletes a question from the DB.
 export function destroy(req, res) {
@@ -97,4 +97,4 @@ export function destroy(req, res) {
       return res.send(204);
     });
   });
-};
+}

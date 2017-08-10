@@ -5,7 +5,7 @@ import compose from "composable-middleware";
  * Attaches the user object to the request if authenticated
  * Otherwise returns 403
  */
-function isAuthenticated() {
+export function isAuthenticated() {
   return (req, res, next) => {
     if (req.hasOwnProperty("user")) {
       next();
@@ -20,7 +20,7 @@ function isAuthenticated() {
 /**
  * Checks if the user role meets the minimum requirements of the route
  */
-function hasRole(roleRequired) {
+export function hasRole(roleRequired) {
   if (!roleRequired) throw new Error("Required role needs to be set");
 
   return compose().use(isAuthenticated()).use((req, res, next) => {
@@ -34,6 +34,3 @@ function hasRole(roleRequired) {
     }
   });
 }
-
-exports.isAuthenticated = isAuthenticated;
-exports.hasRole = hasRole;
