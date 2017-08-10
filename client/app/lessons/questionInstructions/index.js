@@ -1,13 +1,13 @@
-import angular from 'angular'
+import angular from "angular";
 
-import template from './question-instructions.html'
-import './questionInstructions.css'
-import angularUiBootstrap from 'angular-ui-bootstrap'
+import template from "./question-instructions.html";
+import "./questionInstructions.css";
+import angularUiBootstrap from "angular-ui-bootstrap";
 
-export default angular.module('bitfit.lessons.instructions', [angularUiBootstrap])
-  .directive('questionInstructions', () => ({
+export default angular
+  .module("bitfit.lessons.instructions", [angularUiBootstrap])
+  .directive("questionInstructions", () => ({
     template,
-    restrict: 'EA',
-    link (scope, element, attrs) {
-    }
-  })).name
+    restrict: "EA",
+    link(scope, element, attrs) {}
+  })).name;

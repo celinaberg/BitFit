@@ -1,9 +1,9 @@
 export default class MainController {
-  constructor ($scope, $window) {
+  constructor($scope, $window) {
     $scope.login = () => {
-      $window.location.href = '/auth/cwl/login'
-    }
+      $window.location.href = "/auth/cwl/login";
+    };
   }
 }
 
-MainController.$inject = ['$scope', '$window']
+MainController.$inject = ["$scope", "$window"];

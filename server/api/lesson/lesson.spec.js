@@ -1,18 +1,18 @@
 /* eslint-env mocha */
-import 'should'
-const app = require('../../app')
-const request = require('supertest')
+import "should";
+const app = require("../../app");
+const request = require("supertest");
 
-describe('GET /api/topics', () => {
-  it('should respond with JSON array', (done) => {
+describe("GET /api/topics", () => {
+  it("should respond with JSON array", done => {
     request(app)
-      .get('/api/topics')
+      .get("/api/topics")
       .expect(200)
-      .expect('Content-Type', /json/)
+      .expect("Content-Type", /json/)
       .end((err, res) => {
-        if (err) return done(err)
-        res.body.should.be.instanceof(Array)
-        done()
-      })
-  })
-})
+        if (err) return done(err);
+        res.body.should.be.instanceof(Array);
+        done();
+      });
+  });
+});

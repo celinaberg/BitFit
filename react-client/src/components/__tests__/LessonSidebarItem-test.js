@@ -1,12 +1,12 @@
-import React from 'react';
-import LessonSidebarItem from '../LessonSidebarItem';
-import renderer from 'react-test-renderer';
-import { MemoryRouter } from 'react-router';
+import React from "react";
+import LessonSidebarItem from "../LessonSidebarItem";
+import renderer from "react-test-renderer";
+import { MemoryRouter } from "react-router";
 
-test('URL changes when admin', () => {
+test("URL changes when admin", () => {
   let component = renderer.create(
     <MemoryRouter>
-      <LessonSidebarItem id="testId" title="Test Lesson"/>
+      <LessonSidebarItem id="testId" title="Test Lesson" />
     </MemoryRouter>
   );
 
@@ -15,7 +15,7 @@ test('URL changes when admin', () => {
 
   component = renderer.create(
     <MemoryRouter>
-      <LessonSidebarItem id="testId" title="Test Lesson" admin={true}/>
+      <LessonSidebarItem id="testId" title="Test Lesson" admin={true} />
     </MemoryRouter>
   );
   tree = component.toJSON();

@@ -1,13 +1,12 @@
-import template from './users.html'
+import template from "./users.html";
 
-routes.$inject = ['$stateProvider']
+routes.$inject = ["$stateProvider"];
 
-export default function routes ($stateProvider) {
-  $stateProvider
-    .state('users', {
-      url: '/admin/users',
-      template,
-      controller: 'UsersCtrl',
-      authenticate: true
-    })
+export default function routes($stateProvider) {
+  $stateProvider.state("users", {
+    url: "/admin/users",
+    template,
+    controller: "UsersCtrl",
+    authenticate: true
+  });
 }
