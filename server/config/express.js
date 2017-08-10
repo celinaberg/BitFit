@@ -2,21 +2,21 @@
  * Express configuration
  */
 
-const express = require("express");
-// var favicon = require('serve-favicon');
-const morgan = require("morgan");
-const compression = require("compression");
-const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
-const errorHandler = require("errorhandler");
-const path = require("path");
-const config = require("./environment");
-const passport = require("passport");
-const ejs = require("ejs");
-// const connectLivereload = require('connect-livereload')
-const session = require("express-session");
+import express from "express";
+// var favicon from 'serve-favicon';
+import morgan from "morgan";
+import compression from "compression";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
+import errorHandler from "errorhandler";
+import path from "path";
+import config from "./environment";
+import passport from "passport";
+import ejs from "ejs";
+// import connectLivereload from 'connect-livereload';
+import session from "express-session";
 
-function init(app) {
+export default function init(app) {
   const env = app.get("env");
 
   app.disable("x-powered-by");
@@ -58,5 +58,3 @@ function init(app) {
     res.status(500).send("Internal error. Please try again later.");
   });
 }
-
-module.exports = init;

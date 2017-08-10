@@ -1,12 +1,12 @@
-const _ = require("lodash");
-const Question = require("./question.model");
+import _ from "lodash";
+import Question from "./question.model";
 
 function handleError(res, err) {
   return res.status(500).send(err);
 }
 
 // Get list of questions
-exports.index = function(req, res) {
+export function index(req, res) {
   Question.find((err, questions) => {
     if (err) {
       return handleError(res, err);
@@ -16,7 +16,7 @@ exports.index = function(req, res) {
 };
 
 // Get list of questions for export
-exports.export = function(req, res) {
+export function exportQuestions(req, res) {
   Question.find({}, { _id: 0, topic: 0 }, (err, questions) => {
     if (err) {
       return handleError(res, err);
@@ -26,7 +26,7 @@ exports.export = function(req, res) {
 };
 
 // Get a single question
-exports.show = function(req, res) {
+export function show(req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) {
       return handleError(res, err);
@@ -39,7 +39,7 @@ exports.show = function(req, res) {
 };
 
 // Creates a new question in the DB.
-exports.create = function(req, res) {
+export function create(req, res) {
   Question.create(req.body, (err, question) => {
     if (err) {
       return handleError(res, err);
@@ -49,7 +49,7 @@ exports.create = function(req, res) {
 };
 
 // Import many questions to DB.
-exports.import = function(req, res) {
+export function import(req, res) {
   Question.collection.insert(req.body, (err, questions) => {
     if (err) {
       return handleError(res, err);
@@ -59,7 +59,7 @@ exports.import = function(req, res) {
 };
 
 // Updates an existing question in the DB.
-exports.update = function(req, res) {
+export function update( req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
@@ -82,7 +82,7 @@ exports.update = function(req, res) {
 };
 
 // Deletes a question from the DB.
-exports.destroy = function(req, res) {
+export function destroy(req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) {
       return handleError(res, err);

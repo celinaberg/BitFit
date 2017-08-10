@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -16,4 +16,4 @@ const LoggerSchema = new Schema({
   correctAttempts: Number
 });
 
-module.exports = mongoose.model("Logger", LoggerSchema);
+export default mongoose.model("Logger", LoggerSchema);

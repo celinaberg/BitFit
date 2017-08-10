@@ -2,7 +2,7 @@
  * Error responses
  */
 
-module.exports[404] = function pageNotFound(req, res) {
+export function pageNotFound(req, res) {
   const viewFilePath = "404";
   const statusCode = 404;
   const result = {
@@ -17,4 +17,4 @@ module.exports[404] = function pageNotFound(req, res) {
 
     res.render(viewFilePath);
   });
-};
+}

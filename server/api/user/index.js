@@ -1,6 +1,6 @@
-const express = require("express");
-const controller = require("./user.controller");
-const auth = require("../../auth/auth.service");
+import express from "express";
+import controller from "./user.controller";
+import auth from "../../auth/auth.service";
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.delete("/:id", auth.hasRole("admin"), controller.delete);
 router.get("/me", auth.isAuthenticated(), controller.me);
 router.get("/:id", auth.isAuthenticated(), controller.show);
 
-module.exports = router;
+export default router;

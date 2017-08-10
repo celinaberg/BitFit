@@ -1,9 +1,9 @@
-const _ = require("lodash");
-const Lesson = require("./lesson.model");
-const Question = require("../question/question.model");
+import _ from "lodash";
+import Lesson from "./lesson.model";
+import Question from "../question/question.model";
 
 // Add a question to this lesson
-exports.addQuestion = function(req, res) {
+export function addQuestion(req, res) {
   console.log("in add question in server");
   console.log(req.body);
   req.body.lesson = req.params.id; // is this necessary?
@@ -61,9 +61,9 @@ exports.addQuestion = function(req, res) {
       });
     }
   });
-};
+}
 
-exports.deleteQuestion = function(req, res) {
+export function deleteQuestion(req, res) {
   console.log("in delete q server");
   const question = req.body;
   console.log(question);
@@ -81,10 +81,10 @@ exports.deleteQuestion = function(req, res) {
       console.log("the sub-doc was removed");
     });
   });
-};
+}
 
 // Get list of lessons
-exports.index = function(req, res) {
+export function index(req, res) {
   Lesson.find().populate("lesson.questions").exec(function(err, lessons) {
     if (err) {
       res.status(500);
@@ -92,10 +92,10 @@ exports.index = function(req, res) {
     }
     res.status(200).json(lessons);
   });
-};
+}
 
 // Get a single lesson
-exports.show = function(req, res) {
+export function show(req, res) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) {
       return handleError(res, err);
@@ -111,20 +111,20 @@ exports.show = function(req, res) {
       return res.json(lesson);
     });
   });
-};
+}
 
 // Creates a new lesson in the DB.
-exports.create = function(req, res) {
+export function create(req, res) {
   Lesson.create(req.body, (err, lesson) => {
     if (err) {
       return handleError(res, err);
     }
     return res.status(201).json(lesson);
   });
-};
+}
 
 // Updates an existing lesson in the DB.
-exports.update = function(req, res) {
+export function update(req, res) {
   console.log("in update");
   if (req.body._id) {
     delete req.body._id;
@@ -158,10 +158,10 @@ exports.update = function(req, res) {
       });
     });
   });
-};
+}
 
 // Deletes a lesson from the DB.
-exports.destroy = function(req, res) {
+export function destroy(req, res) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) {
       return handleError(res, err);
@@ -176,7 +176,7 @@ exports.destroy = function(req, res) {
       return res.send(204);
     });
   });
-};
+}
 
 function handleError(res, err) {
   return res.status(500).send(err);

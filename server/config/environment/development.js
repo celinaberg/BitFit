@@ -1,8 +1,8 @@
-const path = require("path");
+import path from "path";
 
 // Development specific configuration
 // ==================================
-module.exports = {
+export default {
   ip: "127.0.0.1",
 
   httpsPort: 4444,

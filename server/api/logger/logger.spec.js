@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import "should";
-const app = require("../../app");
-const request = require("supertest");
+import app from "../../app";
+import request from "supertest";
 
 describe("GET /api/loggers", () => {
   it("should respond with JSON array", done => {

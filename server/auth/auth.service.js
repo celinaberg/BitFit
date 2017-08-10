@@ -1,5 +1,5 @@
-const config = require("../config/environment");
-const compose = require("composable-middleware");
+import config from "../config/environment";
+import compose from "composable-middleware";
 
 /**
  * Attaches the user object to the request if authenticated

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -16,4 +16,4 @@ LessonSchema.methods.toJSON = function() {
   return obj;
 };
 
-module.exports = mongoose.model("Lesson", LessonSchema);
+export default mongoose.model("Lesson", LessonSchema);

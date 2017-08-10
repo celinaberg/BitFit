@@ -1,9 +1,9 @@
-const passport = require("passport");
-const SamlStrategy = require("passport-saml").Strategy;
-const fs = require("fs");
-const path = require("path");
-const config = require("../../config/environment");
-const User = require("../../api/user/user.model");
+import passport from "passport";
+import { Strategy as SamlStrategy } from "passport-saml";
+import fs from "fs";
+import path from "path";
+import config from "../../config/environment";
+import User from "../../api/user/user.model";
 
 const uid = "urn:oid:0.9.2342.19200300.100.1.1";
 const memberOf = "urn:oid:1.3.6.1.4.1.5923.1.5.1.1";
@@ -138,4 +138,4 @@ const samlStrategy = new SamlStrategy(
 
 passport.use(samlStrategy);
 
-module.exports = samlStrategy;
+export default samlStrategy;

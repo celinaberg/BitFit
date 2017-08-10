@@ -1,8 +1,8 @@
-const express = require("express");
-const passport = require("passport");
-const strategy = require("./passport");
-const fs = require("fs");
-const path = require("path");
+import express from "express";
+import passport from "passport";
+import strategy from "./passport";
+import fs from "fs";
+import path from "path";
 
 const router = express.Router();
 

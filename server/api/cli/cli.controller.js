@@ -1,8 +1,8 @@
-const exec = require("child_process").exec;
-const jsesc = require("jsesc");
+import { exec } from "child_process";
+import jsesc from "jsesc";
 
 // Compile java code
-exports.compile = function(req, res) {
+export function compile(req, res) {
   const fileName = req.body.fileName;
   let dirName = `users/${req.body.user._id}/`;
   const dateTime = new Date();
@@ -34,10 +34,10 @@ exports.compile = function(req, res) {
       );
     }
   );
-};
+}
 
 // run java code
-exports.run = function(req, res) {
+export function run(req, res) {
   let dirName = `users/${req.body.user._id}/`;
   const dateTime = new Date();
   dirName += dateTime.getMonth();
@@ -57,7 +57,7 @@ exports.run = function(req, res) {
       return res.status(200).send(stdout);
     }
   );
-};
+}
 
 function compileJavaFile(srcFile, dirName, res) {
   const execFile = srcFile.replace(".c", "");

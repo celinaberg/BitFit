@@ -1,8 +1,8 @@
-const express = require("express");
-const controller = require("./lesson.controller");
-const auth = require("../../auth/auth.service");
+import express from "express";
+import controller from "./lesson.controller";
+import auth from "../../auth/auth.service";
 
-const router = express.Router();
+export default const router = express.Router();
 
 router.get("/", controller.index);
 // router.get('/:id', controller.show);
@@ -17,5 +17,3 @@ router.post(
   controller.deleteQuestion
 );
 router.post("/:id/questions", auth.hasRole("admin"), controller.addQuestion);
-
-module.exports = router;

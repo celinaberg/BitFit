@@ -1,9 +1,9 @@
-const express = require("express");
-const Logger = require("./logger");
-const CLIs = require("./cli");
-const Lesson = require("./lesson");
-const Question = require("./question");
-const User = require("./user");
+import express from "express";
+import Logger from "./logger";
+import CLIs from "./cli";
+import Lesson from "./lesson";
+import Question from "./question";
+import User from "./user";
 
 const router = express.Router();
 
@@ -13,4 +13,4 @@ router.use("/lessons", Lesson);
 router.use("/questions", Question);
 router.use("/users", User);
 
-module.exports = router;
+export default router;

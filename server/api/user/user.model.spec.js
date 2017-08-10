@@ -1,6 +1,5 @@
 /* eslint-env mocha */
-const should = require("should");
-const User = require("./user.model");
+import User from "./user.model";
 
 const user = new User({
   provider: "local",

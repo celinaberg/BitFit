@@ -1,7 +1,7 @@
-const path = require("path");
-const _ = require("lodash");
+import path from "path";
+import _ from "lodash";
 
-const development = require(`./development`);
+import development from "./development";
 
 // All configurations will extend these options
 // ============================================
@@ -50,4 +50,4 @@ if (all.env === "development") {
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = all;
+export default all;

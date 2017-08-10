@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -22,4 +22,4 @@ QuestionSchema.methods.toJSON = function() {
   return obj;
 };
 
-module.exports = mongoose.model("Question", QuestionSchema);
+export default mongoose.model("Question", QuestionSchema);

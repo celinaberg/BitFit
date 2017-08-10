@@ -1,10 +1,10 @@
-const User = require("./user.model");
+import User from "./user.model";
 
 /**
  * Get list of users
  * restriction: 'admin'
  */
-exports.index = function(req, res) {
+export function index(req, res) {
   User.find({}, (err, users) => {
     if (err) return res.status(500).send(err);
     res.status(200).json(users);
@@ -14,7 +14,7 @@ exports.index = function(req, res) {
 /**
  * Get a single user
  */
-exports.show = function(req, res, next) {
+export function show(req, res, next) {
   const userId = req.params.id;
 
   User.findById(userId, (err, user) => {
@@ -28,7 +28,7 @@ exports.show = function(req, res, next) {
  * Deletes a user
  * restriction: 'admin'
  */
-exports.delete = function(req, res) {
+export function delete(req, res) {
   User.findByIdAndRemove(req.params.id, (err, user) => {
     if (err) return res.status(500).send(err);
     return res.send(204);
@@ -38,7 +38,7 @@ exports.delete = function(req, res) {
 /**
  * Get my info
  */
-exports.me = function(req, res, next) {
+export function me(req, res, next) {
   const uid = req.user.uid;
   User.findOne(
     {
@@ -55,6 +55,6 @@ exports.me = function(req, res, next) {
 /**
  * Authentication callback
  */
-exports.authCallback = function(req, res, next) {
+export function authCallback(req, res, next) {
   res.redirect("/");
 };

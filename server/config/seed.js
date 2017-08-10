@@ -5,9 +5,9 @@
 
 "use strict";
 
-const User = require("../api/user/user.model");
-const Question = require("../api/question/question.model");
-const Lesson = require("../api/lesson/lesson.model");
+import User from "../api/user/user.model";
+import Question from "../api/question/question.model";
+import Lesson from "../api/lesson/lesson.model";
 
 User.find({}).remove(function() {
   console.log("Finished removing users");
