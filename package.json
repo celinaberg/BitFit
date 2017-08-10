@@ -12,7 +12,7 @@
   "license": "MIT",
   "main": "server/app.js",
   "scripts": {
-    "prettier": "prettier server/**/*.js --write",
+    "prettier": "prettier {server,react-client}/**/*.js --write",
     "test": "eslint server/**/*.js",
     "start": "nodemon build/server/app.js",
     "build:js": "babel server -d build/server",

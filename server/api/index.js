@@ -1,16 +1,16 @@
-const express = require('express')
-const Logger = require('./logger')
-const CLIs = require('./cli')
-const Lesson = require('./lesson')
-const Question = require('./question')
-const User = require('./user')
+const express = require("express");
+const Logger = require("./logger");
+const CLIs = require("./cli");
+const Lesson = require("./lesson");
+const Question = require("./question");
+const User = require("./user");
 
-const router = express.Router()
+const router = express.Router();
 
-router.use('/loggers', Logger)
-router.use('/clis', CLIs)
-router.use('/lessons', Lesson)
-router.use('/questions', Question)
-router.use('/users', User)
+router.use("/loggers", Logger);
+router.use("/clis", CLIs);
+router.use("/lessons", Lesson);
+router.use("/questions", Question);
+router.use("/users", User);
 
-module.exports = router
+module.exports = router;

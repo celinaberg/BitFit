@@ -1,6 +1,6 @@
 // @flow
 
-import RichTextEditor from 'react-rte';
+import RichTextEditor from "react-rte";
 
 export type Role = "student" | "teaching-assistant" | "instructor";
 
@@ -32,7 +32,7 @@ export type Question = {
   +instructions: string,
   +code: string,
   +className: string,
-  +readOnly: bool,
+  +readOnly: boolean,
   +hints: Array<string>,
   +tags: string,
   +expectedOutput: string,
@@ -40,32 +40,32 @@ export type Question = {
 };
 
 export type UserState = {
-  +fetching: bool,
-  +fetched: bool,
+  +fetching: boolean,
+  +fetched: boolean,
   +users: Array<User>,
   +error: null
-}
+};
 
 export type LessonState = {
-  +fetching: bool,
-  +fetched: bool,
+  +fetching: boolean,
+  +fetched: boolean,
   +lessons: Array<Lesson>,
   +error: null,
   +new: {
     +title: string,
     +background: RichTextEditor
   }
-}
+};
 
 export type QuestionState = {
-  +fetching: bool,
-  +fetched: bool,
+  +fetching: boolean,
+  +fetched: boolean,
   +questions: Array<Question>,
   +error: null
-}
+};
 
 export type State = {
   +users: UserState,
   +lessons: LessonState,
   +questions: QuestionState
-}
+};

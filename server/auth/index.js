@@ -1,9 +1,8 @@
+const express = require("express");
+const cwl = require("./cwl");
 
-const express = require('express')
-const cwl = require('./cwl')
+const router = express.Router();
 
-const router = express.Router()
+router.use("/cwl", cwl);
 
-router.use('/cwl', cwl)
-
-module.exports = router
+module.exports = router;
