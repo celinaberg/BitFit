@@ -68,8 +68,6 @@
     "open": "0.0.5",
     "prettier": "^1.5.3",
     "should": "^11.2.1",
-    "snazzy": "^7.0.0",
-    "standard": "^10.0.2",
     "supertest": "^3.0.0",
     "webpack": "^3.3.0"
   },

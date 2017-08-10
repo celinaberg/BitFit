@@ -1,6 +1,7 @@
 # BitFit
 [![dependencies Status](https://david-dm.org/celinaberg/BitFit/status.svg)](https://david-dm.org/celinaberg/BitFit)
 [![devDependencies Status](https://david-dm.org/celinaberg/BitFit/dev-status.svg)](https://david-dm.org/celinaberg/BitFit?type=dev)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 An app designed to help students learn to write and read C code.
 
@@ -52,5 +53,3 @@ I recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and 
 # Dependencies
  - Node 8
  - npm 5
-
- [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
