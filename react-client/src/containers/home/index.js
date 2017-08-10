@@ -8,8 +8,12 @@ import { connect } from "react-redux";
 import { logIn } from "../../actions";
 
 class Home extends Component {
+  props: {
+    logIn: () => void
+  };
+
   login = () => {
-    this.props.dispatch(logIn());
+    this.props.logIn();
   };
 
   render() {
@@ -53,4 +57,16 @@ class Home extends Component {
   }
 }
 
-export default connect()(Home);
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logIn: () => {
+      dispatch(logIn());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
