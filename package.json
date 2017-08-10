@@ -12,12 +12,13 @@
   "license": "MIT",
   "main": "server/app.js",
   "scripts": {
-    "lint": "eslint server",
+    "lint": "eslint .",
+    "test": "yarn lint && yarn flow",
     "start": "nodemon build/server/app.js",
     "build:js": "babel server -d build/server",
-    "build": "yarn run build:js && cp -r server/cert build/server/cert",
+    "build": "yarn build:js && cp -r server/cert build/server/cert",
     "clean": "rm -r build",
-    "clean-deep": "yarn run clean && rm -r node_modules"
+    "clean-deep": "yarn clean && rm -r node_modules"
   },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.5",
