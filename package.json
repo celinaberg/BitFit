@@ -14,7 +14,8 @@
   "scripts": {
     "test": "standard | snazzy",
     "start": "nodemon build/server/app.js",
-    "build": "babel server -d build/server",
+    "build:js": "babel server -d build/server",
+    "build": "yarn run build:js && cp -r server/cert build/server/cert",
     "clean": "rm -r build",
     "clean-deep": "yarn run clean && rm -r node_modules"
   },
