@@ -26,7 +26,7 @@ exports.export = function (req, res) {
 exports.show = function (req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err) }
-    if (!question) { return res.send(404) }
+    if (!question) { return res.sendStatus(404) }
     return res.json(question)
   })
 }
@@ -52,7 +52,7 @@ exports.update = function (req, res) {
   if (req.body._id) { delete req.body._id }
   Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err) }
-    if (!question) { return res.send(404) }
+    if (!question) { return res.sendStatus(404) }
     question.hints = req.body.hints // manually copy as merge doesn't
     const updated = _.merge(question, req.body)
     updated.save((err) => {
@@ -66,7 +66,7 @@ exports.update = function (req, res) {
 exports.destroy = function (req, res) {
   Question.findById(req.params.id, (err, question) => {
     if (err) { return handleError(res, err) }
-    if (!question) { return res.send(404) }
+    if (!question) { return res.sendStatus(404) }
     question.remove((err) => {
       if (err) { return handleError(res, err) }
       return res.send(204)

@@ -17,7 +17,7 @@ exports.addQuestion = function (req, res) {
     if (question) {
       Lesson.findById(req.params.id, (err, lesson) => {
         if (err) { return handleError(res, err) }
-        if (!lesson) { return res.send(404) }
+        if (!lesson) { return res.sendStatus(404) }
 
         lesson.questions.push(question)
 
@@ -33,7 +33,7 @@ exports.addQuestion = function (req, res) {
         console.log('in save question success func')
         Lesson.findById(req.params.id, (err, lesson) => {
           if (err) { return handleError(res, err) }
-          if (!lesson) { return res.send(404) }
+          if (!lesson) { return res.sendStatus(404) }
 
           lesson.questions.push(question)
 
@@ -53,7 +53,7 @@ exports.deleteQuestion = function (req, res) {
   console.log(question)
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) { return handleError(res, err) }
-    if (!lesson) { return res.send(404) }
+    if (!lesson) { return res.sendStatus(404) }
 
     lesson.questions.pull(question._id)
     lesson.save((err) => {
@@ -78,7 +78,7 @@ exports.index = function (req, res) {
 exports.show = function (req, res) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) { return handleError(res, err) }
-    if (!lesson) { return res.send(404) }
+    if (!lesson) { return res.sendStatus(404) }
 
     lesson.populate('questions', (err, lesson) => {
       if (err) { return handleError(res, err) }
@@ -102,7 +102,7 @@ exports.update = function (req, res) {
   Lesson.findById(req.params.id, (err, lesson) => {
     console.log('in update found lesson by id')
     if (err) { return handleError(res, err) }
-    if (!lesson) { return res.send(404) }
+    if (!lesson) { return res.sendStatus(404) }
 
     lesson.questions = req.body.questions // without this, reordering doesn't work (found in question.controller)
 
@@ -128,7 +128,7 @@ exports.update = function (req, res) {
 exports.destroy = function (req, res) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) { return handleError(res, err) }
-    if (!lesson) { return res.send(404) }
+    if (!lesson) { return res.sendStatus(404) }
     lesson.remove((err) => {
       if (err) { return handleError(res, err) }
       return res.send(204)

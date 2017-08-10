@@ -14,7 +14,7 @@ exports.index = function (req, res) {
 exports.show = function (req, res) {
   Logger.findById(req.params.id, (err, logger) => {
     if (err) { return handleError(res, err) }
-    if (!logger) { return res.send(404) }
+    if (!logger) { return res.sendStatus(404) }
     return res.json(logger)
   })
 }
@@ -32,7 +32,7 @@ exports.update = function (req, res) {
   if (req.body._id) { delete req.body._id }
   Logger.findById(req.params.id, (err, logger) => {
     if (err) { return handleError(res, err) }
-    if (!logger) { return res.send(404) }
+    if (!logger) { return res.sendStatus(404) }
     const updated = _.merge(logger, req.body)
     updated.save((err) => {
       if (err) { return handleError(res, err) }
@@ -45,7 +45,7 @@ exports.update = function (req, res) {
 exports.destroy = function (req, res) {
   Logger.findById(req.params.id, (err, logger) => {
     if (err) { return handleError(res, err) }
-    if (!logger) { return res.send(404) }
+    if (!logger) { return res.sendStatus(404) }
     logger.remove((err) => {
       if (err) { return handleError(res, err) }
       return res.send(204)
