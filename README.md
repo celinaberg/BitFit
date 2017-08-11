@@ -16,7 +16,7 @@ An app designed to help students learn to write and read C code.
 
 ## Development Environment
 
-Install local dependencies with `yarn install && cd client && yarn install`.
+Install local dependencies with `yarn install`.
 
 In two terminal windows run the following commands:
   - `yarn run start` to build and watch the backend.
