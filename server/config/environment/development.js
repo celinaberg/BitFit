@@ -3,6 +3,8 @@ import path from "path";
 // Development specific configuration
 // ==================================
 export default {
+  env: "development",
+  
   ip: "127.0.0.1",
 
   httpsPort: 4444,

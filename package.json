@@ -13,12 +13,12 @@
   "main": "server/app.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "yarn lint && yarn flow",
-    "start": "nodemon build/server/app.js",
+    "test": "yarn run lint && yarn run flow",
+    "start": "NODE_ENV=development nodemon server/app.js --exec babel-node",
     "build:js": "babel server -d build/server",
-    "build": "yarn build:js && cp -r server/cert build/server/cert",
+    "build": "yarn run build:js && cp -r server/cert build/server/cert",
     "clean": "rm -r build",
-    "clean-deep": "yarn clean && rm -r node_modules"
+    "clean-deep": "yarn run clean && rm -r node_modules"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
@@ -57,6 +57,7 @@
     "file-loader": "^0.11.2",
     "flow-bin": "^0.52.0",
     "html-loader": "^0.4.5",
+    "nodemon": "^1.11.0",
     "open": "0.0.5",
     "prettier": "^1.5.3",
     "should": "^11.2.1",

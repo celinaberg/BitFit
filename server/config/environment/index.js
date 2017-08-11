@@ -6,7 +6,7 @@ import development from "./development";
 // All configurations will extend these options
 // ============================================
 let all = {
-  env: process.env.NODE_ENV,
+  env: "production",
 
   // Root path of server
   root: path.join(__dirname, "/../../.."),
@@ -44,7 +44,7 @@ let all = {
   }
 };
 
-if (all.env === "development") {
+if (process.env.NODE_ENV === "development") {
   all = _.merge(all, development);
 }
 

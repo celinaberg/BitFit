@@ -2,9 +2,6 @@
  * Main application file
  */
 
-// Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
-
 import express from "express";
 import mongoose from "mongoose";
 import config from "./config/environment";
