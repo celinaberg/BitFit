@@ -10,7 +10,7 @@ const initialState: UserState = {
   error: null
 };
 
-const users = (state: UserState = initialState, action: Action) => {
+export default function users(state: UserState = initialState, action: Action) {
   switch (action.type) {
     case "FETCH_USERS_PENDING":
       return {
@@ -34,6 +34,4 @@ const users = (state: UserState = initialState, action: Action) => {
     default:
       return state;
   }
-};
-
-export default users;
+}

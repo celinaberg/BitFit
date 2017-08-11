@@ -10,7 +10,10 @@ const initialState: QuestionState = {
   error: null
 };
 
-const questions = (state: QuestionState = initialState, action: Action) => {
+export default function questions(
+  state: QuestionState = initialState,
+  action: Action
+) {
   switch (action.type) {
     case "FETCH_QUESTIONS_PENDING":
       return {
@@ -39,6 +42,4 @@ const questions = (state: QuestionState = initialState, action: Action) => {
     default:
       return state;
   }
-};
-
-export default questions;
+}

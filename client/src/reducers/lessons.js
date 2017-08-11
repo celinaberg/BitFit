@@ -15,10 +15,10 @@ const initialState: LessonState = {
   }
 };
 
-const lessons = (
+export default function lessons(
   state: LessonState = initialState,
   action: Action
-): LessonState => {
+): LessonState {
   switch (action.type) {
     case "FETCH_LESSONS_PENDING":
       return {
@@ -67,6 +67,4 @@ const lessons = (
     default:
       return state;
   }
-};
-
-export default lessons;
+}

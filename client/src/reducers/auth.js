@@ -1,17 +1,9 @@
 // @flow
 
 import type { Action } from "../actions/types";
+import type { AuthState } from "../types";
 
-type State = {
-  loggedIn: boolean,
-  firstName: ?string,
-  lastName: ?string,
-  displayName: ?string,
-  cwl: ?string,
-  role: "student" | "teaching-assistant" | "instructor"
-};
-
-const initialState: State = {
+const initialState: AuthState = {
   loggedIn: true,
   firstName: null,
   lastName: null,
@@ -20,7 +12,10 @@ const initialState: State = {
   role: "instructor"
 };
 
-const user = (state: State = initialState, action: Action): State => {
+export default function user(
+  state: AuthState = initialState,
+  action: Action
+): AuthState {
   switch (action.type) {
     case "LOGIN":
       return {
@@ -35,6 +30,4 @@ const user = (state: State = initialState, action: Action): State => {
     default:
       return state;
   }
-};
-
-export default user;
+}

@@ -1,5 +1,7 @@
 // @flow
 
+import type { State } from "../../types";
+
 import React, { Component } from "react";
 import "./NavBar.css";
 import {
@@ -65,7 +67,7 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
   return {
     isOpen: state.navbar.isOpen,
     loggedIn: state.auth.loggedIn,

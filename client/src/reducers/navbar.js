@@ -1,22 +1,20 @@
 // @flow
 
 import type { Action } from "../actions/types";
+import type { NavBarState } from "../types";
 
-type State = {
-  isOpen: boolean
-};
-
-const initialState: State = {
+const initialState: NavBarState = {
   isOpen: false
 };
 
-const navbar = (state: State = initialState, action: Action) => {
+export default function navbar(
+  state: NavBarState = initialState,
+  action: Action
+): NavBarState {
   switch (action.type) {
     case "TOGGLE_NAVBAR":
       return { ...state, isOpen: !state.isOpen };
     default:
       return state;
   }
-};
-
-export default navbar;
+}

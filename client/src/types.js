@@ -64,8 +64,23 @@ export type QuestionState = {
   +error: null
 };
 
+export type AuthState = {
+  +loggedIn: boolean,
+  +firstName: ?string,
+  +lastName: ?string,
+  +displayName: ?string,
+  +cwl: ?string,
+  +role: Role
+};
+
+export type NavBarState = {
+  +isOpen: boolean
+};
+
 export type State = {
-  +users: UserState,
+  +auth: AuthState,
   +lessons: LessonState,
-  +questions: QuestionState
+  +navbar: NavBarState,
+  +questions: QuestionState,
+  +users: UserState
 };
