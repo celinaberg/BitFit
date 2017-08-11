@@ -1,6 +1,7 @@
 // @flow
 
-import type { Lesson } from "../types";
+import type { Dispatch } from "../actions/types";
+import type { Lesson, State } from "../types";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -78,7 +79,7 @@ class Lessons extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state:State, ownProps) => {
   let id = ownProps.match.params.id;
   let lesson = null;
   for (let currentLesson of state.lessons.lessons) {
@@ -92,7 +93,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {};
 };
 

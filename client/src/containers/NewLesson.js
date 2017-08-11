@@ -1,5 +1,8 @@
 // @flow
 
+import type { Dispatch } from "../actions/types";
+import type { State } from "../types";
+
 import React, { Component } from "react";
 import { Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
 import RichTextEditor from "react-rte";
@@ -63,14 +66,14 @@ class NewLesson extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:State) => {
   return {
     title: state.lessons.new.title,
     background: state.lessons.new.background
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {
     updateNewLesson: (title: string, background: RichTextEditor) => {
       dispatch(updateNewLesson(title, background));

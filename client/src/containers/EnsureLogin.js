@@ -1,5 +1,7 @@
 // @flow
 
+import type { State } from "../types";
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router";
@@ -20,7 +22,7 @@ class EnsureLogin extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state:State) {
   return {
     isLoggedIn: state.auth.loggedIn
   };

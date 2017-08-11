@@ -1,5 +1,8 @@
 // @flow
 
+import type { Dispatch } from "../../actions/types";
+import type { State } from "../../types";
+
 import React, { Component } from "react";
 import "./Home.css";
 import CwlLoginButton from "./CWL_login_button.gif";
@@ -57,11 +60,11 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:State) => {
   return {};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {
     logIn: () => {
       dispatch(logIn());

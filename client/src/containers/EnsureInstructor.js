@@ -1,6 +1,6 @@
 // @flow
 
-import type { Role } from "../types";
+import type { Role, State } from "../types";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ class EnsureInstructor extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state:State) {
   return {
     role: state.auth.role
   };

@@ -1,6 +1,7 @@
 // @flow
 
 import type { Question, QuestionState, Lesson, State } from "../types";
+import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
 import { Col, Progress } from "reactstrap";
@@ -59,7 +60,7 @@ const mapStateToProps = (state: State) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {
     fetchQuestions: () => {
       dispatch(fetchQuestions());

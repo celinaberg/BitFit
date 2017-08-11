@@ -1,6 +1,7 @@
 // @flow
 
-import type { UserState } from "../types";
+import type { Dispatch } from "../actions/types";
+import type { UserState, State } from "../types";
 
 import React, { Component } from "react";
 import {
@@ -85,18 +86,18 @@ class ManageUsers extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:State) => {
   return {
     users: state.users
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {
     fetchUsers: () => {
       dispatch(fetchUsers());
     },
-    deleteUser: id => {
+    deleteUser: (id:string) => {
       dispatch(deleteUser(id));
     }
   };

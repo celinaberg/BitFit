@@ -1,6 +1,7 @@
 // @flow
 
-import type { LessonState } from "../types";
+import type { Dispatch } from "../actions/types";
+import type { State, LessonState } from "../types";
 
 import React, { Component } from "react";
 import { Progress } from "reactstrap";
@@ -48,13 +49,13 @@ class LessonSidebar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:State) => {
   return {
     lessons: state.lessons
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch:Dispatch) => {
   return {
     fetchLessons: () => {
       dispatch(fetchLessons());
