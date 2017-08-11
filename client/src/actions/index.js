@@ -89,10 +89,7 @@ export const saveQuestion = (question: Question): ThunkAction => {
       type: "SAVE_QUESTION_PENDING"
     });
     axios
-      .patch(
-        "https://127.0.0.1:4343/api/questions/" + question.id,
-        question
-      )
+      .patch("https://127.0.0.1:4343/api/questions/" + question.id, question)
       .then(rsp => {
         dispatch({
           type: "SAVE_QUESTION_FULFILLED",
