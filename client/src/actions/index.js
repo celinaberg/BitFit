@@ -9,7 +9,7 @@ import RichTextEditor from "react-rte";
 export const fetchLessons = (): Action => {
   return {
     type: "FETCH_LESSONS",
-    payload: axios.get("https://127.0.0.1:4343/api/v2.0/lessons")
+    payload: axios.get("https://127.0.0.1:4343/api/lessons")
   };
 };
 
@@ -29,7 +29,7 @@ export const updateNewLesson = (
 export const saveNewLesson = (title: string, background: string): Action => {
   return {
     type: "SAVE_NEW_LESSON",
-    payload: axios.post("https://127.0.0.1:4343/api/v2.0/topics", {
+    payload: axios.post("https://127.0.0.1:4343/api/topics", {
       title,
       background
     })
@@ -43,7 +43,7 @@ export const saveLesson = (
 ): Action => {
   return {
     type: "SAVE_LESSON",
-    payload: axios.put("https://127.0.0.1:4343/api/v2.0/topics/" + id, {
+    payload: axios.put("https://127.0.0.1:4343/api/topics/" + id, {
       title,
       background
     })
@@ -65,21 +65,21 @@ export const toggleNavBar = (): Action => {
 export const fetchUsers = (): Action => {
   return {
     type: "FETCH_USERS",
-    payload: axios.get("https://127.0.0.1:4343/api/v2.0/users")
+    payload: axios.get("https://127.0.0.1:4343/api/users")
   };
 };
 
 export const deleteUser = (id: string): Action => {
   return {
     type: "DELETE_USER",
-    payload: axios.delete("https://127.0.0.1:4343/api/v2.0/users/" + id)
+    payload: axios.delete("https://127.0.0.1:4343/api/users/" + id)
   };
 };
 
 export const fetchQuestions = (): Action => {
   return {
     type: "FETCH_QUESTIONS",
-    payload: axios.get("https://127.0.0.1:4343/api/v2.0/questions")
+    payload: axios.get("https://127.0.0.1:4343/api/questions")
   };
 };
 
@@ -90,7 +90,7 @@ export const saveQuestion = (question: Question): ThunkAction => {
     });
     axios
       .patch(
-        "https://127.0.0.1:4343/api/v2.0/questions/" + question.id,
+        "https://127.0.0.1:4343/api/questions/" + question.id,
         question
       )
       .then(rsp => {

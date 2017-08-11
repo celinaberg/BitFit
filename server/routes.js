@@ -12,7 +12,7 @@ function defaultRouteHandler(req, res) {
 }
 
 export default function init(app) {
-  app.use("/api/v2.0", Api);
+  app.use("/api", Api);
 
   app.use("/auth", Auth);
 
