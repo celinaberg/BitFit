@@ -1,6 +1,7 @@
 // @flow
 
 import type { State } from "../../types";
+import type { Dispatch } from "../../actions/types";
 
 import React, { Component } from "react";
 import "./NavBar.css";
@@ -71,11 +72,11 @@ const mapStateToProps = (state: State) => {
   return {
     isOpen: state.navbar.isOpen,
     loggedIn: state.auth.loggedIn,
-    name: state.auth.name
+    name: state.auth.displayName
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     onToggleClick: () => {
       dispatch(toggleNavBar());
