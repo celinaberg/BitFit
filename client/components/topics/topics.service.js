@@ -66,7 +66,7 @@ class Topics {
     })
   }
   
-  deleteTopic: function(id) {
+  deleteTopic (id) {
 	console.log("topics.service deleteTopic");
     return $http.delete('/api/topics/' + id).success(function(data) { 
 		console.log('successfully deleted topic');
