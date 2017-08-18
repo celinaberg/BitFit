@@ -101,13 +101,27 @@ export default class TopicsController {
     }
 
     $scope.handleError = function (data) {
-      const str = JSON.stringify(data)
+      const str = JSON.stringify(data.info)
+	  console.log(str);
       if (str.search('"killed"') !== -1) {
         if (str.search('"killed":true') !== -1) {
           return '\nERROR: The system had to quit your program.\nCheck your code for infinite loops or other errors.'
         }  // program wasn't killed but some other error happened when attempting to run
         return '\nERROR: The system encountered an error when attempting to run your program. Check your code for errors.'
-      }
+		}  else {
+		  //in this case, has not been killed, but was error - need to kill process
+		 console.log("need to kill process: " + (data.process + 1));
+		 var processToKill = data.process + 1; //add 1 because process passed back is one off
+		 var obj = {"process":processToKill};
+		 $http.post('api/clis/killProcess', obj)
+			.success(function(data) {
+				console.log("killed process " + processToKill + " - " + data);
+				return '\nERROR: The system encountered an error when attempting to run your program and killed the process.';
+			})
+			.error(function(data) {
+				console.log(data);
+			});
+	  }
     }
 
     $scope.hintRequested = function () {
