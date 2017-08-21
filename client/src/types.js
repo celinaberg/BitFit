@@ -36,7 +36,7 @@ export type Question = {
   +hints: Array<string>,
   +tags: string,
   +expectedOutput: string,
-  +topic: Lesson
+  +lesson: Lesson
 };
 
 export type UserState = {
