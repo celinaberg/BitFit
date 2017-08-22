@@ -14,10 +14,12 @@ import {
   TabContent,
   TabPane
 } from "reactstrap";
+import TestQuestion from "../components/TestQuestion";
 
 class Lessons extends Component {
   props: {
-    lesson: Lesson
+    lesson: Lesson,
+    questions: Array<Question>
   };
 
   state = {
@@ -70,6 +72,17 @@ class Lessons extends Component {
             <Row>
               <Col sm="12">
                 <h4>Questions</h4>
+                {this.props.lesson.questions.map(questionId => {
+                  let question: Question = null;
+                  for (let currentQuestion: Question of this.props.questions) {
+                    if (currentQuestion.id === questionId) {
+                      question = currentQuestion;
+                      break;
+                    }
+                  }
+                  console.log(question);
+                  return <TestQuestion question={question} />;
+                })}
               </Col>
             </Row>
           </TabPane>
@@ -79,7 +92,7 @@ class Lessons extends Component {
   }
 }
 
-const mapStateToProps = (state:State, ownProps) => {
+const mapStateToProps = (state: State, ownProps) => {
   let id = ownProps.match.params.id;
   let lesson = null;
   for (let currentLesson of state.lessons.lessons) {
@@ -89,11 +102,12 @@ const mapStateToProps = (state:State, ownProps) => {
     }
   }
   return {
-    lesson: lesson
+    lesson: lesson,
+    questions: state.questions.questions
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {};
 };
 

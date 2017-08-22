@@ -60,11 +60,11 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state:State) => {
+const mapStateToProps = (state: State) => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     logIn: () => {
       dispatch(logIn());

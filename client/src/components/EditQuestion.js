@@ -183,7 +183,12 @@ class EditQuestion extends Component {
               </FormGroup>
               <FormGroup>
                 <Label>Lesson</Label>
-                <Input type="select" name="select" value={this.state.question.lesson} onChange={this.updateLesson}>
+                <Input
+                  type="select"
+                  name="select"
+                  value={this.state.question.lesson}
+                  onChange={this.updateLesson}
+                >
                   <option>No Lesson</option>
                   {this.props.lessons.map((lesson: Lesson) => {
                     return (

@@ -49,13 +49,13 @@ class LessonSidebar extends Component {
   }
 }
 
-const mapStateToProps = (state:State) => {
+const mapStateToProps = (state: State) => {
   return {
     lessons: state.lessons
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     fetchLessons: () => {
       dispatch(fetchLessons());

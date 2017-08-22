@@ -60,7 +60,7 @@ const mapStateToProps = (state: State) => {
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     fetchQuestions: () => {
       dispatch(fetchQuestions());

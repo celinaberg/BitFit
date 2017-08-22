@@ -22,7 +22,7 @@ class EnsureInstructor extends Component {
   }
 }
 
-function mapStateToProps(state:State) {
+function mapStateToProps(state: State) {
   return {
     role: state.auth.role
   };

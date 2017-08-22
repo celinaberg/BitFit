@@ -86,18 +86,18 @@ class ManageUsers extends Component {
   }
 }
 
-const mapStateToProps = (state:State) => {
+const mapStateToProps = (state: State) => {
   return {
     users: state.users
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     fetchUsers: () => {
       dispatch(fetchUsers());
     },
-    deleteUser: (id:string) => {
+    deleteUser: (id: string) => {
       dispatch(deleteUser(id));
     }
   };

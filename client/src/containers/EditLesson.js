@@ -26,7 +26,7 @@ class EditLesson extends Component {
     saveNewLesson: (title: string, background: string) => void
   };
 
-  onTitleChange = (event) => {
+  onTitleChange = event => {
     this.props.updateNewLesson(event.target.value, this.props.background);
   };
 
@@ -34,7 +34,7 @@ class EditLesson extends Component {
     this.props.updateNewLesson(this.props.title, background);
   };
 
-  onSaveClick = (event:Event) => {
+  onSaveClick = (event: Event) => {
     event.preventDefault();
     this.props.saveNewLesson(
       this.props.title,
@@ -86,7 +86,7 @@ class EditLesson extends Component {
   }
 }
 
-const mapStateToProps = (state:State, ownProps) => {
+const mapStateToProps = (state: State, ownProps) => {
   let id = ownProps.match.params.id;
   let lesson = null;
   for (let currentLesson of state.lessons.lessons) {
@@ -110,7 +110,7 @@ const mapStateToProps = (state:State, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateNewLesson: (title: string, background: RichTextEditor) => {
       dispatch(updateNewLesson(title, background));

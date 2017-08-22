@@ -66,14 +66,14 @@ class NewLesson extends Component {
   }
 }
 
-const mapStateToProps = (state:State) => {
+const mapStateToProps = (state: State) => {
   return {
     title: state.lessons.new.title,
     background: state.lessons.new.background
   };
 };
 
-const mapDispatchToProps = (dispatch:Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateNewLesson: (title: string, background: RichTextEditor) => {
       dispatch(updateNewLesson(title, background));
