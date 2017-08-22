@@ -77,6 +77,22 @@ export type NavBarState = {
   +isOpen: boolean
 };
 
+export type Logger = {
+  +user: string,
+  +lesson: string,
+  +question: string,
+  +startTime: string,
+  +endTime: string,
+  +numCompiles: number,
+  +numErrorFreeCompiles: number,
+  +numRuns: number,
+  +numHints: number,
+  +totalAttempts: number,
+  +correctAttempts: number,
+  +className: string,
+  +code: string,
+}
+
 export type State = {
   +auth: AuthState,
   +lessons: LessonState,

@@ -1,12 +1,13 @@
 // @flow
 
-import type { Question, Lesson } from "../types";
+import type { Question, Lesson, Logger } from "../types";
 
 import React, { Component } from "react";
 import {
   Card,
   CardBlock,
   CardTitle,
+  CardHeader,
   Form,
   FormGroup,
   InputGroup,
@@ -37,35 +38,70 @@ class EditQuestion extends Component {
   props: Props;
 
   state: {
-    test: string
+    logger: Logger,
+    compile: string,
+    run: string
   };
 
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      test: "test"
+      logger: {
+        user: "",
+        lesson: "",
+        question: this.props.question.id,
+        startTime: "",
+        endTime: "",
+        numCompiles: 0,
+        numErrorFreeCompiles: 0,
+        numRuns: 0,
+        numHints: 0,
+        totalAttempts: 0,
+        correctAttempts: 0,
+        className: this.props.question.className,
+        code: this.props.question.code
+      },
+      compile: "",
+      run: ""
     };
   }
   
   updateClassName = (event: Event): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // if (event.target instanceof HTMLInputElement) {
-    //   newQuestion.className = event.target.value;
-    //   this.setState({ question: newQuestion });
-    // }
+    let newLogger = Object.assign({}, this.state.logger);
+    if (event.target instanceof HTMLInputElement) {
+      newLogger.className = event.target.value;
+      this.setState({ logger: newLogger });
+    }
   };
   
   updateCode = (event: Event): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // if (event.target instanceof HTMLInputElement) {
-    //   newQuestion.code = event.target.value;
-    //   this.setState({ question: newQuestion });
-    // }
+    let newLogger = Object.assign({}, this.state.logger);
+    if (event.target instanceof HTMLInputElement) {
+      newLogger.code = event.target.value;
+      this.setState({ logger: newLogger });
+    }
   };
   
-  onSaveClick = (event: Event): void => {
-    event.preventDefault();
+  onCompileClick = (event: Event): void => {
+    // let newQuestion = Object.assign({}, this.state.question);
+    // newQuestion.instructions = newQuestion.instructions.toString("html");
+    // newQuestion.hints = newQuestion.hints.map(value => {
+    //   return value.toString("html");
+    // });
+    // this.props.onSave(newQuestion);
+  };
+  
+  onRunClick = (event: Event): void => {
+    // let newQuestion = Object.assign({}, this.state.question);
+    // newQuestion.instructions = newQuestion.instructions.toString("html");
+    // newQuestion.hints = newQuestion.hints.map(value => {
+    //   return value.toString("html");
+    // });
+    // this.props.onSave(newQuestion);
+  };
+  
+  onCheckAnswerClick = (event: Event): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
     // newQuestion.hints = newQuestion.hints.map(value => {
@@ -110,20 +146,20 @@ class EditQuestion extends Component {
               enableBasicAutocompletion={true}
               enableLiveAutocompletion={true}
               enableSnippets={true}
-              value={this.props.question.code}
+              value={this.state.logger.code}
               onChange={this.updateCode}
               width="100%"
             />
           </FormGroup>
-          <Button color="primary" onClick={this.onSaveClick}>
-            Compile
-          </Button>
-          <Button color="primary" onClick={this.onSaveClick}>
-            Run
-          </Button>
-          <Button color="primary" onClick={this.onSaveClick}>
-            Check Answer
-          </Button>
+          <Card>
+            <CardHeader>Compile Output <Button color="primary" onClick={this.onCompileClick}>Compile</Button></CardHeader>
+            <CardBlock>{this.state.compile}</CardBlock>
+          </Card>
+          <Card>
+            <CardHeader>Run Output <Button color="primary" onClick={this.onRunClick}>Run</Button></CardHeader>
+            <CardBlock>{this.state.run}</CardBlock>
+          </Card>
+          <Button color="primary" onClick={this.onCheckAnswerClick}>Check Answer</Button>
         </CardBlock>
       </Card>
     );
