@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const LoggerSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  topic: { type: mongoose.Schema.Types.ObjectId, ref: "Topic" },
+  lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
   question: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
   startTime: Date,
   endTime: { type: Date, default: Date.now },
@@ -13,7 +13,9 @@ const LoggerSchema = new Schema({
   numRuns: Number,
   numHints: Number,
   totalAttempts: Number,
-  correctAttempts: Number
+  correctAttempts: Number,
+  className: String,
+  code: String
 });
 
 export default mongoose.model("Logger", LoggerSchema);

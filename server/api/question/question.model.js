@@ -10,8 +10,7 @@ const QuestionSchema = new Schema({
   readOnly: Boolean,
   hints: [String],
   tags: String,
-  expectedOutput: String,
-  lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }
+  expectedOutput: String
 });
 
 QuestionSchema.methods.toJSON = function() {
