@@ -35,8 +35,7 @@ export type Question = {
   +readOnly: boolean,
   +hints: Array<string>,
   +tags: string,
-  +expectedOutput: string,
-  +lesson: Lesson
+  +expectedOutput: string
 };
 
 export type UserState = {

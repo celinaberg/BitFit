@@ -36,6 +36,10 @@
     "/auth": {
       "target": "https://localhost:4444",
       "secure": false
+    },
+    "/graphql": {
+      "target": "https://localhost:4444",
+      "secure": false
     }
   }
 }

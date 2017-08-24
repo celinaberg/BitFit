@@ -12,7 +12,7 @@ export default {
 
   url: "https://localhost:4444",
 
-  seedDB: true,
+  seedDB: false,
 
   // CWL
   callbackUrl: "https://127.0.0.1:4343/auth/cwl/login/callback",

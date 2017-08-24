@@ -1,3 +1,4 @@
 {
-  "ignore": ["*.test.js", "client/*"]
+  "ignore": ["*.test.js", "client/*"],
+  "ext": "js graphql"
 }

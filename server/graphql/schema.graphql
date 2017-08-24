@@ -1,0 +1,47 @@
+type Query {
+  hello: String
+  lessons: [Lesson]
+  questions: [Question]
+  question(id: ID!): Question 
+  user(id: ID!): User
+}
+
+type Lesson {
+  id: ID!,
+  title: String!,
+  background: String!,
+  questions: [Question]
+}
+
+type Question {
+  id: ID!,
+  title: String!,
+  instructions: String!,
+  code: String,
+  className: String,
+  readOnly: Boolean!,
+  hints: [String],
+  tags: String,
+  expectedOutput: String
+}
+
+type User {
+  id: ID!,
+  uid: String!,
+  firstName: String!,
+  lastName: String!,
+  displayName: String!,
+  # One of "student", "teaching-assistant", "instructor"
+  role: String!,
+  # Only applies to students
+  studentNumber: String,
+  employeeNumber: String,
+  # Only applies to students
+  section: String,
+  # Only applies to students
+  term: Int,
+  # Only applies to students
+  session: String,
+  # Only applies to students
+  year: Int
+}
