@@ -66,7 +66,7 @@ class EditQuestion extends Component {
       run: ""
     };
   }
-  
+
   updateClassName = (event: Event): void => {
     let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
@@ -74,7 +74,7 @@ class EditQuestion extends Component {
       this.setState({ logger: newLogger });
     }
   };
-  
+
   updateCode = (event: Event): void => {
     let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
@@ -82,7 +82,7 @@ class EditQuestion extends Component {
       this.setState({ logger: newLogger });
     }
   };
-  
+
   onCompileClick = (event: Event): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
@@ -91,7 +91,7 @@ class EditQuestion extends Component {
     // });
     // this.props.onSave(newQuestion);
   };
-  
+
   onRunClick = (event: Event): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
@@ -100,7 +100,7 @@ class EditQuestion extends Component {
     // });
     // this.props.onSave(newQuestion);
   };
-  
+
   onCheckAnswerClick = (event: Event): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
@@ -114,14 +114,20 @@ class EditQuestion extends Component {
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
-          <CardTitle>{this.props.question.title}</CardTitle>
-          <div>{this.props.question.instructions}</div>
+          <CardTitle>
+            {this.props.question.title}
+          </CardTitle>
+          <div>
+            {this.props.question.instructions}
+          </div>
           <div>
             <Label>Hints</Label>
             {this.props.question.hints.map((hint, index) => {
               const id = this.props.question.id + "hint" + index;
               return (
-                <div key={id}>{hint}</div>
+                <div key={id}>
+                  {hint}
+                </div>
               );
             })}
           </div>
@@ -152,14 +158,30 @@ class EditQuestion extends Component {
             />
           </FormGroup>
           <Card>
-            <CardHeader>Compile Output <Button color="primary" onClick={this.onCompileClick}>Compile</Button></CardHeader>
-            <CardBlock>{this.state.compile}</CardBlock>
+            <CardHeader>
+              Compile Output{" "}
+              <Button color="primary" onClick={this.onCompileClick}>
+                Compile
+              </Button>
+            </CardHeader>
+            <CardBlock>
+              {this.state.compile}
+            </CardBlock>
           </Card>
           <Card>
-            <CardHeader>Run Output <Button color="primary" onClick={this.onRunClick}>Run</Button></CardHeader>
-            <CardBlock>{this.state.run}</CardBlock>
+            <CardHeader>
+              Run Output{" "}
+              <Button color="primary" onClick={this.onRunClick}>
+                Run
+              </Button>
+            </CardHeader>
+            <CardBlock>
+              {this.state.run}
+            </CardBlock>
           </Card>
-          <Button color="primary" onClick={this.onCheckAnswerClick}>Check Answer</Button>
+          <Button color="primary" onClick={this.onCheckAnswerClick}>
+            Check Answer
+          </Button>
         </CardBlock>
       </Card>
     );

@@ -1,7 +1,7 @@
 // @flow
 
 import type { Dispatch } from "../actions/types";
-import type { Lesson, State } from "../types";
+import type { Lesson, State, Question } from "../types";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -12,19 +12,31 @@ import {
   NavItem,
   NavLink,
   TabContent,
-  TabPane
+  TabPane,
+  Progress
 } from "reactstrap";
 import TestQuestion from "../components/TestQuestion";
+import { fetchLessons, fetchQuestions } from "../actions";
 
 class Lessons extends Component {
   props: {
+    loading: boolean,
     lesson: Lesson,
-    questions: Array<Question>
+    questions: Array<Question>,
+    fetchLessons: () => void,
+    fetchQuestions: () => void
   };
 
   state = {
     activeTab: "1"
   };
+
+  componentWillMount() {
+    if (this.props.loading) {
+      this.props.fetchLessons();
+      this.props.fetchQuestions();
+    }
+  }
 
   toggle = (tab: string): void => {
     if (this.state.activeTab !== tab) {
@@ -35,6 +47,11 @@ class Lessons extends Component {
   };
 
   render() {
+    console.log(this.props.loading);
+    if (this.props.loading) {
+      console.log("loading");
+      return <Progress animated color="muted" value="100" />;
+    }
     return (
       <Col sm="9" md="10">
         <Nav tabs>
@@ -81,7 +98,7 @@ class Lessons extends Component {
                     }
                   }
                   console.log(question);
-                  return <TestQuestion question={question} />;
+                  return <TestQuestion key={question.id} question={question} />;
                 })}
               </Col>
             </Row>
@@ -101,14 +118,22 @@ const mapStateToProps = (state: State, ownProps) => {
       break;
     }
   }
+  const loading = !(state.lessons.fetched && state.questions.fetched);
   return {
+    loading: loading,
     lesson: lesson,
     questions: state.questions.questions
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {};
+  return {
+    fetchLessons: () => {
+      dispatch(fetchLessons());
+    },
+    fetchQuestions: () => {
+      dispatch(fetchQuestions());
+    }
+  };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(Lessons);
