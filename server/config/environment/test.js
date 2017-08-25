@@ -1,3 +1,5 @@
+// @flow
+
 // Test specific configuration
 // ===========================
 export default {

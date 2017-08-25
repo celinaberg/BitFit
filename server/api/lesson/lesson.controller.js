@@ -1,66 +1,35 @@
+// @flow
+
 import _ from "lodash";
 import Lesson from "./lesson.model";
 import Question from "../question/question.model";
 
 // Add a question to this lesson
-export function addQuestion(req, res) {
+export async function addQuestion(req, res) {
   console.log("in add question in server");
   console.log(req.body);
-  req.body.lesson = req.params.id; // is this necessary?
-
-  // express's body parser middleware populates body for me
-
   // if question already exists, only add it to lesson
-  Question.findById(req.body._id, (err, question) => {
-    if (err) {
-      return handleError(res, err);
-    }
-    if (question) {
-      Lesson.findById(req.params.id, (err, lesson) => {
-        if (err) {
-          return handleError(res, err);
-        }
-        if (!lesson) {
-          return res.sendStatus(404);
-        }
-
-        lesson.questions.push(question);
-
-        lesson.save(err => {
-          if (err) {
-            return handleError(err);
-          }
-          return res.json(question);
-        });
-      });
-    } else {
+  try {
+    let question = await Question.findById(req.body.id);
+    if (question === null) {
       // if not, create the new question
       question = new Question(req.body);
-      question.save((err, question) => {
-        if (err) {
-          return handleError(res, err);
-        }
-        console.log("in save question success func");
-        Lesson.findById(req.params.id, (err, lesson) => {
-          if (err) {
-            return handleError(res, err);
-          }
-          if (!lesson) {
-            return res.sendStatus(404);
-          }
-
-          lesson.questions.push(question);
-
-          lesson.save((err, lesson) => {
-            if (err) {
-              return handleError(err);
-            }
-            return res.json(question);
-          });
-        });
-      });
+      question = await question.save();
+      console.log("in save question success func");
     }
-  });
+
+    const lesson = await Lesson.findById(req.params.id);
+    if (!lesson) {
+      return res.sendStatus(404);
+    }
+
+    lesson.questions.push(question);
+
+    lesson.save();
+    return res.json(question);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 export function deleteQuestion(req, res) {

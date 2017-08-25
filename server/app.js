@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Main application file
  */

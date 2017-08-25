@@ -1,3 +1,5 @@
+// @flow
+
 import { exec } from "child_process";
 import jsesc from "jsesc";
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { Question, Lesson, Logger } from "../types";
+import type { Question, Logger } from "../types";
 
 import React, { Component } from "react";
 import {
@@ -8,21 +8,14 @@ import {
   CardBlock,
   CardTitle,
   CardHeader,
-  Form,
   FormGroup,
   InputGroup,
   Label,
   Input,
   Button,
-  ButtonGroup,
-  InputGroupAddon,
-  UncontrolledTooltip,
-  Collapse
+  InputGroupAddon
 } from "reactstrap";
-import RichTextEditor from "react-rte";
 import AceEditor from "react-ace";
-import FaTrash from "react-icons/lib/fa/trash";
-import FaCopy from "react-icons/lib/fa/copy";
 
 import "brace";
 import "brace/mode/c_cpp";

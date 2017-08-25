@@ -1,3 +1,5 @@
+// @flow
+
 import passport from "passport";
 import { Strategy as SamlStrategy } from "passport-saml";
 import fs from "fs";

@@ -1,3 +1,5 @@
+// @flow
+
 import express from "express";
 import { compile, run } from "./cli.controller";
 import { isAuthenticated } from "../../auth/auth.service";

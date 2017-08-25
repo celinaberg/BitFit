@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import LessonSidebarItem from "../LessonSidebarItem";
 import renderer from "react-test-renderer";

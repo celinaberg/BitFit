@@ -1,3 +1,5 @@
+// @flow
+
 import express from "express";
 import Logger from "./logger";
 import CLIs from "./cli";

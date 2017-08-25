@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Express configuration
  */

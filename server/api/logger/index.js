@@ -1,3 +1,5 @@
+// @flow
+
 import express from "express";
 import { index, show, create, update, destroy } from "./logger.controller";
 import { hasRole, isAuthenticated } from "../../auth/auth.service";

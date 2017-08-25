@@ -1,3 +1,5 @@
+// @flow
+
 import config from "../config/environment";
 import compose from "composable-middleware";
 
