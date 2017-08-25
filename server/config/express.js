@@ -3,7 +3,7 @@
 /**
  * Express configuration
  */
- 
+
 import type { $Application, $Request, $Response } from "express";
 
 import express from "express";

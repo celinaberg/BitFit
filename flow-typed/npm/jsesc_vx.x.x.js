@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'jsesc' {
+declare module "jsesc" {
   declare module.exports: any;
 }
 
@@ -22,11 +22,11 @@ declare module 'jsesc' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'jsesc/jsesc' {
+declare module "jsesc/jsesc" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'jsesc/jsesc.js' {
-  declare module.exports: $Exports<'jsesc/jsesc'>;
+declare module "jsesc/jsesc.js" {
+  declare module.exports: $Exports<"jsesc/jsesc">;
 }

@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'express-session' {
+declare module "express-session" {
   declare module.exports: any;
 }
 
@@ -22,38 +22,38 @@ declare module 'express-session' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'express-session/session/cookie' {
+declare module "express-session/session/cookie" {
   declare module.exports: any;
 }
 
-declare module 'express-session/session/memory' {
+declare module "express-session/session/memory" {
   declare module.exports: any;
 }
 
-declare module 'express-session/session/session' {
+declare module "express-session/session/session" {
   declare module.exports: any;
 }
 
-declare module 'express-session/session/store' {
+declare module "express-session/session/store" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'express-session/index' {
-  declare module.exports: $Exports<'express-session'>;
+declare module "express-session/index" {
+  declare module.exports: $Exports<"express-session">;
 }
-declare module 'express-session/index.js' {
-  declare module.exports: $Exports<'express-session'>;
+declare module "express-session/index.js" {
+  declare module.exports: $Exports<"express-session">;
 }
-declare module 'express-session/session/cookie.js' {
-  declare module.exports: $Exports<'express-session/session/cookie'>;
+declare module "express-session/session/cookie.js" {
+  declare module.exports: $Exports<"express-session/session/cookie">;
 }
-declare module 'express-session/session/memory.js' {
-  declare module.exports: $Exports<'express-session/session/memory'>;
+declare module "express-session/session/memory.js" {
+  declare module.exports: $Exports<"express-session/session/memory">;
 }
-declare module 'express-session/session/session.js' {
-  declare module.exports: $Exports<'express-session/session/session'>;
+declare module "express-session/session/session.js" {
+  declare module.exports: $Exports<"express-session/session/session">;
 }
-declare module 'express-session/session/store.js' {
-  declare module.exports: $Exports<'express-session/session/store'>;
+declare module "express-session/session/store.js" {
+  declare module.exports: $Exports<"express-session/session/store">;
 }

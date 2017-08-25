@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'compression' {
+declare module "compression" {
   declare module.exports: any;
 }
 
@@ -23,11 +23,10 @@ declare module 'compression' {
  * needed.
  */
 
-
 // Filename aliases
-declare module 'compression/index' {
-  declare module.exports: $Exports<'compression'>;
+declare module "compression/index" {
+  declare module.exports: $Exports<"compression">;
 }
-declare module 'compression/index.js' {
-  declare module.exports: $Exports<'compression'>;
+declare module "compression/index.js" {
+  declare module.exports: $Exports<"compression">;
 }

@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'errorhandler' {
+declare module "errorhandler" {
   declare module.exports: any;
 }
 
@@ -23,11 +23,10 @@ declare module 'errorhandler' {
  * needed.
  */
 
-
 // Filename aliases
-declare module 'errorhandler/index' {
-  declare module.exports: $Exports<'errorhandler'>;
+declare module "errorhandler/index" {
+  declare module.exports: $Exports<"errorhandler">;
 }
-declare module 'errorhandler/index.js' {
-  declare module.exports: $Exports<'errorhandler'>;
+declare module "errorhandler/index.js" {
+  declare module.exports: $Exports<"errorhandler">;
 }

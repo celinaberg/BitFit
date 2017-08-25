@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'composable-middleware' {
+declare module "composable-middleware" {
   declare module.exports: any;
 }
 
@@ -22,31 +22,35 @@ declare module 'composable-middleware' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'composable-middleware/Gruntfile' {
+declare module "composable-middleware/Gruntfile" {
   declare module.exports: any;
 }
 
-declare module 'composable-middleware/lib/composable-middleware' {
+declare module "composable-middleware/lib/composable-middleware" {
   declare module.exports: any;
 }
 
-declare module 'composable-middleware/lib/middleware-common-object' {
+declare module "composable-middleware/lib/middleware-common-object" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'composable-middleware/Gruntfile.js' {
-  declare module.exports: $Exports<'composable-middleware/Gruntfile'>;
+declare module "composable-middleware/Gruntfile.js" {
+  declare module.exports: $Exports<"composable-middleware/Gruntfile">;
 }
-declare module 'composable-middleware/index' {
-  declare module.exports: $Exports<'composable-middleware'>;
+declare module "composable-middleware/index" {
+  declare module.exports: $Exports<"composable-middleware">;
 }
-declare module 'composable-middleware/index.js' {
-  declare module.exports: $Exports<'composable-middleware'>;
+declare module "composable-middleware/index.js" {
+  declare module.exports: $Exports<"composable-middleware">;
 }
-declare module 'composable-middleware/lib/composable-middleware.js' {
-  declare module.exports: $Exports<'composable-middleware/lib/composable-middleware'>;
+declare module "composable-middleware/lib/composable-middleware.js" {
+  declare module.exports: $Exports<
+    "composable-middleware/lib/composable-middleware"
+  >;
 }
-declare module 'composable-middleware/lib/middleware-common-object.js' {
-  declare module.exports: $Exports<'composable-middleware/lib/middleware-common-object'>;
+declare module "composable-middleware/lib/middleware-common-object.js" {
+  declare module.exports: $Exports<
+    "composable-middleware/lib/middleware-common-object"
+  >;
 }

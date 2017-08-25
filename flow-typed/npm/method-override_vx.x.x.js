@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'method-override' {
+declare module "method-override" {
   declare module.exports: any;
 }
 
@@ -23,11 +23,10 @@ declare module 'method-override' {
  * needed.
  */
 
-
 // Filename aliases
-declare module 'method-override/index' {
-  declare module.exports: $Exports<'method-override'>;
+declare module "method-override/index" {
+  declare module.exports: $Exports<"method-override">;
 }
-declare module 'method-override/index.js' {
-  declare module.exports: $Exports<'method-override'>;
+declare module "method-override/index.js" {
+  declare module.exports: $Exports<"method-override">;
 }

@@ -27,14 +27,16 @@ export function isAuthenticated() {
 export function hasRole(roleRequired) {
   if (!roleRequired) throw new Error("Required role needs to be set");
 
-  return compose().use(isAuthenticated()).use((req: $Request, res: $Response, next) => {
-    if (
-      config.userRoles.indexOf(req.user.role) >=
-      config.userRoles.indexOf(roleRequired)
-    ) {
-      next();
-    } else {
-      res.send(401);
-    }
-  });
+  return compose()
+    .use(isAuthenticated())
+    .use((req: $Request, res: $Response, next) => {
+      if (
+        config.userRoles.indexOf(req.user.role) >=
+        config.userRoles.indexOf(roleRequired)
+      ) {
+        next();
+      } else {
+        res.send(401);
+      }
+    });
 }
