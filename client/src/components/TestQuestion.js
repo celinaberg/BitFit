@@ -60,7 +60,7 @@ class EditQuestion extends Component {
     };
   }
 
-  updateClassName = (event: Event): void => {
+  updateClassName = (event: SyntheticEvent): void => {
     let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
       newLogger.className = event.target.value;
@@ -68,7 +68,7 @@ class EditQuestion extends Component {
     }
   };
 
-  updateCode = (event: Event): void => {
+  updateCode = (event: SyntheticEvent): void => {
     let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
       newLogger.code = event.target.value;
@@ -76,7 +76,7 @@ class EditQuestion extends Component {
     }
   };
 
-  onCompileClick = (event: Event): void => {
+  onCompileClick = (event: SyntheticEvent): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
     // newQuestion.hints = newQuestion.hints.map(value => {
@@ -85,7 +85,7 @@ class EditQuestion extends Component {
     // this.props.onSave(newQuestion);
   };
 
-  onRunClick = (event: Event): void => {
+  onRunClick = (event: SyntheticEvent): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
     // newQuestion.hints = newQuestion.hints.map(value => {
@@ -94,7 +94,7 @@ class EditQuestion extends Component {
     // this.props.onSave(newQuestion);
   };
 
-  onCheckAnswerClick = (event: Event): void => {
+  onCheckAnswerClick = (event: SyntheticEvent): void => {
     // let newQuestion = Object.assign({}, this.state.question);
     // newQuestion.instructions = newQuestion.instructions.toString("html");
     // newQuestion.hints = newQuestion.hints.map(value => {
