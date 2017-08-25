@@ -105,14 +105,12 @@ export const saveNewQuestion = (question: Question): ThunkAction => {
     dispatch({
       type: "SAVE_NEW_QUESTION_PENDING"
     });
-    axios
-      .post("https://127.0.0.1:4343/api/questions/", question)
-      .then(rsp => {
-        dispatch({
-          type: "SAVE_NEW_QUESTION_FULFILLED",
-          payload: rsp.data
-        });
-        dispatch(fetchQuestions());
+    axios.post("https://127.0.0.1:4343/api/questions/", question).then(rsp => {
+      dispatch({
+        type: "SAVE_NEW_QUESTION_FULFILLED",
+        payload: rsp.data
       });
+      dispatch(fetchQuestions());
+    });
   };
 };
