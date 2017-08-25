@@ -30,6 +30,7 @@ import "brace/ext/language_tools";
 import "brace/theme/tomorrow";
 
 type Props = {
+  new: boolean,
   question: Question,
   lessons: Array<Lesson>,
   onSave: Question => void
@@ -37,6 +38,10 @@ type Props = {
 
 class EditQuestion extends Component {
   props: Props;
+
+  static defaultProps = {
+    new: false
+  };
 
   state: {
     collapse: boolean,
@@ -164,6 +169,33 @@ class EditQuestion extends Component {
   };
 
   render() {
+    if (!this.props.new) {
+      let buttons = (
+        <ButtonGroup>
+          <Button id={"copy" + this.state.question.id}>
+            <FaCopy />
+          </Button>
+          <UncontrolledTooltip
+            placement="top"
+            target={"copy" + this.state.question.id}
+          >
+            Copy
+          </UncontrolledTooltip>
+          <Button color="danger" id={"delete" + this.state.question.id}>
+            <FaTrash />
+          </Button>
+          <UncontrolledTooltip
+            placement="top"
+            target={"delete" + this.state.question.id}
+          >
+            Delete
+          </UncontrolledTooltip>
+        </ButtonGroup>
+      );
+    } else {
+      let buttons = null;
+    }
+
     return (
       <Card key={this.state.question.id}>
         <CardBlock>
@@ -289,26 +321,7 @@ class EditQuestion extends Component {
               <Button color="primary" onClick={this.onSaveClick}>
                 Save Question
               </Button>
-              <ButtonGroup>
-                <Button id={"copy" + this.state.question.id}>
-                  <FaCopy />
-                </Button>
-                <UncontrolledTooltip
-                  placement="top"
-                  target={"copy" + this.state.question.id}
-                >
-                  Copy
-                </UncontrolledTooltip>
-                <Button color="danger" id={"delete" + this.state.question.id}>
-                  <FaTrash />
-                </Button>
-                <UncontrolledTooltip
-                  placement="top"
-                  target={"delete" + this.state.question.id}
-                >
-                  Delete
-                </UncontrolledTooltip>
-              </ButtonGroup>
+              {}
             </Form>
           </Collapse>
         </CardBlock>

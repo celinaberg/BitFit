@@ -99,3 +99,20 @@ export const saveQuestion = (question: Question): ThunkAction => {
       });
   };
 };
+
+export const saveNewQuestion = (question: Question): ThunkAction => {
+  return dispatch => {
+    dispatch({
+      type: "SAVE_NEW_QUESTION_PENDING"
+    });
+    axios
+      .post("https://127.0.0.1:4343/api/questions/", question)
+      .then(rsp => {
+        dispatch({
+          type: "SAVE_NEW_QUESTION_FULFILLED",
+          payload: rsp.data
+        });
+        dispatch(fetchQuestions());
+      });
+  };
+};

@@ -26,6 +26,12 @@ export type SaveQuestionFulfilledAction = {
   type: "SAVE_QUESTION_FULFILLED",
   payload: Question
 };
+export type SaveNewQuestionPendingAction = {
+  type: "SAVE_NEW_QUESTION_PENDING"
+};
+export type SaveNewQuestionFulfilledAction = {
+  type: "SAVE_NEW_QUESTION_FULFILLED"
+};
 
 export type Action =
   | FetchLessonsAction
@@ -38,7 +44,9 @@ export type Action =
   | DeleteUserAction
   | FetchQuestionsAction
   | SaveQuestionPendingAction
-  | SaveQuestionFulfilledAction;
+  | SaveQuestionFulfilledAction
+  | SaveNewQuestionPendingAction
+  | SaveNewQuestionFulfilledAction;
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

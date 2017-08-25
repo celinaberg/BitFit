@@ -27,6 +27,11 @@ class AdminSidebar extends Component {
             </NavLink>
           </NavItem>
           <NavItem>
+            <NavLink tag={Link} to="/admin/questions/new">
+              New Question
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink tag={Link} to="/admin/lessons/new">
               New Lesson
             </NavLink>
