@@ -1,10 +1,12 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import { exec } from "child_process";
 import jsesc from "jsesc";
 
 // Compile java code
-export function compile(req, res) {
+export function compile(req: $Request, res: $Response) {
   const fileName = req.body.fileName;
   let dirName = `users/${req.body.user._id}/`;
   const dateTime = new Date();
@@ -39,7 +41,7 @@ export function compile(req, res) {
 }
 
 // run java code
-export function run(req, res) {
+export function run(req: $Request, res: $Response) {
   let dirName = `users/${req.body.user._id}/`;
   const dateTime = new Date();
   dirName += dateTime.getMonth();

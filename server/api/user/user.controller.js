@@ -1,12 +1,14 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import User from "./user.model";
 
 /**
  * Get list of users
  * restriction: 'admin'
  */
-export function index(req, res) {
+export function index(req: $Request, res: $Response) {
   User.find({}, (err, users) => {
     if (err) return res.status(500).send(err);
     res.status(200).json(users);
@@ -16,7 +18,7 @@ export function index(req, res) {
 /**
  * Get a single user
  */
-export function show(req, res, next) {
+export function show(req: $Request, res: $Response, next) {
   const userId = req.params.id;
 
   User.findById(userId, (err, user) => {
@@ -30,7 +32,7 @@ export function show(req, res, next) {
  * Deletes a user
  * restriction: 'admin'
  */
-export function destroy(req, res) {
+export function destroy(req: $Request, res: $Response) {
   User.findByIdAndRemove(req.params.id, (err, user) => {
     if (err) return res.status(500).send(err);
     return res.send(204);
@@ -40,7 +42,7 @@ export function destroy(req, res) {
 /**
  * Get my info
  */
-export function me(req, res, next) {
+export function me(req: $Request, res: $Response, next) {
   const uid = req.user.uid;
   User.findOne(
     {
@@ -57,6 +59,6 @@ export function me(req, res, next) {
 /**
  * Authentication callback
  */
-export function authCallback(req, res, next) {
+export function authCallback(req: $Request, res: $Response, next) {
   res.redirect("/");
 }

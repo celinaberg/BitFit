@@ -1,5 +1,7 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import express from "express";
 import passport from "passport";
 import strategy from "./passport";
@@ -8,7 +10,7 @@ import path from "path";
 
 const router = express.Router();
 
-router.get("/metadata", (req, res) => {
+router.get("/metadata", (req: $Request, res: $Response) => {
   res.set("Content-Type", "text/xml");
   const cert = fs.readFileSync(
     path.join(__dirname, "/../../cert/cert.pem"),
@@ -25,7 +27,7 @@ router.get(
   })
 );
 
-router.get("/login/failed", (req, res) => {
+router.get("/login/failed", (req: $Request, res: $Response) => {
   res
     .status(401)
     .send(
@@ -36,7 +38,7 @@ router.get("/login/failed", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("saml", { failureRedirect: "/auth/cwl/login/failed" }),
-  (req, res) => {
+  (req: $Request, res: $Response) => {
     res.redirect("/lessons");
   }
 );
@@ -49,7 +51,7 @@ router.post(
   })
 );
 
-router.get("/logout", (req, res) => {
+router.get("/logout", (req: $Request, res: $Response) => {
   req.logout();
   res.redirect("/");
 });

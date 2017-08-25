@@ -1,10 +1,12 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 /**
  * Error responses
  */
 
-export function pageNotFound(req, res) {
+export function pageNotFound(req: $Request, res: $Response) {
   const viewFilePath = "404";
   const statusCode = 404;
   const result = {

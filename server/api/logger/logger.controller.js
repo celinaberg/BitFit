@@ -1,10 +1,12 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import _ from "lodash";
 import Logger from "./logger.model";
 
 // Get list of loggers
-export function index(req, res) {
+export function index(req: $Request, res: $Response) {
   Logger.find((err, loggers) => {
     if (err) {
       return handleError(res, err);
@@ -14,7 +16,7 @@ export function index(req, res) {
 }
 
 // Get a single logger
-export function show(req, res) {
+export function show(req: $Request, res: $Response) {
   Logger.findById(req.params.id, (err, logger) => {
     if (err) {
       return handleError(res, err);
@@ -27,7 +29,7 @@ export function show(req, res) {
 }
 
 // Creates a new logger in the DB.
-export function create(req, res) {
+export function create(req: $Request, res: $Response) {
   Logger.create(req.body, (err, logger) => {
     if (err) {
       return handleError(res, err);
@@ -37,7 +39,7 @@ export function create(req, res) {
 }
 
 // Updates an existing logger in the DB.
-export function update(req, res) {
+export function update(req: $Request, res: $Response) {
   if (req.body._id) {
     delete req.body._id;
   }
@@ -59,7 +61,7 @@ export function update(req, res) {
 }
 
 // Deletes a logger from the DB.
-export function destroy(req, res) {
+export function destroy(req: $Request, res: $Response) {
   Logger.findById(req.params.id, (err, logger) => {
     if (err) {
       return handleError(res, err);

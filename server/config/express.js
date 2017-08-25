@@ -3,6 +3,8 @@
 /**
  * Express configuration
  */
+ 
+import type { $Application, $Request, $Response } from "express";
 
 import express from "express";
 // var favicon from 'serve-favicon';
@@ -18,7 +20,7 @@ import ejs from "ejs";
 // import connectLivereload from 'connect-livereload';
 import session from "express-session";
 
-export default function init(app) {
+export default function init(app: $Application) {
   const env = app.get("env");
 
   app.disable("x-powered-by");
@@ -55,7 +57,7 @@ export default function init(app) {
     app.use(errorHandler()); // Error handler - has to be last
   }
 
-  app.use(function(err, req, res, next) {
+  app.use(function(err, req: $Request, res: $Response, next) {
     console.error(err.stack);
     res.status(500).send("Internal error. Please try again later.");
   });

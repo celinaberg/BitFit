@@ -1,5 +1,7 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import _ from "lodash";
 import Question from "./question.model";
 
@@ -8,17 +10,17 @@ function handleError(res, err) {
 }
 
 // Get list of questions
-export function index(req, res) {
-  Question.find((err, questions) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function index(req: $Request, res: $Response) {
+  try {
+    const questions = await Question.find();
     return res.status(200).json(questions);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Get list of questions for export
-export function exportQuestions(req, res) {
+export function exportQuestions(req: $Request, res: $Response) {
   Question.find({}, { _id: 0, topic: 0 }, (err, questions) => {
     if (err) {
       return handleError(res, err);
@@ -28,7 +30,7 @@ export function exportQuestions(req, res) {
 }
 
 // Get a single question
-export function show(req, res) {
+export function show(req: $Request, res: $Response) {
   Question.findById(req.params.id, (err, question) => {
     if (err) {
       return handleError(res, err);
@@ -41,7 +43,7 @@ export function show(req, res) {
 }
 
 // Creates a new question in the DB.
-export function create(req, res) {
+export function create(req: $Request, res: $Response) {
   Question.create(req.body, (err, question) => {
     if (err) {
       return handleError(res, err);
@@ -51,7 +53,7 @@ export function create(req, res) {
 }
 
 // Import many questions to DB.
-export function importQuestions(req, res) {
+export function importQuestions(req: $Request, res: $Response) {
   Question.collection.insert(req.body, (err, questions) => {
     if (err) {
       return handleError(res, err);
@@ -61,7 +63,7 @@ export function importQuestions(req, res) {
 }
 
 // Updates an existing question in the DB.
-export function update(req, res) {
+export function update(req: $Request, res: $Response) {
   if (req.body._id) {
     delete req.body._id;
   }
@@ -84,7 +86,7 @@ export function update(req, res) {
 }
 
 // Deletes a question from the DB.
-export function destroy(req, res) {
+export function destroy(req: $Request, res: $Response) {
   Question.findById(req.params.id, (err, question) => {
     if (err) {
       return handleError(res, err);

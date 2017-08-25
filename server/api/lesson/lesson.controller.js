@@ -1,11 +1,13 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import _ from "lodash";
 import Lesson from "./lesson.model";
 import Question from "../question/question.model";
 
 // Add a question to this lesson
-export async function addQuestion(req, res) {
+export async function addQuestion(req: $Request, res: $Response) {
   console.log("in add question in server");
   console.log(req.body);
   // if question already exists, only add it to lesson
@@ -32,7 +34,7 @@ export async function addQuestion(req, res) {
   }
 }
 
-export function deleteQuestion(req, res) {
+export function deleteQuestion(req: $Request, res: $Response) {
   console.log("in delete q server");
   const question = req.body;
   console.log(question);
@@ -53,7 +55,7 @@ export function deleteQuestion(req, res) {
 }
 
 // Get list of lessons
-export function index(req, res) {
+export function index(req: $Request, res: $Response) {
   Lesson.find().populate("lesson.questions").exec(function(err, lessons) {
     if (err) {
       res.status(500);
@@ -64,7 +66,7 @@ export function index(req, res) {
 }
 
 // Get a single lesson
-export function show(req, res) {
+export function show(req: $Request, res: $Response) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) {
       return handleError(res, err);
@@ -83,7 +85,7 @@ export function show(req, res) {
 }
 
 // Creates a new lesson in the DB.
-export function create(req, res) {
+export function create(req: $Request, res: $Response) {
   Lesson.create(req.body, (err, lesson) => {
     if (err) {
       return handleError(res, err);
@@ -93,7 +95,7 @@ export function create(req, res) {
 }
 
 // Updates an existing lesson in the DB.
-export function update(req, res) {
+export function update(req: $Request, res: $Response) {
   console.log("in update");
   if (req.body._id) {
     delete req.body._id;
@@ -130,7 +132,7 @@ export function update(req, res) {
 }
 
 // Deletes a lesson from the DB.
-export function destroy(req, res) {
+export function destroy(req: $Request, res: $Response) {
   Lesson.findById(req.params.id, (err, lesson) => {
     if (err) {
       return handleError(res, err);

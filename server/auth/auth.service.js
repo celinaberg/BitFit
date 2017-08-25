@@ -1,5 +1,7 @@
 // @flow
 
+import type { $Request, $Response } from "express";
+
 import config from "../config/environment";
 import compose from "composable-middleware";
 
@@ -8,7 +10,7 @@ import compose from "composable-middleware";
  * Otherwise returns 403
  */
 export function isAuthenticated() {
-  return (req, res, next) => {
+  return (req: $Request, res: $Response, next) => {
     if (req.hasOwnProperty("user")) {
       next();
     } else {
@@ -25,7 +27,7 @@ export function isAuthenticated() {
 export function hasRole(roleRequired) {
   if (!roleRequired) throw new Error("Required role needs to be set");
 
-  return compose().use(isAuthenticated()).use((req, res, next) => {
+  return compose().use(isAuthenticated()).use((req: $Request, res: $Response, next) => {
     if (
       config.userRoles.indexOf(req.user.role) >=
       config.userRoles.indexOf(roleRequired)

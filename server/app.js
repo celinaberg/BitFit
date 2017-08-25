@@ -4,6 +4,8 @@
  * Main application file
  */
 
+import type { $Application, $Request, $Response } from "express";
+
 import express from "express";
 import mongoose from "mongoose";
 import config from "./config/environment";
@@ -31,7 +33,7 @@ const options = {
 };
 
 // Setup server
-const app = express();
+const app: $Application = express();
 
 // new for HTTPS
 const server = https.createServer(options, app);
@@ -49,7 +51,7 @@ server.listen(config.httpsPort, config.ip, () => {
 
 // redirect to HTTPS
 http
-  .createServer((req, res) => {
+  .createServer((req: $Request, res: $Response) => {
     res.writeHead(301, { Location: config.url });
     res.end();
   })
