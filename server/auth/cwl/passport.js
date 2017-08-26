@@ -22,24 +22,19 @@ const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 
 passport.serializeUser((user, done) => {
-  done(null, user.uid);
+  done(null, user.id);
 });
 
 passport.deserializeUser((user, done) => {
-  User.findOne(
-    {
-      uid: user
-    },
-    (err, user) => {
-      if (err) return done(err);
+  User.findById(user, (err, user) => {
+    if (err) return done(err);
 
-      if (!user) {
-        done(null, false);
-      } else {
-        done(null, user);
-      }
+    if (!user) {
+      done(null, false);
+    } else {
+      done(null, user);
     }
-  );
+  });
 });
 
 const keyContents = fs.readFileSync(
