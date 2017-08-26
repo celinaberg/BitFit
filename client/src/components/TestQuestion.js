@@ -130,9 +130,11 @@ class TestQuestion extends Component {
           <CardTitle>
             {this.props.question.title}
           </CardTitle>
-          <div>
-            {this.props.question.instructions}
-          </div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.question.instructions
+            }}
+          />
           <div>
             <Label>Hints</Label>
             {this.props.question.hints.map((hint, index) => {
