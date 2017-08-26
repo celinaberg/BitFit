@@ -59,6 +59,9 @@ class EditQuestion extends Component {
     newQuestion.hints = newQuestion.hints.map(value => {
       return RichTextEditor.createValueFromString(value, "html");
     });
+    if(newQuestion.lesson === null) {
+      newQuestion.lesson = "";
+    }
 
     this.state = {
       collapse: false,
@@ -165,12 +168,16 @@ class EditQuestion extends Component {
     newQuestion.hints = newQuestion.hints.map(value => {
       return value.toString("html");
     });
+    if (newQuestion.lesson === "") {
+      newQuestion.lesson = null;
+    }
     this.props.onSave(newQuestion);
   };
 
   render() {
+    let buttons = null;
     if (!this.props.new) {
-      let buttons = (
+      buttons = (
         <ButtonGroup>
           <Button id={"copy" + this.state.question.id}>
             <FaCopy />
@@ -192,8 +199,6 @@ class EditQuestion extends Component {
           </UncontrolledTooltip>
         </ButtonGroup>
       );
-    } else {
-      let buttons = null;
     }
 
     return (
@@ -221,7 +226,7 @@ class EditQuestion extends Component {
                   value={this.state.question.lesson}
                   onChange={this.updateLesson}
                 >
-                  <option>No Lesson</option>
+                  <option value="">No Lesson</option>
                   {this.props.lessons.map((lesson: Lesson) => {
                     return (
                       <option key={lesson.id} value={lesson.id}>
@@ -321,7 +326,7 @@ class EditQuestion extends Component {
               <Button color="primary" onClick={this.onSaveClick}>
                 Save Question
               </Button>
-              {}
+              {buttons}
             </Form>
           </Collapse>
         </CardBlock>
