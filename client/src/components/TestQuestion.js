@@ -105,6 +105,24 @@ class TestQuestion extends Component {
     // this.props.onSave(newQuestion);
   };
 
+  onResetToStarterClick = (event: SyntheticEvent): void => {
+    // let newQuestion = Object.assign({}, this.state.question);
+    // newQuestion.instructions = newQuestion.instructions.toString("html");
+    // newQuestion.hints = newQuestion.hints.map(value => {
+    //   return value.toString("html");
+    // });
+    // this.props.onSave(newQuestion);
+  };
+  
+  onGetHintClick = (event: SyntheticEvent): void => {
+    // let newQuestion = Object.assign({}, this.state.question);
+    // newQuestion.instructions = newQuestion.instructions.toString("html");
+    // newQuestion.hints = newQuestion.hints.map(value => {
+    //   return value.toString("html");
+    // });
+    // this.props.onSave(newQuestion);
+  };
+
   render() {
     return (
       <Card key={this.props.question.id}>
@@ -125,7 +143,13 @@ class TestQuestion extends Component {
                 </div>
               );
             })}
+            <Button color="primary" onClick={this.onGetHintClick}>
+              Get Hint
+            </Button>
           </div>
+          <Button color="primary" onClick={this.onResetToStarterClick}>
+            Reset to Starter
+          </Button>
           <FormGroup>
             <Label>Class Name</Label>
             <InputGroup>
