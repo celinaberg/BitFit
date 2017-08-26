@@ -25,16 +25,17 @@ import "brace/theme/tomorrow";
 
 type Props = {
   userId: string,
+  lessonId: string,
   question: Question
 };
 
-class EditQuestion extends Component {
+class TestQuestion extends Component {
   props: Props;
 
   state: {
     logger: Logger,
-    compile: string,
-    run: string
+    compileOutput: string,
+    runOutput: string
   };
 
   constructor(props: Props) {
@@ -42,8 +43,8 @@ class EditQuestion extends Component {
 
     this.state = {
       logger: {
-        user: "",
-        lesson: "",
+        user: this.props.userId,
+        lesson: this.props.lessonId,
         question: this.props.question.id,
         startTime: "",
         endTime: "",
@@ -56,8 +57,8 @@ class EditQuestion extends Component {
         className: this.props.question.className,
         code: this.props.question.code
       },
-      compile: "",
-      run: ""
+      compileOutput: "",
+      runOutput: ""
     };
   }
 
@@ -159,7 +160,7 @@ class EditQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.compile}
+              {this.state.compileOutput}
             </CardBlock>
           </Card>
           <Card>
@@ -170,7 +171,7 @@ class EditQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.run}
+              {this.state.runOutput}
             </CardBlock>
           </Card>
           <Button color="primary" onClick={this.onCheckAnswerClick}>
@@ -182,4 +183,4 @@ class EditQuestion extends Component {
   }
 }
 
-export default EditQuestion;
+export default TestQuestion;

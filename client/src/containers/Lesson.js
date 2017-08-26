@@ -23,7 +23,7 @@ class Lessons extends Component {
   props: {
     loading: boolean,
     lesson: Lesson,
-    questions: Array<Question>,
+    userId: string,
     fetchLessons: () => void
   };
 
@@ -91,7 +91,14 @@ class Lessons extends Component {
               <Col sm="12">
                 <h4>Questions</h4>
                 {this.props.lesson.questions.map(question => {
-                  return <TestQuestion key={question.id} question={question} />;
+                  return (
+                    <TestQuestion
+                      key={question.id}
+                      question={question}
+                      lessonId={this.props.lesson.id}
+                      userId={this.props.userId}
+                    />
+                  );
                 })}
               </Col>
             </Row>
@@ -114,7 +121,6 @@ const mapStateToProps = (state: State, ownProps) => {
   return {
     loading: !state.lessons.fetched,
     lesson: lesson,
-    questions: state.questions.questions,
     userId: state.auth.current ? state.auth.current.id : null
   };
 };
