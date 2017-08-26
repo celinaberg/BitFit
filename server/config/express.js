@@ -19,7 +19,6 @@ import passport from "passport";
 import ejs from "ejs";
 // import connectLivereload from 'connect-livereload';
 import session from "express-session";
-import expressJsonPromise from "express-json-promise";
 
 export default function init(app: $Application) {
   const env = app.get("env");
@@ -50,7 +49,6 @@ export default function init(app: $Application) {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(morgan("dev"));
-  app.use(expressJsonPromise());
 
   app.use(express.static(path.join(__dirname, "../../build/client")));
 
