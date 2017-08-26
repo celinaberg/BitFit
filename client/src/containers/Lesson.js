@@ -111,11 +111,11 @@ const mapStateToProps = (state: State, ownProps) => {
       break;
     }
   }
-  const loading = !(state.lessons.fetched && state.questions.fetched);
   return {
-    loading: loading,
+    loading: !state.lessons.fetched,
     lesson: lesson,
-    questions: state.questions.questions
+    questions: state.questions.questions,
+    userId: state.auth.current ? state.auth.current.id : null
   };
 };
 
