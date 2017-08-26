@@ -59,7 +59,7 @@ class EditQuestion extends Component {
     newQuestion.hints = newQuestion.hints.map(value => {
       return RichTextEditor.createValueFromString(value, "html");
     });
-    if(newQuestion.lesson === null) {
+    if (newQuestion.lesson === null) {
       newQuestion.lesson = "";
     }
 
