@@ -23,8 +23,13 @@ class EnsureInstructor extends Component {
 }
 
 function mapStateToProps(state: State) {
+  let role = "student";
+  const current = state.auth.current;
+  if (current) {
+    role = current.role;
+  }
   return {
-    role: state.auth.role
+    role: role
   };
 }
 

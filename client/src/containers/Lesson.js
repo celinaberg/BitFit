@@ -16,15 +16,15 @@ import {
   Progress
 } from "reactstrap";
 import TestQuestion from "../components/TestQuestion";
-import { fetchLessons, fetchQuestions } from "../actions";
+import { fetchLessons } from "../actions";
+import classnames from "classnames";
 
 class Lessons extends Component {
   props: {
     loading: boolean,
     lesson: Lesson,
     questions: Array<Question>,
-    fetchLessons: () => void,
-    fetchQuestions: () => void
+    fetchLessons: () => void
   };
 
   state = {
@@ -34,7 +34,6 @@ class Lessons extends Component {
   componentWillMount() {
     if (this.props.loading) {
       this.props.fetchLessons();
-      this.props.fetchQuestions();
     }
   }
 
@@ -57,6 +56,7 @@ class Lessons extends Component {
         <Nav tabs>
           <NavItem>
             <NavLink
+              className={classnames({ active: this.state.activeTab === "1" })}
               onClick={() => {
                 this.toggle("1");
               }}
@@ -66,6 +66,7 @@ class Lessons extends Component {
           </NavItem>
           <NavItem>
             <NavLink
+              className={classnames({ active: this.state.activeTab === "2" })}
               onClick={() => {
                 this.toggle("2");
               }}
@@ -122,9 +123,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     fetchLessons: () => {
       dispatch(fetchLessons());
-    },
-    fetchQuestions: () => {
-      dispatch(fetchQuestions());
     }
   };
 };

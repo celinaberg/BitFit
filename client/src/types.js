@@ -66,11 +66,7 @@ export type QuestionState = {
 
 export type AuthState = {
   +loggedIn: boolean,
-  +firstName: ?string,
-  +lastName: ?string,
-  +displayName: ?string,
-  +cwl: ?string,
-  +role: Role
+  +current: ?User
 };
 
 export type NavBarState = {

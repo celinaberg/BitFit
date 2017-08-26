@@ -24,6 +24,7 @@ import "brace/ext/language_tools";
 import "brace/theme/tomorrow";
 
 type Props = {
+  userId: string,
   question: Question
 };
 

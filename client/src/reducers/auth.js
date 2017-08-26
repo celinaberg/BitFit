@@ -5,11 +5,7 @@ import type { AuthState } from "../types";
 
 const initialState: AuthState = {
   loggedIn: true,
-  firstName: null,
-  lastName: null,
-  displayName: null,
-  cwl: null,
-  role: "instructor"
+  current: null
 };
 
 export default function user(
@@ -21,11 +17,14 @@ export default function user(
       return {
         ...state,
         loggedIn: !state.loggedIn,
-        firstName: "Backdoor",
-        lastName: "User",
-        displayName: "Backdoor User",
-        cwl: "buser",
-        role: "instructor"
+        current: {
+          id: "abcd1234",
+          uid: "buser",
+          firstName: "Backdoor",
+          lastName: "User",
+          displayName: "Backdoor",
+          role: "instructor"
+        }
       };
     default:
       return state;
