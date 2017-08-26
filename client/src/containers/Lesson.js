@@ -89,15 +89,7 @@ class Lessons extends Component {
             <Row>
               <Col sm="12">
                 <h4>Questions</h4>
-                {this.props.lesson.questions.map(questionId => {
-                  let question: Question = null;
-                  for (let currentQuestion: Question of this.props.questions) {
-                    if (currentQuestion.id === questionId) {
-                      question = currentQuestion;
-                      break;
-                    }
-                  }
-                  console.log(question);
+                {this.props.lesson.questions.map(question => {
                   return <TestQuestion key={question.id} question={question} />;
                 })}
               </Col>

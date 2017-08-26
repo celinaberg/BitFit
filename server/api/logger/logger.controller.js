@@ -6,78 +6,69 @@ import _ from "lodash";
 import Logger from "./logger.model";
 
 // Get list of loggers
-export function index(req: $Request, res: $Response) {
-  Logger.find((err, loggers) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function index(req: $Request, res: $Response) {
+  try {
+    const loggers = await Logger.find();
     return res.status(200).json(loggers);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Get a single logger
-export function show(req: $Request, res: $Response) {
-  Logger.findById(req.params.id, (err, logger) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function show(req: $Request, res: $Response) {
+  try {
+    const logger = await Logger.findById(req.params.id);
     if (!logger) {
       return res.sendStatus(404);
     }
     return res.json(logger);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Creates a new logger in the DB.
-export function create(req: $Request, res: $Response) {
-  Logger.create(req.body, (err, logger) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function create(req: $Request, res: $Response) {
+  try {
+    const logger = await Logger.create(req.body);
     return res.status(201).json(logger);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Updates an existing logger in the DB.
-export function update(req: $Request, res: $Response) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  Logger.findById(req.params.id, (err, logger) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function update(req: $Request, res: $Response) {
+  try {
+    const logger = await Logger.findById(req.params.id);
     if (!logger) {
       return res.sendStatus(404);
     }
     const updated = _.merge(logger, req.body);
-    updated.save(err => {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.status(200).json(logger);
-    });
-  });
+    updated.save();
+    return res.status(200).json(logger);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Deletes a logger from the DB.
-export function destroy(req: $Request, res: $Response) {
-  Logger.findById(req.params.id, (err, logger) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function destroy(req: $Request, res: $Response) {
+  try {
+    const logger = await Logger.findById(req.params.id);
     if (!logger) {
       return res.sendStatus(404);
     }
-    logger.remove(err => {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.send(204);
-    });
-  });
+    logger.remove();
+    return res.send(204);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 function handleError(res, err) {
+  console.trace();
+  console.error(err);
   return res.status(500).send(err);
 }

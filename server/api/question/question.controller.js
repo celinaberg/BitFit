@@ -85,13 +85,13 @@ export async function create(req: $Request, res: $Response) {
 }
 
 // Import many questions to DB.
-export function importQuestions(req: $Request, res: $Response) {
-  Question.collection.insert(req.body, (err, questions) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function importQuestions(req: $Request, res: $Response) {
+  try {
+    const questions = await Question.collection.insert(req.body);
     return res.status(201).json(questions);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Updates an existing question in the DB.
@@ -114,19 +114,15 @@ export async function update(req: $Request, res: $Response) {
 }
 
 // Deletes a question from the DB.
-export function destroy(req: $Request, res: $Response) {
-  Question.findById(req.params.id, (err, question) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function destroy(req: $Request, res: $Response) {
+  try {
+    const question = await Question.findById(req.params.id);
     if (!question) {
       return res.sendStatus(404);
     }
-    question.remove(err => {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.send(204);
-    });
-  });
+    question.remove();
+    return res.send(204);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }

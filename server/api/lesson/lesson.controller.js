@@ -34,77 +34,60 @@ export async function addQuestion(req: $Request, res: $Response) {
   }
 }
 
-export function deleteQuestion(req: $Request, res: $Response) {
-  console.log("in delete q server");
-  const question = req.body;
-  console.log(question);
-  Lesson.findById(req.params.id, (err, lesson) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function deleteQuestion(req: $Request, res: $Response) {
+  try {
+    const question = req.body;
+    const lesson = await Lesson.findById(req.params.id);
     if (!lesson) {
       return res.sendStatus(404);
     }
-
     lesson.questions.pull(question._id);
-    lesson.save(err => {
-      if (err) return handleError(err);
-      console.log("the sub-doc was removed");
-    });
-  });
+    lesson.save();
+    return res.sendStatus(200);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Get list of lessons
-export function index(req: $Request, res: $Response) {
-  Lesson.find().populate("lesson.questions").exec(function(err, lessons) {
-    if (err) {
-      res.status(500);
-      return;
-    }
-    res.status(200).json(lessons);
-  });
+export async function index(req: $Request, res: $Response) {
+  try {
+    const lessons = await Lesson.find().populate("questions").exec();
+    return res.status(200).json(lessons);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Get a single lesson
-export function show(req: $Request, res: $Response) {
-  Lesson.findById(req.params.id, (err, lesson) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function show(req: $Request, res: $Response) {
+  try {
+    const lesson = await Lesson.findById(req.params.id)
+      .populate("questions")
+      .exec();
     if (!lesson) {
       return res.sendStatus(404);
     }
-
-    lesson.populate("questions", (err, lesson) => {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.json(lesson);
-    });
-  });
+    return res.json(lesson);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Creates a new lesson in the DB.
-export function create(req: $Request, res: $Response) {
-  Lesson.create(req.body, (err, lesson) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function create(req: $Request, res: $Response) {
+  try {
+    const lesson = await Lesson.create(req.body);
     return res.status(201).json(lesson);
-  });
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Updates an existing lesson in the DB.
-export function update(req: $Request, res: $Response) {
-  console.log("in update");
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  Lesson.findById(req.params.id, (err, lesson) => {
-    console.log("in update found lesson by id");
-    if (err) {
-      return handleError(res, err);
-    }
+export async function update(req: $Request, res: $Response) {
+  try {
+    let lesson = await Lesson.findById(req.params.id);
     if (!lesson) {
       return res.sendStatus(404);
     }
@@ -112,43 +95,30 @@ export function update(req: $Request, res: $Response) {
     lesson.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
 
     const updated = _.merge(lesson, req.body);
-    updated.save(err => {
-      // console.log(updated);
-      if (err) {
-        return handleError(res, err);
-      }
-      console.log("updated lesson now about to populate qs");
-      lesson.populate("questions", (err, lesson) => {
-        if (err) {
-          console.log("error populating questions of updated lesson");
-          return handleError(res, err);
-        }
-        console.log("looks like populate was successful?");
-        console.log(lesson);
-        return res.status(200).json(lesson);
-      });
-    });
-  });
+    updated.save();
+    lesson = lesson.populate("questions");
+    return res.status(200).json(lesson);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 // Deletes a lesson from the DB.
-export function destroy(req: $Request, res: $Response) {
-  Lesson.findById(req.params.id, (err, lesson) => {
-    if (err) {
-      return handleError(res, err);
-    }
+export async function destroy(req: $Request, res: $Response) {
+  try {
+    const lesson = await Lesson.findById(req.params.id);
     if (!lesson) {
       return res.sendStatus(404);
     }
-    lesson.remove(err => {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.send(204);
-    });
-  });
+    lesson.remove();
+    return res.send(204);
+  } catch (err) {
+    return handleError(res, err);
+  }
 }
 
 function handleError(res, err) {
+  console.trace();
+  console.error(err);
   return res.status(500).send(err);
 }
