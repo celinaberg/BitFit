@@ -33,7 +33,8 @@ class TestQuestion extends Component {
   props: Props;
 
   state: {
-    logger: Logger,
+    loading: boolean,
+    logger: ?Logger,
     compileOutput: string,
     runOutput: string
   };
@@ -42,24 +43,27 @@ class TestQuestion extends Component {
     super(props);
 
     this.state = {
-      logger: {
-        user: this.props.userId,
-        lesson: this.props.lessonId,
-        question: this.props.question.id,
-        startTime: "",
-        endTime: "",
-        numCompiles: 0,
-        numErrorFreeCompiles: 0,
-        numRuns: 0,
-        numHints: 0,
-        totalAttempts: 0,
-        correctAttempts: 0,
-        className: this.props.question.className,
-        code: this.props.question.code
-      },
+      loading: true,
+      logger: null,
       compileOutput: "",
       runOutput: ""
     };
+  }
+
+  componentDidMount() {
+    this.getLogger();
+  }
+
+  async getLogger() {
+    const loggerRequest = await fetch(
+      "/api/loggers/q/" + this.props.question.id,
+      {
+        credentials: "include"
+      }
+    );
+    const logger = await loggerRequest.json();
+    console.log("got logger", logger);
+    this.setState({ loading: false, logger });
   }
 
   updateClassName = (event: SyntheticEvent): void => {
@@ -124,6 +128,18 @@ class TestQuestion extends Component {
   };
 
   render() {
+    if (this.state.loading) {
+      return (
+        <Card key={this.props.question.id}>
+          <CardBlock>
+            <CardTitle>
+              {this.props.question.title}
+            </CardTitle>
+            <div>Loading...</div>
+          </CardBlock>
+        </Card>
+      );
+    }
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
@@ -157,7 +173,7 @@ class TestQuestion extends Component {
             <InputGroup>
               <Input
                 type="text"
-                value={this.props.question.className}
+                value={this.state.logger.className}
                 onChange={this.updateClassName}
               />
               <InputGroupAddon>.c</InputGroupAddon>

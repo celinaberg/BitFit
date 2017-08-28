@@ -22,19 +22,23 @@ const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  console.log("serialize user", user);
+  return done(null, user._id);
 });
 
-passport.deserializeUser((user, done) => {
-  User.findById(user, (err, user) => {
-    if (err) return done(err);
-
+passport.deserializeUser(async (userId, done) => {
+  console.log("deserialize user", userId);
+  try {
+    const user = await User.findById(userId);
     if (!user) {
-      done(null, false);
+      return done(null, false);
     } else {
-      done(null, user);
+      console.log("deserialized user", user);
+      return done(null, user);
     }
-  });
+  } catch (err) {
+    return done(err);
+  }
 });
 
 const keyContents = fs.readFileSync(
@@ -60,7 +64,7 @@ const samlStrategy = new SamlStrategy(
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
   },
-  (profile, done) => {
+  async (profile, done) => {
     let role;
     if (profile.hasOwnProperty(memberOf)) {
       if (profile[memberOf].includes(memberOfInstructors)) {
@@ -74,23 +78,21 @@ const samlStrategy = new SamlStrategy(
       // Unauthorized to access app
       // TODO: Backdoor - remove
       if (config.env === "development") {
-        let user1 = new User({
-          uid: "buser",
-          firstName: "Backdoor",
-          lastName: "User",
-          displayName: "Backdoor User",
-          role: "instructor"
-        });
-        console.log("saving user");
-        user1.save((err, user) => {
-          if (err) {
-            console.error("could not save user");
-            return done(err);
-          } else {
-            console.log("saved user");
-            return done(null, user);
-          }
-        });
+        try {
+          console.log("saving backdoor user");
+          let backDoorUser = await User.create({
+            uid: "buser",
+            firstName: "Backdoor",
+            lastName: "User",
+            displayName: "Backdoor User",
+            role: "instructor"
+          });
+          console.log("saved backdoor user", backDoorUser);
+          return done(null, backDoorUser);
+        } catch (err) {
+          console.error("could not save backdoor user");
+          return done(err);
+        }
       } else {
         return done(null, false, {
           message: "You are not registered in APSC 160"
@@ -125,7 +127,7 @@ const samlStrategy = new SamlStrategy(
     */
 
         user.save((err, user) => {
-          if (err) done(err);
+          if (err) return done(err);
           return done(null, user);
         });
       }

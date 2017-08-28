@@ -23,7 +23,7 @@ router.get(
   "/login",
   passport.authenticate("saml", {
     successRedirect: "/lessons",
-    failureRedirect: "/login/failed"
+    failureRedirect: "/auth/cwl/login/failed"
   })
 );
 
@@ -37,10 +37,10 @@ router.get("/login/failed", (req: $Request, res: $Response) => {
 
 router.post(
   "/login",
-  passport.authenticate("saml", { failureRedirect: "/auth/cwl/login/failed" }),
-  (req: $Request, res: $Response) => {
-    res.redirect("/lessons");
-  }
+  passport.authenticate("saml", {
+    successRedirect: "/lessons",
+    failureRedirect: "/auth/cwl/login/failed"
+  })
 );
 
 router.post(

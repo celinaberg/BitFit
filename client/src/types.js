@@ -75,7 +75,6 @@ export type NavBarState = {
 
 export type Logger = {
   +user: string,
-  +lesson: string,
   +question: string,
   +startTime: string,
   +endTime: string,
