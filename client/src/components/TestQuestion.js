@@ -67,16 +67,16 @@ class TestQuestion extends Component {
   }
 
   updateClassName = (event: SyntheticEvent): void => {
-    let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
+      let newLogger = Object.assign({}, this.state.logger);
       newLogger.className = event.target.value;
       this.setState({ logger: newLogger });
     }
   };
 
   updateCode = (event: SyntheticEvent): void => {
-    let newLogger = Object.assign({}, this.state.logger);
     if (event.target instanceof HTMLInputElement) {
+      let newLogger = Object.assign({}, this.state.logger);
       newLogger.code = event.target.value;
       this.setState({ logger: newLogger });
     }
@@ -110,21 +110,18 @@ class TestQuestion extends Component {
   };
 
   onResetToStarterClick = (event: SyntheticEvent): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // newQuestion.instructions = newQuestion.instructions.toString("html");
-    // newQuestion.hints = newQuestion.hints.map(value => {
-    //   return value.toString("html");
-    // });
-    // this.props.onSave(newQuestion);
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.className = this.props.question.className;
+    newLogger.code = this.props.question.code;
+    this.setState({ logger: newLogger });
   };
-  
+
   onGetHintClick = (event: SyntheticEvent): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // newQuestion.instructions = newQuestion.instructions.toString("html");
-    // newQuestion.hints = newQuestion.hints.map(value => {
-    //   return value.toString("html");
-    // });
-    // this.props.onSave(newQuestion);
+    if (this.state.logger.numHints < this.props.question.hints.length) {
+      let newLogger = Object.assign({}, this.state.logger);
+      newLogger.numHints = this.state.logger.numHints + 1;
+      this.setState({ logger: newLogger });
+    }
   };
 
   render() {
@@ -153,14 +150,16 @@ class TestQuestion extends Component {
           />
           <div>
             <Label>Hints</Label>
-            {this.props.question.hints.map((hint, index) => {
-              const id = this.props.question.id + "hint" + index;
-              return (
-                <div key={id}>
-                  {hint}
-                </div>
-              );
-            })}
+            {this.props.question.hints
+              .slice(0, this.state.logger.numHints)
+              .map((hint, index) => {
+                const id = this.props.question.id + "hint" + index;
+                return (
+                  <div key={id}>
+                    {hint}
+                  </div>
+                );
+              })}
             <Button color="primary" onClick={this.onGetHintClick}>
               Get Hint
             </Button>
