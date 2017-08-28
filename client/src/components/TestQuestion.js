@@ -35,8 +35,16 @@ class TestQuestion extends Component {
   state: {
     loading: boolean,
     logger: ?Logger,
-    compileOutput: string,
-    runOutput: string
+    compileOutput: {
+      error: boolean,
+      stdout: string,
+      stderr: string
+    },
+    runOutput: {
+      error: boolean,
+      stdout: string,
+      stderr: string
+    }
   };
 
   constructor(props: Props) {
@@ -45,8 +53,16 @@ class TestQuestion extends Component {
     this.state = {
       loading: true,
       logger: null,
-      compileOutput: "",
-      runOutput: ""
+      compileOutput: {
+        error: false,
+        stdout: "",
+        stderr: ""
+      },
+      runOutput: {
+        error: false,
+        stdout: "",
+        stderr: ""
+      }
     };
   }
 
@@ -82,22 +98,31 @@ class TestQuestion extends Component {
     }
   };
 
-  onCompileClick = (event: SyntheticEvent): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // newQuestion.instructions = newQuestion.instructions.toString("html");
-    // newQuestion.hints = newQuestion.hints.map(value => {
-    //   return value.toString("html");
-    // });
-    // this.props.onSave(newQuestion);
+  onCompileClick = async (): void => {
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.numCompiles = this.state.logger.numCompiles + 1;
+    this.setState({ logger: newLogger });
+    const loggerRequest = await fetch(
+      "/api/clis/compile/" + this.state.logger.id,
+      {
+        credentials: "include"
+      }
+    );
+    const compileOutput = await loggerRequest.json();
+    console.log("got output", compileOutput);
+    this.setState({ compileOutput });
   };
 
-  onRunClick = (event: SyntheticEvent): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // newQuestion.instructions = newQuestion.instructions.toString("html");
-    // newQuestion.hints = newQuestion.hints.map(value => {
-    //   return value.toString("html");
-    // });
-    // this.props.onSave(newQuestion);
+  onRunClick = async () => {
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.numRuns = this.state.logger.numRuns + 1;
+    this.setState({ logger: newLogger });
+    const loggerRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
+      credentials: "include"
+    });
+    const runOutput = await loggerRequest.json();
+    console.log("got output", runOutput);
+    this.setState({ runOutput });
   };
 
   onCheckAnswerClick = (event: SyntheticEvent): void => {
@@ -201,7 +226,10 @@ class TestQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.compileOutput}
+              {this.state.compileOutput.stdout}
+            </CardBlock>
+            <CardBlock>
+              {this.state.compileOutput.stderr}
             </CardBlock>
           </Card>
           <Card>
@@ -212,7 +240,10 @@ class TestQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.runOutput}
+              {this.state.runOutput.stdout}
+            </CardBlock>
+            <CardBlock>
+              {this.state.runOutput.stderr}
             </CardBlock>
           </Card>
           <Button color="primary" onClick={this.onCheckAnswerClick}>
