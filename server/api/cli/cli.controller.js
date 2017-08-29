@@ -95,7 +95,7 @@ export async function compileLogger(req: $Request, res: $Response) {
     });
     await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
     const result = await exec(
-      `gcc "${dirName}/${logger.className}.c" -o "${logger.className}"`,
+      `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}"`,
       {
         timeout: 10000
       }

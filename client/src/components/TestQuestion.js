@@ -100,17 +100,15 @@ class TestQuestion extends Component {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.className = event.target.value;
       this.setState({ logger: newLogger });
-      this.saveLogger(newLogger);
+      this.saveLogger({ id: newLogger.id, className: newLogger.className });
     }
   };
 
-  updateCode = (event: SyntheticEvent): void => {
-    if (event.target instanceof HTMLInputElement) {
-      let newLogger = Object.assign({}, this.state.logger);
-      newLogger.code = event.target.value;
-      this.setState({ logger: newLogger });
-      this.saveLogger(newLogger);
-    }
+  updateCode = (code: string): void => {
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.code = code;
+    this.setState({ logger: newLogger });
+    this.saveLogger({ id: newLogger.id, code: newLogger.code });
   };
 
   onCompileClick = async (): void => {
@@ -156,7 +154,11 @@ class TestQuestion extends Component {
     newLogger.className = this.props.question.className;
     newLogger.code = this.props.question.code;
     this.setState({ logger: newLogger });
-    this.saveLogger(newLogger);
+    this.saveLogger({
+      id: newLogger.id,
+      className: newLogger.className,
+      code: newLogger.code
+    });
   };
 
   onGetHintClick = (event: SyntheticEvent): void => {
