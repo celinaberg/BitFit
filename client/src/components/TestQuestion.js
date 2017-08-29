@@ -13,7 +13,8 @@ import {
   Label,
   Input,
   Button,
-  InputGroupAddon
+  InputGroupAddon,
+  Alert
 } from "reactstrap";
 import AceEditor from "react-ace";
 
@@ -44,7 +45,8 @@ class TestQuestion extends Component {
       error: boolean,
       stdout: string,
       stderr: string
-    }
+    },
+    checkAnswer: ?boolean
   };
 
   constructor(props: Props) {
@@ -62,7 +64,8 @@ class TestQuestion extends Component {
         error: false,
         stdout: "",
         stderr: ""
-      }
+      },
+      checkAnswer: null
     };
   }
 
@@ -111,7 +114,7 @@ class TestQuestion extends Component {
     this.saveLogger({ id: newLogger.id, code: newLogger.code });
   };
 
-  onCompileClick = async (): void => {
+  onCompileClick = async () => {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numCompiles = this.state.logger.numCompiles + 1;
     this.setState({ logger: newLogger });
@@ -140,7 +143,7 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numRuns = this.state.logger.numRuns + 1;
     this.setState({ logger: newLogger });
-    this.saveLogger(newLogger);
+    this.saveLogger({ id: newLogger.id, numRuns: newLogger.numRuns });
     const loggerRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
     });
@@ -149,13 +152,21 @@ class TestQuestion extends Component {
     this.setState({ runOutput });
   };
 
-  onCheckAnswerClick = (event: SyntheticEvent): void => {
-    // let newQuestion = Object.assign({}, this.state.question);
-    // newQuestion.instructions = newQuestion.instructions.toString("html");
-    // newQuestion.hints = newQuestion.hints.map(value => {
-    //   return value.toString("html");
-    // });
-    // this.props.onSave(newQuestion);
+  onCheckAnswerClick = (): void => {
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
+    if (this.state.runOutput.stdout === this.props.question.expectedOutput) {
+      newLogger.correctAttempts = this.state.logger.correctAttempts + 1;
+      this.setState({ checkAnswer: true });
+    } else {
+      this.setState({ checkAnswer: false });
+    }
+    this.setState({ logger: newLogger });
+    this.saveLogger({
+      id: newLogger.id,
+      totalAttempts: newLogger.totalAttempts,
+      correctAttempts: newLogger.correctAttempts
+    });
   };
 
   onResetToStarterClick = (event: SyntheticEvent): void => {
@@ -190,6 +201,20 @@ class TestQuestion extends Component {
             <div>Loading...</div>
           </CardBlock>
         </Card>
+      );
+    }
+    let checkAnswer = null;
+    if (this.state.checkAnswer === true) {
+      checkAnswer = (
+        <Alert color="success">
+          <strong>Well done!</strong> You successfully completed this problem.
+        </Alert>
+      );
+    } else if (this.state.checkAnswer === false) {
+      checkAnswer = (
+        <Alert color="danger">
+          <strong>Oh no!</strong> You still have some work to do.
+        </Alert>
       );
     }
     return (
@@ -319,6 +344,7 @@ class TestQuestion extends Component {
           <Button color="primary" onClick={this.onCheckAnswerClick}>
             Check Answer
           </Button>
+          {checkAnswer}
         </CardBlock>
       </Card>
     );
