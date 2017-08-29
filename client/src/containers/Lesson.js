@@ -19,21 +19,29 @@ import TestQuestion from "../components/TestQuestion";
 import { fetchLessons } from "../actions";
 import classnames from "classnames";
 
+type Props = {
+  loading: boolean,
+  lesson: Lesson,
+  userId: string,
+  fetchLessons: () => void
+};
+
 class Lessons extends Component {
-  props: {
-    loading: boolean,
-    lesson: Lesson,
-    userId: string,
-    fetchLessons: () => void
-  };
+  props: Props;
 
   state = {
-    activeTab: "1"
+    activeTab: "background"
   };
 
   componentWillMount() {
     if (this.props.loading) {
       this.props.fetchLessons();
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.lesson !== nextProps.lesson) {
+      this.setState({ activeTab: "background" });
     }
   }
 
@@ -56,9 +64,11 @@ class Lessons extends Component {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "1" })}
+              className={classnames({
+                active: this.state.activeTab === "background"
+              })}
               onClick={() => {
-                this.toggle("1");
+                this.toggle("background");
               }}
             >
               Background
@@ -66,9 +76,11 @@ class Lessons extends Component {
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "2" })}
+              className={classnames({
+                active: this.state.activeTab === "questions"
+              })}
               onClick={() => {
-                this.toggle("2");
+                this.toggle("questions");
               }}
             >
               Questions
@@ -76,7 +88,7 @@ class Lessons extends Component {
           </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
+          <TabPane tabId="background">
             <Row>
               <Col sm="12">
                 <h4>Background</h4>
@@ -86,7 +98,7 @@ class Lessons extends Component {
               </Col>
             </Row>
           </TabPane>
-          <TabPane tabId="2">
+          <TabPane tabId="questions">
             <Row>
               <Col sm="12">
                 <h4>Questions</h4>
