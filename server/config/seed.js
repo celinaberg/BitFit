@@ -12,6 +12,18 @@ import Lesson from "../api/lesson/lesson.model";
 export function seedTestData() {
   User.find({}).remove(function() {
     console.log("Finished removing users");
+    User.create(
+      {
+        uid: "buser",
+        firstName: "Backdoor",
+        lastName: "User",
+        displayName: "Backdoor User",
+        role: "instructor"
+      },
+      function() {
+        console.log("Finished adding users");
+      }
+    );
   });
 
   Lesson.find({}).remove(function() {
