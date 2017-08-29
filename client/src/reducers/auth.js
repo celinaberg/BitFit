@@ -5,6 +5,7 @@ import type { AuthState } from "../types";
 
 const initialState: AuthState = {
   loggedIn: false,
+  loaded: false,
   current: null
 };
 
@@ -30,12 +31,14 @@ export default function user(
       return {
         ...state,
         loggedIn: true,
+        loaded: true,
         current: action.payload.data
       };
     case "CHECK_LOGIN_REJECTED":
       return {
         ...state,
         loggedIn: false,
+        loaded: true,
         current: null
       };
     default:

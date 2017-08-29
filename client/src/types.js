@@ -66,6 +66,7 @@ export type QuestionState = {
 
 export type AuthState = {
   +loggedIn: boolean,
+  +loaded: boolean,
   +current: ?User
 };
 

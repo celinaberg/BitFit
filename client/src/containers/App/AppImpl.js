@@ -1,6 +1,7 @@
 // @flow
 
 import type { Dispatch } from "../../actions/types";
+import type { State } from "../../types";
 
 import React, { Component } from "react";
 import "./App.css";
@@ -15,12 +16,22 @@ import Admin from "../Admin";
 import NotFound from "../NotFound";
 import { checkLogin } from "../../actions";
 
+type Props = {
+  loaded: boolean,
+  checkLogin: () => void
+};
+
 class App extends Component {
+  props: Props;
+
   componentWillMount() {
     this.props.checkLogin();
   }
 
   render() {
+    if (!this.props.loaded) {
+      return <div>Loading...</div>;
+    }
     return (
       <Router>
         <div>
@@ -39,7 +50,9 @@ class App extends Component {
 }
 
 const mapStateToProps = (state: State, ownProps) => {
-  return {};
+  return {
+    loaded: state.auth.loaded
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
