@@ -82,11 +82,25 @@ class TestQuestion extends Component {
     this.setState({ loading: false, logger });
   }
 
+  saveLogger(logger: Logger) {
+    console.log(logger);
+    fetch("/api/loggers/" + logger.id, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(logger)
+    });
+  }
+
   updateClassName = (event: SyntheticEvent): void => {
     if (event.target instanceof HTMLInputElement) {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.className = event.target.value;
       this.setState({ logger: newLogger });
+      this.saveLogger(newLogger);
     }
   };
 
@@ -95,6 +109,7 @@ class TestQuestion extends Component {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.code = event.target.value;
       this.setState({ logger: newLogger });
+      this.saveLogger(newLogger);
     }
   };
 
@@ -102,6 +117,7 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numCompiles = this.state.logger.numCompiles + 1;
     this.setState({ logger: newLogger });
+    this.saveLogger(newLogger);
     const loggerRequest = await fetch(
       "/api/clis/compile/" + this.state.logger.id,
       {
@@ -117,6 +133,7 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numRuns = this.state.logger.numRuns + 1;
     this.setState({ logger: newLogger });
+    this.saveLogger(newLogger);
     const loggerRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
     });
@@ -139,6 +156,7 @@ class TestQuestion extends Component {
     newLogger.className = this.props.question.className;
     newLogger.code = this.props.question.code;
     this.setState({ logger: newLogger });
+    this.saveLogger(newLogger);
   };
 
   onGetHintClick = (event: SyntheticEvent): void => {
@@ -146,6 +164,7 @@ class TestQuestion extends Component {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.numHints = this.state.logger.numHints + 1;
       this.setState({ logger: newLogger });
+      this.saveLogger({ id: newLogger.id, numHints: newLogger.numHints });
     }
   };
 

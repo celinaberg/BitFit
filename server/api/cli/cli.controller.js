@@ -14,7 +14,7 @@ import Logger from "../logger/logger.model";
 //   dirName += dateTime.getMonth();
 //   dirName += dateTime.getDate();
 //   dirName += dateTime.getFullYear();
-// 
+//
 //   // make a directory for this user, if doesn't exist already
 //   exec(
 //     `mkdir -p ${dirName}`,
@@ -23,7 +23,7 @@ import Logger from "../logger/logger.model";
 //       if (error) {
 //         return res.status(200).send(stderr);
 //       }
-// 
+//
 //       const escapedCode = jsesc(req.body.code, {
 //         wrap: true
 //       });
@@ -40,7 +40,7 @@ import Logger from "../logger/logger.model";
 //     }
 //   );
 // }
-// 
+//
 // // run java code
 // export function run(req: $Request, res: $Response) {
 //   let dirName = `users/${req.body.user._id}/`;
@@ -61,7 +61,7 @@ import Logger from "../logger/logger.model";
 //     }
 //   );
 // }
-// 
+//
 // function compileJavaFile(srcFile, dirName, res) {
 //   const execFile = srcFile.replace(".c", "");
 //   // exec is asynchronous

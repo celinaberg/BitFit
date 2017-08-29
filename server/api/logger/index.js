@@ -1,24 +1,14 @@
 // @flow
 
 import express from "express";
-import {
-  index,
-  show,
-  create,
-  update,
-  destroy,
-  getForQuestion
-} from "./logger.controller";
-import { hasRole, isAuthenticated } from "../../auth/auth.service";
+import { index, show, update, getForQuestion } from "./logger.controller";
+import { isAuthenticated } from "../../auth/auth.service";
 
 const router = express.Router();
 
 router.get("/", index);
 router.get("/q/:id", isAuthenticated(), getForQuestion);
 router.get("/:id", isAuthenticated(), show);
-router.post("/", isAuthenticated(), create);
-router.put("/:id", isAuthenticated(), update);
-router.patch("/:id", isAuthenticated(), update);
-router.delete("/:id", hasRole("admin"), destroy);
+router.post("/:id", isAuthenticated(), update);
 
 export default router;
