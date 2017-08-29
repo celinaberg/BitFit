@@ -115,7 +115,7 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numCompiles = this.state.logger.numCompiles + 1;
     this.setState({ logger: newLogger });
-    this.saveLogger(newLogger);
+    this.saveLogger({ id: newLogger.id, numCompiles: newLogger.numCompiles });
     const loggerRequest = await fetch(
       "/api/clis/compile/" + this.state.logger.id,
       {
@@ -125,6 +125,15 @@ class TestQuestion extends Component {
     const compileOutput = await loggerRequest.json();
     console.log("got output", compileOutput);
     this.setState({ compileOutput });
+    if (!compileOutput.error) {
+      newLogger.numErrorFreeCompiles =
+        this.state.logger.numErrorFreeCompiles + 1;
+      this.setState({ logger: newLogger });
+      this.saveLogger({
+        id: newLogger.id,
+        numErrorFreeCompiles: newLogger.numErrorFreeCompiles
+      });
+    }
   };
 
   onRunClick = async () => {
