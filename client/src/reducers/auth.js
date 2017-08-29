@@ -4,7 +4,7 @@ import type { Action } from "../actions/types";
 import type { AuthState } from "../types";
 
 const initialState: AuthState = {
-  loggedIn: true,
+  loggedIn: false,
   current: null
 };
 
@@ -25,6 +25,18 @@ export default function user(
           displayName: "Backdoor",
           role: "instructor"
         }
+      };
+    case "CHECK_LOGIN_FULFILLED":
+      return {
+        ...state,
+        loggedIn: true,
+        current: action.payload.data
+      };
+    case "CHECK_LOGIN_REJECTED":
+      return {
+        ...state,
+        loggedIn: false,
+        current: null
       };
     default:
       return state;

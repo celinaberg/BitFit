@@ -50,12 +50,6 @@ export const saveLesson = (
   };
 };
 
-export const logIn = (): Action => {
-  return {
-    type: "LOGIN"
-  };
-};
-
 export const toggleNavBar = (): Action => {
   return {
     type: "TOGGLE_NAVBAR"
@@ -112,5 +106,12 @@ export const saveNewQuestion = (question: Question): ThunkAction => {
       });
       dispatch(fetchQuestions());
     });
+  };
+};
+
+export const checkLogin = (): Action => {
+  return {
+    type: "CHECK_LOGIN",
+    payload: axios.get("https://127.0.0.1:4343/api/users/me")
   };
 };

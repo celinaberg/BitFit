@@ -32,6 +32,7 @@ export type SaveNewQuestionPendingAction = {
 export type SaveNewQuestionFulfilledAction = {
   type: "SAVE_NEW_QUESTION_FULFILLED"
 };
+export type CheckLoginAction = { type: "CHECK_LOGIN", payload: any };
 
 export type Action =
   | FetchLessonsAction
@@ -46,7 +47,8 @@ export type Action =
   | SaveQuestionPendingAction
   | SaveQuestionFulfilledAction
   | SaveNewQuestionPendingAction
-  | SaveNewQuestionFulfilledAction;
+  | SaveNewQuestionFulfilledAction
+  | CheckLoginAction;
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

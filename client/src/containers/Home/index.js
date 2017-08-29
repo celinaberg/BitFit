@@ -1,23 +1,12 @@
 // @flow
 
-import type { Dispatch } from "../../actions/types";
-import type { State } from "../../types";
-
 import React, { Component } from "react";
 import "./Home.css";
 import CwlLoginButton from "./CWL_login_button.gif";
-import { Container, Row, Col, Button } from "reactstrap";
-import { connect } from "react-redux";
-import { logIn } from "../../actions";
+import { Container, Row, Col } from "reactstrap";
 
 class Home extends Component {
-  props: {
-    logIn: () => void
-  };
-
-  login = () => {
-    this.props.logIn();
-  };
+  props: {};
 
   render() {
     return (
@@ -34,9 +23,6 @@ class Home extends Component {
               <a href="/auth/cwl/login">
                 <img src={CwlLoginButton} alt="CWL Login" />
               </a>
-              <Button color="primary" onClick={this.login}>
-                Login
-              </Button>
             </Col>
           </Row>
           <br />
@@ -60,16 +46,4 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state: State) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    logIn: () => {
-      dispatch(logIn());
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
