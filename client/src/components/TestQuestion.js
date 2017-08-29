@@ -247,10 +247,30 @@ class TestQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.compileOutput.stdout}
+              <p>
+                <strong>stdout</strong>
+              </p>
+              {this.state.compileOutput.stdout.split("\n").map((item, key) => {
+                return (
+                  <span key={key}>
+                    {item}
+                    <br />
+                  </span>
+                );
+              })}
             </CardBlock>
             <CardBlock>
-              {this.state.compileOutput.stderr}
+              <p>
+                <strong>stderr</strong>
+              </p>
+              {this.state.compileOutput.stderr.split("\n").map((item, key) => {
+                return (
+                  <span key={key}>
+                    {item}
+                    <br />
+                  </span>
+                );
+              })}
             </CardBlock>
           </Card>
           <Card>
@@ -261,10 +281,30 @@ class TestQuestion extends Component {
               </Button>
             </CardHeader>
             <CardBlock>
-              {this.state.runOutput.stdout}
+              <p>
+                <strong>stdout</strong>
+              </p>
+              {this.state.runOutput.stdout.split("\n").map((item, key) => {
+                return (
+                  <span key={key}>
+                    {item}
+                    <br />
+                  </span>
+                );
+              })}
             </CardBlock>
             <CardBlock>
-              {this.state.runOutput.stderr}
+              <p>
+                <strong>stderr</strong>
+              </p>
+              {this.state.runOutput.stderr.split("\n").map((item, key) => {
+                return (
+                  <span key={key}>
+                    {item}
+                    <br />
+                  </span>
+                );
+              })}
             </CardBlock>
           </Card>
           <Button color="primary" onClick={this.onCheckAnswerClick}>
