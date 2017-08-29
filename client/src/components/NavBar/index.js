@@ -28,6 +28,8 @@ class NavBar extends Component {
 
   render() {
     let links = null;
+    let rightSide = null;
+
     if (this.props.loggedIn) {
       links = (
         <Nav navbar>
@@ -43,6 +45,18 @@ class NavBar extends Component {
           </NavItem>
         </Nav>
       );
+      rightSide = (
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink disabled>
+              {this.props.name}
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href="/auth/cwl/logout">Logout</NavLink>
+          </NavItem>
+        </Nav>
+      );
     }
     return (
       <Navbar color="faded" light toggleable>
@@ -52,16 +66,7 @@ class NavBar extends Component {
         </NavbarBrand>
         <Collapse isOpen={this.props.isOpen} navbar>
           {links}
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink disabled>
-                {this.props.name}
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>Logout</NavLink>
-            </NavItem>
-          </Nav>
+          {rightSide}
         </Collapse>
       </Navbar>
     );
@@ -72,7 +77,7 @@ const mapStateToProps = (state: State) => {
   return {
     isOpen: state.navbar.isOpen,
     loggedIn: state.auth.loggedIn,
-    name: state.auth.displayName
+    name: state.auth.current ? state.auth.current.displayName : null
   };
 };
 
