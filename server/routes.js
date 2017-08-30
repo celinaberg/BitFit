@@ -11,13 +11,8 @@ import Auth from "./auth";
 import { pageNotFound } from "./components/errors";
 import path from "path";
 
-const indexHtml =
-  process.env.NODE_ENV === "development"
-    ? path.join(__dirname, "../client/index.html")
-    : path.join(__dirname, "../build/client/index.html");
-
 function defaultRouteHandler(req: $Request, res: $Response) {
-  res.render(indexHtml);
+  res.render(path.join(__dirname, "../client/index.html"));
 }
 
 export default function init(app: $Application) {
