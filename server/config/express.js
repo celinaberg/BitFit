@@ -50,7 +50,7 @@ export default function init(app: $Application) {
   app.use(passport.session());
   app.use(morgan("dev"));
 
-  app.use(express.static(path.join(__dirname, "../../build/client")));
+  app.use(express.static(path.join(__dirname, "../client/static")));
 
   if (env === "development" || env === "test") {
     // app.use(connectLivereload())
