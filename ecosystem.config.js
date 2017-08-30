@@ -6,7 +6,7 @@ module.exports = {
   apps: [
     {
       name: "BitFit",
-      script: "server/app.js",
+      script: "build/server/app.js",
       env: {
         NODE_ENV: "production"
       },
