@@ -9,7 +9,7 @@ import RichTextEditor from "react-rte";
 export const fetchLessons = (): Action => {
   return {
     type: "FETCH_LESSONS",
-    payload: axios.get("https://127.0.0.1:4343/api/lessons")
+    payload: axios.get("/api/lessons")
   };
 };
 
@@ -29,7 +29,7 @@ export const updateNewLesson = (
 export const saveNewLesson = (title: string, background: string): Action => {
   return {
     type: "SAVE_NEW_LESSON",
-    payload: axios.post("https://127.0.0.1:4343/api/topics", {
+    payload: axios.post("/api/topics", {
       title,
       background
     })
@@ -43,7 +43,7 @@ export const saveLesson = (
 ): Action => {
   return {
     type: "SAVE_LESSON",
-    payload: axios.put("https://127.0.0.1:4343/api/topics/" + id, {
+    payload: axios.put("/api/topics/" + id, {
       title,
       background
     })
@@ -59,21 +59,21 @@ export const toggleNavBar = (): Action => {
 export const fetchUsers = (): Action => {
   return {
     type: "FETCH_USERS",
-    payload: axios.get("https://127.0.0.1:4343/api/users")
+    payload: axios.get("/api/users")
   };
 };
 
 export const deleteUser = (id: string): Action => {
   return {
     type: "DELETE_USER",
-    payload: axios.delete("https://127.0.0.1:4343/api/users/" + id)
+    payload: axios.delete("/api/users/" + id)
   };
 };
 
 export const fetchQuestions = (): Action => {
   return {
     type: "FETCH_QUESTIONS",
-    payload: axios.get("https://127.0.0.1:4343/api/questions")
+    payload: axios.get("/api/questions")
   };
 };
 
@@ -83,7 +83,7 @@ export const saveQuestion = (question: Question): ThunkAction => {
       type: "SAVE_QUESTION_PENDING"
     });
     axios
-      .patch("https://127.0.0.1:4343/api/questions/" + question.id, question)
+      .patch("/api/questions/" + question.id, question)
       .then(rsp => {
         dispatch({
           type: "SAVE_QUESTION_FULFILLED",
@@ -99,7 +99,7 @@ export const saveNewQuestion = (question: Question): ThunkAction => {
     dispatch({
       type: "SAVE_NEW_QUESTION_PENDING"
     });
-    axios.post("https://127.0.0.1:4343/api/questions/", question).then(rsp => {
+    axios.post("/api/questions/", question).then(rsp => {
       dispatch({
         type: "SAVE_NEW_QUESTION_FULFILLED",
         payload: rsp.data
@@ -112,6 +112,6 @@ export const saveNewQuestion = (question: Question): ThunkAction => {
 export const checkLogin = (): Action => {
   return {
     type: "CHECK_LOGIN",
-    payload: axios.get("https://127.0.0.1:4343/api/users/me")
+    payload: axios.get("/api/users/me")
   };
 };
