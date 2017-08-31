@@ -9,10 +9,9 @@ import type { $Application, $Request, $Response } from "express";
 import Api from "./api";
 import Auth from "./auth";
 import { pageNotFound } from "./components/errors";
-import path from "path";
 
 function defaultRouteHandler(req: $Request, res: $Response) {
-  res.render(path.join(__dirname, "../../client/index.html"));
+  res.render("../../client/index.html");
 }
 
 export default function init(app: $Application) {
