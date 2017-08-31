@@ -41,7 +41,7 @@ let all = {
   mongo: {
     uri: "mongodb://localhost/its110",
     options: {
-      useMongoClient: true
+      useMongoClient: false
     }
   }
 };
