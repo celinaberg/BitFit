@@ -40,6 +40,14 @@ exports.run = function (req, res) {
   dirName += dateTime.getFullYear()
   const execFile = req.body.fileName.replace('.c', '')
   const cmd = `"${dirName}/${execFile}"`
+  var docker = new Docker({
+	  host: 'localhost',
+	  port: process.env.DOCKER_PORT || 4343,
+	  ca: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/ca.pem'),
+	  cert: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/cert.pem'),
+	  key: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/key.pem'),
+	  version: 'v1.30' // required when Docker >= v1.13, https://docs.docker.com/engine/api/version-history/
+  }); 
   exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
