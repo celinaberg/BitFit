@@ -1,6 +1,7 @@
 const exec = require('child_process').exec
 const jsesc = require('jsesc')
 const Docker = require('dockerode')
+const fs = require('fs')
 
 // Compile java code
 exports.compile = function (req, res) {
@@ -41,11 +42,12 @@ exports.run = function (req, res) {
   const execFile = req.body.fileName.replace('.c', '')
   const cmd = `"${dirName}/${execFile}"`
   var docker = new Docker({
-	  host: 'localhost',
-	  port: process.env.DOCKER_PORT || 4343,
-	  ca: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/ca.pem'),
-	  cert: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/cert.pem'),
-	  key: fs.readFileSync('C:/Users/Tiara/Documents/BitFit/server/cert/key.pem'),
+	  host: '192.168.99.100',
+	  port: 2376,
+	  protocol: 'https',
+	  ca: fs.readFileSync('C:/Users/Tiara/.docker/machine/machines/default/ca.pem'),
+	  cert: fs.readFileSync('C:/Users/Tiara/.docker/machine/machines/default/cert.pem'),
+	  key: fs.readFileSync('C:/Users/Tiara/.docker/machine/machines/default/key.pem'),
 	  version: 'v1.30' // required when Docker >= v1.13, https://docs.docker.com/engine/api/version-history/
   }); 
   exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
