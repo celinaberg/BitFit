@@ -50,6 +50,14 @@ exports.run = function (req, res) {
 	  key: fs.readFileSync('C:/Users/Tiara/.docker/machine/machines/default/key.pem'),
 	  version: 'v1.30' // required when Docker >= v1.13, https://docs.docker.com/engine/api/version-history/
   }); 
+	console.log("Creating image")
+	docker.createImage({}, { fromImage: 'ubuntu', tag: 'latest' }, function(err, data){
+		if (err) {
+			console.log(err)
+		} else {
+			console.log("Created image")
+		}
+	})
   exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
     (error, stdout, stderr) => {
       if (error) {
