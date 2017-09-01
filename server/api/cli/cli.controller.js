@@ -1,5 +1,6 @@
 const exec = require('child_process').exec
 const jsesc = require('jsesc')
+const Docker = require('dockerode')
 
 // Compile java code
 exports.compile = function (req, res) {
