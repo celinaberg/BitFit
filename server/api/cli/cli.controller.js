@@ -56,6 +56,18 @@ exports.run = function (req, res) {
 			console.log(err)
 		} else {
 			console.log("Created image")
+			console.log("docker run")
+			console.log(cmd)
+			docker.run('ubuntu', [cmd], process.stdout, function (err, data, container) {
+					if (err) {
+						console.log(err)
+						return res.status(200).send(err)
+					} else {
+						console.log(data.StatusCode);
+						console.log(data)
+						return res.status(200).send(data)
+					}
+			})
 		}
 	})
   exec(cmd, { timeout: 10000 }, // Process will time out if running for > 10 seconds.
