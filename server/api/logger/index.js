@@ -1,15 +1,14 @@
+// @flow
 
-const express = require('express')
-const controller = require('./logger.controller')
-const auth = require('../../auth/auth.service')
+import express from "express";
+import { index, show, update, getForQuestion } from "./logger.controller";
+import { isAuthenticated } from "../../auth/auth.service";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', controller.index)
-router.get('/:id', auth.isAuthenticated(), controller.show)
-router.post('/', auth.isAuthenticated(), controller.create)
-router.put('/:id', auth.isAuthenticated(), controller.update)
-router.patch('/:id', auth.isAuthenticated(), controller.update)
-router.delete('/:id', auth.hasRole('admin'), controller.destroy)
+router.get("/", index);
+router.get("/q/:id", isAuthenticated(), getForQuestion);
+router.get("/:id", isAuthenticated(), show);
+router.post("/:id", isAuthenticated(), update);
 
-module.exports = router
+export default router;

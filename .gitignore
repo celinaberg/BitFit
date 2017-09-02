@@ -1,11 +1,26 @@
+# dependencies
 node_modules
-public
-.tmp
-.idea
-/server/config/local.env.js
+
+# testing
+/client/coverage
+
+# production
+/build
+/client/build
+
+# data
 /users
-*.log
-.DS_Store
 /server/cert/*
 !/server/cert/idp_*
-build
+/server/config/local.env.js
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

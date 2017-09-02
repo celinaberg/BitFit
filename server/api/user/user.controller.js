@@ -1,57 +1,61 @@
-const User = require('./user.model')
+// @flow
+
+import type { $Request, $Response } from "express";
+
+import User from "./user.model";
 
 /**
  * Get list of users
  * restriction: 'admin'
  */
-exports.index = function (req, res) {
-  User.find({}, (err, users) => {
-    if (err) return res.status(500).send(err)
-    res.status(200).json(users)
-  })
+export async function index(req: $Request, res: $Response) {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 }
 
 /**
  * Get a single user
  */
-exports.show = function (req, res, next) {
-  const userId = req.params.id
-
-  User.findById(userId, (err, user) => {
-    if (err) return next(err)
-    if (!user) return res.send(401)
-    res.json(user.profile)
-  })
+export async function show(req: $Request, res: $Response) {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.send(401);
+    res.json(user.profile);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
 
 /**
  * Deletes a user
  * restriction: 'admin'
  */
-exports.delete = function (req, res) {
-  User.findByIdAndRemove(req.params.id, (err, user) => {
-    if (err) return res.status(500).send(err)
-    return res.send(204)
-  })
+export async function destroy(req: $Request, res: $Response) {
+  try {
+    await User.findByIdAndRemove(req.params.id);
+    return res.send(204);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 }
 
 /**
  * Get my info
  */
-exports.me = function (req, res, next) {
-  const uid = req.user.uid
-  User.findOne({
-    uid: uid
-  }, (err, user) => {
-    if (err) return next(err)
-    if (!user) return res.json(401)
-    res.json(user)
-  })
-}
-
-/**
- * Authentication callback
- */
-exports.authCallback = function (req, res, next) {
-  res.redirect('/')
+export async function me(req: $Request, res: $Response) {
+  const uid = req.user.uid;
+  try {
+    const user = await User.findOne({
+      uid: uid
+    });
+    if (!user) return res.json(401);
+    res.json(user);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 }

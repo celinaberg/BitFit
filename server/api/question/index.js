@@ -1,16 +1,25 @@
+// @flow
 
-const express = require('express')
-const controller = require('./question.controller')
+import express from "express";
+import {
+  exportQuestions,
+  index,
+  show,
+  create,
+  importQuestions,
+  update,
+  destroy
+} from "./question.controller";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/export', controller.export)
-router.get('/', controller.index)
-router.get('/:id', controller.show)
-router.post('/', controller.create)
-router.post('/import', controller.import)
-router.put('/:id', controller.update)
-router.patch('/:id', controller.update)
-router.delete('/:id', controller.destroy)
+router.get("/export", exportQuestions);
+router.get("/", index);
+router.get("/:id", show);
+router.post("/", create);
+router.post("/import", importQuestions);
+router.put("/:id", update);
+router.patch("/:id", update);
+router.delete("/:id", destroy);
 
-module.exports = router
+export default router;

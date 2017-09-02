@@ -1,6 +1,8 @@
-const mongoose = require('mongoose')
+// @flow
 
-const Schema = mongoose.Schema
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   uid: String,
@@ -17,7 +19,7 @@ const UserSchema = new Schema({
    */
   role: {
     type: String,
-    default: 'student'
+    default: "student"
   },
   studentNumber: String,
   employeeNumber: String,
@@ -25,40 +27,40 @@ const UserSchema = new Schema({
   term: Number,
   session: String,
   year: Number
-})
+});
 
 /**
  * Virtuals
  */
 
 // Public profile information
-UserSchema
-  .virtual('profile')
-  .get(function () {
-    return {
-      uid: this.uid,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      displayName: this.displayName,
-      role: this.role
-    }
-  })
+UserSchema.virtual("profile").get(function() {
+  return {
+    uid: this.uid,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    displayName: this.displayName,
+    role: this.role
+  };
+});
 
 // Non-sensitive info we'll be putting in the token
-UserSchema
-  .virtual('token')
-  .get(function () {
-    return {
-      uid: this.uid,
-      role: this.role
-    }
-  })
+UserSchema.virtual("token").get(function() {
+  return {
+    uid: this.uid,
+    role: this.role
+  };
+});
 
 /**
  * Methods
  */
-UserSchema.methods = {
+UserSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  obj.id = obj._id;
+  delete obj._id;
+  delete obj.__v;
+  return obj;
+};
 
-}
-
-module.exports = mongoose.model('User', UserSchema)
+export default mongoose.model("User", UserSchema);

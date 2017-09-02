@@ -1,15 +1,6 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {
-        "browsers": [
-          "last 2 Chrome versions",
-          "last 2 Firefox versions",
-          "last 2 Opera versions",
-          "last 2 Edge versions",
-          "last 2 Safari versions"
-        ]
-      }
-    }]
+  "presets": ["flow"],
+  "plugins": [
+    "transform-es2015-modules-commonjs"
   ]
 }

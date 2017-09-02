@@ -5,12 +5,12 @@ module.exports = {
    */
   apps: [
     {
-      name: 'BitFit',
-      script: 'server/app.js',
+      name: "BitFit",
+      script: "build/server/app.js",
       env: {
-        NODE_ENV: 'production'
+        NODE_ENV: "production"
       },
       watch: true
     }
   ]
-}
+};

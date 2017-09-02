@@ -1,11 +1,15 @@
+// @flow
 
-const express = require('express')
-const controller = require('./cli.controller')
-const auth = require('../../auth/auth.service')
+import express from "express";
+import { compileLogger, runLogger } from "./cli.controller";
+import { isAuthenticated } from "../../auth/auth.service";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/compile', auth.isAuthenticated(), controller.compile)
-router.post('/run', auth.isAuthenticated(), controller.run)
+router.get("/compile/:id", isAuthenticated(), compileLogger);
+router.get("/run/:id", isAuthenticated(), runLogger);
 
-module.exports = router
+// router.post("/compile", isAuthenticated(), compile);
+// router.post("/run", isAuthenticated(), run);
+
+export default router;

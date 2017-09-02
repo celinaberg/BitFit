@@ -1,43 +1,59 @@
-const express = require('express')
-const passport = require('passport')
-const strategy = require('./passport')
-const fs = require('fs')
-const path = require('path')
+// @flow
 
-const router = express.Router()
+import type { $Request, $Response } from "express";
 
-router.get('/metadata',
-  (req, res) => {
-    res.set('Content-Type', 'text/xml')
-    const cert = fs.readFileSync(path.join(__dirname, '/../../cert/cert.pem'), 'utf8')
-    res.send(strategy.generateServiceProviderMetadata(cert))
-  }
-)
+import express from "express";
+import passport from "passport";
+import strategy from "./passport";
+import fs from "fs";
+import path from "path";
 
-router.get('/login',
-  passport.authenticate('saml', { successRedirect: '/lessons', failureRedirect: '/login/failed' }))
+const router = express.Router();
 
-router.get('/login/failed',
-  (req, res) => {
-    res.status(401).send('You are not authorized to use BitFit. If you think this is an error, please contact the course instructor.')
-  }
-)
+router.get("/metadata", (req: $Request, res: $Response) => {
+  res.set("Content-Type", "text/xml");
+  const cert = fs.readFileSync(
+    path.join(__dirname, "/../../cert/cert.pem"),
+    "utf8"
+  );
+  res.send(strategy.generateServiceProviderMetadata(cert));
+});
 
-router.post('/login',
-  passport.authenticate('saml', { failureRedirect: '/auth/cwl/login/failed' }),
-  (req, res) => {
-    res.redirect('/lessons')
-  }
-)
+router.get(
+  "/login",
+  passport.authenticate("saml", {
+    successRedirect: "/lessons",
+    failureRedirect: "/auth/cwl/login/failed"
+  })
+);
 
-router.post('/login/callback',
-  passport.authenticate('saml', { successRedirect: '/lessons', failureRedirect: '/auth/cwl/login/failed' }))
+router.get("/login/failed", (req: $Request, res: $Response) => {
+  res
+    .status(401)
+    .send(
+      "You are not authorized to use BitFit. If you think this is an error, please contact the course instructor."
+    );
+});
 
-router.get('/logout',
-  (req, res) => {
-    req.logout()
-    res.redirect('/')
-  }
-)
+router.post(
+  "/login",
+  passport.authenticate("saml", {
+    successRedirect: "/lessons",
+    failureRedirect: "/auth/cwl/login/failed"
+  })
+);
 
-module.exports = router
+router.post(
+  "/login/callback",
+  passport.authenticate("saml", {
+    successRedirect: "/lessons",
+    failureRedirect: "/auth/cwl/login/failed"
+  })
+);
+
+router.get("/logout", (req: $Request, res: $Response) => {
+  req.logout();
+  res.redirect("/");
+});
+
+export default router;

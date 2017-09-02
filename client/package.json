@@ -1,0 +1,42 @@
+{
+  "name": "react-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.16.2",
+    "bootstrap": "4.0.0-alpha.6",
+    "classnames": "^2.2.5",
+    "react": "^15.6.1",
+    "react-ace": "^5.1.2",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-transition-group": "^15.6.0",
+    "react-dom": "^15.6.1",
+    "react-icons": "^2.2.5",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.2",
+    "react-rte": "^0.14.1",
+    "react-scripts": "1.0.11",
+    "react-test-renderer": "^15.6.1",
+    "reactstrap": "^4.8.0",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "4.2.1",
+    "redux-thunk": "^2.2.0"
+  },
+  "scripts": {
+    "start": "HTTPS=true PORT=4343 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": {
+    "/api": {
+      "target": "https://localhost:4444",
+      "secure": false
+    },
+    "/auth": {
+      "target": "https://localhost:4444",
+      "secure": false
+    }
+  }
+}

@@ -1,60 +1,64 @@
+// @flow
+
 /**
  * Express configuration
  */
 
-const express = require('express')
-// var favicon = require('serve-favicon');
-const morgan = require('morgan')
-const compression = require('compression')
-const bodyParser = require('body-parser')
-const methodOverride = require('method-override')
-const errorHandler = require('errorhandler')
-const path = require('path')
-const config = require('./environment')
-const passport = require('passport')
-const ejs = require('ejs')
-// const connectLivereload = require('connect-livereload')
-const session = require('express-session')
+import type { $Application, $Request, $Response } from "express";
 
-function init (app) {
-  const env = app.get('env')
+import express from "express";
+// var favicon from 'serve-favicon';
+import morgan from "morgan";
+import compression from "compression";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
+import errorHandler from "errorhandler";
+import path from "path";
+import config from "./environment";
+import passport from "passport";
+import ejs from "ejs";
+// import connectLivereload from 'connect-livereload';
+import session from "express-session";
 
-  app.disable('x-powered-by')
-  app.set('views', path.join(config.root, '/server/views'))
-  app.engine('html', ejs.renderFile)
-  app.set('view engine', 'html')
-  app.set('appPath', 'client')
+export default function init(app: $Application) {
+  const env = app.get("env");
 
-  app.use(compression())
-  app.use(bodyParser.urlencoded({ extended: false }))
-  app.use(bodyParser.json())
-  app.use(methodOverride())
-  app.use(session({
-    secret: 'TODO: MAKE ME AN ENV VAR!!!',
-    cookie: {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      maxAge: null
-    },
-    resave: false,
-    saveUninitialized: false
-  }))
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.use(morgan('dev'))
+  app.disable("x-powered-by");
+  app.set("views", path.join(config.root, "/server/views"));
+  app.engine("html", ejs.renderFile);
+  app.set("view engine", "html");
+  app.set("appPath", "client");
 
-  app.use(express.static(path.join(__dirname, '../../build/client')))
+  app.use(compression());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+  app.use(methodOverride());
+  app.use(
+    session({
+      secret: "TODO: MAKE ME AN ENV VAR!!!",
+      cookie: {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        maxAge: null
+      },
+      resave: false,
+      saveUninitialized: false
+    })
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(morgan("dev"));
 
-  if (env === 'development' || env === 'test') {
+  app.use(express.static(path.join(__dirname, "../../client")));
+
+  if (env === "development" || env === "test") {
     // app.use(connectLivereload())
-    app.use(errorHandler()) // Error handler - has to be last
+    app.use(errorHandler()); // Error handler - has to be last
   }
 
-  app.use(function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500).send('Internal error. Please try again later.')
-  })
+  app.use(function(err, req: $Request, res: $Response, next) {
+    console.error(err.stack);
+    res.status(500).send("Internal error. Please try again later.");
+  });
 }
-
-module.exports = init
