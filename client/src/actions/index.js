@@ -29,7 +29,7 @@ export const updateNewLesson = (
 export const saveNewLesson = (title: string, background: string): Action => {
   return {
     type: "SAVE_NEW_LESSON",
-    payload: axios.post("/api/topics", {
+    payload: axios.post("/api/lessons", {
       title,
       background
     })
@@ -43,7 +43,7 @@ export const saveLesson = (
 ): Action => {
   return {
     type: "SAVE_LESSON",
-    payload: axios.put("/api/topics/" + id, {
+    payload: axios.put("/api/lessons/" + id, {
       title,
       background
     })
