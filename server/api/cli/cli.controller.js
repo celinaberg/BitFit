@@ -2,9 +2,12 @@
 
 import type { $Request, $Response } from "express";
 
-import { exec } from "child-process-promise";
+import { exec as execSync } from "child_process";
 import jsesc from "jsesc";
 import Logger from "../logger/logger.model";
+import { promisify } from "util";
+
+const exec = promisify(execSync);
 
 // Compile java code
 // export function compile(req: $Request, res: $Response) {
@@ -100,6 +103,7 @@ export async function compileLogger(req: $Request, res: $Response) {
         timeout: 10000
       }
     );
+    console.error("result object", result);
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
