@@ -240,7 +240,7 @@ class TestQuestion extends Component {
                     dangerouslySetInnerHTML={{
                       __html: hint
                     }}
-                  </div>
+                  />
                 );
               })}
             <Button color="primary" onClick={this.onGetHintClick}>
