@@ -112,12 +112,12 @@ class EditQuestion extends Component {
     }
   };
 
-  updateReadOnly = (event: Event): void => {
+  updateReadOnly = (event: SyntheticEvent): void => {
     let newQuestion = Object.assign({}, this.state.question);
-    if (event.target instanceof HTMLInputElement) {
-      newQuestion.readOnly = event.target.value === "on";
-      this.setState({ question: newQuestion });
-    }
+    console.log(event);
+    newQuestion.readOnly = event.target.checked;
+    console.log(newQuestion);
+    this.setState({ question: newQuestion });
   };
 
   updateCode = (event: Event): void => {
@@ -266,7 +266,7 @@ class EditQuestion extends Component {
                 <Label check>
                   <Input
                     type="checkbox"
-                    value={this.state.question.readOnly}
+                    checked={this.state.question.readOnly}
                     onChange={this.updateReadOnly}
                   />
                   Read Only
