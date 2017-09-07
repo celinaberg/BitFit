@@ -235,8 +235,11 @@ class TestQuestion extends Component {
               .map((hint, index) => {
                 const id = this.props.question.id + "hint" + index;
                 return (
-                  <div key={id}>
-                    {hint}
+                  <div
+                    key={id}
+                    dangerouslySetInnerHTML={{
+                      __html: hint
+                    }}
                   </div>
                 );
               })}
