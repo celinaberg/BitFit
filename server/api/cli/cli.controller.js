@@ -97,12 +97,11 @@ export async function compileLogger(req: $Request, res: $Response) {
       wrap: true
     });
     await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
-    const result = await exec(
-      `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}"`,
-      {
-        timeout: 10000
-      }
-    );
+    const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}"`;
+    console.log(gcc);
+    const result = await exec(gcc, {
+      timeout: 10000
+    });
     console.error("result object", result);
     return res
       .status(200)

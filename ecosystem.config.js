@@ -10,7 +10,8 @@ module.exports = {
       env: {
         NODE_ENV: "production"
       },
-      watch: true
+      watch: true,
+      ignore_watch: ["users"]
     }
   ]
 };
