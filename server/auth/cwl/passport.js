@@ -74,6 +74,10 @@ const samlStrategy = new SamlStrategy(
       }
     } else if (profile.hasOwnProperty(groupMembership)) {
       role = "student";
+      // Temp: Restrict access to students.
+      return done(null, false, {
+        message: "Students are currently not allowed to access BitFit."
+      });
     } else {
       // Unauthorized to access app
       // TODO: Backdoor - remove
