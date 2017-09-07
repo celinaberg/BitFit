@@ -37,7 +37,7 @@ const app: $Application = express();
 
 // new for HTTPS
 const server = https.createServer(options, app);
-configExpress(app);
+configExpress(app, mongoose.connection);
 routes(app);
 
 // Start server

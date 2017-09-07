@@ -19,8 +19,9 @@ import passport from "passport";
 import ejs from "ejs";
 // import connectLivereload from 'connect-livereload';
 import session from "express-session";
+import ConnectMongo from "connect-mongo";
 
-export default function init(app: $Application) {
+export default function init(app: $Application, connection) {
   const env = app.get("env");
 
   app.disable("x-powered-by");
@@ -33,6 +34,7 @@ export default function init(app: $Application) {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(methodOverride());
+  const MongoStore = ConnectMongo(session);
   app.use(
     session({
       secret: "TODO: MAKE ME AN ENV VAR!!!",
@@ -43,7 +45,10 @@ export default function init(app: $Application) {
         maxAge: null
       },
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: false,
+      store: new MongoStore({
+        mongooseConnection: connection
+      })
     })
   );
   app.use(passport.initialize());
