@@ -190,6 +190,7 @@ class TestQuestion extends Component {
         credentials: "include"
       }
     );
+    const compileOutput = await compileRequest.json();
     const runRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
     });
