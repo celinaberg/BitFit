@@ -14,7 +14,8 @@ import {
   Input,
   Button,
   InputGroupAddon,
-  Alert
+  Alert,
+  Badge
 } from "reactstrap";
 import AceEditor from "react-ace";
 
@@ -56,12 +57,12 @@ class TestQuestion extends Component {
       loading: true,
       logger: null,
       compileOutput: {
-        error: false,
+        error: null,
         stdout: "",
         stderr: ""
       },
       runOutput: {
-        error: false,
+        error: null,
         stdout: "",
         stderr: ""
       },
@@ -280,6 +281,36 @@ class TestQuestion extends Component {
         </FormGroup>
       );
     } else {
+      let compileBadge = null;
+      console.log("compile state", this.state.compileOutput.error);
+      if (this.state.compileOutput.error) {
+        compileBadge = (
+          <Badge color="danger" pill>
+            Error
+          </Badge>
+        );
+      } else if (this.state.compileOutput.error === false) {
+        compileBadge = (
+          <Badge color="success" pill>
+            Success
+          </Badge>
+        );
+      }
+      console.log(compileBadge);
+      let runBadge = null;
+      if (this.state.runOutput.error) {
+        runBadge = (
+          <Badge color="danger" pill>
+            Error
+          </Badge>
+        );
+      } else if (this.state.runOutput.error === false) {
+        runBadge = (
+          <Badge color="success" pill>
+            Success
+          </Badge>
+        );
+      }
       output = (
         <div>
           <Card>
@@ -288,6 +319,7 @@ class TestQuestion extends Component {
               <Button color="primary" onClick={this.onCompileClick}>
                 Compile
               </Button>
+              {compileBadge}
             </CardHeader>
             <CardBlock>
               <p>
@@ -322,6 +354,7 @@ class TestQuestion extends Component {
               <Button color="primary" onClick={this.onRunClick}>
                 Run
               </Button>
+              {runBadge}
             </CardHeader>
             <CardBlock>
               <p>
