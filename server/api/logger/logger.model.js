@@ -16,7 +16,8 @@ const LoggerSchema = new Schema({
   totalAttempts: { type: Number, default: 0 },
   correctAttempts: { type: Number, default: 0 },
   className: String,
-  code: String
+  code: String,
+  expectedOutput: String
 });
 
 /**

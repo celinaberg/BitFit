@@ -114,6 +114,18 @@ class TestQuestion extends Component {
     this.saveLogger({ id: newLogger.id, code: newLogger.code });
   };
 
+  updateExpectedOutput = (event: SyntheticEvent): void => {
+    if (event.target instanceof HTMLInputElement) {
+      let newLogger = Object.assign({}, this.state.logger);
+      newLogger.expectedOutput = event.target.value;
+      this.setState({ logger: newLogger });
+      this.saveLogger({
+        id: newLogger.id,
+        expectedOutput: newLogger.expectedOutput
+      });
+    }
+  };
+
   onCompileClick = async () => {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numCompiles = this.state.logger.numCompiles + 1;
@@ -152,7 +164,7 @@ class TestQuestion extends Component {
     this.setState({ runOutput });
   };
 
-  onCheckAnswerClick = (): void => {
+  checkAnswer() {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
     if (this.state.runOutput.stdout === this.props.question.expectedOutput) {
@@ -167,6 +179,41 @@ class TestQuestion extends Component {
       totalAttempts: newLogger.totalAttempts,
       correctAttempts: newLogger.correctAttempts
     });
+  }
+
+  async checkReadOnlyAnswer() {
+    let newLogger = Object.assign({}, this.state.logger);
+    newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
+    const compileRequest = await fetch(
+      "/api/clis/compile/" + this.state.logger.id,
+      {
+        credentials: "include"
+      }
+    );
+    const runRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
+      credentials: "include"
+    });
+    const runOutput = await runRequest.json();
+    if (runOutput.stdout === this.state.logger.expectedOutput) {
+      newLogger.correctAttempts = this.state.logger.correctAttempts + 1;
+      this.setState({ checkAnswer: true });
+    } else {
+      this.setState({ checkAnswer: false });
+    }
+    this.setState({ logger: newLogger });
+    this.saveLogger({
+      id: newLogger.id,
+      totalAttempts: newLogger.totalAttempts,
+      correctAttempts: newLogger.correctAttempts
+    });
+  }
+
+  onCheckAnswerClick = (): void => {
+    if (this.props.question.readOnly) {
+      this.checkReadOnlyAnswer();
+    } else {
+      this.checkAnswer();
+    }
   };
 
   onResetToStarterClick = (event: SyntheticEvent): void => {
@@ -217,65 +264,23 @@ class TestQuestion extends Component {
         </Alert>
       );
     }
-    return (
-      <Card key={this.props.question.id}>
-        <CardBlock>
-          <CardTitle>
-            {this.props.question.title}
-          </CardTitle>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: this.props.question.instructions
-            }}
-          />
-          <div>
-            <Label>Hints</Label>
-            {this.props.question.hints
-              .slice(0, this.state.logger.numHints)
-              .map((hint, index) => {
-                const id = this.props.question.id + "hint" + index;
-                return (
-                  <div
-                    key={id}
-                    dangerouslySetInnerHTML={{
-                      __html: hint
-                    }}
-                  />
-                );
-              })}
-            <Button color="primary" onClick={this.onGetHintClick}>
-              Get Hint
-            </Button>
-          </div>
-          <Button color="primary" onClick={this.onResetToStarterClick}>
-            Reset to Starter
-          </Button>
-          <FormGroup>
-            <Label>Class Name</Label>
-            <InputGroup>
-              <Input
-                type="text"
-                value={this.state.logger.className}
-                onChange={this.updateClassName}
-              />
-              <InputGroupAddon>.c</InputGroupAddon>
-            </InputGroup>
-          </FormGroup>
-          <FormGroup>
-            <Label>Code</Label>
-            <AceEditor
-              mode="c_cpp"
-              theme="tomorrow"
-              name={this.props.question.id}
-              editorProps={{ $blockScrolling: true }}
-              enableBasicAutocompletion={true}
-              enableLiveAutocompletion={true}
-              enableSnippets={true}
-              value={this.state.logger.code}
-              onChange={this.updateCode}
-              width="100%"
+    let output = null;
+    if (this.props.question.readOnly) {
+      output = (
+        <FormGroup>
+          <Label>Expected Output</Label>
+          <InputGroup>
+            <Input
+              type="text"
+              value={this.state.logger.expectedOutput}
+              onChange={this.updateExpectedOutput}
             />
-          </FormGroup>
+          </InputGroup>
+        </FormGroup>
+      );
+    } else {
+      output = (
+        <div>
           <Card>
             <CardHeader>
               Compile Output{" "}
@@ -344,6 +349,70 @@ class TestQuestion extends Component {
               })}
             </CardBlock>
           </Card>
+        </div>
+      );
+    }
+    return (
+      <Card key={this.props.question.id}>
+        <CardBlock>
+          <CardTitle>
+            {this.props.question.title}
+          </CardTitle>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.question.instructions
+            }}
+          />
+          <div>
+            <Label>Hints</Label>
+            {this.props.question.hints
+              .slice(0, this.state.logger.numHints)
+              .map((hint, index) => {
+                const id = this.props.question.id + "hint" + index;
+                return (
+                  <div
+                    key={id}
+                    dangerouslySetInnerHTML={{
+                      __html: hint
+                    }}
+                  />
+                );
+              })}
+            <Button color="primary" onClick={this.onGetHintClick}>
+              Get Hint
+            </Button>
+          </div>
+          <Button color="primary" onClick={this.onResetToStarterClick}>
+            Reset to Starter
+          </Button>
+          <FormGroup>
+            <Label>Class Name</Label>
+            <InputGroup>
+              <Input
+                type="text"
+                value={this.state.logger.className}
+                onChange={this.updateClassName}
+              />
+              <InputGroupAddon>.c</InputGroupAddon>
+            </InputGroup>
+          </FormGroup>
+          <FormGroup>
+            <Label>Code</Label>
+            <AceEditor
+              mode="c_cpp"
+              theme="tomorrow"
+              name={this.props.question.id}
+              editorProps={{ $blockScrolling: true }}
+              enableBasicAutocompletion={true}
+              enableLiveAutocompletion={true}
+              enableSnippets={true}
+              value={this.state.logger.code}
+              onChange={this.updateCode}
+              width="100%"
+              readOnly={this.props.question.readOnly}
+            />
+          </FormGroup>
+          {output}
           <Button color="primary" onClick={this.onCheckAnswerClick}>
             Check Answer
           </Button>

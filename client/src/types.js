@@ -86,7 +86,8 @@ export type Logger = {
   +totalAttempts: number,
   +correctAttempts: number,
   +className: string,
-  +code: string
+  +code: string,
+  +expectedOutput: string
 };
 
 export type State = {

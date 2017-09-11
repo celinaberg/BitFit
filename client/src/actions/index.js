@@ -82,15 +82,13 @@ export const saveQuestion = (question: Question): ThunkAction => {
     dispatch({
       type: "SAVE_QUESTION_PENDING"
     });
-    axios
-      .patch("/api/questions/" + question.id, question)
-      .then(rsp => {
-        dispatch({
-          type: "SAVE_QUESTION_FULFILLED",
-          payload: rsp.data
-        });
-        dispatch(fetchQuestions());
+    axios.patch("/api/questions/" + question.id, question).then(rsp => {
+      dispatch({
+        type: "SAVE_QUESTION_FULFILLED",
+        payload: rsp.data
       });
+      dispatch(fetchQuestions());
+    });
   };
 };
 
