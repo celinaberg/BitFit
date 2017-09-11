@@ -92,9 +92,11 @@ class Lessons extends Component {
             <Row>
               <Col sm="12">
                 <h4>Background</h4>
-                <div>
-                  {this.props.lesson.background}
-                </div>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: this.props.lesson.background
+                  }}
+                />
               </Col>
             </Row>
           </TabPane>
