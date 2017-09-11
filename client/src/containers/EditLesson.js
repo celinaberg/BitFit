@@ -15,31 +15,57 @@ import {
 } from "reactstrap";
 import RichTextEditor from "react-rte";
 import { connect } from "react-redux";
-import { updateNewLesson, saveNewLesson } from "../actions";
+import { saveLesson } from "../actions";
+
+type Props = {
+  id: string,
+  title: string,
+  background: RichTextEditor,
+  updateNewLesson: (title: string, background: RichTextEditor) => void,
+  saveLesson: (title: string, background: string) => void
+};
 
 class EditLesson extends Component {
-  props: {
-    id: string,
+  props: Props;
+
+  state: {
     title: string,
-    background: RichTextEditor,
-    updateNewLesson: (title: string, background: RichTextEditor) => void,
-    saveNewLesson: (title: string, background: string) => void
+    background: RichTextEditor
   };
 
+  constructor(props) {
+    super(props);
+    
+    console.log(props);
+
+    this.state = {
+      title: props.title,
+      background: props.background
+    };
+  }
+
   onTitleChange = event => {
-    this.props.updateNewLesson(event.target.value, this.props.background);
+    this.setState({ title: event.target.value });
   };
 
   onBackgroundChange = background => {
-    this.props.updateNewLesson(this.props.title, background);
+    this.setState({ background });
   };
 
   onSaveClick = (event: Event) => {
     event.preventDefault();
-    this.props.saveNewLesson(
-      this.props.title,
-      this.props.background.toString("html")
+    this.props.saveLesson(
+      this.props.id,
+      this.state.title,
+      this.state.background.toString("html")
     );
+  };
+
+  onDeleteClick = (event: Event) => {
+    event.preventDefault();
+    // this.props.deleteLesson(
+    //   this.props.id
+    // );
   };
 
   render() {
@@ -66,18 +92,21 @@ class EditLesson extends Component {
                 type="text"
                 id="inputLessonTitle"
                 onChange={this.onTitleChange}
-                value={this.props.title}
+                value={this.state.title}
               />
             </FormGroup>
             <FormGroup>
               <Label for="inputBackground">Background</Label>
               <RichTextEditor
-                value={this.props.background}
+                value={this.state.background}
                 onChange={this.onBackgroundChange}
               />
             </FormGroup>
             <Button color="success" onClick={this.onSaveClick}>
               Save Lesson
+            </Button>
+            <Button color="danger" onClick={this.onDeleteClick}>
+              Delete Lesson
             </Button>
           </Form>
         </div>
@@ -112,11 +141,8 @@ const mapStateToProps = (state: State, ownProps) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    updateNewLesson: (title: string, background: RichTextEditor) => {
-      dispatch(updateNewLesson(title, background));
-    },
-    saveNewLesson: (title: string, background: string) => {
-      dispatch(saveNewLesson(title, background));
+    saveLesson: (id: string, title: string, background: string) => {
+      dispatch(saveLesson(id, title, background));
     }
   };
 };
