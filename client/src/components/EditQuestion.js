@@ -120,12 +120,10 @@ class EditQuestion extends Component {
     this.setState({ question: newQuestion });
   };
 
-  updateCode = (event: Event): void => {
+  updateCode = (code: String): void => {
     let newQuestion = Object.assign({}, this.state.question);
-    if (event.target instanceof HTMLInputElement) {
-      newQuestion.code = event.target.value;
-      this.setState({ question: newQuestion });
-    }
+    newQuestion.code = code;
+    this.setState({ question: newQuestion });
   };
 
   updateExpectedOutput = (event: Event): void => {
