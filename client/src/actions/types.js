@@ -16,6 +16,10 @@ export type SaveLessonAction = {
   type: "SAVE_LESSON",
   payload: { id: string, title: string, background: string }
 };
+export type DeleteLessonAction = {
+  type: "DELETE_LESSON",
+  payload: { id: string }
+};
 export type LoginAction = { type: "LOGIN" };
 export type ToggleNavbarAction = { type: "TOGGLE_NAVBAR" };
 export type FetchUsersAction = { type: "FETCH_USERS", payload: any };
@@ -39,6 +43,7 @@ export type Action =
   | UpdateNewLessonAction
   | SaveNewLessonAction
   | SaveLessonAction
+  | DeleteLessonAction
   | LoginAction
   | ToggleNavbarAction
   | FetchUsersAction

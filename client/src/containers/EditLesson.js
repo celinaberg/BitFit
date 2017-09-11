@@ -15,14 +15,14 @@ import {
 } from "reactstrap";
 import RichTextEditor from "react-rte";
 import { connect } from "react-redux";
-import { saveLesson } from "../actions";
+import { saveLesson, deleteLesson } from "../actions";
 
 type Props = {
   id: string,
   title: string,
   background: RichTextEditor,
-  updateNewLesson: (title: string, background: RichTextEditor) => void,
-  saveLesson: (title: string, background: string) => void
+  saveLesson: (id: string, title: string, background: string) => void,
+  deleteLesson: (id: string) => void
 };
 
 class EditLesson extends Component {
@@ -35,7 +35,7 @@ class EditLesson extends Component {
 
   constructor(props) {
     super(props);
-    
+
     console.log(props);
 
     this.state = {
@@ -63,9 +63,7 @@ class EditLesson extends Component {
 
   onDeleteClick = (event: Event) => {
     event.preventDefault();
-    // this.props.deleteLesson(
-    //   this.props.id
-    // );
+    this.props.deleteLesson(this.props.id);
   };
 
   render() {
@@ -143,6 +141,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     saveLesson: (id: string, title: string, background: string) => {
       dispatch(saveLesson(id, title, background));
+    },
+    deleteLesson: (id: string) => {
+      dispatch(deleteLesson(id));
     }
   };
 };

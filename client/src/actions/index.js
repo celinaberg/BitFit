@@ -50,6 +50,13 @@ export const saveLesson = (
   };
 };
 
+export const deleteLesson = (id: string): Action => {
+  return {
+    type: "DELETE_LESSON",
+    payload: axios.delete("/api/lessons/" + id)
+  };
+};
+
 export const toggleNavBar = (): Action => {
   return {
     type: "TOGGLE_NAVBAR"
