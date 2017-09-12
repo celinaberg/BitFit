@@ -92,8 +92,6 @@ export async function update(req: $Request, res: $Response) {
       return res.sendStatus(404);
     }
 
-    lesson.questions = req.body.questions; // without this, reordering doesn't work (found in question.controller)
-
     const updated = _.merge(lesson, req.body);
     updated.save();
     lesson = lesson.populate("questions");
