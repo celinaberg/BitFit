@@ -8,6 +8,7 @@ const initialState: LessonState = {
   fetching: false,
   fetched: false,
   lessons: [],
+  questions: [],
   error: null,
   new: {
     title: "",
@@ -20,6 +21,19 @@ export default function lessons(
   action: Action
 ): LessonState {
   switch (action.type) {
+    case "FETCH_LESSON_QUESTIONS_PENDING":
+      return {
+        ...state,
+        fetching: true
+      };
+    case "FETCH_LESSON_QUESTIONS_FULFILLED":
+      return {
+        ...state,
+        fetching: false,
+        fetched: true,
+        questions: action.payload.data,
+        error: null
+      };
     case "FETCH_LESSONS_PENDING":
       return {
         ...state,

@@ -116,7 +116,6 @@ class TestQuestion extends Component {
   };
 
   updateExpectedOutput = (event: SyntheticEvent): void => {
-    if (event.target instanceof HTMLInputElement) {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.expectedOutput = event.target.value;
       this.setState({ logger: newLogger });
@@ -124,7 +123,6 @@ class TestQuestion extends Component {
         id: newLogger.id,
         expectedOutput: newLogger.expectedOutput
       });
-    }
   };
 
   onCompileClick = async () => {
@@ -139,7 +137,6 @@ class TestQuestion extends Component {
       }
     );
     const compileOutput = await loggerRequest.json();
-    console.log("got output", compileOutput);
     this.setState({ compileOutput });
     if (!compileOutput.error) {
       newLogger.numErrorFreeCompiles =
@@ -161,7 +158,7 @@ class TestQuestion extends Component {
       credentials: "include"
     });
     const runOutput = await loggerRequest.json();
-    console.log("got output", runOutput);
+    console.log("got run output run click", runOutput);
     this.setState({ runOutput });
   };
 
@@ -185,13 +182,14 @@ class TestQuestion extends Component {
   async checkReadOnlyAnswer() {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
-    const compileRequest = await fetch(
+    //const compileRequest = 
+    await fetch(
       "/api/clis/compile/" + this.state.logger.id,
       {
         credentials: "include"
       }
     );
-    const compileOutput = await compileRequest.json();
+    //const compileOutput = await compileRequest.json();
     const runRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
     });
@@ -222,12 +220,29 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.className = this.props.question.className;
     newLogger.code = this.props.question.code;
+    newLogger.numHints = 0;
+    if (this.props.question.readOnly)
+      newLogger.expectedOutput = "";
     this.setState({ logger: newLogger });
     this.saveLogger({
       id: newLogger.id,
       className: newLogger.className,
-      code: newLogger.code
+      code: newLogger.code,
+      expectedOutput: newLogger.expectedOutput,
+      numHints: newLogger.numHints
     });
+
+    let newCompileOutput = Object.assign({}, this.state.compileOutput);
+    newCompileOutput.error = null;
+    newCompileOutput.stdout = "";
+    newCompileOutput.stderr = "";
+    this.setState({compileOutput: newCompileOutput});
+
+    let newRunOutput = Object.assign({}, this.state.runOutput);
+    newRunOutput.error = null;
+    newRunOutput.stdout = "";
+    newRunOutput.stderr = "";
+    this.setState({runOutput: newRunOutput});
   };
 
   onGetHintClick = (event: SyntheticEvent): void => {
@@ -273,7 +288,7 @@ class TestQuestion extends Component {
           <Label>Expected Output</Label>
           <InputGroup>
             <Input
-              type="text"
+              type="textarea"
               value={this.state.logger.expectedOutput}
               onChange={this.updateExpectedOutput}
             />
@@ -298,6 +313,7 @@ class TestQuestion extends Component {
       }
       console.log(compileBadge);
       let runBadge = null;
+            console.log("run state", this.state.runOutput.error);
       if (this.state.runOutput.error) {
         runBadge = (
           <Badge color="danger" pill>
@@ -391,34 +407,40 @@ class TestQuestion extends Component {
         <CardBlock>
           <CardTitle>
             {this.props.question.title}
+            <Button color="primary" onClick={this.onResetToStarterClick}>
+              Reset to Starter
+            </Button>
           </CardTitle>
           <div
             dangerouslySetInnerHTML={{
               __html: this.props.question.instructions
             }}
           />
-          <div>
-            <Label>Hints</Label>
-            {this.props.question.hints
-              .slice(0, this.state.logger.numHints)
-              .map((hint, index) => {
-                const id = this.props.question.id + "hint" + index;
-                return (
-                  <div
-                    key={id}
-                    dangerouslySetInnerHTML={{
-                      __html: hint
-                    }}
-                  />
-                );
-              })}
-            <Button color="primary" onClick={this.onGetHintClick}>
-              Get Hint
-            </Button>
-          </div>
-          <Button color="primary" onClick={this.onResetToStarterClick}>
-            Reset to Starter
-          </Button>
+          <Card>
+            <CardHeader>
+              Hints{" "}
+              <Button color="primary" onClick={this.onGetHintClick}>
+                Get Hint
+              </Button>
+            </CardHeader>
+            <CardBlock>
+              <div>
+                {this.props.question.hints
+                  .slice(0, this.state.logger.numHints)
+                  .map((hint, index) => {
+                    const id = this.props.question.id + "hint" + index;
+                    return (
+                      <div
+                        key={id}
+                        dangerouslySetInnerHTML={{
+                          __html: hint
+                        }}
+                      />
+                    );
+                  })}
+              </div>
+            </CardBlock>
+          </Card>
           <FormGroup>
             <Label>Class Name</Label>
             <InputGroup>

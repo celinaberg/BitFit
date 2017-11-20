@@ -1,6 +1,6 @@
 // @flow
 
-import type { Question, QuestionState, Lesson, State } from "../types";
+import type { Question, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";

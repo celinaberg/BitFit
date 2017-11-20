@@ -129,7 +129,7 @@ export async function runLogger(req: $Request, res: $Response) {
     const result = await exec(cmd, { timeout: 10000 });
     return res
       .status(200)
-      .json({ error: true, stdout: result.stdout, stderr: result.stderr });
+      .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
     return res
       .status(200)

@@ -3,6 +3,8 @@ import type { State, Question } from "../types";
 
 import RichTextEditor from "react-rte";
 
+export type FetchLessonQuestionsAction = { type: "FETCH_LESSON_QUESTIONS", payload: {id: string}};
+
 export type FetchLessonsAction = { type: "FETCH_LESSONS", payload: any };
 export type UpdateNewLessonAction = {
   type: "UPDATE_NEW_LESSON",

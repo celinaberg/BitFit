@@ -1,7 +1,7 @@
 // @flow
 
 import type { Dispatch } from "../actions/types";
-import type { Lesson, State, Question } from "../types";
+import type { Lesson, State } from "../types";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -16,14 +16,17 @@ import {
   Progress
 } from "reactstrap";
 import TestQuestion from "../components/TestQuestion";
-import { fetchLessons } from "../actions";
+import { fetchLessons, fetchLessonQuestions } from "../actions";
 import classnames from "classnames";
 
 type Props = {
+  id: string,
   loading: boolean,
   lesson: Lesson,
   userId: string,
-  fetchLessons: () => void
+  lessons: LessonState,
+  fetchLessons: () => void,
+  fetchLessonQuestions: (id: string) => void
 };
 
 class Lessons extends Component {
@@ -54,7 +57,6 @@ class Lessons extends Component {
   };
 
   render() {
-    console.log(this.props.loading);
     if (this.props.loading) {
       console.log("loading");
       return <Progress animated color="muted" value="100" />;
@@ -80,6 +82,7 @@ class Lessons extends Component {
                 active: this.state.activeTab === "questions"
               })}
               onClick={() => {
+                this.props.fetchLessonQuestions(this.props.id);
                 this.toggle("questions");
               }}
             >
@@ -103,8 +106,8 @@ class Lessons extends Component {
           <TabPane tabId="questions">
             <Row>
               <Col sm="12">
-                <h4>Questions</h4>
-                {this.props.lesson.questions.map(question => {
+              <h4>Questions</h4>
+                {this.props.lessons.questions.map(question => {
                   return (
                     <TestQuestion
                       key={question.id}
@@ -132,9 +135,12 @@ const mapStateToProps = (state: State, ownProps) => {
       break;
     }
   }
+  console.log("state to props in Lesson.js", id);
   return {
+    id: id,
     loading: !state.lessons.fetched,
     lesson: lesson,
+    lessons: state.lessons,
     userId: state.auth.current ? state.auth.current.id : null
   };
 };
@@ -143,6 +149,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     fetchLessons: () => {
       dispatch(fetchLessons());
+    },
+    fetchLessonQuestions: (id: string) => {
+      dispatch(fetchLessonQuestions(id));
     }
   };
 };

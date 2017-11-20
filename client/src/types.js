@@ -50,6 +50,7 @@ export type LessonState = {
   +fetching: boolean,
   +fetched: boolean,
   +lessons: Array<Lesson>,
+  +questions: Array<Question>,
   +error: null,
   +new: {
     +title: string,

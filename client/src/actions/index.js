@@ -6,6 +6,13 @@ import type { Question } from "../types";
 import axios from "axios";
 import RichTextEditor from "react-rte";
 
+export const fetchLessonQuestions = (id: string): Action => {
+  return {
+    type: "FETCH_LESSON_QUESTIONS",
+    payload: axios.get("/api/lessons/" + id)
+  };
+};
+
 export const fetchLessons = (): Action => {
   return {
     type: "FETCH_LESSONS",
@@ -98,6 +105,7 @@ export const saveQuestion = (question: Question): ThunkAction => {
     });
   };
 };
+
 
 export const saveNewQuestion = (question: Question): ThunkAction => {
   return dispatch => {

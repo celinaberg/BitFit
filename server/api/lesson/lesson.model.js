@@ -7,7 +7,6 @@ const Schema = mongoose.Schema;
 const LessonSchema = new Schema({
   title: { type: String, unique: true, required: true },
   background: String,
-  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }]
 });
 
 LessonSchema.methods.toJSON = function() {

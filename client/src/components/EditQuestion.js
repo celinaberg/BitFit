@@ -83,6 +83,7 @@ class EditQuestion extends Component {
   };
 
   updateLesson = (event: Event): void => {
+        console.log("updateLesson", event.target.value);
     let newQuestion = Object.assign({}, this.state.question);
     if (event.target instanceof HTMLSelectElement) {
       newQuestion.lesson = event.target.value;
@@ -128,10 +129,8 @@ class EditQuestion extends Component {
 
   updateExpectedOutput = (event: Event): void => {
     let newQuestion = Object.assign({}, this.state.question);
-    if (event.target instanceof HTMLInputElement) {
       newQuestion.expectedOutput = event.target.value;
       this.setState({ question: newQuestion });
-    }
   };
 
   updateHint = (id: number): ((value: RichTextEditor) => void) => {
@@ -288,7 +287,7 @@ class EditQuestion extends Component {
               <FormGroup>
                 <Label>Expected Output</Label>
                 <Input
-                  type="text"
+                  type="textarea"
                   value={this.state.question.expectedOutput}
                   onChange={this.updateExpectedOutput}
                 />

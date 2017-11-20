@@ -6,44 +6,19 @@ import _ from "lodash";
 import Lesson from "./lesson.model";
 import Question from "../question/question.model";
 
-// Add a question to this lesson
-export async function addQuestion(req: $Request, res: $Response) {
-  console.log("in add question in server");
-  console.log(req.body);
-  // if question already exists, only add it to lesson
+// Get list of questions in given lesson
+export async function getQuestions(req: $Request, res: $Response) {
+
   try {
-    let question = await Question.findById(req.body.id);
-    if (question === null) {
-      // if not, create the new question
-      question = new Question(req.body);
-      question = await question.save();
-      console.log("in save question success func");
+    let questions = await Question.find({lesson: req.params.id});
+
+    for (let i = 0; i < questions.length; i++) {
+      const question = questions[i];
+      let returnQuestion = question.toObject();
+      questions[i] = returnQuestion;
     }
 
-    const lesson = await Lesson.findById(req.params.id);
-    if (!lesson) {
-      return res.sendStatus(404);
-    }
-
-    lesson.questions.push(question);
-
-    lesson.save();
-    return res.json(question);
-  } catch (err) {
-    return handleError(res, err);
-  }
-}
-
-export async function deleteQuestion(req: $Request, res: $Response) {
-  try {
-    const question = req.body;
-    const lesson = await Lesson.findById(req.params.id);
-    if (!lesson) {
-      return res.sendStatus(404);
-    }
-    lesson.questions.pull(question._id);
-    lesson.save();
-    return res.sendStatus(200);
+    return res.status(200).json(questions);
   } catch (err) {
     return handleError(res, err);
   }
@@ -52,7 +27,7 @@ export async function deleteQuestion(req: $Request, res: $Response) {
 // Get list of lessons
 export async function index(req: $Request, res: $Response) {
   try {
-    const lessons = await Lesson.find().populate("questions").exec();
+    const lessons = await Lesson.find({});
     return res.status(200).json(lessons);
   } catch (err) {
     return handleError(res, err);
@@ -60,6 +35,7 @@ export async function index(req: $Request, res: $Response) {
 }
 
 // Get a single lesson
+// CGB - not currently using this function
 export async function show(req: $Request, res: $Response) {
   try {
     const lesson = await Lesson.findById(req.params.id)
@@ -86,15 +62,15 @@ export async function create(req: $Request, res: $Response) {
 
 // Updates an existing lesson in the DB.
 export async function update(req: $Request, res: $Response) {
-  try {
+    console.log("in UPDATE lesson..............1", req.params._id);
+      try {
     let lesson = await Lesson.findById(req.params.id);
     if (!lesson) {
       return res.sendStatus(404);
     }
-
     const updated = _.merge(lesson, req.body);
     updated.save();
-    lesson = lesson.populate("questions");
+
     return res.status(200).json(lesson);
   } catch (err) {
     return handleError(res, err);
@@ -103,8 +79,10 @@ export async function update(req: $Request, res: $Response) {
 
 // Deletes a lesson from the DB.
 export async function destroy(req: $Request, res: $Response) {
+
   try {
     const lesson = await Lesson.findById(req.params.id);
+
     if (!lesson) {
       return res.sendStatus(404);
     }
