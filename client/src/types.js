@@ -91,10 +91,18 @@ export type Logger = {
   +expectedOutput: string
 };
 
+export type LoggerState = {
+  +fetching: boolean,
+  +fetched: boolean,
+  +loggers: Array<Logger>,
+  +error: null
+};
+
 export type State = {
   +auth: AuthState,
   +lessons: LessonState,
   +navbar: NavBarState,
   +questions: QuestionState,
-  +users: UserState
+  +users: UserState,
+  +loggers: LoggerState
 };

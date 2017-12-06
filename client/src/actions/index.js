@@ -77,6 +77,13 @@ export const fetchUsers = (): Action => {
   };
 };
 
+export const fetchLoggers = (): Action => {
+  return {
+    type: "FETCH_LOGGERS",
+    payload: axios.get("/api/loggers")
+  };
+};
+
 export const deleteUser = (id: string): Action => {
   return {
     type: "DELETE_USER",

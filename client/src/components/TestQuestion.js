@@ -137,6 +137,7 @@ class TestQuestion extends Component {
       }
     );
     const compileOutput = await loggerRequest.json();
+    console.log("*****numErrorFree compiles 1", this.state.logger.numErrorFreeCompiles)
     this.setState({ compileOutput });
     if (!compileOutput.error) {
       newLogger.numErrorFreeCompiles =
@@ -147,6 +148,9 @@ class TestQuestion extends Component {
         numErrorFreeCompiles: newLogger.numErrorFreeCompiles
       });
     }
+
+    console.log("*****numErrorFree compiles 2", newLogger.numErrorFreeCompiles)
+
   };
 
   onRunClick = async () => {
@@ -182,7 +186,7 @@ class TestQuestion extends Component {
   async checkReadOnlyAnswer() {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
-    //const compileRequest = 
+    //const compileRequest =
     await fetch(
       "/api/clis/compile/" + this.state.logger.id,
       {

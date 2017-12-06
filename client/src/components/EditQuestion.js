@@ -74,7 +74,6 @@ class EditQuestion extends Component {
   };
 
   updateTitle = (event: Event): void => {
-    console.log("updateTitle");
     let newQuestion = Object.assign({}, this.state.question);
     if (event.target instanceof HTMLInputElement) {
       newQuestion.title = event.target.value;
@@ -83,7 +82,6 @@ class EditQuestion extends Component {
   };
 
   updateLesson = (event: Event): void => {
-        console.log("updateLesson", event.target.value);
     let newQuestion = Object.assign({}, this.state.question);
     if (event.target instanceof HTMLSelectElement) {
       newQuestion.lesson = event.target.value;
@@ -115,9 +113,7 @@ class EditQuestion extends Component {
 
   updateReadOnly = (event: SyntheticEvent): void => {
     let newQuestion = Object.assign({}, this.state.question);
-    console.log(event);
     newQuestion.readOnly = event.target.checked;
-    console.log(newQuestion);
     this.setState({ question: newQuestion });
   };
 

@@ -44,30 +44,23 @@ class ManageUsers extends Component {
         return (
           <ListGroupItem key={user.id}>
             <ListGroupItemHeading>
-              {user.displayName}
+
               <Button color="danger" id={user.id} onClick={this.onDeleteClick}>
                 <FaTrash />
               </Button>
             </ListGroupItemHeading>
             <ListGroupItemText>
               <span className="text-muted">
-                {user.firstName} {user.lastName}
-              </span>
-              <span>&nbsp;</span>
-              <span className="text-muted">
-                CWL: {user.uid}
-              </span>
-              <span>&nbsp;</span>
-              <span className="text-muted">
-                Student #: {user.studentNumber}
-              </span>
-              <span>&nbsp;</span>
-              <span className="text-muted">
-                Role: {user.role}
-              </span>
-              <span>&nbsp;</span>
-              <span className="text-muted">
-                Account ID: {user.id}
+                {user.displayName},
+                {user.role},
+                {user.firstName},
+                {user.lastName},
+                {user.uid},
+                {user.studentNumber},
+                {user.section},
+                {user.term},
+                {user.session},
+                {user.year}
               </span>
             </ListGroupItemText>
           </ListGroupItem>
@@ -77,7 +70,21 @@ class ManageUsers extends Component {
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">Users</h2>
-
+        <ListGroupItemText>
+          <span className="text-bold">
+            displayName,
+            role,
+            firstName,
+            lastName,
+            CWL,
+            studentNumber,
+            section,
+            term,
+            session,
+            year
+          </span>
+          <span>&nbsp;</span>
+         </ListGroupItemText>
         <ListGroup>
           {users}
         </ListGroup>

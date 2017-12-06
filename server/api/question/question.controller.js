@@ -24,7 +24,6 @@ export async function index(req: $Request, res: $Response) {
       questions[i] = returnQuestion;
     }
 
-    console.log("questions in index function:", questions);
     return res.status(200).json(questions);
   } catch (err) {
     return handleError(res, err);
@@ -43,7 +42,6 @@ export async function exportQuestions(req: $Request, res: $Response) {
 
 // Get a single question
 export async function show(req: $Request, res: $Response) {
-  console.log("in show question............")
   try {
     const question = await Question.findById(req.params.id);
     if (!question) {

@@ -83,13 +83,11 @@ const samlStrategy = new SamlStrategy(
       // TODO: Backdoor - remove
       if (config.env === "development") {
         try {
-          console.log("loading backdoor user");
           let backDoorUser = await User.findOne({
             uid: "buser"
           });
           return done(null, backDoorUser);
         } catch (err) {
-          console.error("could not load backdoor user");
           return done(err);
         }
       } else {

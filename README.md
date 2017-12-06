@@ -24,19 +24,45 @@ In two terminal windows run the following commands:
 
 ## Run for Production
 We recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and has a lot of cool features.
- -  To install: 
+ -  To install:
 
   ```
   sudo su
   npm install pm2 -g
   ```
+
+  - To rebuild BitFit client:
+
+
+    - in BitFit/client directory
+
+   ```
+   sudo su
+   npm run build
+   ```
+   
+   - ensure there is a symlink called client from BitFit/build to BitFit/client/build
+   ```
+   sudo su
+   cd BitFit/build
+   ln -s ../client/build client
+   ```
+
+  - To rebuild BitFit server:
+    - in BitFit directory
+
+   ```
+   sudo su
+   npm run build
+   ```
+
  - To run BitFit:
 
   ```
   sudo su
   pm2 start ecosystem.config.js
   ```
-  
+
  - To start/stop/restart:
 
   ```
@@ -45,4 +71,3 @@ We recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and
   pm2 stop BitFit
   pm2 restart BitFit
   ```
-

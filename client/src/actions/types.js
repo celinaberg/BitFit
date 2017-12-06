@@ -26,6 +26,8 @@ export type LoginAction = { type: "LOGIN" };
 export type ToggleNavbarAction = { type: "TOGGLE_NAVBAR" };
 export type FetchUsersAction = { type: "FETCH_USERS", payload: any };
 export type DeleteUserAction = { type: "DELETE_USER", payload: any };
+export type FetchLoggersAction = { type: "FETCH_LOGGERS, payload: any };
+
 export type FetchQuestionsAction = { type: "FETCH_QUESTIONS", payload: any };
 export type SaveQuestionPendingAction = { type: "SAVE_QUESTION_PENDING" };
 export type SaveQuestionFulfilledAction = {
@@ -49,6 +51,7 @@ export type Action =
   | LoginAction
   | ToggleNavbarAction
   | FetchUsersAction
+  | FetchLoggersAction
   | DeleteUserAction
   | FetchQuestionsAction
   | SaveQuestionPendingAction

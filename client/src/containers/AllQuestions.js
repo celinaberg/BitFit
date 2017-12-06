@@ -4,7 +4,8 @@ import type { Question, QuestionState, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
-import { Col, Progress } from "reactstrap";
+import { Col, Progress, Button } from "reactstrap";
+import DownloadLink from "react-download-link";
 import { connect } from "react-redux";
 import { fetchQuestions, saveQuestion } from "../actions";
 import EditQuestion from "../components/EditQuestion";
@@ -46,7 +47,11 @@ class AllQuestions extends Component {
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">All Questions</h2>
-
+        <DownloadLink
+          filename="questions.txt"
+          label= "Export Questions"
+           exportFile={() => "want json response to fetch questions here"}
+        />
         {questions}
       </Col>
     );

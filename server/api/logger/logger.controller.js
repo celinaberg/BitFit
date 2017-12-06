@@ -10,6 +10,7 @@ import Question from "../question/question.model";
 export async function index(req: $Request, res: $Response) {
   try {
     const loggers = await Logger.find();
+    console.log("******loggers", loggers);
     return res.status(200).json(loggers);
   } catch (err) {
     return handleError(res, err);
