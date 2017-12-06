@@ -7,15 +7,11 @@ import React, { Component } from "react";
 import {
   Col,
   ListGroup,
-  ListGroupItem,
-  ListGroupItemHeading,
   ListGroupItemText,
-  Progress,
-  Button
+  Progress
 } from "reactstrap";
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
-import FaTrash from "react-icons/lib/fa/trash";
 
 class GetLoggers extends Component {
   props: {
