@@ -48,6 +48,7 @@ class TestQuestion extends Component {
       stderr: string
     },
     checkAnswer: ?boolean
+
   };
 
   constructor(props: Props) {
@@ -137,7 +138,6 @@ class TestQuestion extends Component {
       }
     );
     const compileOutput = await loggerRequest.json();
-    console.log("*****numErrorFree compiles 1", this.state.logger.numErrorFreeCompiles)
     this.setState({ compileOutput });
     if (!compileOutput.error) {
       newLogger.numErrorFreeCompiles =
@@ -148,9 +148,6 @@ class TestQuestion extends Component {
         numErrorFreeCompiles: newLogger.numErrorFreeCompiles
       });
     }
-
-    console.log("*****numErrorFree compiles 2", newLogger.numErrorFreeCompiles)
-
   };
 
   onRunClick = async () => {
@@ -256,6 +253,8 @@ class TestQuestion extends Component {
       this.setState({ logger: newLogger });
       this.saveLogger({ id: newLogger.id, numHints: newLogger.numHints });
     }
+    //hintsLeft = this.props.question.hints.length - this.state.logger.numHints;
+    console.log ("****************: ", this.props.question.hints.length - this.state.logger.numHints);
   };
 
   render() {
@@ -300,8 +299,8 @@ class TestQuestion extends Component {
         </FormGroup>
       );
     } else {
+
       let compileBadge = null;
-      console.log("compile state", this.state.compileOutput.error);
       if (this.state.compileOutput.error) {
         compileBadge = (
           <Badge color="danger" pill>
@@ -315,9 +314,8 @@ class TestQuestion extends Component {
           </Badge>
         );
       }
-      console.log(compileBadge);
+
       let runBadge = null;
-            console.log("run state", this.state.runOutput.error);
       if (this.state.runOutput.error) {
         runBadge = (
           <Badge color="danger" pill>
@@ -406,6 +404,7 @@ class TestQuestion extends Component {
         </div>
       );
     }
+    let hintsLeft = this.props.question.hints.length - this.state.logger.numHints;
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
@@ -443,10 +442,13 @@ class TestQuestion extends Component {
                     );
                   })}
               </div>
+              <div>
+                <p> <strong> number of hints left:</strong> {hintsLeft} </p>
+              </div>
             </CardBlock>
           </Card>
           <FormGroup>
-            <Label>Class Name</Label>
+            <Label>file name</Label>
             <InputGroup>
               <Input
                 type="text"

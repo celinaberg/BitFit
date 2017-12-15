@@ -4,7 +4,7 @@ import type { Question, QuestionState, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
-import { Col, Progress, Button } from "reactstrap";
+import { Col, Progress } from "reactstrap";
 import { connect } from "react-redux";
 import { fetchQuestions, saveQuestion } from "../actions";
 import EditQuestion from "../components/EditQuestion";
