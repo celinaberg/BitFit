@@ -83,12 +83,10 @@ class TestQuestion extends Component {
       }
     );
     const logger = await loggerRequest.json();
-    console.log("got logger", logger);
     this.setState({ loading: false, logger });
   }
 
   saveLogger(logger: Logger) {
-    console.log(logger);
     fetch("/api/loggers/" + logger.id, {
       headers: {
         Accept: "application/json",
@@ -159,7 +157,6 @@ class TestQuestion extends Component {
       credentials: "include"
     });
     const runOutput = await loggerRequest.json();
-    console.log("got run output run click", runOutput);
     this.setState({ runOutput });
   };
 
@@ -221,7 +218,7 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.className = this.props.question.className;
     newLogger.code = this.props.question.code;
-    newLogger.numHints = 0;
+    newLogger.numHintsDisplayed = 0;
     if (this.props.question.readOnly)
       newLogger.expectedOutput = "";
     this.setState({ logger: newLogger });
@@ -230,7 +227,8 @@ class TestQuestion extends Component {
       className: newLogger.className,
       code: newLogger.code,
       expectedOutput: newLogger.expectedOutput,
-      numHints: newLogger.numHints
+      numHints: newLogger.numHints,
+      numHintsDisplayed: newLogger.numHintsDisplayed
     });
 
     let newCompileOutput = Object.assign({}, this.state.compileOutput);
@@ -247,14 +245,14 @@ class TestQuestion extends Component {
   };
 
   onGetHintClick = (event: SyntheticEvent): void => {
-    if (this.state.logger.numHints < this.props.question.hints.length) {
+    if (this.state.logger.numHintsDisplayed < this.props.question.hints.length) {
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.numHints = this.state.logger.numHints + 1;
+      newLogger.numHintsDisplayed = this.state.logger.numHintsDisplayed + 1;
       this.setState({ logger: newLogger });
-      this.saveLogger({ id: newLogger.id, numHints: newLogger.numHints });
+      this.saveLogger({ id: newLogger.id, numHints: newLogger.numHints,
+                                          numHintsDisplayed: newLogger.numHintsDisplayed });
     }
-    //hintsLeft = this.props.question.hints.length - this.state.logger.numHints;
-    console.log ("****************: ", this.props.question.hints.length - this.state.logger.numHints);
   };
 
   render() {
@@ -404,7 +402,7 @@ class TestQuestion extends Component {
         </div>
       );
     }
-    let hintsLeft = this.props.question.hints.length - this.state.logger.numHints;
+    let hintsLeft = this.props.question.hints.length - this.state.logger.numHintsDisplayed;
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
@@ -430,7 +428,7 @@ class TestQuestion extends Component {
             <CardBlock>
               <div>
                 {this.props.question.hints
-                  .slice(0, this.state.logger.numHints)
+                  .slice(0, this.state.logger.numHintsDisplayed)
                   .map((hint, index) => {
                     const id = this.props.question.id + "hint" + index;
                     return (

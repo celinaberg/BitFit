@@ -22,18 +22,18 @@ const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 
 passport.serializeUser((user, done) => {
-  console.log("serialize user", user);
+  //console.log("serialize user", user);
   return done(null, user._id);
 });
 
 passport.deserializeUser(async (userId, done) => {
-  console.log("deserialize user", userId);
+  //console.log("deserialize user", userId);
   try {
     const user = await User.findById(userId);
     if (!user) {
       return done(null, false);
     } else {
-      console.log("deserialized user", user);
+      //console.log("deserialized user", user);
       return done(null, user);
     }
   } catch (err) {
@@ -75,9 +75,9 @@ const samlStrategy = new SamlStrategy(
     } else if (profile.hasOwnProperty(groupMembership)) {
       role = "student";
       // Temp: Restrict access to students.
-      return done(null, false, {
+      /*return done(null, false, {
         message: "Students are currently not allowed to access BitFit."
-      });
+      });*/
     } else {
       // Unauthorized to access app
       // TODO: Backdoor - remove

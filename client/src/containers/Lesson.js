@@ -58,7 +58,7 @@ class Lessons extends Component {
 
   render() {
     if (this.props.loading) {
-      console.log("loading");
+      
       return <Progress animated color="muted" value="100" />;
     }
     return (
@@ -135,7 +135,6 @@ const mapStateToProps = (state: State, ownProps) => {
       break;
     }
   }
-  console.log("state to props in Lesson.js", id);
   return {
     id: id,
     loading: !state.lessons.fetched,

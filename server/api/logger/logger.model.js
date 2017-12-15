@@ -13,6 +13,7 @@ const LoggerSchema = new Schema({
   numErrorFreeCompiles: { type: Number, default: 0 },
   numRuns: { type: Number, default: 0 },
   numHints: { type: Number, default: 0 },
+  numHintsDisplayed: { type: Number, default: 0 },
   totalAttempts: { type: Number, default: 0 },
   correctAttempts: { type: Number, default: 0 },
   className: String,

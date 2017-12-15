@@ -10,7 +10,6 @@ import Question from "../question/question.model";
 export async function index(req: $Request, res: $Response) {
   try {
     const loggers = await Logger.find();
-    console.log("******loggers", loggers);
     return res.status(200).json(loggers);
   } catch (err) {
     return handleError(res, err);
@@ -44,7 +43,6 @@ async function createNewLogger(userId: string, questionId: string): Logger {
 
 // Get a logger for current user and requested question
 export async function getForQuestion(req: $Request, res: $Response) {
-  console.log("getForQuestion");
   try {
     let logger = await Logger.findOne({
       user: req.user.id,
@@ -66,7 +64,7 @@ export async function update(req: $Request, res: $Response) {
     if (!logger) {
       return res.sendStatus(404);
     }
-    console.log("request body", req.body);
+
     Object.assign(logger, req.body);
     logger = await logger.save();
     return res.status(200).json(logger);

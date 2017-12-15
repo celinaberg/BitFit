@@ -36,8 +36,6 @@ class EditLesson extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props);
-
     this.state = {
       title: props.title,
       background: props.background

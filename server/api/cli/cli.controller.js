@@ -90,7 +90,7 @@ export async function compileLogger(req: $Request, res: $Response) {
         error: `No logger found;`
       });
     }
-    console.log(logger);
+    //console.log(logger);
     const dirName = "users/" + userId + "/" + loggerId;
     await exec("mkdir -p " + dirName);
     const escapedCode = jsesc(logger.code, {
@@ -98,16 +98,16 @@ export async function compileLogger(req: $Request, res: $Response) {
     });
     await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
     const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}"`;
-    console.log(gcc);
+    //console.log(gcc);
     const result = await exec(gcc, {
       timeout: 10000
     });
-    console.error("result object", result);
+    //console.error("result object", result);
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
-    console.error(err);
+    //console.error(err);
     return res
       .status(200)
       .json({ error: true, stdout: err.stdout, stderr: err.stderr });

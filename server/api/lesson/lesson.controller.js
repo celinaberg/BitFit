@@ -62,8 +62,7 @@ export async function create(req: $Request, res: $Response) {
 
 // Updates an existing lesson in the DB.
 export async function update(req: $Request, res: $Response) {
-    console.log("in UPDATE lesson..............1", req.params._id);
-      try {
+  try {
     let lesson = await Lesson.findById(req.params.id);
     if (!lesson) {
       return res.sendStatus(404);
