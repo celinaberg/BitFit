@@ -425,7 +425,7 @@ class TestQuestion extends Component {
               <Button color="primary" onClick={this.onGetHintClick}>
                 Get Hint
               </Button>
-              <p> <strong> number of hints left:</strong> {hintsLeft} </p>
+              <p>number of hints left: {hintsLeft} </p>
             </CardHeader>
             <CardBlock>
               <div>
