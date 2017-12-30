@@ -40,7 +40,7 @@ We recommend using [PM2](http://pm2.keymetrics.io/) to run BitFit. It's easy and
    sudo su
    npm run build
    ```
-   
+
    - ensure there is a symlink called client from BitFit/build to BitFit/client/build
    ```
    sudo su
