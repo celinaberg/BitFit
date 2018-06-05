@@ -1,4 +1,5 @@
 // @flow
+const Docker = require('dockerode')
 
 import type { $Request, $Response } from "express";
 
