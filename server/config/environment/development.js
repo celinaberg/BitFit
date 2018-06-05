@@ -14,13 +14,7 @@ export default {
 
   url: "https://localhost:4444",
 
-  seedDB: false,
-
-  // CWL
-  callbackUrl: "https://127.0.0.1:4343/auth/cwl/login/callback",
-  entryPoint:
-    "https://authentication.stg.id.ubc.ca/idp/profile/SAML2/Redirect/SSO",
-  idpCert: path.join(__dirname, "../../cert/idp_cert-staging.pem"),
+  seedDB: true,
 
   // MongoDB connection options
   mongo: {

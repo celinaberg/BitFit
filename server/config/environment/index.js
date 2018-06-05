@@ -32,11 +32,6 @@ let all = {
   // List of user roles
   userRoles: ["guest", "student", "teaching-assistant", "instructor"],
 
-  // CWL
-  callbackUrl: "https://comped.cs.ubc.ca/auth/cwl/login/callback",
-  entryPoint: "https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO",
-  idpCert: path.join(__dirname, "../../cert/idp_cert.pem"),
-
   // MongoDB connection options
   mongo: {
     uri: "mongodb://localhost/its110",

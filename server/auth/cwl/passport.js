@@ -4,7 +4,6 @@ import passport from "passport";
 import { Strategy as SamlStrategy } from "passport-saml";
 import fs from "fs";
 import path from "path";
-import config from "../../config/environment";
 import User from "../../api/user/user.model";
 
 const uid = "urn:oid:0.9.2342.19200300.100.1.1";
@@ -49,9 +48,9 @@ const keyContents = fs.readFileSync(
 const samlStrategy = new SamlStrategy(
   {
     // URL that goes from the Identity Provider -> Service Provider
-    callbackUrl: config.callbackUrl,
+    callbackUrl: "https://comped.cs.ubc.ca/auth/cwl/login/callback",
     // URL that goes from the Service Provider -> Identity Provider
-    entryPoint: config.entryPoint,
+    entryPoint: "https://authentication.ubc.ca/idp/profile/SAML2/Redirect/SSO",
     // Usually specified as `/shibboleth` from site root
     issuer: "https://comped.cs.ubc.ca",
     identifierFormat: null,
@@ -60,7 +59,7 @@ const samlStrategy = new SamlStrategy(
     // Service Provider Certificate
     privateCert: keyContents,
     // Identity Provider's public key
-    cert: fs.readFileSync(config.idpCert, "utf8"),
+    cert: fs.readFileSync(path.join(__dirname, "../../cert/idp_cert.pem"), "utf8"),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
   },
@@ -80,21 +79,9 @@ const samlStrategy = new SamlStrategy(
       });
     } else {
       // Unauthorized to access app
-      // TODO: Backdoor - remove
-      if (config.env === "development") {
-        try {
-          let backDoorUser = await User.findOne({
-            uid: "buser"
-          });
-          return done(null, backDoorUser);
-        } catch (err) {
-          return done(err);
-        }
-      } else {
-        return done(null, false, {
-          message: "You are not registered in APSC 160"
-        });
-      }
+      return done(null, false, {
+        message: "You are not registered in APSC 160"
+      });
     }
 
     User.findOne(
