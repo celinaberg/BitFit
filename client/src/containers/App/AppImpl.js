@@ -1,4 +1,8 @@
 // @flow
+<<<<<<< HEAD
+=======
+/*eslint-disable no-unused-vars*/
+>>>>>>> 76a1d40... Initial commit
 
 import type { Dispatch } from "../../actions/types";
 import type { State } from "../../types";

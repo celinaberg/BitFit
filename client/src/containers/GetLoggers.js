@@ -4,12 +4,16 @@ import type { Dispatch } from "../actions/types";
 import type { LoggerState, State } from "../types";
 
 import React, { Component } from "react";
+<<<<<<< HEAD
 import {
   Col,
   ListGroup,
   ListGroupItemText,
   Progress
 } from "reactstrap";
+=======
+import { Col, ListGroup, ListGroupItemText, Progress } from "reactstrap";
+>>>>>>> 76a1d40... Initial commit
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
 

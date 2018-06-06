@@ -5,6 +5,10 @@ exports[`URL changes when admin 1`] = `
   className="nav-item"
 >
   <a
+<<<<<<< HEAD
+=======
+    aria-current={false}
+>>>>>>> 76a1d40... Initial commit
     className="nav-link"
     href="/lessons/testId"
     onClick={[Function]}
@@ -20,6 +24,10 @@ exports[`URL changes when admin 2`] = `
   className="nav-item"
 >
   <a
+<<<<<<< HEAD
+=======
+    aria-current={false}
+>>>>>>> 76a1d40... Initial commit
     className="nav-link"
     href="/admin/lessons/testId"
     onClick={[Function]}
