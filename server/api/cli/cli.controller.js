@@ -1,5 +1,5 @@
 // @flow
-const Docker = require('dockerode')
+const Dockerode = require('simple-dockerode')
 
 import type { $Request, $Response } from "express";
 
@@ -80,6 +80,43 @@ const exec = promisify(execSync);
 //     }
 //   );
 // }
+
+const docker = new Dockerode();
+
+docker.createContainer({Image: 'ubuntu',
+                        AttachStdin: false,
+                        AttachStdout: true,
+                        AttachStderr: true,
+                        Cmd: ['bash', '-c', 'touch a; tail -f a'],
+                        Name: 'ubuntuContainer'})
+      .then(container => {
+        console.log("Container created");
+        // const container = docker.getContainer('ubuntu');
+        return container.start();
+      })
+      .then(container => {
+        console.log("Container started");
+        container.exec(['echo', 'Hi'], {stdout: true, stderr: true}, (err, results) => {
+          if (err) {
+            console.log("Error running command: ", err);
+          } else {
+            console.log("Command successfully run.");
+            console.log("stdout: ", results.stdout);
+            console.log("stderr: ", results.stderr);
+          }
+        });
+        return container.stop();
+      })
+      .then(container => {
+        console.log("Container stopped");
+        return container.remove();
+      })
+      .then(data => {
+        console.log("Container removed");
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
 export async function compileLogger(req: $Request, res: $Response) {
   try {
