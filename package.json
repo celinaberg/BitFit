@@ -26,7 +26,6 @@
     "composable-middleware": "^0.3.0",
     "compression": "^1.7.2",
     "connect-mongo": "^2.0.1",
-    "dockerode": "^2.5.5",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
@@ -36,7 +35,8 @@
     "mongoose": "^5.1.2",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
-    "passport-saml": "^0.33.0"
+    "passport-saml": "^0.33.0",
+    "simple-dockerode": "^0.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
