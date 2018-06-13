@@ -83,40 +83,83 @@ const exec = promisify(execSync);
 
 const docker = new Dockerode();
 
-docker.createContainer({Image: 'ubuntu',
-                        AttachStdin: false,
-                        AttachStdout: true,
-                        AttachStderr: true,
-                        Cmd: ['bash', '-c', 'touch a; tail -f a'],
-                        Name: 'ubuntuContainer'})
-      .then(container => {
-        console.log("Container created");
-        // const container = docker.getContainer('ubuntu');
-        return container.start();
-      })
-      .then(container => {
-        console.log("Container started");
-        container.exec(['echo', 'Hi'], {stdout: true, stderr: true}, (err, results) => {
-          if (err) {
-            console.log("Error running command: ", err);
-          } else {
-            console.log("Command successfully run.");
-            console.log("stdout: ", results.stdout);
-            console.log("stderr: ", results.stderr);
-          }
-        });
-        return container.stop();
-      })
-      .then(container => {
-        console.log("Container stopped");
-        return container.remove();
-      })
-      .then(data => {
-        console.log("Container removed");
-      })
-      .catch(err => {
-        console.log(err);
+const ubuntuContainerName = "ubuuuuuntuContaiiiiiner";
+
+/** Starts `container` if it is not already running, then returns it.
+*/
+function startUbuntuContainerIfNecessary(container) {
+  return container.inspect().then(data => {
+    if (data.State.Running) {
+      console.log("Container is already started, returning it now");
+      return container;
+    } else {
+      return container.start().then(container => {
+        console.log("Successful start, returning the container");
+        return container;
+      }).catch(err => {
+        let errMsg = "Failed start: " + err;
+        console.log(errMsg);
+        return Promise.reject(errMsg);
       });
+    }
+  }).catch(err => {
+    let errMsg = "Error inspecting container: " + err;
+    console.log(errMsg);
+    return Promise.reject(errMsg);
+  });
+}
+
+/** Creates, starts, and returns an ubuntu Docker container, or starts and returns the existing one if it already exists.
+*/
+function createAndStartUbuntuContainer() {
+  return docker.createContainer({
+    Image: 'ubuntu',
+    AttachStdin: false,
+    AttachStdout: true,
+    AttachStderr: true,
+    Cmd: ['bash', '-c', 'touch a; tail -f a'],
+    name: ubuntuContainerName
+  }).then(container => {
+    console.log("Successful creation, starting and returning the container now");
+    return startUbuntuContainerIfNecessary(container);
+  }).catch(err => {
+    if (err.json.message.includes("Conflict. The container name \"/" + ubuntuContainerName + "\" is already in use")) {
+      console.log("An ubuntu container already exists, starting and returning it now");
+      let container = docker.getContainer(ubuntuContainerName);
+      return startUbuntuContainerIfNecessary(container);
+    } else {
+      let errMsg = "Failed creation: " + err;
+      console.log(errMsg);
+      return Promise.reject(errMsg);
+    }
+  });
+}
+
+const ubuntuContainer = createAndStartUbuntuContainer();
+
+function runCommandWithinUbuntuContainer(cmd) {
+  ubuntuContainer.then(container => {
+    container.exec(cmd, {stdout: true, stderr: true}, (err, results) => {
+        if (err) {
+          console.log("Error running command: ", err);
+        } else {
+          console.log("Command successfully run.");
+          console.log("stdout: ", results.stdout);
+          console.log("stderr: ", results.stderr);
+        }
+      });
+  }).catch(err => {
+    console.log("No ubuntu container available to run the command!");
+    console.log("Error received: ", err);
+  });
+}
+
+function myTest() {
+  let cmd = ['echo', 'Hi'];
+  runCommandWithinUbuntuContainer(cmd);
+}
+
+myTest();
 
 export async function compileLogger(req: $Request, res: $Response) {
   try {
