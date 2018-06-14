@@ -123,8 +123,8 @@ function createAndStartUbuntuContainer() {
     console.log("Successful creation, starting and returning the container now");
     return startUbuntuContainerIfNecessary(container);
   }).catch(err => {
-    if (err.json.message.includes("Conflict. The container name \"/" + ubuntuContainerName + "\" is already in use")) {
-      console.log("An ubuntu container already exists, starting and returning it now");
+    if (err.json.message.includes(`Conflict. The container name "/${ubuntuContainerName}" is already in use`)) {
+      console.log(`Container ${ubuntuContainerName} already exists, starting and returning it now`);
       let container = docker.getContainer(ubuntuContainerName);
       return startUbuntuContainerIfNecessary(container);
     } else {
@@ -139,6 +139,7 @@ const ubuntuContainer = createAndStartUbuntuContainer();
 
 function runCommandWithinUbuntuContainer(cmd) {
   ubuntuContainer.then(container => {
+    // TODO: add timeout
     container.exec(cmd, {stdout: true, stderr: true}, (err, results) => {
         if (err) {
           console.log("Error running command: ", err);
