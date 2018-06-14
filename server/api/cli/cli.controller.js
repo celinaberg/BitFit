@@ -111,21 +111,21 @@ function startUbuntuContainerIfNecessary(container) {
 
 /** Creates, starts, and returns an ubuntu Docker container, or starts and returns the existing one if it already exists.
 */
-function createAndStartUbuntuContainer() {
+function createAndStartUbuntuContainer(containerName) {
   return docker.createContainer({
     Image: 'ubuntu',
     AttachStdin: false,
     AttachStdout: true,
     AttachStderr: true,
     Cmd: ['bash', '-c', 'touch a; tail -f a'],
-    name: ubuntuContainerName
+    name: containerName
   }).then(container => {
     console.log("Successful creation, starting and returning the container now");
     return startUbuntuContainerIfNecessary(container);
   }).catch(err => {
-    if (err.json.message.includes(`Conflict. The container name "/${ubuntuContainerName}" is already in use`)) {
-      console.log(`Container ${ubuntuContainerName} already exists, starting and returning it now`);
-      let container = docker.getContainer(ubuntuContainerName);
+    if (err.json.message.includes(`Conflict. The container name "/${containerName}" is already in use`)) {
+      console.log(`Container ${containerName} already exists, starting and returning it now`);
+      let container = docker.getContainer(containerName);
       return startUbuntuContainerIfNecessary(container);
     } else {
       let errMsg = "Failed creation: " + err;
@@ -135,7 +135,7 @@ function createAndStartUbuntuContainer() {
   });
 }
 
-const ubuntuContainer = createAndStartUbuntuContainer();
+const ubuntuContainer = createAndStartUbuntuContainer(ubuntuContainerName);
 
 function runCommandWithinUbuntuContainer(cmd) {
   ubuntuContainer.then(container => {
