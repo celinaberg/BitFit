@@ -7,6 +7,7 @@ import { exec as execSync } from "child_process";
 import jsesc from "jsesc";
 import Logger from "../logger/logger.model";
 import { promisify } from "util";
+import { timeout, TimeoutError } from "promise-timeout";
 
 const exec = promisify(execSync);
 
