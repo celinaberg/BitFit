@@ -84,8 +84,6 @@ const exec = promisify(execSync);
 
 const docker = new Dockerode();
 
-const ubuntuContainerName = "ubuuuuuntuContaiiiiiner";
-
 /** Starts `container` if it is not already running, then returns it.
 */
 function startUbuntuContainerIfNecessary(container) {
@@ -136,10 +134,7 @@ function createAndStartUbuntuContainer(containerName) {
   });
 }
 
-const ubuntuContainer = createAndStartUbuntuContainer(ubuntuContainerName);
-
-function runCommandWithinUbuntuContainer(cmd) {
-  let result = null;
+function runCommandWithinContainer(cmd, container) {
   let timeLimitInSeconds = 10;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
 
@@ -153,43 +148,44 @@ function runCommandWithinUbuntuContainer(cmd) {
     }
   }
 
-  return ubuntuContainer.then(
-    container => {
-      let execPromise = container.exec(cmd, {
-        stdout: true,
-        stderr: true
-      });
-      return timeout(execPromise, timeLimitInMilliseconds).then(
-        results => {
-          // TODO: kill and remove container
-          console.log("We did it!!!");
-          return createResult(results.stdout, results.stderr, true, null);
-        },
-        err => {
-          if (err instanceof TimeoutError) {
-            let errorMsg = `Timeout error: exec took longer than ${timeLimitInSeconds} seconds`;
-            console.log(errorMsg);
-            return createResult(null, null, false, errorMsg);
-          } else {
-            console.log("Error running exec: ", err);
-            return createResult(null, null, false, err);
-          }
-        });
+  let execPromise = container.exec(cmd, {
+    stdout: true,
+    stderr: true
+  });
+
+  return timeout(execPromise, timeLimitInMilliseconds).then(
+    results => {
+      // TODO: kill and remove container
+      console.log("We did it!!!");
+      return createResult(results.stdout, results.stderr, true, null);
     },
     err => {
-      console.log("No ubuntu container available to run the command!");
-      console.log("Error received: ", err);
-      return createResult(null, null, false, `No container available due to error: ${err}`);
+      if (err instanceof TimeoutError) {
+        let errorMsg = `Timeout error: exec took longer than ${timeLimitInSeconds} seconds`;
+        console.log(errorMsg);
+        return createResult(null, null, false, errorMsg);
+      } else {
+        console.log("Error running exec: ", err);
+        return createResult(null, null, false, err);
+      }
     });
 }
 
 function myTest() {
   let cmd = ['echo', 'Hi'];
-  runCommandWithinUbuntuContainer(cmd).then(result => {
-    console.log("Now result is: ", result);
-  }).catch(err => {
-    console.log("Error: ", err);
-  });
+  let ubuntuContainerName = "ubuuuuuntuContaiiiiiner";
+  createAndStartUbuntuContainer(ubuntuContainerName).then(
+    ubuntuContainer => {
+      runCommandWithinContainer(cmd, ubuntuContainer).then(result => {
+        console.log("Now result is: ", result);
+      }).catch(err => {
+        console.log("Error: ", err);
+      });
+    },
+    err => {
+      console.log("No ubuntu container available to run the command!");
+      console.log("Error received: ", err);
+    });
 }
 
 myTest();
