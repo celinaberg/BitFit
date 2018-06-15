@@ -137,13 +137,13 @@ function createAndStartUbuntuContainer(containerName) {
 
 const ubuntuContainer = createAndStartUbuntuContainer(ubuntuContainerName);
 
-async function runCommandWithinUbuntuContainer(cmd) {
+function runCommandWithinUbuntuContainer(cmd) {
   let execHasTimedOut = false;
   let execHasCompleted = false;
   let result = null;
   let timeLimitInSeconds = 2;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
-  result = await ubuntuContainer.then(container => {
+  return ubuntuContainer.then(container => {
 
     return new Promise((resolve, reject) => {
       let timeoutFunction = setTimeout(() => {
@@ -198,14 +198,15 @@ async function runCommandWithinUbuntuContainer(cmd) {
       errorMsg: "No container available"
     });
   });
-  console.log("Result: ", result);
-  return result;
 }
 
-async function myTest() {
+function myTest() {
   let cmd = ['echo', 'Hi'];
-  let result = await runCommandWithinUbuntuContainer(cmd);
-  console.log("Now result is: ", result);
+  runCommandWithinUbuntuContainer(cmd).then(result => {
+    console.log("Now result is: ", result);
+  }).catch(err => {
+    console.log("Error: ", err);
+  });
 }
 
 myTest();
