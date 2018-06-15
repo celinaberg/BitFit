@@ -139,10 +139,8 @@ function createAndStartUbuntuContainer(containerName) {
 const ubuntuContainer = createAndStartUbuntuContainer(ubuntuContainerName);
 
 function runCommandWithinUbuntuContainer(cmd) {
-  let execHasTimedOut = false;
-  let execHasCompleted = false;
   let result = null;
-  let timeLimitInSeconds = 2;
+  let timeLimitInSeconds = 10;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
 
   // Constructor for the type of object to which our returned Promise should resolve/reject
@@ -155,53 +153,34 @@ function runCommandWithinUbuntuContainer(cmd) {
     }
   }
 
-  return new Promise((resolve, reject) => {
-
-    ubuntuContainer.then(container => {
-
-      let timeoutFunction = setTimeout(() => {
-        execHasTimedOut = true;
-        console.log(`${timeLimitInSeconds} seconds have passed`);
-        container.kill().then(container => {
-          console.log("We killed the container");
-          // TODO: remove container
-        }).catch(err => {
-          console.log("error killing the container");
-        });
-        if (!execHasCompleted) {
-          console.log("Timed out!!!");
-          resolve(createResult(null, null, false, `Timeout: exec took longer than ${timeLimitInSeconds} seconds`));
-        }
-      }, timeLimitInMilliseconds);
-
-      container.exec(cmd, {
+  return ubuntuContainer.then(
+    container => {
+      let execPromise = container.exec(cmd, {
         stdout: true,
         stderr: true
-      }).then(results => {
-        execHasCompleted = true;
-        if (!execHasTimedOut) {
-          // TODO: kill and remove container
-          clearTimeout(timeoutFunction);
-          console.log("We did it!!!");
-          resolve(createResult(results.stdout, results.stderr, true, null));
-        } else {
-          console.log("We already timed out");
-          reject(createResult(
-            null, null, false,
-            "Timeout but this should never be seen since the promise should've been resolved already by `timeoutFunction`"));
-        }
-      }, err => {
-        console.log("Error running exec: ", err);
-        reject(createResult(null, null, false, err));
       });
-
+      return timeout(execPromise, timeLimitInMilliseconds).then(
+        results => {
+          // TODO: kill and remove container
+          console.log("We did it!!!");
+          return createResult(results.stdout, results.stderr, true, null);
+        },
+        err => {
+          if (err instanceof TimeoutError) {
+            let errorMsg = `Timeout error: exec took longer than ${timeLimitInSeconds} seconds`;
+            console.log(errorMsg);
+            return createResult(null, null, false, errorMsg);
+          } else {
+            console.log("Error running exec: ", err);
+            return createResult(null, null, false, err);
+          }
+        });
+    },
+    err => {
+      console.log("No ubuntu container available to run the command!");
+      console.log("Error received: ", err);
+      return createResult(null, null, false, `No container available due to error: ${err}`);
     });
-
-  }, err => {
-    console.log("No ubuntu container available to run the command!");
-    console.log("Error received: ", err);
-    reject(createResult(null, null, false, `No container available due to error: ${err}`));
-  });
 }
 
 function myTest() {
