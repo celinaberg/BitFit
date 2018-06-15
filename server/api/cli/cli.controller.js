@@ -143,9 +143,11 @@ function runCommandWithinUbuntuContainer(cmd) {
   let result = null;
   let timeLimitInSeconds = 2;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
-  return ubuntuContainer.then(container => {
 
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+
+    ubuntuContainer.then(container => {
+
       let timeoutFunction = setTimeout(() => {
         execHasTimedOut = true;
         console.log(`${timeLimitInSeconds} seconds have passed`);
@@ -187,16 +189,18 @@ function runCommandWithinUbuntuContainer(cmd) {
           clearTimeout(timeoutFunction);
         }
       });
-    })
-  }, err => {
-    console.log("No ubuntu container available to run the command!");
-    console.log("Error received: ", err);
-    return Promise.reject({
-      stdout: null,
-      stderr: null,
-      execWasSuccessful: false,
-      errorMsg: "No container available"
+
+    }, err => {
+      console.log("No ubuntu container available to run the command!");
+      console.log("Error received: ", err);
+      reject({
+        stdout: null,
+        stderr: null,
+        execWasSuccessful: false,
+        errorMsg: `No container available due to error: ${err}`
+      });
     });
+
   });
 }
 
