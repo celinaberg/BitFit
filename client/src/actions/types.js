@@ -3,14 +3,10 @@ import type { State, Question } from "../types";
 
 import RichTextEditor from "react-rte";
 
-<<<<<<< HEAD
-export type FetchLessonQuestionsAction = { type: "FETCH_LESSON_QUESTIONS", payload: {id: string}};
-=======
 export type FetchLessonQuestionsAction = {
   type: "FETCH_LESSON_QUESTIONS",
   payload: { id: string }
 };
->>>>>>> 76a1d40... Initial commit
 
 export type FetchLessonsAction = { type: "FETCH_LESSONS", payload: any };
 export type UpdateNewLessonAction = {
@@ -33,11 +29,7 @@ export type LoginAction = { type: "LOGIN" };
 export type ToggleNavbarAction = { type: "TOGGLE_NAVBAR" };
 export type FetchUsersAction = { type: "FETCH_USERS", payload: any };
 export type DeleteUserAction = { type: "DELETE_USER", payload: any };
-<<<<<<< HEAD
-export type FetchLoggersAction = { type: "FETCH_LOGGERS, payload: any };
-=======
 export type FetchLoggersAction = { type: "FETCH_LOGGERS", payload: any };
->>>>>>> 76a1d40... Initial commit
 
 export type FetchQuestionsAction = { type: "FETCH_QUESTIONS", payload: any };
 export type SaveQuestionPendingAction = { type: "SAVE_QUESTION_PENDING" };

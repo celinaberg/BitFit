@@ -1,13 +1,7 @@
 // @flow
-<<<<<<< HEAD
-
-import type { Question, Logger } from "../types";
-
-=======
 /*eslint-disable no-unused-vars*/
 
 import type { Question, Logger } from "../types";
->>>>>>> 76a1d40... Initial commit
 import React, { Component } from "react";
 import {
   Card,
@@ -54,10 +48,6 @@ class TestQuestion extends Component {
       stderr: string
     },
     checkAnswer: ?boolean
-<<<<<<< HEAD
-
-=======
->>>>>>> 76a1d40... Initial commit
   };
 
   constructor(props: Props) {
@@ -106,10 +96,6 @@ class TestQuestion extends Component {
       body: JSON.stringify(logger)
     });
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 76a1d40... Initial commit
   updateClassName = (event: SyntheticEvent): void => {
     if (event.target instanceof HTMLInputElement) {
       let newLogger = Object.assign({}, this.state.logger);
@@ -127,15 +113,6 @@ class TestQuestion extends Component {
   };
 
   updateExpectedOutput = (event: SyntheticEvent): void => {
-<<<<<<< HEAD
-      let newLogger = Object.assign({}, this.state.logger);
-      newLogger.expectedOutput = event.target.value;
-      this.setState({ logger: newLogger });
-      this.saveLogger({
-        id: newLogger.id,
-        expectedOutput: newLogger.expectedOutput
-      });
-=======
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.expectedOutput = event.target.value;
     this.setState({ logger: newLogger });
@@ -143,7 +120,6 @@ class TestQuestion extends Component {
       id: newLogger.id,
       expectedOutput: newLogger.expectedOutput
     });
->>>>>>> 76a1d40... Initial commit
   };
 
   onCompileClick = async () => {
@@ -203,18 +179,9 @@ class TestQuestion extends Component {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
     //const compileRequest =
-<<<<<<< HEAD
-    await fetch(
-      "/api/clis/compile/" + this.state.logger.id,
-      {
-        credentials: "include"
-      }
-    );
-=======
     await fetch("/api/clis/compile/" + this.state.logger.id, {
       credentials: "include"
     });
->>>>>>> 76a1d40... Initial commit
     //const compileOutput = await compileRequest.json();
     const runRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
@@ -247,12 +214,7 @@ class TestQuestion extends Component {
     newLogger.className = this.props.question.className;
     newLogger.code = this.props.question.code;
     newLogger.numHintsDisplayed = 0;
-<<<<<<< HEAD
-    if (this.props.question.readOnly)
-      newLogger.expectedOutput = "";
-=======
     if (this.props.question.readOnly) newLogger.expectedOutput = "";
->>>>>>> 76a1d40... Initial commit
     this.setState({ logger: newLogger });
     this.saveLogger({
       id: newLogger.id,
@@ -267,23 +229,12 @@ class TestQuestion extends Component {
     newCompileOutput.error = null;
     newCompileOutput.stdout = "";
     newCompileOutput.stderr = "";
-<<<<<<< HEAD
-    this.setState({compileOutput: newCompileOutput});
-=======
     this.setState({ compileOutput: newCompileOutput });
->>>>>>> 76a1d40... Initial commit
 
     let newRunOutput = Object.assign({}, this.state.runOutput);
     newRunOutput.error = null;
     newRunOutput.stdout = "";
     newRunOutput.stderr = "";
-<<<<<<< HEAD
-    this.setState({runOutput: newRunOutput});
-  };
-
-  onGetHintClick = (event: SyntheticEvent): void => {
-    if (this.state.logger.numHintsDisplayed < this.props.question.hints.length) {
-=======
     this.setState({ runOutput: newRunOutput });
   };
 
@@ -291,21 +242,15 @@ class TestQuestion extends Component {
     if (
       this.state.logger.numHintsDisplayed < this.props.question.hints.length
     ) {
->>>>>>> 76a1d40... Initial commit
       let newLogger = Object.assign({}, this.state.logger);
       newLogger.numHints = this.state.logger.numHints + 1;
       newLogger.numHintsDisplayed = this.state.logger.numHintsDisplayed + 1;
       this.setState({ logger: newLogger });
-<<<<<<< HEAD
-      this.saveLogger({ id: newLogger.id, numHints: newLogger.numHints,
-                                          numHintsDisplayed: newLogger.numHintsDisplayed });
-=======
       this.saveLogger({
         id: newLogger.id,
         numHints: newLogger.numHints,
         numHintsDisplayed: newLogger.numHintsDisplayed
       });
->>>>>>> 76a1d40... Initial commit
     }
   };
 
@@ -314,9 +259,7 @@ class TestQuestion extends Component {
       return (
         <Card key={this.props.question.id}>
           <CardBlock>
-            <CardTitle>
-              {this.props.question.title}
-            </CardTitle>
+            <CardTitle>{this.props.question.title}</CardTitle>
             <div>Loading...</div>
           </CardBlock>
         </Card>
@@ -351,10 +294,6 @@ class TestQuestion extends Component {
         </FormGroup>
       );
     } else {
-<<<<<<< HEAD
-
-=======
->>>>>>> 76a1d40... Initial commit
       let compileBadge = null;
       if (this.state.compileOutput.error) {
         compileBadge = (
@@ -459,12 +398,8 @@ class TestQuestion extends Component {
         </div>
       );
     }
-<<<<<<< HEAD
-    let hintsLeft = this.props.question.hints.length - this.state.logger.numHintsDisplayed;
-=======
     let hintsLeft =
       this.props.question.hints.length - this.state.logger.numHintsDisplayed;
->>>>>>> 76a1d40... Initial commit
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
@@ -504,13 +439,10 @@ class TestQuestion extends Component {
                   })}
               </div>
               <div>
-<<<<<<< HEAD
-                <p> <strong> number of hints left:</strong> {hintsLeft} </p>
-=======
                 <p>
-                  {" "} <strong> number of hints left:</strong> {hintsLeft}{" "}
+                  {" "}
+                  <strong> number of hints left:</strong> {hintsLeft}{" "}
                 </p>
->>>>>>> 76a1d40... Initial commit
               </div>
             </CardBlock>
           </Card>

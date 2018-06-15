@@ -4,16 +4,7 @@ import type { Dispatch } from "../actions/types";
 import type { LoggerState, State } from "../types";
 
 import React, { Component } from "react";
-<<<<<<< HEAD
-import {
-  Col,
-  ListGroup,
-  ListGroupItemText,
-  Progress
-} from "reactstrap";
-=======
 import { Col, ListGroup, ListGroupItemText, Progress } from "reactstrap";
->>>>>>> 76a1d40... Initial commit
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
 
@@ -23,7 +14,7 @@ class GetLoggers extends Component {
     fetchLoggers: () => void
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (!this.props.loggers.fetched) {
       this.props.fetchLoggers();
     }
@@ -36,21 +27,21 @@ class GetLoggers extends Component {
     } else {
       loggers = this.props.loggers.loggers.map(logger => {
         return (
-        <ListGroupItemText>
-          <span className="text-muted">
-            {logger.user},
-            {logger.question},
-            {logger.startTime},
-            {logger.endTime},
-            {logger.numCompiles},
-            {logger.numErrorFreeCompiles},
-            {logger.numRuns},
-            {logger.numHints},
-            {logger.totalAttempts},
-            {logger.correctAttempts}
-          </span>
-          <span>&nbsp;</span>
-        </ListGroupItemText>
+          <ListGroupItemText>
+            <span className="text-muted">
+              {logger.user},
+              {logger.question},
+              {logger.startTime},
+              {logger.endTime},
+              {logger.numCompiles},
+              {logger.numErrorFreeCompiles},
+              {logger.numRuns},
+              {logger.numHints},
+              {logger.totalAttempts},
+              {logger.correctAttempts}
+            </span>
+            <span>&nbsp;</span>
+          </ListGroupItemText>
         );
       });
     }

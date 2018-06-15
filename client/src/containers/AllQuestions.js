@@ -21,7 +21,7 @@ class AllQuestions extends Component {
     this.props.saveQuestion(question);
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (!this.props.questions.fetched) {
       this.props.fetchQuestions();
     }
@@ -70,4 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllQuestions);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AllQuestions);

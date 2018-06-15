@@ -1,8 +1,5 @@
 // @flow
-<<<<<<< HEAD
-=======
 /*eslint-disable no-unused-vars*/
->>>>>>> 76a1d40... Initial commit
 
 import type { Dispatch } from "../../actions/types";
 import type { State } from "../../types";
@@ -28,7 +25,7 @@ type Props = {
 class App extends Component {
   props: Props;
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.checkLogin();
   }
 
@@ -67,4 +64,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

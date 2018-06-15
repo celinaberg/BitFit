@@ -125,13 +125,8 @@ class EditQuestion extends Component {
 
   updateExpectedOutput = (event: Event): void => {
     let newQuestion = Object.assign({}, this.state.question);
-<<<<<<< HEAD
-      newQuestion.expectedOutput = event.target.value;
-      this.setState({ question: newQuestion });
-=======
     newQuestion.expectedOutput = event.target.value;
     this.setState({ question: newQuestion });
->>>>>>> 76a1d40... Initial commit
   };
 
   updateHint = (id: number): ((value: RichTextEditor) => void) => {

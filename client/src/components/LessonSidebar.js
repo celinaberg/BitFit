@@ -20,7 +20,7 @@ class LessonSidebar extends Component {
     admin: false
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (!this.props.lessons.fetched) {
       this.props.fetchLessons();
     }
@@ -40,11 +40,7 @@ class LessonSidebar extends Component {
           />
         );
       });
-      return (
-        <div>
-          {lessons}
-        </div>
-      );
+      return <div>{lessons}</div>;
     }
   }
 }
@@ -63,4 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LessonSidebar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LessonSidebar);

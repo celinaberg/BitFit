@@ -36,7 +36,7 @@ class Lessons extends Component {
     activeTab: "background"
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (this.props.loading) {
       this.props.fetchLessons();
     }

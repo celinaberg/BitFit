@@ -113,10 +113,6 @@ export const saveQuestion = (question: Question): ThunkAction => {
   };
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 76a1d40... Initial commit
 export const saveNewQuestion = (question: Question): ThunkAction => {
   return dispatch => {
     dispatch({

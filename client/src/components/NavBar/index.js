@@ -48,9 +48,7 @@ class NavBar extends Component {
       rightSide = (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink disabled>
-              {this.props.name}
-            </NavLink>
+            <NavLink disabled>{this.props.name}</NavLink>
           </NavItem>
           <NavItem>
             <NavLink href="/auth/cwl/logout">Logout</NavLink>
@@ -89,4 +87,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavBar);

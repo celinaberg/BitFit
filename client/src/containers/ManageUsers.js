@@ -24,7 +24,7 @@ class ManageUsers extends Component {
     deleteUser: (id: string) => void
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (!this.props.users.fetched) {
       this.props.fetchUsers();
     }

@@ -146,4 +146,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditLesson);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditLesson);
