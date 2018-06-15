@@ -134,6 +134,23 @@ function createAndStartUbuntuContainer(containerName) {
   });
 }
 
+function killAndRemoveContainer(container) {
+  container.kill().then(
+    container => {
+      console.log("Successful kill, removing the container now");
+      container.remove().then(
+        data => {
+          console.log("Successfully removed container");
+        },
+        err => {
+          console.log("Error removing container: ", err);
+        });
+    },
+    err => {
+      console.log("Error killing container: ", err);
+    });
+}
+
 function runCommandWithinContainer(cmd, container) {
   let timeLimitInSeconds = 10;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
@@ -145,7 +162,6 @@ function runCommandWithinContainer(cmd, container) {
 
   return timeout(execPromise, timeLimitInMilliseconds).then(
     results => {
-      // TODO: kill and remove container
       return {
         stdout: results.stdout,
         stderr: results.stderr,
@@ -170,8 +186,10 @@ function myTest() {
     ubuntuContainer => {
       runCommandWithinContainer(cmd, ubuntuContainer).then(result => {
         console.log("Now result is: ", result);
+        killAndRemoveContainer(ubuntuContainer);
       }).catch(err => {
         console.log("Error: ", err);
+        killAndRemoveContainer(ubuntuContainer);
       });
     },
     err => {
