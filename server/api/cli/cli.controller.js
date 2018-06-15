@@ -200,6 +200,42 @@ function myTest() {
 
 myTest();
 
+function myTest2() {
+  let testContainerName = "testContainer";
+  createAndStartUbuntuContainer(testContainerName).then(
+    container => {
+      let dirName = "users/testUserId/testLoggerId";
+      return runCommandWithinContainer(['mkdir', '-p', dirName], container).then(
+        result => {
+          let testCCode = "this is not actual code";
+          let testLoggerClassName = "testLoggerClassName";
+          let testCFileName = `${dirName}/${testLoggerClassName}.c`;
+          return runCommandWithinContainer(['bash', '-c', `echo ${testCCode} > ${testCFileName}`], container).then(
+            result => {
+              return runCommandWithinContainer(['bash', '-c', `cat ${testCFileName}`], container).then(
+                result => {
+                  console.log("Here's our result: ", result);
+                }
+              ).catch(
+                err => {
+                  console.log("Error running stuff: ", err);
+                }
+              );
+            }
+          );
+        }
+      ).catch(err => {
+        console.log("THere was an error runing stuff: ", err);
+      });
+    },
+    err => {
+      console.log(`No container available to run code within due to error ${err}`);
+    }
+  );
+}
+
+myTest2();
+
 export async function compileLogger(req: $Request, res: $Response) {
   try {
     const userId = req.user.id;
