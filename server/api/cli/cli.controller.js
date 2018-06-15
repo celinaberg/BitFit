@@ -137,10 +137,37 @@ function createAndStartUbuntuContainer(containerName) {
 
 const ubuntuContainer = createAndStartUbuntuContainer(ubuntuContainerName);
 
-function runCommandWithinUbuntuContainer(cmd) {
-  ubuntuContainer.then(container => {
-    // TODO: add timeout
-    container.exec(cmd, {stdout: true, stderr: true}, (err, results) => {
+async function runCommandWithinUbuntuContainer(cmd) {
+  let execHasTimedOut = false;
+  let execHasCompleted = false;
+  let result = null;
+  let timeLimitInSeconds = 2;
+  let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
+  result = await ubuntuContainer.then(container => {
+
+    return new Promise((resolve, reject) => {
+      let timeoutFunction = setTimeout(() => {
+        execHasTimedOut = true;
+        console.log(`${timeLimitInSeconds} seconds have passed`);
+        container.kill().then(container => {
+          console.log("We killed the container");
+          // TODO: remove container
+        }).catch(err => {
+          console.log("error killing the container");
+        });
+        if (!execHasCompleted) {
+          console.log("Timed out!!!");
+          resolve({
+            stdout: null,
+            stderr: null,
+            execWasSuccessful: false,
+            errorMsg: `Timeout: exec took longer than ${timeLimitInSeconds} seconds`
+          });
+        }
+      }, timeLimitInMilliseconds);
+
+      container.exec(cmd, {stdout: true, stderr: true}, (err, results) => {
+        execHasCompleted = true;
         if (err) {
           console.log("Error running command: ", err);
         } else {
@@ -148,16 +175,37 @@ function runCommandWithinUbuntuContainer(cmd) {
           console.log("stdout: ", results.stdout);
           console.log("stderr: ", results.stderr);
         }
+        if (!execHasTimedOut) {
+          console.log("We did it!!!");
+          resolve({
+            stdout: results.stdout,
+            stderr: results.stderr,
+            execWasSuccessful: true,
+            errorMsg: null
+          });
+          // TODO: kill and remove container
+          clearTimeout(timeoutFunction);
+        }
       });
-  }).catch(err => {
+    })
+  }, err => {
     console.log("No ubuntu container available to run the command!");
     console.log("Error received: ", err);
+    return Promise.reject({
+      stdout: null,
+      stderr: null,
+      execWasSuccessful: false,
+      errorMsg: "No container available"
+    });
   });
+  console.log("Result: ", result);
+  return result;
 }
 
-function myTest() {
+async function myTest() {
   let cmd = ['echo', 'Hi'];
-  runCommandWithinUbuntuContainer(cmd);
+  let result = await runCommandWithinUbuntuContainer(cmd);
+  console.log("Now result is: ", result);
 }
 
 myTest();
