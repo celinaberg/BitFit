@@ -138,16 +138,6 @@ function runCommandWithinContainer(cmd, container) {
   let timeLimitInSeconds = 10;
   let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
 
-  // Constructor for the type of object to which our returned Promise should resolve/reject
-  let createResult = (stdout, stderr, execWasSuccessful, errorMsg) => {
-    return {
-      stdout,
-      stderr,
-      execWasSuccessful,
-      errorMsg
-    }
-  }
-
   let execPromise = container.exec(cmd, {
     stdout: true,
     stderr: true
@@ -156,17 +146,19 @@ function runCommandWithinContainer(cmd, container) {
   return timeout(execPromise, timeLimitInMilliseconds).then(
     results => {
       // TODO: kill and remove container
-      console.log("We did it!!!");
-      return createResult(results.stdout, results.stderr, true, null);
+      return {
+        stdout: results.stdout,
+        stderr: results.stderr,
+        execWasSuccessful: true,
+        execError: null
+      };
     },
     err => {
-      if (err instanceof TimeoutError) {
-        let errorMsg = `Timeout error: exec took longer than ${timeLimitInSeconds} seconds`;
-        console.log(errorMsg);
-        return createResult(null, null, false, errorMsg);
-      } else {
-        console.log("Error running exec: ", err);
-        return createResult(null, null, false, err);
+      return {
+        stdout: null,
+        stderr: null,
+        execWasSuccessful: false,
+        execError: (err instanceof TimeoutError) ? `Timeout error: exec took longer than ${timeLimitInSeconds} seconds` : err
       }
     });
 }
