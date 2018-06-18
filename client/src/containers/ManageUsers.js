@@ -44,7 +44,6 @@ class ManageUsers extends Component {
         return (
           <ListGroupItem key={user.id}>
             <ListGroupItemHeading>
-
               <Button color="danger" id={user.id} onClick={this.onDeleteClick}>
                 <FaTrash />
               </Button>
@@ -72,22 +71,12 @@ class ManageUsers extends Component {
         <h2 className="page-header">Users</h2>
         <ListGroupItemText>
           <span className="text-bold">
-            displayName,
-            role,
-            firstName,
-            lastName,
-            CWL,
-            studentNumber,
-            section,
-            term,
-            session,
-            year
+            displayName, role, firstName, lastName, CWL, studentNumber, section,
+            term, session, year
           </span>
           <span>&nbsp;</span>
-         </ListGroupItemText>
-        <ListGroup>
-          {users}
-        </ListGroup>
+        </ListGroupItemText>
+        <ListGroup>{users}</ListGroup>
       </Col>
     );
   }
@@ -110,4 +99,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageUsers);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageUsers);
