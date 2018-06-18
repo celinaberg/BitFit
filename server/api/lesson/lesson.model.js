@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const LessonSchema = new Schema({
   title: { type: String, unique: true, required: true },
-  background: String,
+  background: String
 });
 
 LessonSchema.methods.toJSON = function() {
