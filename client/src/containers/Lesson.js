@@ -58,7 +58,6 @@ class Lessons extends Component {
 
   render() {
     if (this.props.loading) {
-      
       return <Progress animated color="muted" value="100" />;
     }
     return (
@@ -106,7 +105,7 @@ class Lessons extends Component {
           <TabPane tabId="questions">
             <Row>
               <Col sm="12">
-              <h4>Questions</h4>
+                <h4>Questions</h4>
                 {this.props.lessons.questions.map(question => {
                   return (
                     <TestQuestion
@@ -154,4 +153,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     }
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Lessons);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Lessons);

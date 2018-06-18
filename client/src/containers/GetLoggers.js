@@ -49,23 +49,15 @@ class GetLoggers extends Component {
       <Col sm="9" md="10">
         <h2 className="page-header">Loggers</h2>
 
-
         <ListGroup>
           <ListGroupItemText>
             <span className="text-bold">
-              user,
-              question,
-              startTime,
-              endTime,
-              numCompiles,
-              numErrorFreeCompiles,
-              numRuns,
-              numHints,
-              totalAttempts,
+              user, question, startTime, endTime, numCompiles,
+              numErrorFreeCompiles, numRuns, numHints, totalAttempts,
               correctAttempts
             </span>
             <span>&nbsp;</span>
-           </ListGroupItemText>
+          </ListGroupItemText>
           {loggers}
         </ListGroup>
       </Col>
@@ -87,4 +79,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GetLoggers);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GetLoggers);
