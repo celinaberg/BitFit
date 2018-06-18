@@ -8,9 +8,8 @@ import Question from "../question/question.model";
 
 // Get list of questions in given lesson
 export async function getQuestions(req: $Request, res: $Response) {
-
   try {
-    let questions = await Question.find({lesson: req.params.id});
+    let questions = await Question.find({ lesson: req.params.id });
 
     for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
@@ -78,7 +77,6 @@ export async function update(req: $Request, res: $Response) {
 
 // Deletes a lesson from the DB.
 export async function destroy(req: $Request, res: $Response) {
-
   try {
     const lesson = await Lesson.findById(req.params.id);
 
