@@ -63,4 +63,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllQuestions);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AllQuestions);
