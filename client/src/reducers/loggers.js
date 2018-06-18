@@ -12,7 +12,8 @@ const initialState: LoggerState = {
 
 export default function loggers(
   state: LoggerState = initialState,
-  action: Action) {
+  action: Action
+) {
   switch (action.type) {
     case "FETCH_LOGGERS_PENDING":
       return {
