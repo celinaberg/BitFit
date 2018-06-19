@@ -19,7 +19,10 @@ import { seedTestData } from "./config/seed";
 
 // Connect to database
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongo.uri, config.mongo.options);
+mongoose.connect(
+  config.mongo.uri,
+  config.mongo.options
+);
 
 // Populate DB with sample data
 if (config.seedDB) {

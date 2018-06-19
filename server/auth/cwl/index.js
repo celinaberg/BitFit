@@ -31,7 +31,9 @@ router.get(
           uid: "buser"
         });
         req.login(backDoorUser, function(err) {
-          if (err) { return next(err); }
+          if (err) {
+            return next(err);
+          }
           res.redirect("/lessons");
         });
       } catch (err) {
@@ -63,7 +65,9 @@ router.post(
           uid: "buser"
         });
         req.login(backDoorUser, function(err) {
-          if (err) { return next(err); }
+          if (err) {
+            return next(err);
+          }
           res.redirect("/lessons");
         });
       } catch (err) {

@@ -1,4 +1,5 @@
 // @flow
+/* exported Lesson */
 
 import type { $Request, $Response } from "express";
 
@@ -14,10 +15,6 @@ function handleError(res: $Response, err: Error) {
 
 // Get list of questions
 export async function index(req: $Request, res: $Response) {
-<<<<<<< HEAD
-
-=======
->>>>>>> 76a1d40... Initial commit
   try {
     let questions = await Question.find({});
 
