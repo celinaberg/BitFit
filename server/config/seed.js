@@ -10,6 +10,8 @@ import Question from "../api/question/question.model";
 import Lesson from "../api/lesson/lesson.model";
 import Logger from "../api/logger/logger.model";
 
+export const testLoggerMsgToBePrinted = "Hello this is a test";
+
 export function seedTestData() {
   let usersPromise = new Promise((resolve, reject) => {
     User.find({}).remove(function() {
@@ -106,8 +108,8 @@ export function seedTestData() {
     Logger.find({}).remove(function() {
       console.log("Finished removing loggers");
       Logger.create({
-          className: "thisIsAClassName",
-          code: "#include <stdio.h>\nint main()\n{\n\tprintf(\"Hello this is a test\");\n\treturn 0;\n}"
+          className: "testLoggerClassName",
+          code: `#include <stdio.h>\nint main()\n{\n\tprintf("${testLoggerMsgToBePrinted}");\n\treturn 0;\n}`
         },
         function() {
           console.log("Finished adding loggers");
