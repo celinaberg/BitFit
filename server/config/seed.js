@@ -107,7 +107,7 @@ export function seedTestData() {
       console.log("Finished removing loggers");
       Logger.create({
           className: "thisIsAClassName",
-          code: "System.out.println(\"Hello this is a test\");"
+          code: "#include <stdio.h>\nint main()\n{\n\tprintf(\"Hello this is a test\");\n\treturn 0;\n}"
         },
         function() {
           console.log("Finished adding loggers");
