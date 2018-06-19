@@ -19,19 +19,19 @@ beforeAll(() => {
   }
 });
 
-test("My test", async () => {
+test("Compile Logger", async () => {
   let testLogger = await Logger.findOne({});
-  console.log("Logger: ", testLogger);
   let req = new MockExpressRequest({
     user: {
       id: "testUserId"
     },
     params: {
-      id: "testLoggerId"
+      id: testLogger._id
     }
   });
   let res = new MockExpressResponse();
-  let result = await compileLogger(req, res);
-  console.log("Json: ", result._getJSON());
-  // expect(compileLogger(req, res)).toBe()
+  let compileResult = await compileLogger(req, res);
+  let compileResultJson = compileResult._getJSON();
+  console.log("Json: ", compileResultJson);
+  expect(compileResultJson.error).toBe(false);
 });
