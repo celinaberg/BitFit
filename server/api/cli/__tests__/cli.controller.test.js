@@ -30,8 +30,9 @@ test("Compile Logger", async () => {
     }
   });
   let res = new MockExpressResponse();
-  let compileResult = await compileLogger(req, res);
-  let compileResultJson = compileResult._getJSON();
-  console.log("Json: ", compileResultJson);
-  expect(compileResultJson.error).toBe(false);
+
+  let compileResponse = await compileLogger(req, res);
+  let compileResponseJson = compileResponse._getJSON();
+  console.log("Compile Response Json: ", compileResponseJson);
+  expect(compileResponseJson.error).toBe(false);
 });
