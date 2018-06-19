@@ -3,7 +3,7 @@ const MockExpressRequest = require("mock-express-request");
 const MockExpressResponse = require("mock-express-response");
 import mongoose from "mongoose";
 import config from "../../../config/environment";
-import { seedTestData } from "../../../config/seed";
+import { seedTestData, testLoggerMsgToBePrinted } from "../../../config/seed";
 import Logger from "../../logger/logger.model";
 
 beforeAll(() => {
@@ -19,8 +19,10 @@ beforeAll(() => {
   }
 });
 
-test("Compile Logger", async () => {
+test("Compile and Run Logger", async () => {
+
   let testLogger = await Logger.findOne({});
+
   let req = new MockExpressRequest({
     user: {
       id: "testUserId"
@@ -29,10 +31,22 @@ test("Compile Logger", async () => {
       id: testLogger._id
     }
   });
-  let res = new MockExpressResponse();
 
-  let compileResponse = await compileLogger(req, res);
+  let compileRes = new MockExpressResponse();
+
+  let compileResponse = await compileLogger(req, compileRes);
   let compileResponseJson = compileResponse._getJSON();
   console.log("Compile Response Json: ", compileResponseJson);
   expect(compileResponseJson.error).toBe(false);
+  expect(compileResponseJson.stdout).toBe("");
+  expect(compileResponseJson.stderr).toBe("");
+
+  let runRes = new MockExpressResponse();
+
+  let runResponse = await runLogger(req, runRes);
+  let runResponseJson = runResponse._getJSON();
+  console.log("Run response Json: ", runResponseJson);
+  expect(runResponseJson.error).toBe(false);
+  expect(runResponseJson.stdout).toBe(testLoggerMsgToBePrinted);
+  expect(runResponseJson.stderr).toBe("");
 });
