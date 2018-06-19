@@ -10,8 +10,6 @@ beforeAll(() => {
   // Connect to database
   mongoose.Promise = global.Promise;
   mongoose.connect(config.mongo.uri, config.mongo.options);
-  console.log("config env: ", config.env);
-  console.log("node env: ", process.env.NODE_ENV);
 
   // Populate DB with sample data
   if (config.seedDB) {
