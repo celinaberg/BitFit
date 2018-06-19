@@ -1,10 +1,10 @@
+// @flow
+
 var fs = require("fs");
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 var nodeModules = {};
-fs
-  .readdirSync("node_modules")
+fs.readdirSync("node_modules")
   .filter(function(x) {
     return [".bin"].indexOf(x) === -1;
   })

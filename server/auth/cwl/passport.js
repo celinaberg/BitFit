@@ -59,7 +59,10 @@ const samlStrategy = new SamlStrategy(
     // Service Provider Certificate
     privateCert: keyContents,
     // Identity Provider's public key
-    cert: fs.readFileSync(path.join(__dirname, "../../cert/idp_cert.pem"), "utf8"),
+    cert: fs.readFileSync(
+      path.join(__dirname, "../../cert/idp_cert.pem"),
+      "utf8"
+    ),
     validateInResponseTo: false,
     disableRequestedAuthnContext: true
   },
