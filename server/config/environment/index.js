@@ -4,6 +4,7 @@ import path from "path";
 import _ from "lodash";
 
 import development from "./development";
+import test from "./test";
 
 // All configurations will extend these options
 // ============================================
@@ -43,6 +44,8 @@ let all = {
 
 if (process.env.NODE_ENV === "development") {
   all = _.merge(all, development);
+} else if (process.env.NODE_ENV === "test") {
+  all = _.merge(all, test);
 }
 
 // Export the config object based on the NODE_ENV
