@@ -17,6 +17,7 @@ const QuestionSchema = new Schema({
 });
 
 QuestionSchema.options.toObject = {};
+// eslint-disable-next-line no-unused-vars
 QuestionSchema.options.toObject.transform = function(doc, ret, options) {
   ret.id = ret._id;
   delete ret._id;

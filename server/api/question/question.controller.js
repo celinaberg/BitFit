@@ -4,7 +4,6 @@ import type { $Request, $Response } from "express";
 
 import _ from "lodash";
 import Question from "./question.model";
-import Lesson from "../lesson/lesson.model";
 
 function handleError(res: $Response, err: Error) {
   console.trace();

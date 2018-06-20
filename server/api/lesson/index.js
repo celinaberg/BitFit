@@ -1,5 +1,4 @@
 // @flow
-/*eslint-disable no-unused-vars*/
 
 import express from "express";
 import {
@@ -8,8 +7,6 @@ import {
   create,
   update,
   destroy,
-  deleteQuestion,
-  addQuestion,
   getQuestions
 } from "./lesson.controller";
 import { hasRole } from "../../auth/auth.service";
