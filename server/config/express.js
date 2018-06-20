@@ -61,7 +61,7 @@ export default function init(app: $Application, connection) {
     // app.use(connectLivereload())
     app.use(errorHandler()); // Error handler - has to be last
   }
-
+  // eslint-disable-next-line no-unused-vars
   app.use(function(err, req: $Request, res: $Response, next) {
     console.error(err.stack);
     res.status(500).send("Internal error. Please try again later.");

@@ -2,6 +2,7 @@
 
 import type { $Request, $Response } from "express";
 
+// eslint-disable-next-line no-unused-vars
 import _ from "lodash";
 import Logger from "./logger.model";
 import Question from "../question/question.model";
