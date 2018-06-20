@@ -1,5 +1,5 @@
 // @flow
-const Dockerode = require('simple-dockerode')
+const Dockerode = require('simple-dockerode');
 
 import type { $Request, $Response } from "express";
 
@@ -87,25 +87,27 @@ const docker = new Dockerode();
 /** Starts `container` if it is not already running, then returns it.
 */
 function startUbuntuContainerIfNecessary(container) {
-  return container.inspect().then(data => {
-    if (data.State.Running) {
-      console.log("Container is already started, returning it now");
-      return container;
-    } else {
-      return container.start().then(container => {
-        console.log("Successful start, returning the container");
+  return container.inspect().then(
+    data => {
+      if (data.State.Running) {
+        console.log("Container is already started, returning it now");
         return container;
-      }).catch(err => {
-        let errMsg = "Failed start: " + err;
-        console.log(errMsg);
-        return Promise.reject(errMsg);
-      });
-    }
-  }).catch(err => {
-    let errMsg = "Error inspecting container: " + err;
-    console.log(errMsg);
-    return Promise.reject(errMsg);
-  });
+      } else {
+        return container.start().then(container => {
+          console.log("Successful start, returning the container");
+          return container;
+        }).catch(err => {
+          let errMsg = "Failed start: " + err;
+          console.log(errMsg);
+          return Promise.reject(errMsg);
+        });
+      }
+    },
+    err => {
+      let errMsg = "Error inspecting container: " + err;
+      console.log(errMsg);
+      return Promise.reject(errMsg);
+    });
 }
 
 /** Creates, starts, and returns an ubuntu Docker container, or starts and returns the existing one if it already exists.
@@ -151,16 +153,17 @@ function killAndRemoveContainer(container) {
     });
 }
 
+const execTimeLimitInSeconds = 10;
+
 function runCommandWithinContainer(cmd, container) {
-  let timeLimitInSeconds = 10;
-  let timeLimitInMilliseconds = timeLimitInSeconds * 1000;
+  const execTimeLimitInMilliseconds = execTimeLimitInSeconds * 1000;
 
   let execPromise = container.exec(cmd, {
     stdout: true,
     stderr: true
   });
 
-  return timeout(execPromise, timeLimitInMilliseconds).then(
+  return timeout(execPromise, execTimeLimitInMilliseconds).then(
     results => {
       return {
         stdout: results.stdout,
@@ -174,7 +177,7 @@ function runCommandWithinContainer(cmd, container) {
         stdout: null,
         stderr: null,
         execWasSuccessful: false,
-        execError: (err instanceof TimeoutError) ? `Timeout error: exec took longer than ${timeLimitInSeconds} seconds` : err
+        execError: err
       }
     });
 }
