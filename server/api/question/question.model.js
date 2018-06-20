@@ -1,7 +1,6 @@
 // @flow
 
 import mongoose from "mongoose";
-import Lesson from "../lesson/lesson.model";
 
 const Schema = mongoose.Schema;
 

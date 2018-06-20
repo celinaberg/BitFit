@@ -1,5 +1,4 @@
 // @flow
-/* exported Lesson */
 
 import type { $Request, $Response } from "express";
 
@@ -12,6 +11,8 @@ function handleError(res: $Response, err: Error) {
   console.error(err);
   return res.status(500).send(err);
 }
+
+export const x = 10;
 
 // Get list of questions
 export async function index(req: $Request, res: $Response) {

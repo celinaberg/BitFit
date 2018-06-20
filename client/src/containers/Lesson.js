@@ -42,7 +42,7 @@ class Lessons extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.lesson !== nextProps.lesson) {
       this.setState({ activeTab: "background" });
     }
