@@ -161,6 +161,15 @@ function killAndRemoveContainer(container) {
 const execTimeLimitInSeconds = 10;
 const timeoutErrorMsg = `Timeout: code took longer than ${execTimeLimitInSeconds} seconds to run`;
 
+function errResult(err) {
+  return {
+    stdout: null,
+    stderr: null,
+    execWasSuccessful: false,
+    execError: err
+  };
+}
+
 function runCommandWithinContainer(cmd, container) {
   const execTimeLimitInMilliseconds = execTimeLimitInSeconds * 1000;
 
@@ -179,12 +188,7 @@ function runCommandWithinContainer(cmd, container) {
       };
     },
     err => {
-      return {
-        stdout: null,
-        stderr: null,
-        execWasSuccessful: false,
-        execError: err
-      }
+      return errResult(err);
     });
 }
 
@@ -202,15 +206,6 @@ function getCodeFilePath(dirName, logger) {
 
 function getOutputFilePath(dirName, logger) {
   return `${dirName}/${logger.className}`;
-}
-
-function errResult(err) {
-  return {
-    stdout: null,
-    stderr: null,
-    execWasSuccessful: false,
-    execError: err
-  };
 }
 
 export async function compileLogger(req: $Request, res: $Response) {
