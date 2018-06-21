@@ -87,27 +87,27 @@ const docker = new Dockerode();
 /** Starts `container` if it is not already running, then returns it.
 */
 function startUbuntuContainerIfNecessary(container) {
-  return container.inspect().then(
-    data => {
-      if (data.State.Running) {
-        console.log("Container is already started, returning it now");
-        return container;
-      } else {
-        return container.start().then(container => {
-          console.log("Successful start, returning the container");
-          return container;
-        }).catch(err => {
-          let errMsg = "Failed start: " + err;
-          console.log(errMsg);
-          return Promise.reject(errMsg);
-        });
-      }
-    },
-    err => {
+  return new Promise((resolve, reject) => {
+    container.inspect().catch(err => {
       let errMsg = "Error inspecting container: " + err;
       console.log(errMsg);
-      return Promise.reject(errMsg);
+      reject(errMsg);
+    }).then(data => {
+      if (data.State.Running) {
+        console.log("Container is already started, returning it now");
+        resolve(container);
+      } else {
+        return container.start();
+      }
+    }).catch(err => {
+      const errMsg = `Error starting container: ${err}`;
+      console.log(errMsg);
+      reject(errMsg);
+    }).then(container => {
+      console.log("Successful start, returning the container");
+      resolve(container);
     });
+  });
 }
 
 /** Creates, starts, and returns a GCC Docker container with name `containerName`.
