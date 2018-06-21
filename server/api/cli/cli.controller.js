@@ -234,59 +234,158 @@ function myTest2() {
 
 myTest2();
 
+function getUserDockerContainerName(userId, loggerId) {
+  return userId + "_" + loggerId;
+}
+
+function getDirName(userId, loggerId) {
+  return "users/" + userId + "/" + loggerId;
+}
+
+function getCodeFilePath(dirName, logger) {
+  return `${dirName}/${logger.className}.c`;
+}
+
+function getOutputFilePath(dirName, logger) {
+  return `${dirName}/${logger.className}`;
+}
+
+function errResult(err) {
+  return {
+    stdout: null,
+    stderr: null,
+    execWasSuccessful: false,
+    execError: err
+  };
+}
+
 export async function compileLogger(req: $Request, res: $Response) {
-  try {
-    const userId = req.user.id;
-    const loggerId = req.params.id;
-    const logger = await Logger.findById(loggerId);
-    if (!logger) {
-      return res.status(400).json({
-        error: `No logger found;`
-      });
+  const userId = req.user.id;
+  const loggerId = req.params.id;
+  const logger = await Logger.findById(loggerId);
+  if (!logger) {
+    return res.status(400).json({
+      error: `No logger found;`
+    });
+  }
+  //console.log(logger);
+
+  const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
+  const result = await createAndStartUbuntuContainer(userDockerContainerName).then(
+    container => {
+      const dirName = getDirName(userId, loggerId);
+      const mkdirCmd = ['mkdir', '-p', dirName];
+      return runCommandWithinContainer(mkdirCmd, container).then(
+        result => {
+          const escapedCode = jsesc(logger.code, {
+            wrap: true
+          });
+          const codeFilePath = getCodeFilePath(dirName, logger);
+          const outputFilePath = getOutputFilePath(dirName, logger);
+          const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
+          return runCommandWithinContainer(echoCmd, container).then(
+            result => {
+              const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
+              return runCommandWithinContainer(gccCmd, container).then(
+                result => {
+                  return result;
+                },
+                err => {
+                  return errResult(err);
+                }
+              );
+            },
+            err => {
+              return errResult(err);
+            }
+          );
+        },
+        err => {
+          return errResult(err);
+        }
+      );
+    },
+    err => {
+      return errResult(err);
     }
-    //console.log(logger);
-    const dirName = "users/" + userId + "/" + loggerId;
-    await exec("mkdir -p " + dirName);
-    const escapedCode = jsesc(logger.code, {
-      wrap: true
-    });
-    await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
-    const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}" -lm`;
-    //console.log(gcc);
-    const result = await exec(gcc, {
-      timeout: 10000
-    });
-    //console.error("result object", result);
+  );
+
+  if (result.execWasSuccessful) {
     return res
       .status(200)
-      .json({ error: false, stdout: result.stdout, stderr: result.stderr });
-  } catch (err) {
-    //console.error(err);
-    return res
-      .status(200)
-      .json({ error: true, stdout: err.stdout, stderr: err.stderr });
+      .json({
+        error: false,
+        stdout: result.stdout,
+        stderr: result.stderr
+      });
+  } else {
+    if (result.execError instanceof TimeoutError) {
+      return res
+        .status(200)
+        .json({
+          error: true,
+          stdout: result.stdout,
+          stderr: timeoutErrorMsg
+        });
+    } else {
+      return res
+        .status(400)
+        .json({
+          error: result.execError
+        });
+    }
   }
 }
 
 export async function runLogger(req: $Request, res: $Response) {
-  try {
-    const userId = req.user.id;
-    const loggerId = req.params.id;
-    const logger = await Logger.findById(loggerId);
-    if (!logger) {
-      return res.status(400).json({
-        error: `No logger found;`
-      });
+  const userId = req.user.id;
+  const loggerId = req.params.id;
+  const logger = await Logger.findById(loggerId);
+  if (!logger) {
+    return res.status(400).json({
+      error: `No logger found;`
+    });
+  }
+
+  const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
+
+  const container = docker.getContainer(userDockerContainerName);
+
+  const dirName = getDirName(userId, loggerId);
+  const outputFilePath = getOutputFilePath(dirName, logger);
+  const runCmd = ['bash', '-c', `${outputFilePath}`];
+  const result = await runCommandWithinContainer(runCmd, container).then(
+    result => {
+      return result;
+    },
+    err => {
+      return errResult(err);
     }
-    const dirName = "users/" + userId + "/" + loggerId;
-    const cmd = `"${dirName}/${logger.className}"`;
-    const result = await exec(cmd, { timeout: 10000 });
+  );
+
+  if (result.execWasSuccessful) {
     return res
       .status(200)
-      .json({ error: false, stdout: result.stdout, stderr: result.stderr });
-  } catch (err) {
-    return res
-      .status(200)
-      .json({ error: true, stdout: err.stdout, stderr: err.stderr });
+      .json({
+        error: false,
+        stdout: result.stdout,
+        stderr: result.stderr
+      });
+  } else {
+    if (result.execError instanceof TimeoutError) {
+      return res
+        .status(200)
+        .json({
+          error: true,
+          stdout: result.stdout,
+          stderr: timeoutErrorMsg
+        });
+    } else {
+      return res
+        .status(400)
+        .json({
+          error: result.execError
+        });
+    }
   }
 }
