@@ -161,7 +161,7 @@ function killAndRemoveContainer(container) {
 const execTimeLimitInSeconds = 10;
 const timeoutErrorMsg = `Timeout: code took longer than ${execTimeLimitInSeconds} seconds to run`;
 
-function errResult(err) {
+function errExecResult(err) {
   return {
     stdout: null,
     stderr: null,
@@ -188,7 +188,7 @@ function runCommandWithinContainer(cmd, container) {
       };
     },
     err => {
-      return errResult(err);
+      return errExecResult(err);
     });
 }
 
@@ -220,12 +220,12 @@ export async function compileLogger(req: $Request, res: $Response) {
   //console.log(logger);
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-  const result = await createAndStartGCCContainer(userDockerContainerName).then(
+  const execResult = await createAndStartGCCContainer(userDockerContainerName).then(
     container => {
       const dirName = getDirName(userId, loggerId);
       const mkdirCmd = ['mkdir', '-p', dirName];
       return runCommandWithinContainer(mkdirCmd, container).then(
-        result => {
+        execResult => {
           const escapedCode = jsesc(logger.code, {
             wrap: true
           });
@@ -233,54 +233,54 @@ export async function compileLogger(req: $Request, res: $Response) {
           const outputFilePath = getOutputFilePath(dirName, logger);
           const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
           return runCommandWithinContainer(echoCmd, container).then(
-            result => {
+            execResult => {
               const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
               return runCommandWithinContainer(gccCmd, container).then(
-                result => {
-                  return result;
+                execResult => {
+                  return execResult;
                 },
                 err => {
-                  return errResult(err);
+                  return errExecResult(err);
                 }
               );
             },
             err => {
-              return errResult(err);
+              return errExecResult(err);
             }
           );
         },
         err => {
-          return errResult(err);
+          return errExecResult(err);
         }
       );
     },
     err => {
-      return errResult(err);
+      return errExecResult(err);
     }
   );
 
-  if (result.execWasSuccessful) {
+  if (execResult.execWasSuccessful) {
     return res
       .status(200)
       .json({
         error: false,
-        stdout: result.stdout,
-        stderr: result.stderr
+        stdout: execResult.stdout,
+        stderr: execResult.stderr
       });
   } else {
-    if (result.execError instanceof TimeoutError) {
+    if (execResult.execError instanceof TimeoutError) {
       return res
         .status(200)
         .json({
           error: true,
-          stdout: result.stdout,
+          stdout: execResult.stdout,
           stderr: timeoutErrorMsg
         });
     } else {
       return res
         .status(400)
         .json({
-          error: result.execError
+          error: execResult.execError
         });
     }
   }
@@ -303,39 +303,39 @@ export async function runLogger(req: $Request, res: $Response) {
   const dirName = getDirName(userId, loggerId);
   const outputFilePath = getOutputFilePath(dirName, logger);
   const runCmd = ['bash', '-c', `${outputFilePath}`];
-  const result = await runCommandWithinContainer(runCmd, container).then(
-    result => {
-      return result;
+  const execResult = await runCommandWithinContainer(runCmd, container).then(
+    execResult => {
+      return execResult;
     },
     err => {
-      return errResult(err);
+      return errExecResult(err);
     }
   );
 
   await killAndRemoveContainer(container);
 
-  if (result.execWasSuccessful) {
+  if (execResult.execWasSuccessful) {
     return res
       .status(200)
       .json({
         error: false,
-        stdout: result.stdout,
-        stderr: result.stderr
+        stdout: execResult.stdout,
+        stderr: execResult.stderr
       });
   } else {
-    if (result.execError instanceof TimeoutError) {
+    if (execResult.execError instanceof TimeoutError) {
       return res
         .status(200)
         .json({
           error: true,
-          stdout: result.stdout,
+          stdout: execResult.stdout,
           stderr: timeoutErrorMsg
         });
     } else {
       return res
         .status(400)
         .json({
-          error: result.execError
+          error: execResult.execError
         });
     }
   }
