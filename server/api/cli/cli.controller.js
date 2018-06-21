@@ -208,6 +208,34 @@ function getOutputFilePath(dirName, logger) {
   return `${dirName}/${logger.className}`;
 }
 
+function getResponseBasedOnExecResult(res, execResult) {
+  if (execResult.execWasSuccessful) {
+    return res
+      .status(200)
+      .json({
+        error: false,
+        stdout: execResult.stdout,
+        stderr: execResult.stderr
+      });
+  } else {
+    if (execResult.execError instanceof TimeoutError) {
+      return res
+        .status(200)
+        .json({
+          error: true,
+          stdout: execResult.stdout,
+          stderr: timeoutErrorMsg
+        });
+    } else {
+      return res
+        .status(400)
+        .json({
+          error: execResult.execError
+        });
+    }
+  }
+}
+
 export async function compileLogger(req: $Request, res: $Response) {
   const userId = req.user.id;
   const loggerId = req.params.id;
@@ -245,31 +273,7 @@ export async function compileLogger(req: $Request, res: $Response) {
     });
   });
 
-  if (execResult.execWasSuccessful) {
-    return res
-      .status(200)
-      .json({
-        error: false,
-        stdout: execResult.stdout,
-        stderr: execResult.stderr
-      });
-  } else {
-    if (execResult.execError instanceof TimeoutError) {
-      return res
-        .status(200)
-        .json({
-          error: true,
-          stdout: execResult.stdout,
-          stderr: timeoutErrorMsg
-        });
-    } else {
-      return res
-        .status(400)
-        .json({
-          error: execResult.execError
-        });
-    }
-  }
+  return getResponseBasedOnExecResult(res, execResult);
 }
 
 export async function runLogger(req: $Request, res: $Response) {
@@ -300,29 +304,5 @@ export async function runLogger(req: $Request, res: $Response) {
 
   await killAndRemoveContainer(container);
 
-  if (execResult.execWasSuccessful) {
-    return res
-      .status(200)
-      .json({
-        error: false,
-        stdout: execResult.stdout,
-        stderr: execResult.stderr
-      });
-  } else {
-    if (execResult.execError instanceof TimeoutError) {
-      return res
-        .status(200)
-        .json({
-          error: true,
-          stdout: execResult.stdout,
-          stderr: timeoutErrorMsg
-        });
-    } else {
-      return res
-        .status(400)
-        .json({
-          error: execResult.execError
-        });
-    }
-  }
+  return getResponseBasedOnExecResult(res, execResult);
 }
