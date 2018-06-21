@@ -138,20 +138,28 @@ function createAndStartGCCContainer(containerName) {
 }
 
 function killAndRemoveContainer(container) {
-  container.kill().then(
-    container => {
-      console.log("Successful kill, removing the container now");
-      container.remove().then(
-        data => {
-          console.log("Successfully removed container");
-        },
-        err => {
-          console.log("Error removing container: ", err);
-        });
-    },
-    err => {
-      console.log("Error killing container: ", err);
-    });
+  return new Promise((resolve, reject) => {
+    container.kill().then(
+      container => {
+        console.log("Successful kill, removing the container now");
+        container.remove().then(
+          data => {
+            const successMsg = "Successfully removed container";
+            console.log(successMsg);
+            resolve(successMsg);
+          },
+          err => {
+            const errMsg = `Error removing container: ${err}`;
+            console.log(errMsg);
+            reject(errMsg);
+          });
+      },
+      err => {
+        const errMsg = `Error removing container: ${err}`;
+        console.log(errMsg);
+        reject(errMsg);
+      });
+  });
 }
 
 const execTimeLimitInSeconds = 10;
@@ -312,6 +320,8 @@ export async function runLogger(req: $Request, res: $Response) {
       return errResult(err);
     }
   );
+
+  await killAndRemoveContainer(container);
 
   if (result.execWasSuccessful) {
     return res
