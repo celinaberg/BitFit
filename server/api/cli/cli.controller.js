@@ -220,44 +220,30 @@ export async function compileLogger(req: $Request, res: $Response) {
   //console.log(logger);
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-  const execResult = await createAndStartGCCContainer(userDockerContainerName).then(
-    container => {
-      const dirName = getDirName(userId, loggerId);
+  const execResult = await new Promise((resolve, reject) => {
+    let userContainer, dirName, codeFilePath;
+    createAndStartGCCContainer(userDockerContainerName).then(container => {
+      userContainer = container;
+      dirName = getDirName(userId, loggerId);
       const mkdirCmd = ['mkdir', '-p', dirName];
-      return runCommandWithinContainer(mkdirCmd, container).then(
-        execResult => {
-          const escapedCode = jsesc(logger.code, {
-            wrap: true
-          });
-          const codeFilePath = getCodeFilePath(dirName, logger);
-          const outputFilePath = getOutputFilePath(dirName, logger);
-          const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
-          return runCommandWithinContainer(echoCmd, container).then(
-            execResult => {
-              const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
-              return runCommandWithinContainer(gccCmd, container).then(
-                execResult => {
-                  return execResult;
-                },
-                err => {
-                  return errExecResult(err);
-                }
-              );
-            },
-            err => {
-              return errExecResult(err);
-            }
-          );
-        },
-        err => {
-          return errExecResult(err);
-        }
-      );
-    },
-    err => {
-      return errExecResult(err);
-    }
-  );
+      return runCommandWithinContainer(mkdirCmd, userContainer);
+    }).then(execResult => {
+      const escapedCode = jsesc(logger.code, {
+        wrap: true
+      });
+      codeFilePath = getCodeFilePath(dirName, logger);
+      const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
+      return runCommandWithinContainer(echoCmd, userContainer);
+    }).then(execResult => {
+      const outputFilePath = getOutputFilePath(dirName, logger);
+      const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
+      return runCommandWithinContainer(gccCmd, userContainer);
+    }).then(execResult => {
+      resolve(execResult);
+    }).catch(err => {
+      resolve(errExecResult(err));
+    });
+  });
 
   if (execResult.execWasSuccessful) {
     return res
