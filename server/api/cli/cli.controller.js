@@ -139,26 +139,22 @@ function createAndStartGCCContainer(containerName) {
 
 function killAndRemoveContainer(container) {
   return new Promise((resolve, reject) => {
-    container.kill().then(
-      container => {
-        console.log("Successful kill, removing the container now");
-        container.remove().then(
-          data => {
-            const successMsg = "Successfully removed container";
-            console.log(successMsg);
-            resolve(successMsg);
-          },
-          err => {
-            const errMsg = `Error removing container: ${err}`;
-            console.log(errMsg);
-            reject(errMsg);
-          });
-      },
-      err => {
-        const errMsg = `Error removing container: ${err}`;
-        console.log(errMsg);
-        reject(errMsg);
-      });
+    container.kill().catch(err => {
+      const errMsg = `Error killing container: ${err}`;
+      console.log(errMsg);
+      reject(errMsg);
+    }).then(container => {
+      console.log("Successful kill, removing the container now");
+      return container.remove();
+    }).catch(err => {
+      const errMsg = `Error removing container: ${err}`;
+      console.log(errMsg);
+      reject(errMsg);
+    }).then(data => {
+      const successMsg = "Successfully removed container";
+      console.log(successMsg);
+      resolve(successMsg);
+    });
   });
 }
 
