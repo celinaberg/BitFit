@@ -114,7 +114,7 @@ function startUbuntuContainerIfNecessary(container) {
 */
 function createAndStartUbuntuContainer(containerName) {
   return docker.createContainer({
-    Image: 'ubuntu',
+    Image: 'gcc',
     AttachStdin: false,
     AttachStdout: true,
     AttachStderr: true,
@@ -154,6 +154,7 @@ function killAndRemoveContainer(container) {
 }
 
 const execTimeLimitInSeconds = 10;
+const timeoutErrorMsg = `Timeout: code took longer than ${execTimeLimitInSeconds} seconds to run`;
 
 function runCommandWithinContainer(cmd, container) {
   const execTimeLimitInMilliseconds = execTimeLimitInSeconds * 1000;
@@ -182,27 +183,6 @@ function runCommandWithinContainer(cmd, container) {
     });
 }
 
-function myTest() {
-  let cmd = ['echo', 'Hi'];
-  let ubuntuContainerName = "ubuuuuuntuContaiiiiiner";
-  createAndStartUbuntuContainer(ubuntuContainerName).then(
-    ubuntuContainer => {
-      runCommandWithinContainer(cmd, ubuntuContainer).then(result => {
-        console.log("Now result is: ", result);
-        killAndRemoveContainer(ubuntuContainer);
-      }).catch(err => {
-        console.log("Error: ", err);
-        killAndRemoveContainer(ubuntuContainer);
-      });
-    },
-    err => {
-      console.log("No ubuntu container available to run the command!");
-      console.log("Error received: ", err);
-    });
-}
-
-myTest();
-
 function myTest2() {
   let testContainerName = "testContainer";
   createAndStartUbuntuContainer(testContainerName).then(
@@ -210,14 +190,29 @@ function myTest2() {
       let dirName = "users/testUserId/testLoggerId";
       return runCommandWithinContainer(['mkdir', '-p', dirName], container).then(
         result => {
-          let testCCode = "this is not actual code";
+          let testCCode = `#include <stdio.h>\nint main()\n{\n\tprintf("Hello world :)");\n\treturn 0;\n}`;
+          console.log(testCCode);
+          testCCode = jsesc(testCCode, {
+            wrap: true
+          });
+          console.log("testCCode: ");
+          console.log(testCCode);
           let testLoggerClassName = "testLoggerClassName";
           let testCFileName = `${dirName}/${testLoggerClassName}.c`;
-          return runCommandWithinContainer(['bash', '-c', `echo ${testCCode} > ${testCFileName}`], container).then(
+          let testCFileOutputName = `${dirName}/${testLoggerClassName}`;
+          return runCommandWithinContainer(['bash', '-c', `echo -en ${testCCode} > ${testCFileName}`], container).then(
             result => {
-              return runCommandWithinContainer(['bash', '-c', `cat ${testCFileName}`], container).then(
+              return runCommandWithinContainer(['bash', '-c', `gcc "${testCFileName}" -o "${testCFileOutputName}" -lm`], container).then(
                 result => {
-                  console.log("Here's our result: ", result);
+                  return runCommandWithinContainer(['bash', '-c', `./${testCFileOutputName}`], container).then(result => {
+                    console.log("Here's our result: ", result);
+                    container.kill().then(container => {
+                      console.log("Container killed");
+                      container.remove().then(_ => {
+                        console.log("Container removed");
+                      });
+                    });
+                  });
                 }
               ).catch(
                 err => {
