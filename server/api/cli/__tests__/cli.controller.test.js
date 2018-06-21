@@ -17,9 +17,9 @@ beforeAll(() => {
   }
 });
 
-test("Compile and Run Logger", async () => {
+test("Compile and Run Logger with Good Code", async () => {
 
-  let testLogger = await Logger.findOne({});
+  let testLogger = await Logger.findOne({className: "GoodCode"});
 
   let req = new MockExpressRequest({
     user: {

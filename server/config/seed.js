@@ -108,7 +108,7 @@ export function seedTestData() {
     Logger.find({}).remove(function() {
       console.log("Finished removing loggers");
       Logger.create({
-          className: "testLoggerClassName",
+          className: "GoodCode",
           code: `#include <stdio.h>\nint main()\n{\n\tprintf("${testLoggerMsgToBePrinted}");\n\treturn 0;\n}`
         },
         function() {
