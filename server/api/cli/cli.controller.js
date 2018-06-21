@@ -110,9 +110,10 @@ function startUbuntuContainerIfNecessary(container) {
     });
 }
 
-/** Creates, starts, and returns an ubuntu Docker container, or starts and returns the existing one if it already exists.
+/** Creates, starts, and returns a GCC Docker container with name `containerName`.
+Alternatively starts and returns the existing one if it already exists.
 */
-function createAndStartUbuntuContainer(containerName) {
+function createAndStartGCCContainer(containerName) {
   return docker.createContainer({
     Image: 'gcc',
     AttachStdin: false,
@@ -183,57 +184,6 @@ function runCommandWithinContainer(cmd, container) {
     });
 }
 
-function myTest2() {
-  let testContainerName = "testContainer";
-  createAndStartUbuntuContainer(testContainerName).then(
-    container => {
-      let dirName = "users/testUserId/testLoggerId";
-      return runCommandWithinContainer(['mkdir', '-p', dirName], container).then(
-        result => {
-          let testCCode = `#include <stdio.h>\nint main()\n{\n\tprintf("Hello world :)");\n\treturn 0;\n}`;
-          console.log(testCCode);
-          testCCode = jsesc(testCCode, {
-            wrap: true
-          });
-          console.log("testCCode: ");
-          console.log(testCCode);
-          let testLoggerClassName = "testLoggerClassName";
-          let testCFileName = `${dirName}/${testLoggerClassName}.c`;
-          let testCFileOutputName = `${dirName}/${testLoggerClassName}`;
-          return runCommandWithinContainer(['bash', '-c', `echo -en ${testCCode} > ${testCFileName}`], container).then(
-            result => {
-              return runCommandWithinContainer(['bash', '-c', `gcc "${testCFileName}" -o "${testCFileOutputName}" -lm`], container).then(
-                result => {
-                  return runCommandWithinContainer(['bash', '-c', `./${testCFileOutputName}`], container).then(result => {
-                    console.log("Here's our result: ", result);
-                    container.kill().then(container => {
-                      console.log("Container killed");
-                      container.remove().then(_ => {
-                        console.log("Container removed");
-                      });
-                    });
-                  });
-                }
-              ).catch(
-                err => {
-                  console.log("Error running stuff: ", err);
-                }
-              );
-            }
-          );
-        }
-      ).catch(err => {
-        console.log("THere was an error runing stuff: ", err);
-      });
-    },
-    err => {
-      console.log(`No container available to run code within due to error ${err}`);
-    }
-  );
-}
-
-myTest2();
-
 function getUserDockerContainerName(userId, loggerId) {
   return userId + "_" + loggerId;
 }
@@ -271,7 +221,7 @@ export async function compileLogger(req: $Request, res: $Response) {
   //console.log(logger);
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-  const result = await createAndStartUbuntuContainer(userDockerContainerName).then(
+  const result = await createAndStartGCCContainer(userDockerContainerName).then(
     container => {
       const dirName = getDirName(userId, loggerId);
       const mkdirCmd = ['mkdir', '-p', dirName];
