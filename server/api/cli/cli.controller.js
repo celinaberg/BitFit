@@ -171,8 +171,8 @@ const timeoutErrorMsg = `Timeout: code took longer than ${execTimeLimitInSeconds
 
 function errExecResult(err) {
   return {
-    stdout: null,
-    stderr: null,
+    stdout: "",
+    stderr: "",
     execWasSuccessful: false,
     execError: err
   };
@@ -189,12 +189,7 @@ function runCommandWithinContainer(cmd, container) {
   return timeout(execPromise, execTimeLimitInMilliseconds).then(
     results => {
       if (results.stderr) {
-        return {
-          stdout: results.stdout,
-          stderr: results.stderr,
-          execWasSuccessful: false,
-          execError: results.stderr
-        };
+        throw results.stderr;
       } else {
         return {
           stdout: results.stdout,
@@ -205,7 +200,7 @@ function runCommandWithinContainer(cmd, container) {
       }
     },
     err => {
-      return errExecResult(err);
+      throw err;
     });
 }
 
@@ -264,7 +259,7 @@ function compileLoggerCodeWithinContainer(dirName, logger, container) {
     }).then(execResult => {
       resolve(execResult);
     }).catch(err => {
-      resolve(errExecResult(err));
+      reject(err);
     });
   });
 }
@@ -285,7 +280,7 @@ export async function compileLogger(req: $Request, res: $Response) {
   const containerPromise = createAndStartGCCContainer(userDockerContainerName);
 
   const execResult = await containerPromise.then(container => {
-    return compileLoggerCodeWithinContainer(dirName, logger, container)
+    return compileLoggerCodeWithinContainer(dirName, logger, container);
   }).catch(err => {
     return errExecResult(err);
   });
@@ -313,13 +308,15 @@ export async function runLogger(req: $Request, res: $Response) {
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
   const containerPromise = createAndStartGCCContainer(userDockerContainerName);
+  let userContainer;
 
   const execResult = await containerPromise.then(container => {
-    return compileLoggerCodeWithinContainer(dirName, logger, container).then(execResult => {
-      const outputFilePath = getOutputFilePath(dirName, logger);
-      const runCmd = ['bash', '-c', `${outputFilePath}`];
-      return runCommandWithinContainer(runCmd, container);
-    });
+    userContainer = container;
+    return compileLoggerCodeWithinContainer(dirName, logger, container);
+  }).then(execResult => {
+    const outputFilePath = getOutputFilePath(dirName, logger);
+    const runCmd = ['bash', '-c', `${outputFilePath}`];
+    return runCommandWithinContainer(runCmd, userContainer);
   }).catch(err => {
     return errExecResult(err);
   });
