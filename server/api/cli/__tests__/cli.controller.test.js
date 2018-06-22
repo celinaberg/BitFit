@@ -64,6 +64,24 @@ test("Compile Logger with Bad Code", async () => {
   });
 });
 
+test("Compile Logger with Infinite Loop Code", async () => {
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await compileLogger(req, res);
+  let responseJson = response._getJSON();
+  console.log("Compile Response Json: ", responseJson);
+  expect(responseJson).toMatchObject({
+    error: false,
+    stdout: "",
+    stderr: ""
+  });
+});
+
 test("Run Logger with Good Code", async () => {
   let goodCodeLogger = await Logger.findOne({
     className: "GoodCode"
@@ -97,5 +115,24 @@ test("Run Logger with Bad Code", async () => {
     error: true,
     stdout: "",
     stderr: expect.stringMatching(/users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /)
+  });
+});
+
+test("Run Logger with Infinite Loop Code", async () => {
+  jest.setTimeout(15000);
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  console.log("Run Response Json: ", responseJson);
+  expect(responseJson).toMatchObject({
+    error: true,
+    stdout: "",
+    stderr: expect.stringMatching(/TimeoutError/)
   });
 });

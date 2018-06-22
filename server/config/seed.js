@@ -116,6 +116,10 @@ export function seedTestData() {
           className: "BadCode",
           code: "this is invalid C code"
         },
+        {
+          className: "InfiniteLoopCode",
+          code: `int main()\n{\n\tfor(;;) {}\n}`
+        },
         function() {
           console.log("Finished adding loggers");
           resolve();
