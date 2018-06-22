@@ -38,7 +38,6 @@ test("Compile Logger with Good Code", async () => {
 
   let response = await compileLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Compile Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: false,
     stdout: "",
@@ -56,7 +55,6 @@ test("Compile Logger with Bad Code", async () => {
 
   let response = await compileLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Compile Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: true,
     stdout: "",
@@ -74,7 +72,6 @@ test("Compile Logger with Infinite Loop Code", async () => {
 
   let response = await compileLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Compile Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: false,
     stdout: "",
@@ -92,7 +89,6 @@ test("Run Logger with Good Code", async () => {
 
   let response = await runLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Run Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: false,
     stdout: testLoggerMsgToBePrinted,
@@ -110,7 +106,6 @@ test("Run Logger with Bad Code", async () => {
 
   let response = await runLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Run Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: true,
     stdout: "",
@@ -129,7 +124,6 @@ test("Run Logger with Infinite Loop Code", async () => {
 
   let response = await runLogger(req, res);
   let responseJson = response._getJSON();
-  console.log("Run Response Json: ", responseJson);
   expect(responseJson).toMatchObject({
     error: true,
     stdout: "",

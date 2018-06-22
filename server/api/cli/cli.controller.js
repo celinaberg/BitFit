@@ -112,7 +112,7 @@ function startUbuntuContainerIfNecessary(container) {
       });
       reject(errMsg);
     }).then(container => {
-      console.log("Successful start, returning the container");
+      // console.log("Successful start, returning the container");
       resolve(container);
     });
   });
@@ -130,7 +130,7 @@ function createAndStartGCCContainer(containerName) {
     Cmd: ['bash', '-c', 'touch a; tail -f a'],
     name: containerName
   }).then(container => {
-    console.log("Successful creation, starting and returning the container now");
+    // console.log("Successful creation, starting and returning the container now");
     return startUbuntuContainerIfNecessary(container);
   }).catch(err => {
     if (err.json.message.includes(`Conflict. The container name "/${containerName}" is already in use`)) {
@@ -152,7 +152,7 @@ function killAndRemoveContainer(container) {
       console.log(errMsg);
       reject(errMsg);
     }).then(container => {
-      console.log("Successful kill, removing the container now");
+      // console.log("Successful kill, removing the container now");
       return container.remove();
     }).catch(err => {
       const errMsg = `Error removing container: ${err}`;
@@ -160,7 +160,7 @@ function killAndRemoveContainer(container) {
       reject(errMsg);
     }).then(data => {
       const successMsg = "Successfully removed container";
-      console.log(successMsg);
+      // console.log(successMsg);
       resolve(successMsg);
     });
   });
