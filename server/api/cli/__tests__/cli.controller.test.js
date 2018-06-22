@@ -81,3 +81,21 @@ test("Run Logger with Good Code", async () => {
     stderr: ""
   });
 });
+
+test("Run Logger with Bad Code", async () => {
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+
+  let req = getMockExpressRequestForLogger(badCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  console.log("Run Response Json: ", responseJson);
+  expect(responseJson).toMatchObject({
+    error: true,
+    stdout: "",
+    stderr: expect.stringMatching(/users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /)
+  });
+});
