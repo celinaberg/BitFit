@@ -107,9 +107,14 @@ export function seedTestData() {
   let loggersPromise = new Promise((resolve, reject) => {
     Logger.find({}).remove(function() {
       console.log("Finished removing loggers");
-      Logger.create({
+      Logger.create(
+        {
           className: "GoodCode",
           code: `#include <stdio.h>\nint main()\n{\n\tprintf("${testLoggerMsgToBePrinted}");\n\treturn 0;\n}`
+        },
+        {
+          className: "BadCode",
+          code: "this is invalid C code"
         },
         function() {
           console.log("Finished adding loggers");
