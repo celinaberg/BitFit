@@ -230,7 +230,7 @@ function getResponseBasedOnExecResult(res, execResult) {
       return res
         .status(400)
         .json({
-          error: execResult.execError
+          error: JSON.stringify(execResult.execError, Object.getOwnPropertyNames(execResult.execError))
         });
     }
   }
