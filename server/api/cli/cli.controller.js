@@ -236,9 +236,34 @@ function getResponseBasedOnExecResult(res, execResult) {
   }
 }
 
+/** Tries to compile Logger code inside `container`. Returns a Promise for an execResult.
+ */
+function compileLoggerCodeWithinContainer(dirName, logger, container) {
+  return new Promise((resolve, reject) => {
+    const codeFilePath = getCodeFilePath(dirName, logger);
+    const mkdirCmd = ['mkdir', '-p', dirName];
+    runCommandWithinContainer(mkdirCmd, container).then(execResult => {
+      const escapedCode = jsesc(logger.code, {
+        wrap: true
+      });
+      const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
+      return runCommandWithinContainer(echoCmd, container);
+    }).then(execResult => {
+      const outputFilePath = getOutputFilePath(dirName, logger);
+      const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
+      return runCommandWithinContainer(gccCmd, container);
+    }).then(execResult => {
+      resolve(execResult);
+    }).catch(err => {
+      resolve(errExecResult(err));
+    });
+  });
+}
+
 export async function compileLogger(req: $Request, res: $Response) {
   const userId = req.user.id;
   const loggerId = req.params.id;
+  const dirName = getDirName(userId, loggerId);
   const logger = await Logger.findById(loggerId);
   if (!logger) {
     return res.status(400).json({
@@ -248,29 +273,19 @@ export async function compileLogger(req: $Request, res: $Response) {
   //console.log(logger);
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-  const execResult = await new Promise((resolve, reject) => {
-    let userContainer, dirName, codeFilePath;
-    createAndStartGCCContainer(userDockerContainerName).then(container => {
-      userContainer = container;
-      dirName = getDirName(userId, loggerId);
-      const mkdirCmd = ['mkdir', '-p', dirName];
-      return runCommandWithinContainer(mkdirCmd, userContainer);
-    }).then(execResult => {
-      const escapedCode = jsesc(logger.code, {
-        wrap: true
-      });
-      codeFilePath = getCodeFilePath(dirName, logger);
-      const echoCmd = ['bash', '-c', `echo -en ${escapedCode} > ${codeFilePath}`];
-      return runCommandWithinContainer(echoCmd, userContainer);
-    }).then(execResult => {
-      const outputFilePath = getOutputFilePath(dirName, logger);
-      const gccCmd = ['bash', '-c', `gcc "${codeFilePath}" -o "${outputFilePath}" -lm`];
-      return runCommandWithinContainer(gccCmd, userContainer);
-    }).then(execResult => {
-      resolve(execResult);
-    }).catch(err => {
-      resolve(errExecResult(err));
-    });
+  const containerPromise = createAndStartGCCContainer(userDockerContainerName);
+
+  const execResult = await containerPromise.then(container => {
+    return compileLoggerCodeWithinContainer(dirName, logger, container)
+  }).catch(err => {
+    return errExecResult(err);
+  });
+
+  // Kill and remove container if it was created successfully
+  await containerPromise.then(async container => {
+    await killAndRemoveContainer(container);
+  }).catch(err => {
+    // do nothing
   });
 
   return getResponseBasedOnExecResult(res, execResult);
@@ -279,6 +294,7 @@ export async function compileLogger(req: $Request, res: $Response) {
 export async function runLogger(req: $Request, res: $Response) {
   const userId = req.user.id;
   const loggerId = req.params.id;
+  const dirName = getDirName(userId, loggerId);
   const logger = await Logger.findById(loggerId);
   if (!logger) {
     return res.status(400).json({
@@ -287,22 +303,24 @@ export async function runLogger(req: $Request, res: $Response) {
   }
 
   const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
+  const containerPromise = createAndStartGCCContainer(userDockerContainerName);
 
-  const container = docker.getContainer(userDockerContainerName);
+  const execResult = await containerPromise.then(container => {
+    return compileLoggerCodeWithinContainer(dirName, logger, container).then(execResult => {
+      const outputFilePath = getOutputFilePath(dirName, logger);
+      const runCmd = ['bash', '-c', `${outputFilePath}`];
+      return runCommandWithinContainer(runCmd, container);
+    });
+  }).catch(err => {
+    return errExecResult(err);
+  });
 
-  const dirName = getDirName(userId, loggerId);
-  const outputFilePath = getOutputFilePath(dirName, logger);
-  const runCmd = ['bash', '-c', `${outputFilePath}`];
-  const execResult = await runCommandWithinContainer(runCmd, container).then(
-    execResult => {
-      return execResult;
-    },
-    err => {
-      return errExecResult(err);
-    }
-  );
-
-  await killAndRemoveContainer(container);
+  // Kill and remove container if it was created successfully
+  await containerPromise.then(async container => {
+    await killAndRemoveContainer(container);
+  }).catch(err => {
+    // do nothing
+  });
 
   return getResponseBasedOnExecResult(res, execResult);
 }
