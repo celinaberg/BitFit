@@ -188,12 +188,21 @@ function runCommandWithinContainer(cmd, container) {
 
   return timeout(execPromise, execTimeLimitInMilliseconds).then(
     results => {
-      return {
-        stdout: results.stdout,
-        stderr: results.stderr,
-        execWasSuccessful: true,
-        execError: null
-      };
+      if (results.stderr) {
+        return {
+          stdout: results.stdout,
+          stderr: results.stderr,
+          execWasSuccessful: false,
+          execError: results.stderr
+        };
+      } else {
+        return {
+          stdout: results.stdout,
+          stderr: results.stderr,
+          execWasSuccessful: true,
+          execError: null
+        };
+      }
     },
     err => {
       return errExecResult(err);
@@ -226,21 +235,13 @@ function getResponseBasedOnExecResult(res, execResult) {
         stderr: execResult.stderr
       });
   } else {
-    if (execResult.execError instanceof TimeoutError) {
-      return res
-        .status(200)
-        .json({
-          error: true,
-          stdout: execResult.stdout,
-          stderr: timeoutErrorMsg
-        });
-    } else {
-      return res
-        .status(400)
-        .json({
-          error: JSON.stringify(execResult.execError, Object.getOwnPropertyNames(execResult.execError))
-        });
-    }
+    return res
+      .status(200)
+      .json({
+        error: true,
+        stdout: execResult.stdout,
+        stderr: JSON.stringify(execResult.execError, Object.getOwnPropertyNames(execResult.execError))
+      });
   }
 }
 
