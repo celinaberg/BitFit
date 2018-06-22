@@ -17,34 +17,49 @@ beforeAll(() => {
   }
 });
 
-test("Compile and Run Logger with Good Code", async () => {
-
-  let testLogger = await Logger.findOne({className: "GoodCode"});
-
-  let req = new MockExpressRequest({
+function getMockExpressRequestForLogger(logger) {
+  return new MockExpressRequest({
     user: {
       id: "testUserId"
     },
     params: {
-      id: testLogger._id
+      id: logger._id
     }
   });
+}
 
-  let compileRes = new MockExpressResponse();
+test("Compile Logger with Good Code", async () => {
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
 
-  let compileResponse = await compileLogger(req, compileRes);
-  let compileResponseJson = compileResponse._getJSON();
-  console.log("Compile Response Json: ", compileResponseJson);
-  expect(compileResponseJson.error).toBe(false);
-  expect(compileResponseJson.stdout).toBe("");
-  expect(compileResponseJson.stderr).toBe("");
+  let req = getMockExpressRequestForLogger(goodCodeLogger);
+  let res = new MockExpressResponse();
 
-  let runRes = new MockExpressResponse();
+  let response = await compileLogger(req, res);
+  let responseJson = response._getJSON();
+  console.log("Compile Response Json: ", responseJson);
+  expect(responseJson).toMatchObject({
+    error: false,
+    stdout: "",
+    stderr: ""
+  });
+});
 
-  let runResponse = await runLogger(req, runRes);
-  let runResponseJson = runResponse._getJSON();
-  console.log("Run response Json: ", runResponseJson);
-  expect(runResponseJson.error).toBe(false);
-  expect(runResponseJson.stdout).toBe(testLoggerMsgToBePrinted);
-  expect(runResponseJson.stderr).toBe("");
+test("Run Logger with Good Code", async () => {
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+
+  let req = getMockExpressRequestForLogger(goodCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  console.log("Run Response Json: ", responseJson);
+  expect(responseJson).toMatchObject({
+    error: false,
+    stdout: testLoggerMsgToBePrinted,
+    stderr: ""
+  });
 });
