@@ -167,7 +167,6 @@ function killAndRemoveContainer(container) {
 }
 
 const execTimeLimitInSeconds = 10;
-const timeoutErrorMsg = `Timeout: code took longer than ${execTimeLimitInSeconds} seconds to run`;
 
 function errExecResult(err) {
   return {
