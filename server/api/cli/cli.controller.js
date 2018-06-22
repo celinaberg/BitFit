@@ -99,9 +99,17 @@ function startUbuntuContainerIfNecessary(container) {
       } else {
         return container.start();
       }
-    }).catch(err => {
-      const errMsg = `Error starting container: ${err}`;
+    }).catch(async err => {
+      let errMsg = `Error starting container: ${err}`;
       console.log(errMsg);
+      console.log("Now cleaning up by attempting to remove non-started container");
+      await container.remove().then(data => {
+        console.log("Container removed successfully");
+      }).catch(err => {
+        const removeErrMsg = "\nFailed to remove container, there is now a non-started container lying around";
+        errMsg += removeErrMsg;
+        console.log(removeErrMsg);
+      });
       reject(errMsg);
     }).then(container => {
       console.log("Successful start, returning the container");
