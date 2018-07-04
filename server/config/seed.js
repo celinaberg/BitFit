@@ -30,6 +30,7 @@ export function seedTestData() {
       Question.create(
         {
           title: "Looping",
+          className: "looping",
           instructions:
             "New, w1q1 from MongoDB!! Add code to the code editor to make the system output numbers 1 through 9.",
           code: "#include <stdio.h>\nint main() {\n\tfor (int i = 1; i < 10; i++) {\n\t\tprintf(\"%d\", i);\n\t}\n}",
@@ -39,6 +40,7 @@ export function seedTestData() {
         },
         {
           title: "Hello, world",
+          className: "helloWorld",
           instructions:
             "New, w1q2 from MongoDB!! Print \"Hello, world!\".",
           code:
@@ -53,6 +55,7 @@ export function seedTestData() {
         },
         {
           title: "Lots of text",
+          className: "lotsOfText",
           instructions:
             "New, w1q3 from MongoDB!! lots of text here and lots more text and more and more and more and more whoooooohoooohooo..... Add code to the code editor to create a valid for loop.",
           code:
@@ -65,6 +68,7 @@ export function seedTestData() {
         },
         {
           title: "Units",
+          className: "units",
           // code : "",
           expectedOutput: "1036200 kg",
           hints: ["Don't forget to output the units!"],
