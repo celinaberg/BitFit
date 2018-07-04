@@ -84,6 +84,17 @@ const exec = promisify(execSync);
 
 const docker = new Dockerode();
 
+// start out the promise with an already resolved mock call
+let callQueuePromise = Promise.resolve();
+
+// returns a promise that ends at `nextCall` regardless of if callQueuePromise has been appended
+// in the meantime by another call of `queueFunctionCall`.
+function queueFunctionCall(nextCall) {
+  // nextCall() should return a Promise that resolves only when it's done
+  callQueuePromise = callQueuePromise.then(nextCall);
+  return callQueuePromise;
+}
+
 /** Starts `container` if it is not already running, then returns it.
 */
 function startUbuntuContainerIfNecessary(container) {
@@ -294,38 +305,49 @@ export async function compileLogger(req: $Request, res: $Response) {
   return getResponseBasedOnExecResult(res, execResult);
 }
 
-export async function runLogger(req: $Request, res: $Response) {
-  const userId = req.user.id;
-  const loggerId = req.params.id;
-  const dirName = getDirName(userId, loggerId);
-  const logger = await Logger.findById(loggerId);
-  if (!logger) {
-    return res.status(400).json({
-      error: `No logger found;`
+function runLoggerCallCreator(req: $Request, res: $Response) {
+  return () => {
+    return new Promise(async (resolve, reject) => {
+      const userId = req.user.id;
+      const loggerId = req.params.id;
+      const dirName = getDirName(userId, loggerId);
+      const logger = await Logger.findById(loggerId);
+      if (!logger) {
+        reject(res.status(400).json({
+          error: `No logger found;`
+        }));
+      }
+
+      const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
+      const containerPromise = createAndStartGCCContainer(userDockerContainerName);
+      let userContainer;
+
+      const execResult = await containerPromise.then(container => {
+        userContainer = container;
+        return (compileLoggerCodeWithinContainer(dirName, logger, container));
+      }).then(execResult => {
+        const outputFilePath = getOutputFilePath(dirName, logger);
+        const runCmd = ['bash', '-c', `${outputFilePath}`];
+        return runCommandWithinContainer(runCmd, userContainer);
+      }).catch(err => {
+        return errExecResult(err);
+      });
+
+      // Kill and remove container if it was created successfully
+      await containerPromise.then(async container => {
+        await killAndRemoveContainer(container);
+      }).catch(err => {
+        console.log("Container creation failed so there's nothing to kill");
+        // do nothing
+      });
+
+      resolve(getResponseBasedOnExecResult(res, execResult));
     });
-  }
+  };
+}
 
-  const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-  const containerPromise = createAndStartGCCContainer(userDockerContainerName);
-  let userContainer;
-
-  const execResult = await containerPromise.then(container => {
-    userContainer = container;
-    return compileLoggerCodeWithinContainer(dirName, logger, container);
-  }).then(execResult => {
-    const outputFilePath = getOutputFilePath(dirName, logger);
-    const runCmd = ['bash', '-c', `${outputFilePath}`];
-    return runCommandWithinContainer(runCmd, userContainer);
-  }).catch(err => {
-    return errExecResult(err);
-  });
-
-  // Kill and remove container if it was created successfully
-  await containerPromise.then(async container => {
-    await killAndRemoveContainer(container);
-  }).catch(err => {
-    // do nothing
-  });
-
-  return getResponseBasedOnExecResult(res, execResult);
+export async function runLogger(req: $Request, res: $Response) {
+  let nextCall = runLoggerCallCreator(req, res);
+  let outputResponse = await queueFunctionCall(nextCall);
+  return outputResponse;
 }
