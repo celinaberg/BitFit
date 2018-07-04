@@ -441,8 +441,7 @@ class TestQuestion extends Component {
               </div>
               <div>
                 <p>
-                  {" "}
-                  <strong> number of hints left:</strong> {hintsLeft}{" "}
+                  <strong> number of hints left:</strong> {hintsLeft}
                 </p>
               </div>
             </CardBlock>
