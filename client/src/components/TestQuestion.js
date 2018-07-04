@@ -1,5 +1,4 @@
 // @flow
-/*eslint-disable no-unused-vars*/
 
 import type { Question, Logger } from "../types";
 import React, { Component } from "react";
@@ -209,6 +208,7 @@ class TestQuestion extends Component {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   onResetToStarterClick = (event: SyntheticEvent): void => {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.className = this.props.question.className;
@@ -238,6 +238,7 @@ class TestQuestion extends Component {
     this.setState({ runOutput: newRunOutput });
   };
 
+  // eslint-disable-next-line no-unused-vars
   onGetHintClick = (event: SyntheticEvent): void => {
     if (
       this.state.logger.numHintsDisplayed < this.props.question.hints.length
