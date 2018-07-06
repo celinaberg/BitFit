@@ -27,7 +27,7 @@ class GetLoggers extends Component {
     } else {
       loggers = this.props.loggers.loggers.map(logger => {
         return (
-          <ListGroupItemText key={logger.id}>
+          <ListGroupItemText key={logger._id}>
             <span className="text-muted">
               {logger.user},
               {logger.question},
