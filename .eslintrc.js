@@ -20,7 +20,7 @@ module.exports = {
     "prettier/flowtype"
   ],
   rules: {
-    'prettier/prettier': ERROR,
+    'prettier/prettier': OFF,
     'no-console': OFF,
     'import/no-commonjs': ERROR
   },
