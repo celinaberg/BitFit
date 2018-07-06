@@ -1,5 +1,3 @@
-// @flow
-
 var fs = require("fs");
 var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");

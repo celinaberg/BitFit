@@ -22,13 +22,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ERROR,
     'no-console': OFF,
-    'import/no-commonjs': ERROR,
-    'flowtype/require-valid-file-annotation': [
-      2,
-      'always', {
-        'annotationStyle': 'line'
-      }
-    ]
+    'import/no-commonjs': ERROR
   },
   overrides: [
     {
