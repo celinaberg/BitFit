@@ -1,5 +1,4 @@
 // @flow
-/*eslint-disable no-unused-vars*/
 
 import type { Dispatch } from "../../actions/types";
 import type { State } from "../../types";
@@ -50,6 +49,7 @@ class App extends Component {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state: State, ownProps) => {
   return {
     loaded: state.auth.loaded
