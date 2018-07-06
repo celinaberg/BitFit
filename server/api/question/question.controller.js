@@ -11,8 +11,6 @@ function handleError(res: $Response, err: Error) {
   return res.status(500).send(err);
 }
 
-export const x = 10;
-
 // Get list of questions
 export async function index(req: $Request, res: $Response) {
   try {
