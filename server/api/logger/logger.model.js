@@ -18,7 +18,9 @@ const LoggerSchema = new Schema({
   correctAttempts: { type: Number, default: 0 },
   className: String,
   code: String,
-  expectedOutput: String
+  expectedOutput: String,
+  gotAnswerCorrectBeforeDueDate: { type: Boolean, default: false },
+  timeOfCorrectAnswer: Date
 });
 
 /**

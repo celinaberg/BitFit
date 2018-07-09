@@ -43,7 +43,9 @@ class GetLoggers extends Component {
             {logger.numRuns},
             {logger.numHints},
             {logger.totalAttempts},
-            {logger.correctAttempts}
+            {logger.correctAttempts},
+            {logger.gotAnswerCorrectBeforeDueDate.toString()},
+            {logger.timeOfCorrectAnswer}
           </span>
           <span>&nbsp;</span>
         </ListGroupItemText>
@@ -67,7 +69,9 @@ class GetLoggers extends Component {
               numRuns,
               numHints,
               totalAttempts,
-              correctAttempts
+              correctAttempts,
+              gotAnswerCorrectBeforeDueDate,
+              timeOfCorrectAnswer
             </span>
             <span>&nbsp;</span>
            </ListGroupItemText>
