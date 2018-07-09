@@ -14,7 +14,8 @@ const QuestionSchema = new Schema({
   hints: [String],
   tags: String,
   expectedOutput: String,
-  lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }
+  lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
+  dueDate: Date
 });
 
 QuestionSchema.options.toObject = {};
