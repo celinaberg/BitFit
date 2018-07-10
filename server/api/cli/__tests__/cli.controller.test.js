@@ -262,6 +262,8 @@ test("Compile And Run Logger Load Test", async () => {
 
   expect.assertions(numberOfRequests);
 
+  let startTime = Date.now();
+
   // execute a bunch of calls to runLogger
   for (let i = 0; i < numberOfRequests; i++) {
     let randomIndex = Math.floor(Math.random() * 6);  // random integer between 0 and 5 inclusive
@@ -277,5 +279,9 @@ test("Compile And Run Logger Load Test", async () => {
     });
   }
 
-  return Promise.all(outputResponsePromises);
+  return Promise.all(outputResponsePromises).then(_ => {
+    let endTime = Date.now();
+    let timeElapsed = (endTime - startTime) / 1000;
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);
+  });
 });
