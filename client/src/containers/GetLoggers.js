@@ -10,6 +10,7 @@ import {
   ListGroupItemText,
   Progress
 } from "reactstrap";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
 
@@ -32,23 +33,20 @@ class GetLoggers extends Component {
     } else {
       loggers = this.props.loggers.loggers.map(logger => {
         return (
-        <ListGroupItemText>
-          <span className="text-muted">
-            {logger.user},
-            {logger.question},
-            {logger.startTime},
-            {logger.endTime},
-            {logger.numCompiles},
-            {logger.numErrorFreeCompiles},
-            {logger.numRuns},
-            {logger.numHints},
-            {logger.totalAttempts},
-            {logger.correctAttempts},
-            {logger.gotAnswerCorrectBeforeDueDate.toString()},
-            {logger.timeOfCorrectAnswer}
-          </span>
-          <span>&nbsp;</span>
-        </ListGroupItemText>
+        <tr>
+          <td>{logger.user}</td>
+          <td>{logger.question}</td>
+          <td>{logger.startTime}</td>
+          <td>{logger.endTime}</td>
+          <td>{logger.numCompiles}</td>
+          <td>{logger.numErrorFreeCompiles}</td>
+          <td>{logger.numRuns}</td>
+          <td>{logger.numHints}</td>
+          <td>{logger.totalAttempts}</td>
+          <td>{logger.correctAttempts}</td>
+          <td>{logger.gotAnswerCorrectBeforeDueDate.toString()}</td>
+          <td>{logger.timeOfCorrectAnswer}</td>
+        </tr>
         );
       });
     }
@@ -56,27 +54,34 @@ class GetLoggers extends Component {
       <Col sm="9" md="10">
         <h2 className="page-header">Loggers</h2>
 
-
-        <ListGroup>
-          <ListGroupItemText>
-            <span className="text-bold">
-              user,
-              question,
-              startTime,
-              endTime,
-              numCompiles,
-              numErrorFreeCompiles,
-              numRuns,
-              numHints,
-              totalAttempts,
-              correctAttempts,
-              gotAnswerCorrectBeforeDueDate,
-              timeOfCorrectAnswer
-            </span>
-            <span>&nbsp;</span>
-           </ListGroupItemText>
+        <ReactHTMLTableToExcel
+                    id="loggers-table-xls-button"
+                    className=""
+                    table="loggers-table"
+                    filename="allStudentLoggers"
+                    sheet="loggers"
+                    buttonText="Download as XLS"/>
+        <table border="1" id="loggers-table">
+        <thead>
+          <tr>
+            <th>user</th>
+            <th>question</th>
+            <th>startTime</th>
+            <th>endTime</th>
+            <th>numCompiles</th>
+            <th>numErrorFreeCompiles</th>
+            <th>numRuns</th>
+            <th>numHints</th>
+            <th>totalAttempts</th>
+            <th>correctAttempts</th>
+            <th>gotAnswerCorrectBeforeDueDate</th>
+            <th>timeOfCorrectAnswer</th>
+          </tr>
+          </thead>
+          <tbody>
           {loggers}
-        </ListGroup>
+          </tbody>
+        </table>
       </Col>
     );
   }
