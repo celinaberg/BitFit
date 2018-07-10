@@ -4,12 +4,7 @@ import type { Dispatch } from "../actions/types";
 import type { LoggerState, State } from "../types";
 
 import React, { Component } from "react";
-import {
-  Col,
-  ListGroup,
-  ListGroupItemText,
-  Progress
-} from "reactstrap";
+import { Col, Progress } from "reactstrap";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
@@ -33,7 +28,7 @@ class GetLoggers extends Component {
     } else {
       loggers = this.props.loggers.loggers.map(logger => {
         return (
-        <tr>
+        <tr key={logger.id}>
           <td>{logger.user}</td>
           <td>{logger.question}</td>
           <td>{logger.startTime}</td>

@@ -17,13 +17,13 @@ export function seedTestData() {
 
       let screencastIIILessonId = await Lesson.findOne({title: "Screencast III"}).then(lesson => {
         return lesson._id;
-      }).catch(err => {
+      }).catch(err => {  // eslint-disable-line no-unused-vars
         return null;
       });
 
       let screencastIVLessonId = await Lesson.findOne({title: "Screencast IV"}).then(lesson => {
         return lesson._id;
-      }).catch(err => {
+      }).catch(err => {  // eslint-disable-line no-unused-vars
         return null;
       });
 
