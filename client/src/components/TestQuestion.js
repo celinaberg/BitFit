@@ -124,8 +124,9 @@ class TestQuestion extends Component {
   onCompileClick = async () => {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numCompiles = this.state.logger.numCompiles + 1;
+    newLogger.endTime = new Date().getTime();
     this.setState({ logger: newLogger });
-    this.saveLogger({ id: newLogger.id, numCompiles: newLogger.numCompiles });
+    this.saveLogger({ id: newLogger.id, numCompiles: newLogger.numCompiles, endTime: newLogger.endTime });
     const loggerRequest = await fetch(
       "/api/clis/compile/" + this.state.logger.id,
       {
@@ -148,8 +149,9 @@ class TestQuestion extends Component {
   onRunClick = async () => {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.numRuns = this.state.logger.numRuns + 1;
+    newLogger.endTime = new Date().getTime();
     this.setState({ logger: newLogger });
-    this.saveLogger({ id: newLogger.id, numRuns: newLogger.numRuns });
+    this.saveLogger({ id: newLogger.id, numRuns: newLogger.numRuns, endTime: newLogger.endTime });
     const loggerRequest = await fetch("/api/clis/run/" + this.state.logger.id, {
       credentials: "include"
     });
@@ -160,8 +162,15 @@ class TestQuestion extends Component {
   checkAnswer() {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
+    const answerTime = new Date().getTime();
+    const questionDueDate = new Date(this.props.question.dueDate).getTime();
+    newLogger.endTime = answerTime;
     if (this.state.runOutput.stdout === this.props.question.expectedOutput) {
       newLogger.correctAttempts = this.state.logger.correctAttempts + 1;
+      if (!questionDueDate || (answerTime < questionDueDate)) {
+        newLogger.gotAnswerCorrectBeforeDueDate = true;
+        newLogger.timeOfCorrectAnswer = answerTime;
+      }
       this.setState({ checkAnswer: true });
     } else {
       this.setState({ checkAnswer: false });
@@ -170,13 +179,19 @@ class TestQuestion extends Component {
     this.saveLogger({
       id: newLogger.id,
       totalAttempts: newLogger.totalAttempts,
-      correctAttempts: newLogger.correctAttempts
+      correctAttempts: newLogger.correctAttempts,
+      endTime: newLogger.endTime,
+      gotAnswerCorrectBeforeDueDate: newLogger.gotAnswerCorrectBeforeDueDate,
+      timeOfCorrectAnswer: newLogger.timeOfCorrectAnswer
     });
   }
 
   async checkReadOnlyAnswer() {
     let newLogger = Object.assign({}, this.state.logger);
     newLogger.totalAttempts = this.state.logger.totalAttempts + 1;
+    const answerTime = new Date().getTime();
+    const questionDueDate = new Date(this.props.question.dueDate).getTime();
+    newLogger.endTime = answerTime;
     //const compileRequest =
     await fetch("/api/clis/compile/" + this.state.logger.id, {
       credentials: "include"
@@ -188,6 +203,10 @@ class TestQuestion extends Component {
     const runOutput = await runRequest.json();
     if (runOutput.stdout === this.state.logger.expectedOutput) {
       newLogger.correctAttempts = this.state.logger.correctAttempts + 1;
+      if (!questionDueDate || (answerTime < questionDueDate)) {
+        newLogger.gotAnswerCorrectBeforeDueDate = true;
+        newLogger.timeOfCorrectAnswer = answerTime;
+      }
       this.setState({ checkAnswer: true });
     } else {
       this.setState({ checkAnswer: false });
@@ -196,7 +215,10 @@ class TestQuestion extends Component {
     this.saveLogger({
       id: newLogger.id,
       totalAttempts: newLogger.totalAttempts,
-      correctAttempts: newLogger.correctAttempts
+      correctAttempts: newLogger.correctAttempts,
+      endTime: newLogger.endTime,
+      gotAnswerCorrectBeforeDueDate: newLogger.gotAnswerCorrectBeforeDueDate,
+      timeOfCorrectAnswer: newLogger.timeOfCorrectAnswer
     });
   }
 

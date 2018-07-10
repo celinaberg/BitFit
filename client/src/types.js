@@ -88,7 +88,9 @@ export type Logger = {
   +correctAttempts: number,
   +className: string,
   +code: string,
-  +expectedOutput: string
+  +expectedOutput: string,
+  +gotAnswerCorrectBeforeDueDate: boolean,
+  +timeOfCorrectAnswer: string
 };
 
 export type LoggerState = {

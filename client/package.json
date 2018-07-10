@@ -12,6 +12,7 @@
     "react-addons-transition-group": "^15.6.0",
     "react-dom": "^16.4.0",
     "react-download-link": "^2.0.0",
+    "react-html-table-to-excel": "^2.0.0",
     "react-icons": "^2.2.5",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
