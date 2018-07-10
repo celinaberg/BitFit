@@ -155,6 +155,8 @@ function createAndStartGCCContainer(containerName) {
   });
 }
 
+const gccContainerPromise = createAndStartGCCContainer("ourContainer");
+
 function killAndRemoveContainer(container) {
   return new Promise((resolve, reject) => {
     container.kill().catch(err => {
@@ -273,6 +275,13 @@ function compileLoggerCodeWithinContainer(dirName, logger, container) {
   });
 }
 
+function cleanupCompilationFiles(dirName, logger, container) {
+  const codeFilePath = getCodeFilePath(dirName, logger);
+  const outputFilePath = getOutputFilePath(dirName, logger);
+  const cleanupCmd = ['bash', '-c', `rm -rf ${dirName}`];
+  return runCommandWithinContainer(cleanupCmd, container);
+}
+
 function compileLoggerCallCreator(req: $Request, res: $Response) {
   return () => {
     return new Promise(async (resolve, reject) => {
@@ -287,21 +296,18 @@ function compileLoggerCallCreator(req: $Request, res: $Response) {
       }
       //console.log(logger);
 
-      const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-      const containerPromise = createAndStartGCCContainer(userDockerContainerName);
-
-      const execResult = await containerPromise.then(container => {
+      const execResult = await gccContainerPromise.then(container => {
         return compileLoggerCodeWithinContainer(dirName, logger, container);
       }).catch(err => {
         return errExecResult(err);
       });
 
-      // Kill and remove container if it was created successfully
-      await containerPromise.then(async container => {
-        await killAndRemoveContainer(container);
-      }).catch(err => {
-        // do nothing
-      });
+      // // Cleanup files created during compilation
+      // await gccContainerPromise.then(async container => {
+      //   await cleanupCompilationFiles(dirName, logger, container);
+      // }).catch(err => {
+      //   // do nothing
+      // });
 
       resolve(getResponseBasedOnExecResult(res, execResult));
     });
@@ -310,8 +316,9 @@ function compileLoggerCallCreator(req: $Request, res: $Response) {
 
 export async function compileLogger(req: $Request, res: $Response) {
   let nextCall = compileLoggerCallCreator(req, res);
-  let outputResponse = await queueFunctionCall(nextCall);
-  return outputResponse;
+  // let outputResponse = await queueFunctionCall(nextCall);
+  // return outputResponse;
+  return nextCall();
 }
 
 function runLoggerCallCreator(req: $Request, res: $Response) {
@@ -327,11 +334,9 @@ function runLoggerCallCreator(req: $Request, res: $Response) {
         }));
       }
 
-      const userDockerContainerName = getUserDockerContainerName(userId, loggerId);
-      const containerPromise = createAndStartGCCContainer(userDockerContainerName);
       let userContainer;
 
-      const execResult = await containerPromise.then(container => {
+      const execResult = await gccContainerPromise.then(container => {
         userContainer = container;
         return (compileLoggerCodeWithinContainer(dirName, logger, container));
       }).then(execResult => {
@@ -342,14 +347,6 @@ function runLoggerCallCreator(req: $Request, res: $Response) {
         return errExecResult(err);
       });
 
-      // Kill and remove container if it was created successfully
-      await containerPromise.then(async container => {
-        await killAndRemoveContainer(container);
-      }).catch(err => {
-        console.log("Container creation failed so there's nothing to kill");
-        // do nothing
-      });
-
       resolve(getResponseBasedOnExecResult(res, execResult));
     });
   };
@@ -357,6 +354,7 @@ function runLoggerCallCreator(req: $Request, res: $Response) {
 
 export async function runLogger(req: $Request, res: $Response) {
   let nextCall = runLoggerCallCreator(req, res);
-  let outputResponse = await queueFunctionCall(nextCall);
-  return outputResponse;
+  // let outputResponse = await queueFunctionCall(nextCall);
+  // return outputResponse;
+  return nextCall();
 }
