@@ -194,51 +194,58 @@ test("Run Logger with Infinite Loop Code", async () => {
   expect(responseJson).toMatchObject(infiniteLoopCodeRunResponseJSON);
 });
 
-// test("Run Logger Load Test", async () => {
-//   // Note: On average this test requires:
-//   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
-//   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
-//   // - 60 seconds to run with 10 simultaneous calls to `runLogger`
-//   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
-//   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
-//   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-//   const numberOfRequests = 100;
-//   const testRunTimeInSeconds = 600;
-//   jest.setTimeout(testRunTimeInSeconds * 1000);
-//
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
-//   const allRunResponseJSONs = [goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON];
-//
-//   const outputResponsePromises = [];
-//
-//   expect.assertions(numberOfRequests);
-//
-//   // execute a bunch of calls to runLogger
-//   for (let i = 0; i < numberOfRequests; i++) {
-//     let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
-//     let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
-//     let res = new MockExpressResponse();
-//     outputResponsePromises[i] = runLogger(req, res).then(response => {
-//       let responseJson = response._getJSON();
-//       expect(responseJson).toMatchObject(allRunResponseJSONs[randomIndex]);
-//     }).catch(err => {
-//       throw err;
-//     });
-//   }
-//
-//   return Promise.all(outputResponsePromises);
-// });
-//
+test("Run Logger Load Test", async () => {
+  // Note: On average this test requires:
+  // - 20 seconds to run with 2 simultaneous calls to `runLogger`
+  // - 40 seconds to run with 5 simultaneous calls to `runLogger`
+  // - 60 seconds to run with 10 simultaneous calls to `runLogger`
+  // - 200 seconds to run with 30 simultaneous calls to `runLogger`
+  // - 600 seconds to run with 100 simultaneous calls to `runLogger`
+  // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
+  const numberOfRequests = 100;
+  const testRunTimeInSeconds = 600;
+  jest.setTimeout(testRunTimeInSeconds * 1000);
+
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
+  const allRunResponseJSONs = [goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON];
+
+  const outputResponsePromises = [];
+
+  expect.assertions(numberOfRequests);
+
+  // execute compileLogger for each logger in advance of calling runLogger
+  for (let i = 0; i < 3; i++) {
+    let req = getMockExpressRequestForLogger(allLoggers[i]);
+    let res = new MockExpressResponse();
+    await compileLogger(req, res);
+  }
+
+  // execute a bunch of calls to runLogger
+  for (let i = 0; i < numberOfRequests; i++) {
+    let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
+    let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
+    let res = new MockExpressResponse();
+    outputResponsePromises[i] = runLogger(req, res).then(response => {
+      let responseJson = response._getJSON();
+      expect(responseJson).toMatchObject(allRunResponseJSONs[randomIndex]);
+    }).catch(err => {
+      throw err;
+    });
+  }
+
+  return Promise.all(outputResponsePromises);
+});
+
 // test("Compile And Run Logger Load Test", async () => {
 //   // Note: On average this test requires:
 //   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
