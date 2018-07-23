@@ -17,7 +17,8 @@ const newQuestion = {
   readOnly: false,
   hints: [],
   tags: "",
-  expectedOutput: ""
+  expectedOutput: "",
+  dueDate: null
 };
 
 class AllQuestions extends Component {

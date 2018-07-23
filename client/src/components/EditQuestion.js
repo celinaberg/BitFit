@@ -22,6 +22,10 @@ import RichTextEditor from "react-rte";
 import AceEditor from "react-ace";
 import FaTrash from "react-icons/lib/fa/trash";
 import FaCopy from "react-icons/lib/fa/copy";
+import InputMoment from "input-moment";
+import 'input-moment/dist/input-moment.css';
+import type Moment from "moment";
+import moment from "moment";
 
 import "brace";
 import "brace/mode/c_cpp";
@@ -137,6 +141,12 @@ class EditQuestion extends Component {
     };
   };
 
+  updateDueDate = (m: Moment): void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.dueDate = m.toDate();
+    this.setState({ question: newQuestion });
+  }
+
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
     return (): void => {
       let newQuestion = Object.assign({}, this.state.question);
@@ -169,6 +179,14 @@ class EditQuestion extends Component {
 
   render() {
     let buttons = null;
+    let dueDateText, inputMomentDefault;
+    if (!this.state.question.dueDate) {
+      dueDateText = "No due date for this question";
+      inputMomentDefault = moment();
+    } else {
+      inputMomentDefault = moment(this.state.question.dueDate);
+      dueDateText = inputMomentDefault.format("llll");
+    }
     if (!this.props.new) {
       buttons = (
         <ButtonGroup>
@@ -315,6 +333,18 @@ class EditQuestion extends Component {
                   );
                 })}
                 <Button onClick={this.onAddHintClick}>Add Hint</Button>
+              </FormGroup>
+              <FormGroup>
+                <Label>Due Date</Label>
+                <Input
+                  type="text"
+                  value={dueDateText}
+                  readOnly
+                />
+                <InputMoment
+                  moment={inputMomentDefault}
+                  onChange={this.updateDueDate}
+                />
               </FormGroup>
               <Button color="primary" onClick={this.onSaveClick}>
                 Save Question
