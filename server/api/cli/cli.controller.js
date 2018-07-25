@@ -109,7 +109,7 @@ export async function compileLogger(req: $Request, res: $Response) {
     const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}" -lm`;
     //console.log(gcc);
     const result = await exec(gcc, {
-      timeout: 20000
+      timeout: 10000
     });
     //console.error("result object", result);
     return res
@@ -124,7 +124,7 @@ export async function compileLogger(req: $Request, res: $Response) {
 }
 
 export async function runLogger(req: $Request, res: $Response) {
-  const timeLimitInSeconds = 10;
+  const timeLimitInSeconds = 20;
   try {
     const userId = req.user.id;
     const loggerId = req.params.id;
