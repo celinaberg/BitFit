@@ -40,7 +40,7 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: expect.stringMatching(/users\/\w+\/\w+\/BadCode: No such file or directory/)
+  stderr: expect.stringMatching(/sudo: users\/\w+\/\w+\/BadCode: command not found/)
 };
 
 const infiniteLoopCodeRunResponseJSON = {
