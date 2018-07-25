@@ -126,7 +126,7 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const cmd = `"${dirName}/${logger.className}"`;
+    const cmd = `sudo -u comped-exec "${dirName}/${logger.className}"`;
     const result = await exec(cmd, { timeout: timeLimitInSeconds * 1000 });
     return res
       .status(200)
