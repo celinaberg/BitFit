@@ -80,6 +80,11 @@ const exec = promisify(execSync);
 //   );
 // }
 
+// In production, run student executables securely as comped-exec
+export const runExecutablesAsCompedExecUser = process.env.USER === "comped";
+
+console.log("user: ", process.env.USER);
+
 export async function compileLogger(req: $Request, res: $Response) {
   try {
     const userId = req.user.id;
@@ -126,7 +131,10 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const cmd = `sudo -u comped-exec "${dirName}/${logger.className}"`;
+    const cmd = (runExecutablesAsCompedExecUser ?
+      `sudo -u comped-exec "${dirName}/${logger.className}"` :
+      `"${dirName}/${logger.className}"`
+    );
     const result = await exec(cmd, { timeout: timeLimitInSeconds * 1000 });
     return res
       .status(200)
