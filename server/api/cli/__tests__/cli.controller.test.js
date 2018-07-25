@@ -182,7 +182,7 @@ test("Run Logger with Bad Code", async () => {
 });
 
 test("Run Logger with Infinite Loop Code", async () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(25000);
   let infiniteLoopCodeLogger = await Logger.findOne({
     className: "InfiniteLoopCode"
   });
