@@ -1,4 +1,4 @@
-import { compileLogger, runLogger } from "../cli.controller";
+import { compileLogger, runLogger, runExecutablesAsCompedExecUser } from "../cli.controller";
 const MockExpressRequest = require("mock-express-request");
 const MockExpressResponse = require("mock-express-response");
 import mongoose from "mongoose";
@@ -40,7 +40,10 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: expect.stringMatching(/sudo: users\/\w+\/\w+\/BadCode: command not found/)
+  stderr: expect.stringMatching(runExecutablesAsCompedExecUser ?
+    (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
+    (/users\/\w+\/\w+\/BadCode: No such file or directory/)
+  )
 };
 
 const infiniteLoopCodeRunResponseJSON = {
