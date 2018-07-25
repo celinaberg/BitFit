@@ -83,7 +83,11 @@ const exec = promisify(execSync);
 // In production, run student executables securely as comped-exec
 export const runExecutablesAsCompedExecUser = process.env.USER === "comped";
 
-console.log("user: ", process.env.USER);
+if (runExecutablesAsCompedExecUser) {
+  console.log("Running executables securely as comped-exec user");
+} else {
+  console.log("Running executables non-securely");
+}
 
 export async function compileLogger(req: $Request, res: $Response) {
   try {
@@ -105,7 +109,7 @@ export async function compileLogger(req: $Request, res: $Response) {
     const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}" -lm`;
     //console.log(gcc);
     const result = await exec(gcc, {
-      timeout: 10000
+      timeout: 20000
     });
     //console.error("result object", result);
     return res
