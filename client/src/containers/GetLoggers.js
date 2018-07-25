@@ -26,7 +26,14 @@ class GetLoggers extends Component {
     if (this.props.loggers.fetching) {
       loggers = <Progress animated color="muted" value="100" />;
     } else {
+
       loggers = this.props.loggers.loggers.map(logger => {
+        let gotAnswerCorrectBeforeDueDateInteger;
+        if (logger.gotAnswerCorrectBeforeDueDate) {
+          gotAnswerCorrectBeforeDueDateInteger = 1;
+        } else {
+          gotAnswerCorrectBeforeDueDateInteger = 0;
+        }
         return (
         <tr key={logger.id}>
           <td>{logger.user}</td>
@@ -39,7 +46,7 @@ class GetLoggers extends Component {
           <td>{logger.numHints}</td>
           <td>{logger.totalAttempts}</td>
           <td>{logger.correctAttempts}</td>
-          <td>{logger.gotAnswerCorrectBeforeDueDate.toString()}</td>
+          <td>{gotAnswerCorrectBeforeDueDateInteger}</td>
           <td>{logger.timeOfCorrectAnswer}</td>
         </tr>
         );
