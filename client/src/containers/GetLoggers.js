@@ -9,6 +9,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
 import { fetchLoggers } from "../actions";
 
+/* Takes in a string representing a date. Formats it in a nice human readable way.
+Uses the user's local time zone.
+*/
+export function formatDateStringInLocalTime(dateString) {
+  if (!dateString) return "";
+  let date = new Date(dateString);
+  return date.toDateString() + " at " + date.toLocaleTimeString('en-US');
+}
+
 class GetLoggers extends Component {
   props: {
     loggers: LoggerState,
@@ -47,7 +56,7 @@ class GetLoggers extends Component {
           <td>{logger.totalAttempts}</td>
           <td>{logger.correctAttempts}</td>
           <td>{gotAnswerCorrectBeforeDueDateInteger}</td>
-          <td>{logger.timeOfCorrectAnswer}</td>
+          <td>{formatDateStringInLocalTime(logger.timeOfCorrectAnswer)}</td>
         </tr>
         );
       });

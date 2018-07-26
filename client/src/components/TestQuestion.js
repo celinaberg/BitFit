@@ -18,6 +18,8 @@ import {
 } from "reactstrap";
 import AceEditor from "react-ace";
 
+import { formatDateStringInLocalTime } from "../containers/GetLoggers";
+
 import "brace";
 import "brace/mode/c_cpp";
 import "brace/snippets/c_cpp";
@@ -423,14 +425,23 @@ class TestQuestion extends Component {
     }
     let hintsLeft =
       this.props.question.hints.length - this.state.logger.numHintsDisplayed;
+    let dueDateString;
+    if (!this.props.question.dueDate) {
+      dueDateString = "No due date";
+    } else {
+      dueDateString = "Due Date: " + formatDateStringInLocalTime(this.props.question.dueDate);
+    }
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
           <CardTitle>
             {this.props.question.title}
-            <Button color="primary" onClick={this.onResetToStarterClick}>
-              Reset to Starter
-            </Button>
+            <div style={{fontSize: "16px"}}>{dueDateString}</div>
+            <div>
+              <Button color="primary" onClick={this.onResetToStarterClick}>
+                Reset to Starter
+              </Button>
+            </div>
           </CardTitle>
           <div
             dangerouslySetInnerHTML={{
