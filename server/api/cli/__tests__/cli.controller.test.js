@@ -206,7 +206,7 @@ test("Run Logger Load Test", async () => {
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
   const numberOfRequests = 200;
-  const testRunTimeInSeconds = 600;
+  const testRunTimeInSeconds = 1200;
   jest.setTimeout(testRunTimeInSeconds * 1000);
 
   let goodCodeLogger = await Logger.findOne({
