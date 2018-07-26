@@ -177,6 +177,12 @@ class EditQuestion extends Component {
     this.props.onSave(newQuestion);
   };
 
+  onRemoveDueDateClick = (): void => {
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.dueDate = null;
+    this.setState({ question: newQuestion });
+  }
+
   render() {
     let buttons = null;
     let dueDateText, inputMomentDefault;
@@ -341,6 +347,9 @@ class EditQuestion extends Component {
                   value={dueDateText}
                   readOnly
                 />
+                <div>
+                  <Button style={{margin: "10px"}} onClick={this.onRemoveDueDateClick}>Remove Due Date</Button>
+                </div>
                 <InputMoment
                   moment={inputMomentDefault}
                   onChange={this.updateDueDate}
