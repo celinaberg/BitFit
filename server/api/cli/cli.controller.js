@@ -80,6 +80,15 @@ const exec = promisify(execSync);
 //   );
 // }
 
+// In production, run student executables securely as comped-exec
+export const runExecutablesAsCompedExecUser = process.env.USER === "comped";
+
+if (runExecutablesAsCompedExecUser) {
+  console.log("Running executables securely as comped-exec user");
+} else {
+  console.log("Running executables non-securely");
+}
+
 export async function compileLogger(req: $Request, res: $Response) {
   try {
     const userId = req.user.id;
@@ -107,7 +116,7 @@ export async function compileLogger(req: $Request, res: $Response) {
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
-    //console.error(err);
+    // console.error(err);
     return res
       .status(200)
       .json({ error: true, stdout: err.stdout, stderr: err.stderr });
@@ -115,6 +124,7 @@ export async function compileLogger(req: $Request, res: $Response) {
 }
 
 export async function runLogger(req: $Request, res: $Response) {
+  const timeLimitInSeconds = 20;
   try {
     const userId = req.user.id;
     const loggerId = req.params.id;
@@ -125,14 +135,21 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const cmd = `"${dirName}/${logger.className}"`;
-    const result = await exec(cmd, { timeout: 10000 });
+    const cmd = (runExecutablesAsCompedExecUser ?
+      `sudo -u comped-exec "${dirName}/${logger.className}"` :
+      `"${dirName}/${logger.className}"`
+    );
+    const result = await exec(cmd, { timeout: timeLimitInSeconds * 1000 });
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
+    let stderr = err.stderr;
+    if (err.signal === "SIGTERM") {
+      stderr = `TimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
+    }
     return res
       .status(200)
-      .json({ error: true, stdout: err.stdout, stderr: err.stderr });
+      .json({ error: true, stdout: err.stdout, stderr: stderr });
   }
 }
