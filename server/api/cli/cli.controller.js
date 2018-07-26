@@ -125,7 +125,7 @@ export async function compileLogger(req: $Request, res: $Response) {
 }
 
 export async function runLogger(req: $Request, res: $Response) {
-  const timeLimitInSeconds = 10;
+  const timeLimitInSeconds = 5;
   try {
     const userId = req.user.id;
     const loggerId = req.params.id;
