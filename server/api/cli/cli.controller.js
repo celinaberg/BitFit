@@ -6,6 +6,7 @@ import { exec as execSync } from "child_process";
 import jsesc from "jsesc";
 import Logger from "../logger/logger.model";
 import { promisify } from "util";
+import { timeout, TimeoutError } from 'promise-timeout';
 
 const exec = promisify(execSync);
 
@@ -139,17 +140,17 @@ export async function runLogger(req: $Request, res: $Response) {
       `sudo -u comped-exec "${dirName}/${logger.className}"` :
       `"${dirName}/${logger.className}"`
     );
-    const result = await exec(cmd, { timeout: timeLimitInSeconds * 1000 });
+    const result = await timeout(exec(cmd, { timeout: timeLimitInSeconds * 1000 }), timeLimitInSeconds * 1000);
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
     let stderr = err.stderr;
-    if (err.signal === "SIGTERM") {
+    if (err.signal === "SIGTERM" || err instanceof TimeoutError) {
       stderr = `TimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
     }
     return res
       .status(200)
-      .json({ error: true, stdout: err.stdout, stderr: stderr });
+      .json({ error: true, stdout: err.stdout || "", stderr: stderr });
   }
 }
