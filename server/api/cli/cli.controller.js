@@ -140,14 +140,16 @@ export async function runLogger(req: $Request, res: $Response) {
       `sudo -u comped-exec "${dirName}/${logger.className}"` :
       `"${dirName}/${logger.className}"`
     );
-    const result = await timeout(exec(cmd, { timeout: timeLimitInSeconds * 1000 }), timeLimitInSeconds * 1000);
+    const result = await timeout(exec(cmd, { timeout: timeLimitInSeconds * 1000 }), 1.5 * timeLimitInSeconds * 1000);
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
     let stderr = err.stderr;
-    if (err.signal === "SIGTERM" || err instanceof TimeoutError) {
+    if (err.signal === "SIGTERM") {
       stderr = `TimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
+    } else if (err instanceof TimeoutError) {
+      stderr = `Error running executable: attempt took longer than ${1.5 * timeLimitInSeconds} seconds to run`;
     }
     return res
       .status(200)
