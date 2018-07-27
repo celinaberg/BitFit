@@ -4,7 +4,7 @@ import type { Question, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
-import { Col } from "reactstrap";
+import { Button, Col } from "reactstrap";
 import { connect } from "react-redux";
 import { saveNewQuestion } from "../actions";
 import EditQuestion from "../components/EditQuestion";
@@ -28,12 +28,30 @@ class AllQuestions extends Component {
   };
 
   state = {
-    question: { ...newQuestion }
+    question: { ...newQuestion },
+    questionJsonInputString: "",
+    questionJsonErrorMsg: "",
+    questionJsonSuccessMsg: ""
   };
 
   onSaveClick = (question: Question): void => {
     this.props.saveNewQuestion(question);
   };
+
+  onQuestionJSONInputChange = (event: Event): void => {
+    this.setState({questionJsonInputString: event.target.value});
+  };
+
+  onCreateQuestionFromJSONClick = (): void => {
+    try {
+      let questionJson = JSON.parse(this.state.questionJsonInputString);
+      let newQuestion = Object.assign({}, questionJson);
+      this.onSaveClick(newQuestion);
+      this.setState({questionJsonErrorMsg: "", questionJsonSuccessMsg: "Success!"})
+    } catch (err) {
+      this.setState({questionJsonErrorMsg: err.message, questionJsonSuccessMsg: ""});
+    }
+  }
 
   render() {
     return (
@@ -45,6 +63,21 @@ class AllQuestions extends Component {
           lessons={this.props.lessons}
           onSave={this.onSaveClick}
         />
+        <h4 style={{marginTop: "10px"}}>Create a Question from JSON</h4>
+        <textarea
+          style={{width: "800px", height: "200px"}}
+          value={this.state.questionJsonInputString}
+          onChange={this.onQuestionJSONInputChange}
+        />
+        <div>
+          <Button
+            style={{marginTop: "5px"}}
+            onClick={this.onCreateQuestionFromJSONClick}>
+            Create Question
+          </Button>
+        </div>
+        <div style={{color: "red"}}>{this.state.questionJsonErrorMsg}</div>
+        <div style={{color: "green"}}>{this.state.questionJsonSuccessMsg}</div>
       </Col>
     );
   }
