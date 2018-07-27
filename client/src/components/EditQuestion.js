@@ -147,6 +147,20 @@ class EditQuestion extends Component {
     this.setState({ question: newQuestion });
   }
 
+  onExportAsJSONClick = (): void => {
+    let tempElement = document.createElement("a");
+    let question = Object.assign({}, this.state.question);
+    question.instructions = question.instructions.toString("html");
+    question.hints = question.hints.map(value => {
+      return value.toString("html");
+    });
+    question.lesson = question.lesson || null;
+    let questionBlobFile = new Blob([JSON.stringify(question)], {type: 'text/plain'});
+    tempElement.href = URL.createObjectURL(questionBlobFile);
+    tempElement.download = `${this.state.question.title.replace(/ /g, "")}.txt`;
+    tempElement.click();
+  };
+
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
     return (): void => {
       let newQuestion = Object.assign({}, this.state.question);
@@ -224,6 +238,7 @@ class EditQuestion extends Component {
           <CardTitle className="mb-0">
             {this.state.question.title}{" "}
             <Button onClick={this.toggle}>Edit</Button>
+            <Button onClick={this.onExportAsJSONClick}>Export as JSON</Button>
           </CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>
