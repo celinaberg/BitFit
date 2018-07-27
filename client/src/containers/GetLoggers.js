@@ -1,13 +1,13 @@
 // @flow
 
 import type { Dispatch } from "../actions/types";
-import type { LoggerState, State, Lesson, QuestionState } from "../types";
+import type { LoggerState, State, Lesson, QuestionState, UserState } from "../types";
 
 import React, { Component } from "react";
 import { Col, Progress } from "reactstrap";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
-import { fetchLoggers, fetchQuestions } from "../actions";
+import { fetchLoggers, fetchQuestions, fetchUsers } from "../actions";
 
 /* Takes in a string representing a date. Formats it in a nice human readable way.
 Uses the user's local time zone.
@@ -24,7 +24,9 @@ class GetLoggers extends Component {
     fetchLoggers: () => void,
     lessons: Array<Lesson>,
     questions: QuestionState,
-    fetchQuestions: () => void
+    fetchQuestions: () => void,
+    users: UserState,
+    fetchUsers: () => void
   };
 
   UNSAFE_componentWillMount() {
@@ -33,6 +35,9 @@ class GetLoggers extends Component {
     }
     if (!this.props.questions.fetched) {
       this.props.fetchQuestions();
+    }
+    if (!this.props.users.fetched) {
+      this.props.fetchUsers();
     }
   }
 
@@ -63,9 +68,24 @@ class GetLoggers extends Component {
         });
         loggerLessonTitle = loggerLesson ? loggerLesson.title : "";
 
+        let loggerUser = this.props.users.users.find(user => {
+          return user.id === logger.user;
+        });
+        let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
+        let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
+        let loggerUserSection = loggerUser ? loggerUser.section : "";
+        let loggerUserTerm = loggerUser ? loggerUser.term : "";
+        let loggerUserSession = loggerUser ? loggerUser.session : "";
+        let loggerUserYear = loggerUser ? loggerUser.year : "";
+
         return (
         <tr key={logger.id}>
-          <td>{logger.user}</td>
+          <td>{loggerUserNameOrId}</td>
+          <td>{loggerUserStudentNumber}</td>
+          <td>{loggerUserSection}</td>
+          <td>{loggerUserTerm}</td>
+          <td>{loggerUserSession}</td>
+          <td>{loggerUserYear}</td>
           <td>{loggerQuestionTitleOrId}</td>
           <td>{loggerLessonTitle}</td>
           <td>{logger.startTime}</td>
@@ -97,6 +117,11 @@ class GetLoggers extends Component {
         <thead>
           <tr>
             <th>user</th>
+            <th>student#</th>
+            <th>section</th>
+            <th>term</th>
+            <th>session</th>
+            <th>year</th>
             <th>question</th>
             <th>lesson</th>
             <th>startTime</th>
@@ -124,7 +149,8 @@ const mapStateToProps = (state: State) => {
   return {
     loggers: state.loggers,
     lessons: state.lessons.lessons,
-    questions: state.questions
+    questions: state.questions,
+    users: state.users
   };
 };
 
@@ -135,6 +161,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     fetchQuestions: () => {
       dispatch(fetchQuestions());
+    },
+    fetchUsers: () => {
+      dispatch(fetchUsers());
     }
   };
 };
