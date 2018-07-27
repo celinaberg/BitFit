@@ -321,7 +321,7 @@ test("Run Logger Infinite Code Load Test", async () => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 80;
+  const numberOfRequests = 75;
   const testRunTimeInSeconds = 1200;
   jest.setTimeout(testRunTimeInSeconds * 1000);
 
