@@ -4,7 +4,7 @@ import type { Question, QuestionState, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
-import { Col, Progress } from "reactstrap";
+import { Col, Progress, Button } from "reactstrap";
 import { connect } from "react-redux";
 import { fetchQuestions, saveQuestion } from "../actions";
 import EditQuestion from "../components/EditQuestion";
@@ -19,6 +19,23 @@ class AllQuestions extends Component {
 
   onSaveClick = (question: Question): void => {
     this.props.saveQuestion(question);
+  };
+
+  onExportAllAsJSONClick = (): void => {
+    let tempElement = document.createElement("a");
+    let questions = this.props.questions.questions.map(question => {
+      let q = Object.assign({}, question);
+      q.instructions = q.instructions.toString("html");
+      q.hints = q.hints.map(value => {
+        return value.toString("html");
+      });
+      q.lesson = q.lesson || null;
+      return q;
+    });
+    let questionsBlobFile = new Blob([JSON.stringify(questions)], {type: 'text/plain'});
+    tempElement.href = URL.createObjectURL(questionsBlobFile);
+    tempElement.download = `AllQuestionsJSON.txt`;
+    tempElement.click();
   };
 
   UNSAFE_componentWillMount() {
@@ -46,6 +63,7 @@ class AllQuestions extends Component {
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">All Questions</h2>
+        <Button style={{marginBottom: "10px"}} onClick={this.onExportAllAsJSONClick}>Export all as JSON</Button>
         {questions}
       </Col>
     );
