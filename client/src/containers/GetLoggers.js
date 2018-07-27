@@ -72,6 +72,7 @@ class GetLoggers extends Component {
           return user.id === logger.user;
         });
         let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
+        let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
         let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
         let loggerUserSection = loggerUser ? loggerUser.section : "";
         let loggerUserTerm = loggerUser ? loggerUser.term : "";
@@ -81,6 +82,7 @@ class GetLoggers extends Component {
         return (
         <tr key={logger.id}>
           <td>{loggerUserNameOrId}</td>
+          <td>{loggerUserStudentId}</td>
           <td>{loggerUserStudentNumber}</td>
           <td>{loggerUserSection}</td>
           <td>{loggerUserTerm}</td>
@@ -117,6 +119,7 @@ class GetLoggers extends Component {
         <thead>
           <tr>
             <th>user</th>
+            <th>studentId</th>
             <th>student#</th>
             <th>section</th>
             <th>term</th>
