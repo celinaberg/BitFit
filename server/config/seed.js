@@ -120,7 +120,12 @@ export function seedTestData() {
         firstName: "Backdoor",
         lastName: "User",
         displayName: "Backdoor User",
-        role: "instructor"
+        role: "instructor",
+        studentNumber: "12345678",
+        section: "fake section",
+        term: 3,
+        session: "2012W3",
+        year: 1905
       },
       function() {
         console.log("Finished adding users");
