@@ -31,7 +31,8 @@ class AllQuestions extends Component {
     question: { ...newQuestion },
     questionJsonInputString: "",
     questionJsonErrorMsg: "",
-    questionJsonSuccessMsg: ""
+    multiQuestionJsonInputString: "",
+    multiQuestionJsonErrorMsg: ""
   };
 
   onSaveClick = (question: Question): void => {
@@ -42,14 +43,30 @@ class AllQuestions extends Component {
     this.setState({questionJsonInputString: event.target.value});
   };
 
+  onMultiQuestionJSONInputChange = (event: Event): void => {
+    this.setState({multiQuestionJsonInputString: event.target.value});
+  };
+
   onCreateQuestionFromJSONClick = (): void => {
     try {
       let questionJson = JSON.parse(this.state.questionJsonInputString);
       let newQuestion = Object.assign({}, questionJson);
       this.onSaveClick(newQuestion);
-      this.setState({questionJsonErrorMsg: "", questionJsonSuccessMsg: "Success!"})
+      this.setState({questionJsonErrorMsg: ""})
     } catch (err) {
-      this.setState({questionJsonErrorMsg: err.message, questionJsonSuccessMsg: ""});
+      this.setState({questionJsonErrorMsg: err.message});
+    }
+  }
+
+  onCreateMultipleQuestionsFromJSONClick = (): void => {
+    try {
+      let questionsJson = JSON.parse(this.state.multiQuestionJsonInputString);
+      for (let i = 0; i < questionsJson.length; i++) {
+        let saveClick = this.props.saveNewQuestion(questionsJson[i]);
+      }
+      this.setState({multiQuestionJsonErrorMsg: ""})
+    } catch (err) {
+      this.setState({multiQuestionJsonErrorMsg: err.message});
     }
   }
 
@@ -65,7 +82,7 @@ class AllQuestions extends Component {
         />
         <h4 style={{marginTop: "10px"}}>Create a Question from JSON</h4>
         <textarea
-          style={{width: "800px", height: "200px"}}
+          style={{width: "800px", height: "125px"}}
           value={this.state.questionJsonInputString}
           onChange={this.onQuestionJSONInputChange}
         />
@@ -77,7 +94,20 @@ class AllQuestions extends Component {
           </Button>
         </div>
         <div style={{color: "red"}}>{this.state.questionJsonErrorMsg}</div>
-        <div style={{color: "green"}}>{this.state.questionJsonSuccessMsg}</div>
+        <h4 style={{marginTop: "10px"}}>Create Multiple Questions from JSON</h4>
+        <textarea
+          style={{width: "800px", height: "125px"}}
+          value={this.state.multiQuestionJsonInputString}
+          onChange={this.onMultiQuestionJSONInputChange}
+        />
+        <div>
+          <Button
+            style={{marginTop: "5px"}}
+            onClick={this.onCreateMultipleQuestionsFromJSONClick}>
+            Create Multiple Questions
+          </Button>
+        </div>
+        <div style={{color: "red"}}>{this.state.multiQuestionJsonErrorMsg}</div>
       </Col>
     );
   }
