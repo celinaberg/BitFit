@@ -238,7 +238,7 @@ class EditQuestion extends Component {
           <CardTitle className="mb-0">
             {this.state.question.title}{" "}
             <Button style={{marginLeft: "5px"}} onClick={this.toggle}>Edit</Button>
-            <Button style={{marginLeft: "10px"}} onClick={this.onExportAsJSONClick}>Export as JSON</Button>
+            <Button style={{marginLeft: "10px"}} hidden={this.props.new} onClick={this.onExportAsJSONClick}>Export as JSON</Button>
           </CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>
