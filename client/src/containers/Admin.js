@@ -24,6 +24,7 @@ class Admin extends Component {
             <Route path="/admin/lessons/new" component={NewLesson} />
             <Route path="/admin/lessons/:id" component={EditLesson} />
             <Route path="/admin/questions/new" component={NewQuestion} />
+            <Route path="/admin/questions/new/:id" component={NewQuestion} />
             <Route path="/admin/questions" component={AllQuestions} />
           </Switch>
         </Row>

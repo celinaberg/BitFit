@@ -26,6 +26,7 @@ import InputMoment from "input-moment";
 import 'input-moment/dist/input-moment.css';
 import type Moment from "moment";
 import moment from "moment";
+import {Link} from "react-router-dom";
 
 import "brace";
 import "brace/mode/c_cpp";
@@ -239,6 +240,11 @@ class EditQuestion extends Component {
             {this.state.question.title}{" "}
             <Button style={{marginLeft: "5px"}} onClick={this.toggle}>Edit</Button>
             <Button style={{marginLeft: "10px"}} hidden={this.props.new} onClick={this.onExportAsJSONClick}>Export as JSON</Button>
+            <Link style={{marginLeft: "10px"}}
+                    hidden={this.props.new}
+                    to={`/admin/questions/new/${this.props.question.id}`}>
+                    <Button>Copy Question</Button>
+            </Link>
           </CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>

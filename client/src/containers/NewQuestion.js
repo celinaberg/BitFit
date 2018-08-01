@@ -1,12 +1,12 @@
 // @flow
 
-import type { Question, Lesson, State } from "../types";
+import type { Question, Lesson, State, QuestionState } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
 import { Button, Col } from "reactstrap";
 import { connect } from "react-redux";
-import { saveNewQuestion } from "../actions";
+import { saveNewQuestion, fetchQuestions } from "../actions";
 import EditQuestion from "../components/EditQuestion";
 
 const newQuestion = {
@@ -24,16 +24,29 @@ const newQuestion = {
 class AllQuestions extends Component {
   props: {
     lessons: Array<Lesson>,
-    saveNewQuestion: Question => void
+    saveNewQuestion: Question => void,
+    questions: QuestionState,
+    fetchQuestions: () => void,
+    question: Question
   };
 
-  state = {
-    question: { ...newQuestion },
-    questionJsonInputString: "",
-    questionJsonErrorMsg: "",
-    multiQuestionJsonInputString: "",
-    multiQuestionJsonErrorMsg: ""
-  };
+  UNSAFE_componentWillMount() {
+    if (!this.props.questions.fetched) {
+      this.props.fetchQuestions();
+    }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      question: props.question || newQuestion,
+      questionJsonInputString: "",
+      questionJsonErrorMsg: "",
+      multiQuestionJsonInputString: "",
+      multiQuestionJsonErrorMsg: ""
+    };
+  }
 
   onSaveClick = (question: Question): void => {
     this.props.saveNewQuestion(question);
@@ -113,9 +126,36 @@ class AllQuestions extends Component {
   }
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State, ownProps) => {
+  let currentUrl = ownProps.location.pathname;
+  if (currentUrl === "/admin/questions/new") {
+    // If we're not copying from an existing question
+    return {
+      lessons: state.lessons.lessons,
+      questions: state.questions
+    };
+  }
+  let currentUrlSplit = currentUrl.split("/");
+  let oldQuestionId = currentUrlSplit[currentUrlSplit.length - 1];
+  let question = null;
+  for (let currentQuestion of state.questions.questions) {
+    if (currentQuestion.id === oldQuestionId) {
+      question = currentQuestion;
+      break;
+    }
+  }
+  if (question === null) {
+    console.error("Invalid question id: ", oldQuestionId);
+    return {
+      lessons: state.lessons.lessons,
+      questions: state.questions,
+      question: newQuestion
+    };
+  }
   return {
-    lessons: state.lessons.lessons
+    lessons: state.lessons.lessons,
+    questions: state.questions,
+    question: question
   };
 };
 
@@ -123,6 +163,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     saveNewQuestion: (question: Question) => {
       dispatch(saveNewQuestion(question));
+    },
+    fetchQuestions: () => {
+      dispatch(fetchQuestions());
     }
   };
 };
