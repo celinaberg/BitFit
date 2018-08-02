@@ -6,7 +6,7 @@ import type { Dispatch } from "../actions/types";
 import React, { Component } from "react";
 import { Col, Progress, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { fetchQuestions, saveQuestion } from "../actions";
+import { fetchQuestions, saveQuestion, deleteQuestion } from "../actions";
 import EditQuestion from "../components/EditQuestion";
 
 class AllQuestions extends Component {
@@ -14,11 +14,16 @@ class AllQuestions extends Component {
     questions: QuestionState,
     lessons: Array<Lesson>,
     fetchQuestions: () => void,
-    saveQuestion: Question => void
+    saveQuestion: Question => void,
+    deleteQuestion: string => void
   };
 
   onSaveClick = (question: Question): void => {
     this.props.saveQuestion(question);
+  };
+
+  onDeleteClick = (id: string): void => {
+    this.props.deleteQuestion(id);
   };
 
   onExportAllAsJSONClick = (): void => {
@@ -56,6 +61,7 @@ class AllQuestions extends Component {
             question={question}
             lessons={this.props.lessons}
             onSave={this.onSaveClick}
+            onDelete={this.onDeleteClick}
           />
         );
       });
@@ -84,6 +90,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     saveQuestion: (question: Question) => {
       dispatch(saveQuestion(question));
+    },
+    deleteQuestion: (id: string) => {
+      dispatch(deleteQuestion(id));
     }
   };
 };

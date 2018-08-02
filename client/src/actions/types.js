@@ -43,6 +43,7 @@ export type SaveNewQuestionPendingAction = {
 export type SaveNewQuestionFulfilledAction = {
   type: "SAVE_NEW_QUESTION_FULFILLED"
 };
+export type DeleteQuestionAction = {type: "DELETE_QUESTION", payload: any };
 export type CheckLoginAction = { type: "CHECK_LOGIN", payload: any };
 
 export type Action =
@@ -61,6 +62,7 @@ export type Action =
   | SaveQuestionFulfilledAction
   | SaveNewQuestionPendingAction
   | SaveNewQuestionFulfilledAction
+  | DeleteQuestionAction
   | CheckLoginAction;
 
 export type Dispatch = (

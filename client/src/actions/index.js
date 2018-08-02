@@ -128,6 +128,13 @@ export const saveNewQuestion = (question: Question): ThunkAction => {
   };
 };
 
+export const deleteQuestion = (id: string): Action => {
+  return {
+    type: "DELETE_QUESTION",
+    payload: axios.delete("/api/questions/" + id)
+  };
+};
+
 export const checkLogin = (): Action => {
   return {
     type: "CHECK_LOGIN",

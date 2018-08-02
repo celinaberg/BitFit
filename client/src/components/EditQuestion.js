@@ -13,7 +13,6 @@ import {
   Label,
   Input,
   Button,
-  ButtonGroup,
   InputGroupAddon,
   UncontrolledTooltip,
   Collapse
@@ -21,7 +20,6 @@ import {
 import RichTextEditor from "react-rte";
 import AceEditor from "react-ace";
 import FaTrash from "react-icons/lib/fa/trash";
-import FaCopy from "react-icons/lib/fa/copy";
 import InputMoment from "input-moment";
 import 'input-moment/dist/input-moment.css';
 import type Moment from "moment";
@@ -38,7 +36,8 @@ type Props = {
   new: boolean,
   question: Question,
   lessons: Array<Lesson>,
-  onSave: Question => void
+  onSave: Question => void,
+  onDelete: string => void
 };
 
 class EditQuestion extends Component {
@@ -162,6 +161,11 @@ class EditQuestion extends Component {
     tempElement.click();
   };
 
+  onDeleteQuestionClick = (): void => {
+    let id = this.props.question.id;
+    this.props.onDelete(id);
+  }
+
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
     return (): void => {
       let newQuestion = Object.assign({}, this.state.question);
@@ -199,7 +203,6 @@ class EditQuestion extends Component {
   }
 
   render() {
-    let buttons = null;
     let dueDateText, inputMomentDefault;
     if (!this.state.question.dueDate) {
       dueDateText = "No due date for this question";
@@ -207,30 +210,6 @@ class EditQuestion extends Component {
     } else {
       inputMomentDefault = moment(this.state.question.dueDate);
       dueDateText = inputMomentDefault.format("llll");
-    }
-    if (!this.props.new) {
-      buttons = (
-        <ButtonGroup>
-          <Button id={"copy" + this.state.question.id}>
-            <FaCopy />
-          </Button>
-          <UncontrolledTooltip
-            placement="top"
-            target={"copy" + this.state.question.id}
-          >
-            Copy
-          </UncontrolledTooltip>
-          <Button color="danger" id={"delete" + this.state.question.id}>
-            <FaTrash />
-          </Button>
-          <UncontrolledTooltip
-            placement="top"
-            target={"delete" + this.state.question.id}
-          >
-            Delete
-          </UncontrolledTooltip>
-        </ButtonGroup>
-      );
     }
 
     return (
@@ -245,6 +224,19 @@ class EditQuestion extends Component {
                     to={`/admin/questions/new/${this.props.question.id}`}>
                     <Button>Copy Question</Button>
             </Link>
+            <Button color="danger"
+                    id={"delete" + this.state.question.id}
+                    style={{marginLeft: "10px"}}
+                    hidden={this.props.new}
+                    onClick={this.onDeleteQuestionClick}>
+              <FaTrash />
+            </Button>
+            <UncontrolledTooltip
+              placement="top"
+              target={"delete" + this.state.question.id}
+            >
+              Delete
+            </UncontrolledTooltip>
           </CardTitle>
           <Collapse isOpen={this.state.collapse}>
             <Form>
@@ -379,7 +371,6 @@ class EditQuestion extends Component {
               <Button color="primary" onClick={this.onSaveClick}>
                 Save Question
               </Button>
-              {buttons}
             </Form>
           </Collapse>
         </CardBlock>
