@@ -162,8 +162,12 @@ class EditQuestion extends Component {
   };
 
   onDeleteQuestionClick = (): void => {
-    let id = this.props.question.id;
-    this.props.onDelete(id);
+    let confirmMsg = `Are you sure you want to delete question "${this.props.question.title}"? (It's permanent!)`;
+    let confirmed = window.confirm(confirmMsg);
+    if (confirmed) {
+      let id = this.props.question.id;
+      this.props.onDelete(id);
+    }
   }
 
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
