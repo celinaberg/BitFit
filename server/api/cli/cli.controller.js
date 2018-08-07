@@ -147,7 +147,8 @@ export async function runLogger(req: $Request, res: $Response) {
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
-    await exec(`echo "err: ${JSON.stringify(err)}" >> users/log`, {timeout: 1000});
+    let errString = jsesc(JSON.stringify(err), {'quotes': 'double'});
+    await exec(`echo "err: ${errString}" >> users/log`, {timeout: 1000});
     let stderr = err.stderr;
     if (err.signal === "SIGKILL") {
       stderr = `TimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
