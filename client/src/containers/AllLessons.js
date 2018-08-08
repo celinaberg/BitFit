@@ -6,8 +6,9 @@ import type { Dispatch } from "../actions/types";
 import React, { Component } from "react";
 import { Col, Progress, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { fetchQuestions, saveQuestion, deleteQuestion } from "../actions";
+import { fetchQuestions, saveQuestion, deleteQuestion, saveLesson, deleteLesson } from "../actions";
 import EditQuestion from "../components/EditQuestion";
+import EditLessonComponent from "../components/EditLessonComponent";
 
 class AllLessons extends Component {
   props: {
@@ -15,14 +16,24 @@ class AllLessons extends Component {
     lessons: Array<Lesson>,
     fetchQuestions: () => void,
     saveQuestion: Question => void,
-    deleteQuestion: string => void
+    deleteQuestion: string => void,
+    saveLesson: Question => void,
+    deleteLesson: string => void
   };
 
-  onSaveClick = (question: Question): void => {
+  onSaveLessonClick = (lesson: Lesson): void => {
+    this.props.saveLesson(lesson);
+  };
+
+  onDeleteLessonClick = (id: string): void => {
+    this.props.deleteLesson(id);
+  };
+
+  onSaveQuestionClick = (question: Question): void => {
     this.props.saveQuestion(question);
   };
 
-  onDeleteClick = (id: string): void => {
+  onDeleteQuestionClick = (id: string): void => {
     this.props.deleteQuestion(id);
   };
 
@@ -42,22 +53,37 @@ class AllLessons extends Component {
   }
 
   render() {
-    let questions;
-    if (this.props.questions.fetching) {
-      questions = <Progress animated color="muted" value="100" />;
-    } else {
-      questions = this.props.questions.questions.map(question => {
-        return (
-          <EditQuestion
-            key={question.id}
-            question={question}
-            lessons={this.props.lessons}
-            onSave={this.onSaveClick}
-            onDelete={this.onDeleteClick}
-          />
-        );
-      });
-    }
+    let lessons = this.props.lessons.map(lesson => {
+      let lessonQuestions;
+      if (this.props.questions.fetching) {
+        lessonQuestions = [];
+      } else {
+        lessonQuestions = this.props.questions.questions.filter(question => question.lesson === lesson.id);
+      }
+      return (<EditLessonComponent
+                key={lesson.id}
+                id={lesson.id}
+                title={lesson.title}
+                background={lesson.background}
+                saveLesson={this.onSaveLessonClick}
+                deleteLesson={this.onDeleteLessonClick} />);
+    });
+    // let questions;
+    // if (this.props.questions.fetching) {
+    //   questions = <Progress animated color="muted" value="100" />;
+    // } else {
+    //   questions = this.props.questions.questions.map(question => {
+    //     return (
+    //       <EditQuestion
+    //         key={question.id}
+    //         question={question}
+    //         lessons={this.props.lessons}
+    //         onSave={this.onSaveQuestionClick}
+    //         onDelete={this.onDeleteQuestionClick}
+    //       />
+    //     );
+    //   });
+    // }
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">All Lessons</h2>
@@ -65,7 +91,7 @@ class AllLessons extends Component {
                 onClick={this.onExportAllLessonsAsJSONClick}>
           Export all Lessons as JSON
         </Button>
-        {questions}
+        {lessons}
       </Col>
     );
   }
@@ -88,6 +114,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     deleteQuestion: (id: string) => {
       dispatch(deleteQuestion(id));
+    },
+    saveLesson: (lesson: Lesson) => {
+      dispatch(saveLesson(lesson));
+    },
+    deleteLesson: (id: string) => {
+      dispatch(deleteLesson(id));
     }
   };
 };
