@@ -22,6 +22,11 @@ class AdminSidebar extends Component {
             </NavLink>
           </NavItem>
           <NavItem>
+            <NavLink tag={Link} exact to="/admin/lessons">
+            All Lessons
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink tag={Link} exact to="/admin/questions">
               All Questions
             </NavLink>

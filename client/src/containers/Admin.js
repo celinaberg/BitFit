@@ -9,6 +9,7 @@ import NewLesson from "./NewLesson";
 import EditLesson from "./EditLesson";
 import AllQuestions from "./AllQuestions";
 import NewQuestion from "./NewQuestion";
+import AllLessons from "./AllLessons";
 import { Container, Row } from "reactstrap";
 
 class Admin extends Component {
@@ -26,6 +27,7 @@ class Admin extends Component {
             <Route path="/admin/questions/new" component={NewQuestion} />
             <Route path="/admin/questions/new/:id" component={NewQuestion} />
             <Route path="/admin/questions" component={AllQuestions} />
+            <Route path="/admin/lessons" component={AllLessons} />
           </Switch>
         </Row>
       </Container>
