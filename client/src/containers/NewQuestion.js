@@ -75,7 +75,7 @@ class AllQuestions extends Component {
     try {
       let questionsJson = JSON.parse(this.state.multiQuestionJsonInputString);
       for (let i = 0; i < questionsJson.length; i++) {
-        let saveClick = this.props.saveNewQuestion(questionsJson[i]);
+        this.props.saveNewQuestion(questionsJson[i]);
       }
       this.setState({multiQuestionJsonErrorMsg: ""})
     } catch (err) {
