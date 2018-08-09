@@ -81,8 +81,14 @@ const exec = promisify(execSync);
 //   );
 // }
 
+// comped-user on the comped VM
+const compedUser = {
+  username: "comped",
+  uid: 1008
+};
+
 // In production, run student executables securely as comped-exec
-export const runExecutablesAsCompedExecUser = process.env.USER === "comped";
+export const runExecutablesAsCompedExecUser = process.env.USER === compedUser.username;
 
 if (runExecutablesAsCompedExecUser) {
   console.log("Running executables securely as comped-exec user");
@@ -138,7 +144,8 @@ export async function runLogger(req: $Request, res: $Response) {
     const dirName = "users/" + userId + "/" + loggerId;
     const execCall = (runExecutablesAsCompedExecUser ?
       spawn("sudo", ["-u", "comped-exec", `${dirName}/${logger.className}`, "&>", `${dirName}/log`], {
-        detached: true
+        detached: true,
+        uid: compedUser.uid
       }) :
       spawn(`${dirName}/${logger.className}`, ["&>", `${dirName}/log`], {
         detached: true
