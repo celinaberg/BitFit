@@ -137,10 +137,10 @@ export async function runLogger(req: $Request, res: $Response) {
     }
     const dirName = "users/" + userId + "/" + loggerId;
     const execCall = (runExecutablesAsCompedExecUser ?
-      spawn("sudo", ["-u", "comped-exec", `"${dirName}/${logger.className}"`, "&>", `${dirName}/log`], {
+      spawn("sudo", ["-u", "comped-exec", `${dirName}/${logger.className}`, "&>", `${dirName}/log`], {
         detached: true
       }) :
-      spawn(`"${dirName}/${logger.className}"`, ["&>", `${dirName}/log`], {
+      spawn(`${dirName}/${logger.className}`, ["&>", `${dirName}/log`], {
         detached: true
       })
     );
