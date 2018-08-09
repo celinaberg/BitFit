@@ -44,6 +44,7 @@
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
@@ -75,13 +76,14 @@
       "babel-register"
     ],
     "babel": {
-			"testOptions": {
-				"plugins": [
-					"babel-plugin-transform-es2015-modules-commonjs",
-          "babel-plugin-transform-react-jsx"
-				],
+      "testOptions": {
+        "plugins": [
+          "babel-plugin-transform-es2015-modules-commonjs",
+          "babel-plugin-transform-react-jsx",
+          "babel-plugin-transform-class-properties"
+        ],
         "babelrc": false
-			}
-		}
+      }
+    }
   }
 }

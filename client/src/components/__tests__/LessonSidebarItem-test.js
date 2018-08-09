@@ -6,7 +6,7 @@ import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router";
 import test from "ava";
 
-test("URL changes when admin", t => {
+test.skip("URL changes when admin", t => {
   let component = renderer.create(
     <MemoryRouter>
       <LessonSidebarItem id="testId" title="Test Lesson" />
