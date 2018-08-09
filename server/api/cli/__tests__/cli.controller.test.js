@@ -5,17 +5,28 @@ import mongoose from "mongoose";
 import config from "../../../config/environment";
 import { seedTestData, testLoggerMsgToBePrinted } from "../../../config/seed";
 import Logger from "../../logger/logger.model";
+import test from "ava";
 
-beforeAll(() => {
+test.before(async t => {
   // Connect to database
   mongoose.Promise = global.Promise;
-  mongoose.connect(config.mongo.uri, config.mongo.options);
+  await mongoose.connect(config.mongo.uri, config.mongo.options);
 
   // Populate DB with sample data
   if (config.seedDB) {
-    return seedTestData();
+    await seedTestData();
   }
 });
+
+function compareResponseJSONs(actual, expected, t) {
+  t.is(actual.error, expected.error);
+  t.is(actual.stdout, expected.stdout);
+  if (expected.stderr instanceof RegExp) {
+    t.regex(actual.stderr, expected.stderr);
+  } else {
+    t.is(actual.stderr, expected.stderr);
+  }
+}
 
 const goodCodeCompileResponseJSON = {
   error: false,
@@ -26,7 +37,7 @@ const goodCodeCompileResponseJSON = {
 const badCodeCompileResponseJSON = {
   error: true,
   stdout: "",
-  stderr: expect.stringMatching(/users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /)
+  stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /
 };
 
 const infiniteLoopCodeCompileResponseJSON = goodCodeCompileResponseJSON;
@@ -40,7 +51,7 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: expect.stringMatching(runExecutablesAsCompedExecUser ?
+  stderr: (runExecutablesAsCompedExecUser ?
     (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
     (/users\/\w+\/\w+\/BadCode: No such file or directory/)
   )
@@ -49,7 +60,7 @@ const badCodeRunResponseJSON = {
 const infiniteLoopCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: expect.stringMatching(/TimeoutError/)
+  stderr: /TimeoutError/
 };
 
 function getMockExpressRequestForLogger(logger) {
@@ -63,257 +74,137 @@ function getMockExpressRequestForLogger(logger) {
   });
 }
 
-// test("Compile Logger with Good Code", async () => {
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(goodCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let response = await compileLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject(goodCodeCompileResponseJSON);
-// });
-//
-// test("Compile Logger with Bad Code", async () => {
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(badCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let response = await compileLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject(badCodeCompileResponseJSON);
-// });
-//
-// test("Compile Logger with Infinite Loop Code", async () => {
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let response = await compileLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject({
-//     error: false,
-//     stdout: "",
-//     stderr: ""
-//   });
-// });
-//
-// test("Compile Logger Load Test", async () => {
-//   // Note: On average this test requires:
-//   // - 15 seconds to run with 2 simultaneous calls to `compileLogger`
-//   // - 30 seconds to run with 5 simultaneous calls to `compileLogger`
-//   // - 40 seconds to run with 10 simultaneous calls to `compileLogger`
-//   // - 100 seconds to run with 30 simultaneous calls to `compileLogger`
-//   // - 300 seconds to run with 100 simultaneous calls to `compileLogger`
-//   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-//   const numberOfRequests = 65;
-//   const testRunTimeInSeconds = 600;
-//   jest.setTimeout(testRunTimeInSeconds * 1000);
-//
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
-//   const allCompileResponseJSONs = [goodCodeCompileResponseJSON, badCodeCompileResponseJSON, infiniteLoopCodeCompileResponseJSON];
-//
-//   const outputResponsePromises = [];
-//
-//   expect.assertions(numberOfRequests);
-//
-//   // execute a bunch of calls to compileLogger
-//   for (let i = 0; i < numberOfRequests; i++) {
-//     let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
-//     let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
-//     let res = new MockExpressResponse();
-//     outputResponsePromises[i] = compileLogger(req, res).then(response => {
-//       let responseJson = response._getJSON();
-//       expect(responseJson).toMatchObject(allCompileResponseJSONs[randomIndex]);
-//     }).catch(err => {
-//       throw err;
-//     });
-//   }
-//
-//   return Promise.all(outputResponsePromises);
-// });
-//
-// test("Run Logger with Good Code", async () => {
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(goodCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let compileResponse = await compileLogger(req, res);
-//   res = new MockExpressResponse();
-//   let response = await runLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject(goodCodeRunResponseJSON);
-// });
-//
-// test("Run Logger with Bad Code", async () => {
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(badCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let compileResponse = await compileLogger(req, res);
-//   res = new MockExpressResponse();
-//   let response = await runLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject(badCodeRunResponseJSON);
-// });
-//
-// test("Run Logger with Infinite Loop Code", async () => {
-//   jest.setTimeout(25000);
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
-//   let res = new MockExpressResponse();
-//
-//   let compileResponse = await compileLogger(req, res);
-//   res = new MockExpressResponse();
-//   let response = await runLogger(req, res);
-//   let responseJson = response._getJSON();
-//   expect(responseJson).toMatchObject(infiniteLoopCodeRunResponseJSON);
-// });
-//
-// test("Run Logger Load Test", async () => {
-//   // Note: On average this test requires:
-//   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
-//   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
-//   // - 60 seconds to run with 10 simultaneous calls to `runLogger`
-//   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
-//   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
-//   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-//   const numberOfRequests = 65;
-//   const testRunTimeInSeconds = 1200;
-//   jest.setTimeout(testRunTimeInSeconds * 1000);
-//
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
-//   const allRunResponseJSONs = [goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON];
-//
-//   const outputResponsePromises = [];
-//
-//   expect.assertions(numberOfRequests);
-//
-//   // execute compileLogger for each logger in advance of calling runLogger
-//   for (let i = 0; i < 3; i++) {
-//     let req = getMockExpressRequestForLogger(allLoggers[i]);
-//     let res = new MockExpressResponse();
-//     await compileLogger(req, res);
-//   }
-//
-//   // execute a bunch of calls to runLogger
-//   for (let i = 0; i < numberOfRequests; i++) {
-//     let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
-//     let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
-//     let res = new MockExpressResponse();
-//     outputResponsePromises[i] = runLogger(req, res).then(response => {
-//       let responseJson = response._getJSON();
-//       expect(responseJson).toMatchObject(allRunResponseJSONs[randomIndex]);
-//     }).catch(err => {
-//       throw err;
-//     });
-//   }
-//
-//   return Promise.all(outputResponsePromises);
-// });
-//
-// test("Compile And Run Logger Load Test", async () => {
-//   // Note: On average this test requires:
-//   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
-//   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
-//   // - 60 seconds to run with 10 simultaneous calls to `runLogger`
-//   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
-//   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
-//   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-//   const numberOfRequests = 65;
-//   const testRunTimeInSeconds = 600;
-//   jest.setTimeout(testRunTimeInSeconds * 1000);
-//
-//   let goodCodeLogger = await Logger.findOne({
-//     className: "GoodCode"
-//   });
-//   let badCodeLogger = await Logger.findOne({
-//     className: "BadCode"
-//   });
-//   let infiniteLoopCodeLogger = await Logger.findOne({
-//     className: "InfiniteLoopCode"
-//   });
-//
-//   const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger, goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
-//   const allResponseJSONs = [
-//     goodCodeCompileResponseJSON, badCodeCompileResponseJSON, infiniteLoopCodeCompileResponseJSON,
-//     goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON
-//   ];
-//   const runOrCompileFunctions = [compileLogger, runLogger];
-//
-//   const outputResponsePromises = [];
-//
-//   expect.assertions(numberOfRequests);
-//
-//   // execute compileLogger for each logger in advance of calling runLogger
-//   for (let i = 0; i < 3; i++) {
-//     let req = getMockExpressRequestForLogger(allLoggers[i]);
-//     let res = new MockExpressResponse();
-//     await compileLogger(req, res);
-//   }
-//
-//   let startTime = Date.now();
-//
-//   // execute a bunch of calls to runLogger
-//   for (let i = 0; i < numberOfRequests; i++) {
-//     let randomIndex = Math.floor(Math.random() * 6);  // random integer between 0 and 5 inclusive
-//     let runOrCompileIndex = Math.floor(randomIndex / 3);  // random choice of 0 or 1
-//     let runOrCompile = runOrCompileFunctions[runOrCompileIndex];  // random choice of `compileLogger` or `runLogger`
-//     let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
-//     let res = new MockExpressResponse();
-//     outputResponsePromises[i] = runOrCompile(req, res).then(response => {
-//       let responseJson = response._getJSON();
-//       expect(responseJson).toMatchObject(allResponseJSONs[randomIndex]);
-//     }).catch(err => {
-//       throw err;
-//     });
-//   }
-//
-//   return Promise.all(outputResponsePromises).then(_ => {
-//     let endTime = Date.now();
-//     let timeElapsed = (endTime - startTime) / 1000;
-//     console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);
-//   });
-// });
+test("Compile Logger with Good Code", async t => {
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
 
-test("Run Logger Infinite Code Load Test", async () => {
+  let req = getMockExpressRequestForLogger(goodCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await compileLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, goodCodeCompileResponseJSON, t);
+});
+
+test("Compile Logger with Bad Code", async t => {
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+
+  let req = getMockExpressRequestForLogger(badCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await compileLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, badCodeCompileResponseJSON, t);
+});
+
+test("Compile Logger with Infinite Loop Code", async t => {
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
+  let res = new MockExpressResponse();
+
+  let response = await compileLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, infiniteLoopCodeCompileResponseJSON, t);
+});
+
+test("Compile Logger Load Test", async t => {
+  // Note: On average this test requires:
+  // - 15 seconds to run with 2 simultaneous calls to `compileLogger`
+  // - 30 seconds to run with 5 simultaneous calls to `compileLogger`
+  // - 40 seconds to run with 10 simultaneous calls to `compileLogger`
+  // - 100 seconds to run with 30 simultaneous calls to `compileLogger`
+  // - 300 seconds to run with 100 simultaneous calls to `compileLogger`
+  // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
+  const numberOfRequests = 65;
+  const testRunTimeInSeconds = 600;
+  // jest.setTimeout(testRunTimeInSeconds * 1000);
+
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
+  const allCompileResponseJSONs = [goodCodeCompileResponseJSON, badCodeCompileResponseJSON, infiniteLoopCodeCompileResponseJSON];
+
+  const outputResponsePromises = [];
+
+  t.plan(numberOfRequests * 3);
+
+  // execute a bunch of calls to compileLogger
+  for (let i = 0; i < numberOfRequests; i++) {
+    let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
+    let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
+    let res = new MockExpressResponse();
+    outputResponsePromises[i] = compileLogger(req, res).then(response => {
+      let responseJson = response._getJSON();
+      compareResponseJSONs(responseJson, allCompileResponseJSONs[randomIndex], t);
+    }).catch(err => {
+      throw err;
+    });
+  }
+
+  await Promise.all(outputResponsePromises);
+});
+
+test("Run Logger with Good Code", async t => {
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+
+  let req = getMockExpressRequestForLogger(goodCodeLogger);
+  let res = new MockExpressResponse();
+
+  let compileResponse = await compileLogger(req, res);
+  res = new MockExpressResponse();
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, goodCodeRunResponseJSON, t);
+});
+
+test("Run Logger with Bad Code", async t => {
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+
+  let req = getMockExpressRequestForLogger(badCodeLogger);
+  let res = new MockExpressResponse();
+
+  let compileResponse = await compileLogger(req, res);
+  res = new MockExpressResponse();
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, badCodeRunResponseJSON, t);
+});
+
+test("Run Logger with Infinite Loop Code", async t => {
+  // jest.setTimeout(25000);
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
+  let res = new MockExpressResponse();
+
+  let compileResponse = await compileLogger(req, res);
+  res = new MockExpressResponse();
+  let response = await runLogger(req, res);
+  let responseJson = response._getJSON();
+  compareResponseJSONs(responseJson, infiniteLoopCodeRunResponseJSON, t);
+});
+
+test("Run Logger Load Test", async t => {
   // Note: On average this test requires:
   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
@@ -321,9 +212,125 @@ test("Run Logger Infinite Code Load Test", async () => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 100;
+  const numberOfRequests = 65;
   const testRunTimeInSeconds = 1200;
-  jest.setTimeout(testRunTimeInSeconds * 1000);
+  // jest.setTimeout(testRunTimeInSeconds * 1000);
+
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
+  const allRunResponseJSONs = [goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON];
+
+  const outputResponsePromises = [];
+
+  t.plan(numberOfRequests * 3);
+
+  // execute compileLogger for each logger in advance of calling runLogger
+  for (let i = 0; i < 3; i++) {
+    let req = getMockExpressRequestForLogger(allLoggers[i]);
+    let res = new MockExpressResponse();
+    await compileLogger(req, res);
+  }
+
+  // execute a bunch of calls to runLogger
+  for (let i = 0; i < numberOfRequests; i++) {
+    let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
+    let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
+    let res = new MockExpressResponse();
+    outputResponsePromises[i] = runLogger(req, res).then(response => {
+      let responseJson = response._getJSON();
+      compareResponseJSONs(responseJson, allRunResponseJSONs[randomIndex], t);
+    }).catch(err => {
+      throw err;
+    });
+  }
+
+  await Promise.all(outputResponsePromises);
+});
+
+test("Compile And Run Logger Load Test", async t => {
+  // Note: On average this test requires:
+  // - 20 seconds to run with 2 simultaneous calls to `runLogger`
+  // - 40 seconds to run with 5 simultaneous calls to `runLogger`
+  // - 60 seconds to run with 10 simultaneous calls to `runLogger`
+  // - 200 seconds to run with 30 simultaneous calls to `runLogger`
+  // - 600 seconds to run with 100 simultaneous calls to `runLogger`
+  // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
+  const numberOfRequests = 65;
+  const testRunTimeInSeconds = 600;
+  // jest.setTimeout(testRunTimeInSeconds * 1000);
+
+  let goodCodeLogger = await Logger.findOne({
+    className: "GoodCode"
+  });
+  let badCodeLogger = await Logger.findOne({
+    className: "BadCode"
+  });
+  let infiniteLoopCodeLogger = await Logger.findOne({
+    className: "InfiniteLoopCode"
+  });
+
+  const allLoggers = [goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger, goodCodeLogger, badCodeLogger, infiniteLoopCodeLogger];
+  const allResponseJSONs = [
+    goodCodeCompileResponseJSON, badCodeCompileResponseJSON, infiniteLoopCodeCompileResponseJSON,
+    goodCodeRunResponseJSON, badCodeRunResponseJSON, infiniteLoopCodeRunResponseJSON
+  ];
+  const runOrCompileFunctions = [compileLogger, runLogger];
+
+  const outputResponsePromises = [];
+
+  t.plan(numberOfRequests * 3);
+
+  // execute compileLogger for each logger in advance of calling runLogger
+  for (let i = 0; i < 3; i++) {
+    let req = getMockExpressRequestForLogger(allLoggers[i]);
+    let res = new MockExpressResponse();
+    await compileLogger(req, res);
+  }
+
+  let startTime = Date.now();
+
+  // execute a bunch of calls to runLogger
+  for (let i = 0; i < numberOfRequests; i++) {
+    let randomIndex = Math.floor(Math.random() * 6);  // random integer between 0 and 5 inclusive
+    let runOrCompileIndex = Math.floor(randomIndex / 3);  // random choice of 0 or 1
+    let runOrCompile = runOrCompileFunctions[runOrCompileIndex];  // random choice of `compileLogger` or `runLogger`
+    let req = getMockExpressRequestForLogger(allLoggers[randomIndex]);
+    let res = new MockExpressResponse();
+    outputResponsePromises[i] = runOrCompile(req, res).then(response => {
+      let responseJson = response._getJSON();
+      compareResponseJSONs(responseJson, allResponseJSONs[randomIndex], t);
+    }).catch(err => {
+      throw err;
+    });
+  }
+
+  await Promise.all(outputResponsePromises).then(_ => {
+    let endTime = Date.now();
+    let timeElapsed = (endTime - startTime) / 1000;
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);
+  });
+});
+
+test.only("Run Logger Infinite Code Load Test", async t => {
+  // Note: On average this test requires:
+  // - 20 seconds to run with 2 simultaneous calls to `runLogger`
+  // - 40 seconds to run with 5 simultaneous calls to `runLogger`
+  // - 60 seconds to run with 10 simultaneous calls to `runLogger`
+  // - 200 seconds to run with 30 simultaneous calls to `runLogger`
+  // - 600 seconds to run with 100 simultaneous calls to `runLogger`
+  // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
+  const numberOfRequests = 10;
+  const testRunTimeInSeconds = 1200;
+  // jest.setTimeout(testRunTimeInSeconds * 1000);
 
   let infiniteLoopCodeLogger = await Logger.findOne({
     className: "InfiniteLoopCode"
@@ -331,7 +338,7 @@ test("Run Logger Infinite Code Load Test", async () => {
 
   const outputResponsePromises = [];
 
-  expect.assertions(numberOfRequests);
+  t.plan(numberOfRequests * 3);
 
   // execute compileLogger for infiniteLoopCodeLogger in advance of calling runLogger
   let req = getMockExpressRequestForLogger(infiniteLoopCodeLogger);
@@ -345,13 +352,13 @@ test("Run Logger Infinite Code Load Test", async () => {
     res = new MockExpressResponse();
     outputResponsePromises[i] = runLogger(req, res).then(response => {
       let responseJson = response._getJSON();
-      expect(responseJson).toMatchObject(infiniteLoopCodeRunResponseJSON);
+      compareResponseJSONs(responseJson, infiniteLoopCodeRunResponseJSON, t);
     }).catch(err => {
       throw err;
     });
   }
 
-  return Promise.all(outputResponsePromises).then(_ => {
+  await Promise.all(outputResponsePromises).then(_ => {
     let endTime = Date.now();
     let timeElapsed = (endTime - startTime) / 1000;
     console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);

@@ -2,7 +2,7 @@
 
 import type { $Request, $Response } from "express";
 
-import { exec as execSync } from "child_process";
+import { exec as execSync, spawn } from "child_process";
 import jsesc from "jsesc";
 import Logger from "../logger/logger.model";
 import { promisify } from "util";
@@ -136,24 +136,55 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const cmd = (runExecutablesAsCompedExecUser ?
-      `sudo -u comped-exec "${dirName}/${logger.className}"` :
-      `"${dirName}/${logger.className}"`
+    const execCall = (runExecutablesAsCompedExecUser ?
+      spawn("sudo", ["-u", "comped-exec", `"${dirName}/${logger.className}"`, "&>", `${dirName}/log`], {
+        detached: true
+      }) :
+      spawn(`"${dirName}/${logger.className}"`, ["&>", `${dirName}/log`], {
+        detached: true
+      })
     );
-    const result = await timeout(exec(cmd, {
-      timeout: timeLimitInSeconds * 1000, killSignal: "SIGKILL"
-    }), 1.5 * timeLimitInSeconds * 1000);
+    let execCallKilled = false;
+    let stdout = "";
+    let stderr = "";
+    execCall.stdout.on('data', data => {
+      stdout = stdout + data;
+    });
+    execCall.stderr.on('data', data => {
+      stderr = stderr + data;
+    });
+    execCall.on('error', err => {
+      console.error("WE GOTS AN ERROR: ", err);
+    });
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (execCall.killed) {
+          console.log("Already killed");
+          execCallKilled = true;
+          resolve();
+        } else {
+          console.log("Killing all children of process ", execCall.pid);
+          process.kill(-execCall.pid);
+          execCallKilled = true;
+          reject({
+            stdout: stdout,
+            stderr: stderr,
+            signal: "SIGTERM"
+          });
+        }
+      }, timeLimitInSeconds * 1000);
+    });
     return res
       .status(200)
-      .json({ error: false, stdout: result.stdout, stderr: result.stderr });
+      .json({ error: false, stdout: stdout, stderr: stderr });
   } catch (err) {
     let errString = jsesc(JSON.stringify(err), {'quotes': 'double'});
     await exec(`echo "err: ${errString}" >> users/log`, {timeout: 1000});
     let stderr = err.stderr;
-    if (err.signal === "SIGKILL") {
-      stderr = `TimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
+    if (err.signal === "SIGTERM") {
+      stderr = stderr + `\nTimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
     } else if (err instanceof TimeoutError) {
-      stderr = `Error running executable: attempt took longer than ${1.5 * timeLimitInSeconds} seconds to run`;
+      stderr = stderr + `\nError running executable: attempt took longer than ${1.5 * timeLimitInSeconds} seconds to run`;
     }
     return res
       .status(200)
