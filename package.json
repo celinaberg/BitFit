@@ -13,7 +13,7 @@
   "main": "server/app.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "jest --detectOpenHandles && yarn run lint",
+    "test": "ava && yarn run lint",
     "start": "NODE_ENV=development nodemon server/app.js --exec babel-node",
     "debug": "NODE_ENV=development nodemon server/app.js --exec babel-node --inspect",
     "build:js": "babel server -d build/server",
@@ -40,11 +40,14 @@
     "simple-dockerode": "^0.2.2"
   },
   "devDependencies": {
+    "ava": "1.0.0-beta.6",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.26.0",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-flowtype": "^2.47.1",
@@ -66,5 +69,19 @@
   "private": true,
   "workspaces": [
     "client/"
-  ]
+  ],
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": {
+			"testOptions": {
+				"plugins": [
+					"babel-plugin-transform-es2015-modules-commonjs",
+          "babel-plugin-transform-react-jsx"
+				],
+        "babelrc": false
+			}
+		}
+  }
 }

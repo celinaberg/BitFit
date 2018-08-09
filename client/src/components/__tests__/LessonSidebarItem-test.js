@@ -4,8 +4,9 @@ import React from "react";
 import LessonSidebarItem from "../LessonSidebarItem";
 import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router";
+import test from "ava";
 
-test("URL changes when admin", () => {
+test("URL changes when admin", t => {
   let component = renderer.create(
     <MemoryRouter>
       <LessonSidebarItem id="testId" title="Test Lesson" />
@@ -13,7 +14,7 @@ test("URL changes when admin", () => {
   );
 
   let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  t.snapshot(tree);
 
   component = renderer.create(
     <MemoryRouter>
@@ -21,5 +22,5 @@ test("URL changes when admin", () => {
     </MemoryRouter>
   );
   tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  t.snapshot(tree);
 });
