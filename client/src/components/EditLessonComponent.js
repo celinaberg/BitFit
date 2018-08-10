@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import type { Question, Lesson } from "../types";
 import {
   Card,
   CardBlock,
@@ -13,13 +14,18 @@ import {
   Progress
 } from "reactstrap";
 import RichTextEditor from "react-rte";
+import QuestionList from "./QuestionList";
 
 type Props = {
   id: string,
   title: string,
   background: string,
   saveLesson: (id: string, title: string, background: string) => void,
-  deleteLesson: (id: string) => void
+  deleteLesson: (id: string) => void,
+  allLessons: Array<Lesson>,
+  lessonQuestions: Array<Question>,
+  saveQuestion: Question => void,
+  deleteQuestion: string => void,
 };
 
 class EditLessonComponent extends Component {
@@ -97,6 +103,12 @@ class EditLessonComponent extends Component {
                 onChange={this.onBackgroundChange}
               />
             </FormGroup>
+            <QuestionList
+              lessonId={this.props.id}
+              questions={this.props.lessonQuestions}
+              allLessons={this.props.allLessons}
+              saveQuestion={this.props.saveQuestion}
+              deleteQuestion={this.props.deleteQuestion} />
             <Button color="success" onClick={this.onSaveClick}>
               Save Lesson
             </Button>
