@@ -147,7 +147,7 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const timeoutWrapper = `${timeoutCmd} ${timeLimitInSeconds} "${dirName}/${logger.className}" || if [ $? -eq 124 ]; then echo "Timed Out!" && exit 124; else exit 1; fi`
+    const timeoutWrapper = `${timeoutCmd} ${timeLimitInSeconds} ./${dirName}/${logger.className} || if [ $? -eq 124 ]; then echo "Timed Out!" && exit 124; else exit 1; fi`
     const cmd = runExecutablesAsCompedExecUser ? `sudo -u comped-exec ${timeoutWrapper}` : timeoutWrapper;
     const result = await exec(cmd);
     return res
