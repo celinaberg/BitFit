@@ -68,15 +68,20 @@ const samlStrategy = new SamlStrategy(
   },
   async (profile, done) => {
     let role;
+    console.log("Profile: ", profile);
     if (profile.hasOwnProperty(memberOf)) {
+      console.log(`Student has field ${profile[memberOf]}`);
       if (profile[memberOf].includes(memberOfInstructors)) {
+        console.log(`Student matches instructor code ${memberOfInstructors}`);
         role = "instructor";
       } else if (profile[memberOf].includes(memberOfTeachingAssistants)) {
+        console.log(`Student's matches teaching assistant code "${memberOfTeachingAssistants}"`);
         role = "teaching-assistant";
       }
     } else if (profile.hasOwnProperty(groupMembership)) {
       role = "student";
       // Temp: Restrict access to students.
+      console.log("Student role determined");
       return done(null, false, {
         message: "Students are currently not allowed to access BitFit."
       });
