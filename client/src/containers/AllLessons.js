@@ -55,10 +55,12 @@ class AllLessons extends Component {
   render() {
     let lessons = this.props.lessons.map(lesson => {
       let lessonQuestions;
-      if (this.props.questions.fetching) {
+      if (!this.props.questions.fetched) {
         lessonQuestions = [];
       } else {
-        lessonQuestions = this.props.questions.questions.filter(question => question.lesson === lesson.id);
+        lessonQuestions = this.props.questions.questions.filter(
+          question => question.lesson === lesson.id
+        );
       }
       return (<EditLessonComponent
                 key={lesson.id}
@@ -66,7 +68,9 @@ class AllLessons extends Component {
                 title={lesson.title}
                 background={lesson.background}
                 saveLesson={this.onSaveLessonClick}
-                deleteLesson={this.onDeleteLessonClick} />);
+                deleteLesson={this.onDeleteLessonClick}
+                allLessons={this.props.lessons}
+                lessonQuestions={lessonQuestions} />);
     });
     // let questions;
     // if (this.props.questions.fetching) {
