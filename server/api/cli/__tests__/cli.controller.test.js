@@ -19,16 +19,21 @@ test.before(async t => {
 });
 
 function compareResponseJSONs(actual, expected, t) {
-  t.is(actual.error, expected.error);
-  if (expected.stdout instanceof RegExp) {
-    t.regex(actual.stdout, expected.stdout);
-  } else {
-    t.is(actual.stdout, expected.stdout);
-  }
-  if (expected.stderr instanceof RegExp) {
-    t.regex(actual.stderr, expected.stderr);
-  } else {
-    t.is(actual.stderr, expected.stderr);
+  try {
+    t.is(actual.error, expected.error);
+    if (expected.stdout instanceof RegExp) {
+      t.regex(actual.stdout, expected.stdout);
+    } else {
+      t.is(actual.stdout, expected.stdout);
+    }
+    if (expected.stderr instanceof RegExp) {
+      t.regex(actual.stderr, expected.stderr);
+    } else {
+      t.is(actual.stderr, expected.stderr);
+    }
+  } catch (err) {
+    console.log(`Actual: ${JSON.stringify(actual)}\nExpected: ${JSON.stringify(expected)}`);
+    throw err;
   }
 }
 
