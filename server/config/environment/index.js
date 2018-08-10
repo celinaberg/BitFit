@@ -45,6 +45,8 @@ if (process.env.NODE_ENV === "development") {
   all = _.merge(all, development);
 }
 
+console.log("This gets called");
+
 // Export the config object based on the NODE_ENV
 // ==============================================
 export default all;
