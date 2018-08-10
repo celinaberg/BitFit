@@ -41,7 +41,7 @@ const goodCodeCompileResponseJSON = {
 const badCodeCompileResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /\.\/users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /
+  stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: unknown type name/
 };
 
 const infiniteLoopCodeCompileResponseJSON = goodCodeCompileResponseJSON;
