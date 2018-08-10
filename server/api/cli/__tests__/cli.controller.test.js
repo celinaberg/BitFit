@@ -118,7 +118,7 @@ test("Compile Logger with Infinite Loop Code", async t => {
   compareResponseJSONs(responseJson, infiniteLoopCodeCompileResponseJSON, t);
 });
 
-test.skip("Compile Logger Load Test", async t => {
+test("Compile Logger Load Test", async t => {
   // Note: On average this test requires:
   // - 15 seconds to run with 2 simultaneous calls to `compileLogger`
   // - 30 seconds to run with 5 simultaneous calls to `compileLogger`
@@ -209,7 +209,7 @@ test("Run Logger with Infinite Loop Code", async t => {
   compareResponseJSONs(responseJson, infiniteLoopCodeRunResponseJSON, t);
 });
 
-test.skip("Run Logger Load Test", async t => {
+test("Run Logger Load Test", async t => {
   // Note: On average this test requires:
   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
@@ -261,7 +261,7 @@ test.skip("Run Logger Load Test", async t => {
   await Promise.all(outputResponsePromises);
 });
 
-test.skip("Compile And Run Logger Load Test", async t => {
+test("Compile And Run Logger Load Test", async t => {
   // Note: On average this test requires:
   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
@@ -325,7 +325,7 @@ test.skip("Compile And Run Logger Load Test", async t => {
   });
 });
 
-test.skip("Run Logger Infinite Code Load Test", async t => {
+test("Run Logger Infinite Code Load Test", async t => {
   // Note: On average this test requires:
   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
