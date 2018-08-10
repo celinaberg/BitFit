@@ -72,6 +72,9 @@ const samlStrategy = new SamlStrategy(
     let role;
     console.log("Profile: ", profile);
     if (profile.hasOwnProperty(memberOf)) {
+      if (profile.hasOwnProperty(groupMembership)) {
+        console.log("Student group membership: ", profile[groupMembership]);
+      }
       console.log(`Student has field ${memberOf}: ${profile[memberOf]}`);
       if (profile[memberOf].includes(memberOfInstructors)) {
         console.log(`Student matches instructor code ${memberOfInstructors}`);
