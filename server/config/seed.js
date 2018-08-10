@@ -148,6 +148,7 @@ export function seedTestData() {
       },
       function() {
         console.log("Finished adding lessons");
+        console.log("Hello");
         addQuestions();
       }
     );

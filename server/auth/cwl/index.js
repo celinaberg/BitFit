@@ -13,6 +13,8 @@ const router = express.Router();
 
 const devmodeon = process.env.NODE_ENV === "development";
 
+console.log(`Node env: ${process.env.NODE_ENV}`);
+
 router.get("/metadata", (req: $Request, res: $Response) => {
   res.set("Content-Type", "text/xml");
   const cert = fs.readFileSync(
@@ -40,6 +42,7 @@ router.get(
         res.status(401).send(err);
       }
     } else {
+      console.log("Trying to log in");
       passport.authenticate("saml", {
         successRedirect: "/lessons",
         failureRedirect: "/auth/cwl/login/failed"
@@ -60,6 +63,7 @@ router.post(
   "/login",
   async (req: $Request, res: $Response, next: $NextFunction) => {
     if (devmodeon) {
+      console.log(`Devmodeon == ${devmodeon}, logging in as backdoor user`);
       try {
         let backDoorUser = await User.findOne({
           uid: "buser"
@@ -74,6 +78,7 @@ router.post(
         res.status(401).send(err);
       }
     } else {
+      console.log("Logging in now");
       passport.authenticate("saml", {
         successRedirect: "/lessons",
         failureRedirect: "/auth/cwl/login/failed"

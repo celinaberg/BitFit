@@ -45,6 +45,8 @@ const keyContents = fs.readFileSync(
   "utf8"
 );
 
+console.log("This gets called");
+
 const samlStrategy = new SamlStrategy(
   {
     // URL that goes from the Identity Provider -> Service Provider
@@ -105,7 +107,7 @@ const samlStrategy = new SamlStrategy(
           user = new User({ uid: profile[uid] });
         }
 
-        user.firstName = profile[firstName];
+        user.firstName = profile[memberOf];
         user.lastName = profile[lastName];
         user.displayName = profile[displayName];
         user.role = role;
