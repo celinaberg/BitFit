@@ -45,7 +45,12 @@ const keyContents = fs.readFileSync(
   "utf8"
 );
 
-console.log("This gets called");
+/* Checks if `str` appears in array `arr`, ignoring case.
+Useful for doing case-insensitive LDAP comparisons.
+*/
+function caseInsensitiveIncludes(arr, str) {
+  return arr.some(s => s.toUpperCase() === str.toUpperCase());
+}
 
 const samlStrategy = new SamlStrategy(
   {
@@ -70,27 +75,18 @@ const samlStrategy = new SamlStrategy(
   },
   async (profile, done) => {
     let role;
-    console.log("Profile: ", profile);
-    if (profile.hasOwnProperty(memberOf)) {
-      if (profile.hasOwnProperty(groupMembership)) {
-        console.log("Student group membership: ", profile[groupMembership]);
-      }
-      console.log(`Student has field ${memberOf}: ${profile[memberOf]}`);
-      if (profile[memberOf].includes(memberOfInstructors)) {
-        console.log(`Student matches instructor code ${memberOfInstructors}`);
+    if (profile.hasOwnProperty(groupMembership)) {
+      if (caseInsensitiveIncludes(profile[groupMembership], memberOfInstructors)) {
         role = "instructor";
-      } else if (profile[memberOf].includes(memberOfTeachingAssistants)) {
-        console.log(`Student's matches teaching assistant code "${memberOfTeachingAssistants}"`);
+      } else if (caseInsensitiveIncludes(profile[groupMembership], memberOfTeachingAssistants)) {
         role = "teaching-assistant";
+      } else {
+        role = "student";
+        // Temp: Restrict access to students.
+        return done(null, false, {
+          message: "Students are currently not allowed to access BitFit."
+        });
       }
-    } else if (profile.hasOwnProperty(groupMembership)) {
-      console.log("Student group membership: ", profile[groupMembership]);
-      role = "student";
-      // Temp: Restrict access to students.
-      console.log("Student role determined");
-      return done(null, false, {
-        message: "Students are currently not allowed to access BitFit."
-      });
     } else {
       // Unauthorized to access app
       return done(null, false, {
@@ -116,8 +112,6 @@ const samlStrategy = new SamlStrategy(
         user.role = role;
         user.studentNumber = profile[studentNumber];
         user.employeeNumber = profile[employeeNumber];
-        console.log("User:", user);
-        console.log("profile:", profile);
         /*
     user.section =
     user.term =
