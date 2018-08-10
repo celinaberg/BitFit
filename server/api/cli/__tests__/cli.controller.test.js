@@ -41,7 +41,7 @@ const goodCodeCompileResponseJSON = {
 const badCodeCompileResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /
+  stderr: /\.\/users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: /
 };
 
 const infiniteLoopCodeCompileResponseJSON = goodCodeCompileResponseJSON;
@@ -55,7 +55,7 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /timeout: failed to run command ‘users\/\w+\/\w+\/BadCode’: No such file or directory/
+  stderr: /timeout: failed to run command ‘\.\/users\/\w+\/\w+\/BadCode’: No such file or directory/
   // stderr: (runExecutablesAsCompedExecUser ?
   //   (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
   //   (/users\/\w+\/\w+\/BadCode: No such file or directory/)
