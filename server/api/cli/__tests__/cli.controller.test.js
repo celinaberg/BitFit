@@ -126,7 +126,7 @@ test("Compile Logger Load Test", async t => {
   // - 100 seconds to run with 30 simultaneous calls to `compileLogger`
   // - 300 seconds to run with 100 simultaneous calls to `compileLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 65;
+  const numberOfRequests = 100;
   const testRunTimeInSeconds = 600;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -217,7 +217,7 @@ test("Run Logger Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 65;
+  const numberOfRequests = 100;
   const testRunTimeInSeconds = 1200;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -269,7 +269,7 @@ test("Compile And Run Logger Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 65;
+  const numberOfRequests = 100;
   const testRunTimeInSeconds = 600;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -333,7 +333,7 @@ test("Run Logger Infinite Code Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 10;
+  const numberOfRequests = 100;
   const testRunTimeInSeconds = 1200;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
