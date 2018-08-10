@@ -106,13 +106,14 @@ const samlStrategy = new SamlStrategy(
           // create new user account
           user = new User({ uid: profile[uid] });
         }
-
-        user.firstName = profile[memberOf];
+        user.firstName = profile[firstName];
         user.lastName = profile[lastName];
         user.displayName = profile[displayName];
         user.role = role;
         user.studentNumber = profile[studentNumber];
         user.employeeNumber = profile[employeeNumber];
+        console.log("User:", user);
+        console.log("profile:", profile);
         /*
     user.section =
     user.term =
