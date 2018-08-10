@@ -147,6 +147,8 @@ test("Compile Logger Load Test", async t => {
 
   t.plan(numberOfRequests * 3);
 
+  let startTime = Date.now();
+
   // execute a bunch of calls to compileLogger
   for (let i = 0; i < numberOfRequests; i++) {
     let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
@@ -160,7 +162,11 @@ test("Compile Logger Load Test", async t => {
     });
   }
 
-  await Promise.all(outputResponsePromises);
+  await Promise.all(outputResponsePromises).then(_ => {
+    let endTime = Date.now();
+    let timeElapsed = (endTime - startTime) / 1000;
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls to compileLogger.`);
+  });;
 });
 
 test("Run Logger with Good Code", async t => {
@@ -245,6 +251,8 @@ test("Run Logger Load Test", async t => {
     await compileLogger(req, res);
   }
 
+  let startTime = Date.now();
+
   // execute a bunch of calls to runLogger
   for (let i = 0; i < numberOfRequests; i++) {
     let randomIndex = Math.floor(Math.random() * 3);  // random integer between 0 and 2 inclusive
@@ -258,7 +266,11 @@ test("Run Logger Load Test", async t => {
     });
   }
 
-  await Promise.all(outputResponsePromises);
+  await Promise.all(outputResponsePromises).then(_ => {
+    let endTime = Date.now();
+    let timeElapsed = (endTime - startTime) / 1000;
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls to runLogger.`);
+  });
 });
 
 test("Compile And Run Logger Load Test", async t => {
@@ -321,7 +333,7 @@ test("Compile And Run Logger Load Test", async t => {
   await Promise.all(outputResponsePromises).then(_ => {
     let endTime = Date.now();
     let timeElapsed = (endTime - startTime) / 1000;
-    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls to compileLogger and runLogger.`);
   });
 });
 
@@ -362,10 +374,9 @@ test("Run Logger Infinite Code Load Test", async t => {
       throw err;
     });
   }
-
   await Promise.all(outputResponsePromises).then(_ => {
     let endTime = Date.now();
     let timeElapsed = (endTime - startTime) / 1000;
-    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls.`);
+    console.log(`We're done! It took ${timeElapsed} seconds to complete ${numberOfRequests} calls to runLogger with InfiniteLoopCode.`);
   });
 });
