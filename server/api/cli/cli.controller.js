@@ -120,18 +120,17 @@ export async function compileLogger(req: $Request, res: $Response) {
     await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
     const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}" -lm`;
     //console.log(gcc);
-    const result = await exec(gcc, {
-      timeout: 10000
-    });
+    const result = await exec(gcc);
     //console.error("result object", result);
     return res
       .status(200)
       .json({ error: false, stdout: result.stdout, stderr: result.stderr });
   } catch (err) {
-    // console.error(err);
+    // console.error('--------------------');
+    // console.error(`${err}`);
     return res
       .status(200)
-      .json({ error: true, stdout: err.stdout, stderr: err.stderr });
+      .json({ error: true, stdout: err.stdout, stderr: `${err}` });
   }
 }
 
