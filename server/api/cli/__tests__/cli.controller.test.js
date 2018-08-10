@@ -41,7 +41,8 @@ const goodCodeCompileResponseJSON = {
 const badCodeCompileResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: unknown type name/
+  stderr: /Error: Command failed: gcc "users\/\w+\/\w+\/\w+\.c" -o "users\/\w+\/\w+\/\w+" -lm/
+  // stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: unknown type name/
 };
 
 const infiniteLoopCodeCompileResponseJSON = goodCodeCompileResponseJSON;
@@ -56,10 +57,6 @@ const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
   stderr: /timeout: failed to run command ‘\.\/users\/\w+\/\w+\/BadCode’: No such file or directory/
-  // stderr: (runExecutablesAsCompedExecUser ?
-  //   (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
-  //   (/users\/\w+\/\w+\/BadCode: No such file or directory/)
-  // )
 };
 
 const infiniteLoopCodeRunResponseJSON = {
@@ -126,7 +123,7 @@ test("Compile Logger Load Test", async t => {
   // - 100 seconds to run with 30 simultaneous calls to `compileLogger`
   // - 300 seconds to run with 100 simultaneous calls to `compileLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 100;
+  const numberOfRequests = 200;
   const testRunTimeInSeconds = 600;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -223,7 +220,7 @@ test("Run Logger Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 100;
+  const numberOfRequests = 200;
   const testRunTimeInSeconds = 1200;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -281,7 +278,7 @@ test("Compile And Run Logger Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 100;
+  const numberOfRequests = 200;
   const testRunTimeInSeconds = 600;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
@@ -345,7 +342,7 @@ test("Run Logger Infinite Code Load Test", async t => {
   // - 200 seconds to run with 30 simultaneous calls to `runLogger`
   // - 600 seconds to run with 100 simultaneous calls to `runLogger`
   // Change `numberOfRequests` and `testRunTimeInSeconds` as desired.
-  const numberOfRequests = 100;
+  const numberOfRequests = 200;
   const testRunTimeInSeconds = 1200;
   // jest.setTimeout(testRunTimeInSeconds * 1000);
 
