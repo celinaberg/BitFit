@@ -91,6 +91,10 @@ const compedUser = {
 // In production, run student executables securely as comped-exec
 export const runExecutablesAsCompedExecUser = process.env.USER === compedUser.username;
 
+// bash `timeout` command doesn't exist on OSX but `gtimeout` can be installed on OSX with `brew install coreutils`
+// and performs the same as `timeout`
+const timeoutCmd = (process.platform === "darwin") ? "gtimeout" : "timeout";
+
 if (runExecutablesAsCompedExecUser) {
   console.log("Running executables securely as comped-exec user");
 } else {
@@ -143,49 +147,55 @@ export async function runLogger(req: $Request, res: $Response) {
       });
     }
     const dirName = "users/" + userId + "/" + loggerId;
-    const execCall = (runExecutablesAsCompedExecUser ?
-      spawn("sudo", ["-u", "comped-exec", `${dirName}/${logger.className}`, "&>", `${dirName}/log`], {
-        detached: true,
-        uid: compedUser.uid,
-        gid: compedUser.gid
-      }) :
-      spawn(`${dirName}/${logger.className}`, ["&>", `${dirName}/log`], {
-        detached: true
-      })
-    );
-    let execCallKilled = false;
-    let stdout = "";
-    let stderr = "";
-    execCall.stdout.on('data', data => {
-      stdout = stdout + data;
-    });
-    execCall.stderr.on('data', data => {
-      stderr = stderr + data;
-    });
-    execCall.on('error', err => {
-      console.error("WE GOTS AN ERROR: ", err);
-    });
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (execCall.killed) {
-          console.log("Already killed");
-          execCallKilled = true;
-          resolve();
-        } else {
-          console.log("Killing all children of process ", execCall.pid);
-          process.kill(-execCall.pid);
-          execCallKilled = true;
-          reject({
-            stdout: stdout,
-            stderr: stderr,
-            signal: "SIGTERM"
-          });
-        }
-      }, timeLimitInSeconds * 1000);
-    });
+    const timeoutWrapper = `${timeoutCmd} ${timeLimitInSeconds} "${dirName}/${logger.className}" || if [[ $? -eq 124 ]]; then echo "Timed Out!" && exit 124; else exit 1; fi`
+    const cmd = runExecutablesAsCompedExecUser ? `sudo -u comped-exec ${timeoutWrapper}` : timeoutWrapper;
+    const result = await exec(cmd);
     return res
       .status(200)
-      .json({ error: false, stdout: stdout, stderr: stderr });
+      .json({ error: false, stdout: result.stdout, stderr: result.stderr });
+    // const execCall = (runExecutablesAsCompedExecUser ?
+    //   spawn("sudo", ["-u", "comped-exec", `${dirName}/${logger.className}`, "&>", `${dirName}/log`], {
+    //     detached: true,
+    //     uid: compedUser.uid,
+    //     gid: compedUser.gid
+    //   }) :
+    //   spawn(`${dirName}/${logger.className}`, ["&>", `${dirName}/log`], {
+    //     detached: true
+    //   })
+    // );
+    // let execCallKilled = false;
+    // let stdout = "";
+    // let stderr = "";
+    // execCall.stdout.on('data', data => {
+    //   stdout = stdout + data;
+    // });
+    // execCall.stderr.on('data', data => {
+    //   stderr = stderr + data;
+    // });
+    // execCall.on('error', err => {
+    //   console.error("WE GOTS AN ERROR: ", err);
+    // });
+    // await new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     if (execCall.killed) {
+    //       console.log("Already killed");
+    //       execCallKilled = true;
+    //       resolve();
+    //     } else {
+    //       console.log("Killing all children of process ", execCall.pid);
+    //       process.kill(-execCall.pid);
+    //       execCallKilled = true;
+    //       reject({
+    //         stdout: stdout,
+    //         stderr: stderr,
+    //         signal: "SIGTERM"
+    //       });
+    //     }
+    //   }, timeLimitInSeconds * 1000);
+    // });
+    // return res
+    //   .status(200)
+    //   .json({ error: false, stdout: stdout, stderr: stderr });
   } catch (err) {
     let errString = jsesc(JSON.stringify(err), {'quotes': 'double'});
     await exec(`echo "err: ${errString}" >> users/log`, {timeout: 1000});
