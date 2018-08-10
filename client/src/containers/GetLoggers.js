@@ -90,8 +90,8 @@ class GetLoggers extends Component {
           <td>{loggerUserYear}</td>
           <td>{loggerQuestionTitleOrId}</td>
           <td>{loggerLessonTitle}</td>
-          <td>{logger.startTime}</td>
-          <td>{logger.endTime}</td>
+          <td>{formatDateStringInLocalTime(logger.startTime)}</td>
+          <td>{formatDateStringInLocalTime(logger.endTime)}</td>
           <td>{logger.numCompiles}</td>
           <td>{logger.numErrorFreeCompiles}</td>
           <td>{logger.numRuns}</td>
