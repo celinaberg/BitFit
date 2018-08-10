@@ -20,7 +20,11 @@ test.before(async t => {
 
 function compareResponseJSONs(actual, expected, t) {
   t.is(actual.error, expected.error);
-  t.is(actual.stdout, expected.stdout);
+  if (expected.stdout instanceof RegExp) {
+    t.regex(actual.stdout, expected.stdout);
+  } else {
+    t.is(actual.stdout, expected.stdout);
+  }
   if (expected.stderr instanceof RegExp) {
     t.regex(actual.stderr, expected.stderr);
   } else {
@@ -51,16 +55,17 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: (runExecutablesAsCompedExecUser ?
-    (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
-    (/users\/\w+\/\w+\/BadCode: No such file or directory/)
-  )
+  stderr: /timeout: failed to run command ‘users\/\w+\/\w+\/BadCode’: No such file or directory/
+  // stderr: (runExecutablesAsCompedExecUser ?
+  //   (/sudo: users\/\w+\/\w+\/BadCode: command not found/) :
+  //   (/users\/\w+\/\w+\/BadCode: No such file or directory/)
+  // )
 };
 
 const infiniteLoopCodeRunResponseJSON = {
   error: true,
-  stdout: "",
-  stderr: /TimeoutError/
+  stdout: /Timed Out!/,
+  stderr: ""
 };
 
 function getMockExpressRequestForLogger(logger) {
@@ -320,7 +325,7 @@ test("Compile And Run Logger Load Test", async t => {
   });
 });
 
-test.only("Run Logger Infinite Code Load Test", async t => {
+test("Run Logger Infinite Code Load Test", async t => {
   // Note: On average this test requires:
   // - 20 seconds to run with 2 simultaneous calls to `runLogger`
   // - 40 seconds to run with 5 simultaneous calls to `runLogger`
