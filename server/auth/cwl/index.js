@@ -24,8 +24,8 @@ router.get("/metadata", (req: $Request, res: $Response) => {
 
 router.get(
   "/login",
-  async (req: $Request, res: $Response, next: $NextFunction) => {
-    if (devmodeon) {
+  (devmodeon ?
+    (async (req: $Request, res: $Response, next: $NextFunction) => {
       try {
         let backDoorUser = await User.findOne({
           uid: "buser"
@@ -39,13 +39,12 @@ router.get(
       } catch (err) {
         res.status(401).send(err);
       }
-    } else {
-      passport.authenticate("saml", {
-        successRedirect: "/lessons",
-        failureRedirect: "/auth/cwl/login/failed"
-      });
-    }
-  }
+    }) :
+    passport.authenticate("saml", {
+      successRedirect: "/lessons",
+      failureRedirect: "/auth/cwl/login/failed"
+    })
+  )
 );
 
 router.get("/login/failed", (req: $Request, res: $Response) => {
@@ -58,8 +57,8 @@ router.get("/login/failed", (req: $Request, res: $Response) => {
 
 router.post(
   "/login",
-  async (req: $Request, res: $Response, next: $NextFunction) => {
-    if (devmodeon) {
+  (devmodeon ?
+    (async (req: $Request, res: $Response, next: $NextFunction) => {
       try {
         let backDoorUser = await User.findOne({
           uid: "buser"
@@ -73,13 +72,12 @@ router.post(
       } catch (err) {
         res.status(401).send(err);
       }
-    } else {
-      passport.authenticate("saml", {
-        successRedirect: "/lessons",
-        failureRedirect: "/auth/cwl/login/failed"
-      });
-    }
-  }
+    }) :
+    passport.authenticate("saml", {
+      successRedirect: "/lessons",
+      failureRedirect: "/auth/cwl/login/failed"
+    })
+  )
 );
 
 router.post(

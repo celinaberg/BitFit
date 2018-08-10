@@ -45,6 +45,13 @@ const keyContents = fs.readFileSync(
   "utf8"
 );
 
+/* Checks if `str` appears in array `arr`, ignoring case.
+Useful for doing case-insensitive LDAP comparisons.
+*/
+function caseInsensitiveIncludes(arr, str) {
+  return arr.some(s => s.toUpperCase() === str.toUpperCase());
+}
+
 const samlStrategy = new SamlStrategy(
   {
     // URL that goes from the Identity Provider -> Service Provider
@@ -68,18 +75,18 @@ const samlStrategy = new SamlStrategy(
   },
   async (profile, done) => {
     let role;
-    if (profile.hasOwnProperty(memberOf)) {
-      if (profile[memberOf].includes(memberOfInstructors)) {
+    if (profile.hasOwnProperty(groupMembership)) {
+      if (caseInsensitiveIncludes(profile[groupMembership], memberOfInstructors)) {
         role = "instructor";
-      } else if (profile[memberOf].includes(memberOfTeachingAssistants)) {
+      } else if (caseInsensitiveIncludes(profile[groupMembership], memberOfTeachingAssistants)) {
         role = "teaching-assistant";
+      } else {
+        role = "student";
+        // Temp: Restrict access to students.
+        return done(null, false, {
+          message: "Students are currently not allowed to access BitFit."
+        });
       }
-    } else if (profile.hasOwnProperty(groupMembership)) {
-      role = "student";
-      // Temp: Restrict access to students.
-      return done(null, false, {
-        message: "Students are currently not allowed to access BitFit."
-      });
     } else {
       // Unauthorized to access app
       return done(null, false, {
@@ -99,7 +106,6 @@ const samlStrategy = new SamlStrategy(
           // create new user account
           user = new User({ uid: profile[uid] });
         }
-
         user.firstName = profile[firstName];
         user.lastName = profile[lastName];
         user.displayName = profile[displayName];
