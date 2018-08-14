@@ -26,6 +26,7 @@ class AllLessons extends Component {
 
   onDeleteLessonClick = (id: string): void => {
     this.props.deleteLesson(id);
+    window.location.reload();
   };
 
   onSaveQuestionClick = (question: Question): void => {
@@ -34,6 +35,7 @@ class AllLessons extends Component {
 
   onDeleteQuestionClick = (id: string): void => {
     this.props.deleteQuestion(id);
+    window.location.reload();
   };
 
   onExportAllLessonsAsJSONClick = (): void => {
