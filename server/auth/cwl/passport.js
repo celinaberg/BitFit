@@ -75,7 +75,7 @@ const samlStrategy = new SamlStrategy(
   },
   async (profile, done) => {
     let role;
-    let section, term, session, year;
+    let section, termInt, session, yearInt;
     if (profile.hasOwnProperty(groupMembership)) {
       if (caseInsensitiveIncludes(profile[groupMembership], memberOfInstructors)) {
         role = "instructor";
@@ -96,8 +96,8 @@ const samlStrategy = new SamlStrategy(
           const courseSectionGroupArray = cnStringWithoutCN.split("_");  // e.g. ["APSC", "110T", "601", "2015W"]
           section = courseSectionGroupArray[2];  // e.g. "601"
           session = courseSectionGroupArray[3];  // e.g. "2015W" or "2015W2"
-          yearStr = session.match(/\d+/i)[0];  // e.g. "2015"
-          termStr = session.split(/[WS]/i)[1] || null;  // e.g. null or "2"
+          const yearStr = session.match(/\d+/i)[0];  // e.g. "2015"
+          const termStr = session.split(/[WS]/i)[1] || null;  // e.g. null or "2"
           yearInt = Number(yearStr);
           termInt = Number(termStr) || null;
 
