@@ -3,8 +3,7 @@
 import type { Question, Lesson } from "../types";
 
 import React, { Component } from "react";
-import { Card, CardBody, Progress, Button, Collapse } from "reactstrap";
-import { connect } from "react-redux";
+import { Card, CardBody, Button, Collapse } from "reactstrap";
 import EditQuestion from "../components/EditQuestion";
 
 class QuestionList extends Component {

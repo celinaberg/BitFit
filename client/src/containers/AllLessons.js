@@ -4,10 +4,9 @@ import type { Question, QuestionState, Lesson, State } from "../types";
 import type { Dispatch } from "../actions/types";
 
 import React, { Component } from "react";
-import { Col, Progress, Button } from "reactstrap";
+import { Col, Button } from "reactstrap";
 import { connect } from "react-redux";
 import { fetchQuestions, saveQuestion, deleteQuestion, saveLesson, deleteLesson } from "../actions";
-import EditQuestion from "../components/EditQuestion";
 import EditLessonComponent from "../components/EditLessonComponent";
 
 class AllLessons extends Component {
@@ -72,22 +71,6 @@ class AllLessons extends Component {
                 allLessons={this.props.lessons}
                 lessonQuestions={lessonQuestions} />);
     });
-    // let questions;
-    // if (this.props.questions.fetching) {
-    //   questions = <Progress animated color="muted" value="100" />;
-    // } else {
-    //   questions = this.props.questions.questions.map(question => {
-    //     return (
-    //       <EditQuestion
-    //         key={question.id}
-    //         question={question}
-    //         lessons={this.props.lessons}
-    //         onSave={this.onSaveQuestionClick}
-    //         onDelete={this.onDeleteQuestionClick}
-    //       />
-    //     );
-    //   });
-    // }
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">All Lessons</h2>
