@@ -7,7 +7,6 @@ import path from "path";
 import User from "../../api/user/user.model";
 
 const uid = "urn:oid:0.9.2342.19200300.100.1.1";
-const memberOf = "urn:oid:1.3.6.1.4.1.5923.1.5.1.1";
 const groupMembership = "urn:oid:2.16.840.1.113719.1.1.4.1.25";
 const firstName = "urn:oid:2.5.4.42";
 const lastName = "urn:oid:2.5.4.4";
@@ -19,6 +18,7 @@ const memberOfInstructors =
   "cn=instructors,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
+const memberOfAPSC160StudentsRegex = /cn=apsc_160_\w+_\w+,ou=apsc,ou=ubc,ou=academic,dc=id,dc=ubc,dc=ca/i;
 
 passport.serializeUser((user, done) => {
   //console.log("serialize user", user);
@@ -80,11 +80,16 @@ const samlStrategy = new SamlStrategy(
         role = "instructor";
       } else if (caseInsensitiveIncludes(profile[groupMembership], memberOfTeachingAssistants)) {
         role = "teaching-assistant";
-      } else {
+      } else if (profile[groupMembership].some(s => memberOfAPSC160StudentsRegex.test(s))) {
         role = "student";
         // Temp: Restrict access to students.
         return done(null, false, {
           message: "Students are currently not allowed to access BitFit."
+        });
+      } else {
+        // Unauthorized to access app
+        return done(null, false, {
+          message: "You are not registered in APSC 160"
         });
       }
     } else {
