@@ -75,22 +75,37 @@ const samlStrategy = new SamlStrategy(
   },
   async (profile, done) => {
     let role;
+    let section, term, session, year;
     if (profile.hasOwnProperty(groupMembership)) {
       if (caseInsensitiveIncludes(profile[groupMembership], memberOfInstructors)) {
         role = "instructor";
       } else if (caseInsensitiveIncludes(profile[groupMembership], memberOfTeachingAssistants)) {
         role = "teaching-assistant";
-      } else if (profile[groupMembership].some(s => memberOfAPSC160StudentsRegex.test(s))) {
-        role = "student";
-        // Temp: Restrict access to students.
-        return done(null, false, {
-          message: "Students are currently not allowed to access BitFit."
-        });
       } else {
-        // Unauthorized to access app
-        return done(null, false, {
-          message: "You are not registered in APSC 160"
-        });
+        let studentLDAPstring = profile[groupMembership].find(s => memberOfAPSC160StudentsRegex.test(s));
+        if (!studentLDAPstring) {
+          // Unauthorized to access app
+          return done(null, false, {
+            message: "You are not registered in APSC 160"
+          });
+        } else {
+          role = "student";
+
+          const cnString = studentLDAPstring.split(",")[0];  // e.g. cn=APSC_110T_601_2015W
+          const cnStringWithoutCN = cnString.split("=")[1];  // e.g. APSC_110T_601_2015W
+          const courseSectionGroupArray = cnStringWithoutCN.split("_");  // e.g. ["APSC", "110T", "601", "2015W"]
+          section = courseSectionGroupArray[2];  // e.g. "601"
+          session = courseSectionGroupArray[3];  // e.g. "2015W" or "2015W2"
+          yearStr = session.match(/\d+/i)[0];  // e.g. "2015"
+          termStr = session.split(/[WS]/i)[1] || null;  // e.g. null or "2"
+          yearInt = Number(yearStr);
+          termInt = Number(termStr) || null;
+
+          // Temp: Restrict access to students.
+          return done(null, false, {
+            message: "Students are currently not allowed to access BitFit."
+          });
+        }
       }
     } else {
       // Unauthorized to access app
@@ -117,12 +132,10 @@ const samlStrategy = new SamlStrategy(
         user.role = role;
         user.studentNumber = profile[studentNumber];
         user.employeeNumber = profile[employeeNumber];
-        /*
-    user.section =
-    user.term =
-    user.session =
-    user.year =
-    */
+        user.section = section;
+        user.term = termInt;
+        user.session = session;
+        user.year = yearInt;
 
         user.save((err, user) => {
           if (err) return done(err);
