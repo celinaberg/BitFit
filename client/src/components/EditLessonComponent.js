@@ -6,6 +6,7 @@ import {
   Card,
   CardBlock,
   Col,
+  Collapse,
   Form,
   FormGroup,
   Label,
@@ -33,7 +34,8 @@ class EditLessonComponent extends Component {
 
   state: {
     title: string,
-    background: RichTextEditor
+    background: RichTextEditor,
+    collapse: boolean
   };
 
   constructor(props) {
@@ -41,7 +43,8 @@ class EditLessonComponent extends Component {
 
     this.state = {
       title: props.title,
-      background: RichTextEditor.createValueFromString(props.background, "html")
+      background: RichTextEditor.createValueFromString(props.background, "html"),
+      collapse: true
     };
   }
 
@@ -67,6 +70,10 @@ class EditLessonComponent extends Component {
     this.props.deleteLesson(this.props.id);
   };
 
+  onToggleCollapseClick = (): void => {
+    this.setState({collapse: !this.state.collapse});
+  };
+
   render() {
     if (this.props.id === null) {
       return (
@@ -83,39 +90,46 @@ class EditLessonComponent extends Component {
       <Card key={this.props.id}>
       <CardBlock>
       <Col sm="9" md="10">
-        <h2 className="page-header">Edit Lesson</h2>
+        <h2 className="page-header">
+          <Button style={{marginRight: "10px"}} onClick={this.onToggleCollapseClick}>
+            {this.state.collapse ? "+" : "-"}
+          </Button>
+          Edit Lesson: {this.state.title}
+        </h2>
 
         <div>
-          <Form>
-            <FormGroup>
-              <Label for="inputLessonTitle">Title</Label>
-              <Input
-                type="text"
-                id="inputLessonTitle"
-                onChange={this.onTitleChange}
-                value={this.state.title}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="inputBackground">Background</Label>
-              <RichTextEditor
-                value={this.state.background}
-                onChange={this.onBackgroundChange}
-              />
-            </FormGroup>
-            <QuestionList
-              lessonId={this.props.id}
-              questions={this.props.lessonQuestions}
-              allLessons={this.props.allLessons}
-              saveQuestion={this.props.saveQuestion}
-              deleteQuestion={this.props.deleteQuestion} />
-            <Button color="success" onClick={this.onSaveClick}>
-              Save Lesson
-            </Button>
-            <Button color="danger" onClick={this.onDeleteClick}>
-              Delete Lesson
-            </Button>
-          </Form>
+          <Collapse isOpen={!this.state.collapse}>
+            <Form>
+              <FormGroup>
+                <Label for="inputLessonTitle">Title</Label>
+                <Input
+                  type="text"
+                  id="inputLessonTitle"
+                  onChange={this.onTitleChange}
+                  value={this.state.title}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="inputBackground">Background</Label>
+                <RichTextEditor
+                  value={this.state.background}
+                  onChange={this.onBackgroundChange}
+                />
+              </FormGroup>
+              <QuestionList
+                lessonId={this.props.id}
+                questions={this.props.lessonQuestions}
+                allLessons={this.props.allLessons}
+                saveQuestion={this.props.saveQuestion}
+                deleteQuestion={this.props.deleteQuestion} />
+              <Button color="success" onClick={this.onSaveClick}>
+                Save Lesson
+              </Button>
+              <Button color="danger" onClick={this.onDeleteClick}>
+                Delete Lesson
+              </Button>
+            </Form>
+          </Collapse>
         </div>
       </Col>
       </CardBlock>
