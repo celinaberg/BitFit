@@ -76,12 +76,14 @@ const samlStrategy = new SamlStrategy(
   async (profile, done) => {
     let role;
     let section, termInt, session, yearInt;
+    // `groupMembership` should be an array of LDAP strings
     if (profile.hasOwnProperty(groupMembership)) {
       if (caseInsensitiveIncludes(profile[groupMembership], memberOfInstructors)) {
         role = "instructor";
       } else if (caseInsensitiveIncludes(profile[groupMembership], memberOfTeachingAssistants)) {
         role = "teaching-assistant";
       } else {
+        // Check if `groupMembership` contains an APSC 160 student LDAP string
         let studentLDAPstring = profile[groupMembership].find(s => memberOfAPSC160StudentsRegex.test(s));
         if (!studentLDAPstring) {
           // Unauthorized to access app
@@ -91,15 +93,21 @@ const samlStrategy = new SamlStrategy(
         } else {
           role = "student";
 
-          const cnString = studentLDAPstring.split(",")[0];  // e.g. cn=APSC_110T_601_2015W
-          const cnStringWithoutCN = cnString.split("=")[1];  // e.g. APSC_110T_601_2015W
-          const courseSectionGroupArray = cnStringWithoutCN.split("_");  // e.g. ["APSC", "110T", "601", "2015W"]
-          section = courseSectionGroupArray[2];  // e.g. "601"
-          session = courseSectionGroupArray[3];  // e.g. "2015W" or "2015W2"
-          const yearStr = session.match(/\d+/i)[0];  // e.g. "2015"
-          const termStr = session.split(/[WS]/i)[1] || null;  // e.g. null or "2"
-          yearInt = Number(yearStr);
-          termInt = Number(termStr) || null;
+          try {
+            // Parse `studentLDAPstring` for section / term / session / year.
+            // Putting this in a try block because it's hard to test, so this is in case it fails.
+            const cnString = studentLDAPstring.split(",")[0];  // e.g. cn=APSC_110T_601_2015W
+            const cnStringWithoutCN = cnString.split("=")[1];  // e.g. APSC_110T_601_2015W
+            const courseSectionGroupArray = cnStringWithoutCN.split("_");  // e.g. ["APSC", "110T", "601", "2015W"]
+            section = courseSectionGroupArray[2];  // e.g. "601"
+            session = courseSectionGroupArray[3];  // e.g. "2015W" or "2015W2"
+            const yearStr = session.match(/\d+/i)[0];  // e.g. "2015"
+            const termStr = session.split(/[WS]/i)[1] || null;  // e.g. null or "2"
+            yearInt = Number(yearStr);
+            termInt = Number(termStr) || null;
+          } catch (err) {
+            console.error("Error determining section / term / session / year: ", err);
+          }
 
           // Temp: Restrict access to students.
           return done(null, false, {
