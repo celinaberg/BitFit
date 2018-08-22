@@ -45,6 +45,7 @@ class QuestionList extends Component {
           lessons={this.props.allLessons}
           onSave={this.onSaveClick}
           onDelete={this.onDeleteClick}
+          showRemoveQuestionFromLessonButton={true}
         />
       );
     });

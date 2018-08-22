@@ -32,7 +32,6 @@ class AllLessons extends Component {
 
   onSaveQuestionClick = (question: Question): void => {
     this.props.saveQuestion(question);
-    window.location.reload();
   };
 
   onDeleteQuestionClick = (id: string): void => {
@@ -73,6 +72,7 @@ class AllLessons extends Component {
                 deleteLesson={this.onDeleteLessonClick}
                 allLessons={this.props.lessons}
                 lessonQuestions={lessonQuestions}
+                saveQuestion={this.onSaveQuestionClick}
                 deleteQuestion={this.onDeleteQuestionClick} />);
     });
     return (

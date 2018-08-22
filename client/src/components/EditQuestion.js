@@ -37,14 +37,16 @@ type Props = {
   question: Question,
   lessons: Array<Lesson>,
   onSave: Question => void,
-  onDelete: string => void
+  onDelete: string => void,
+  showRemoveQuestionFromLessonButton: boolean
 };
 
 class EditQuestion extends Component {
   props: Props;
 
   static defaultProps = {
-    new: false
+    new: false,
+    showRemoveQuestionFromLessonButton: false
   };
 
   state: {
@@ -199,12 +201,22 @@ class EditQuestion extends Component {
       newQuestion.lesson = null;
     }
     this.props.onSave(newQuestion);
+    window.location.reload();
   };
 
   onRemoveDueDateClick = (): void => {
     let newQuestion = Object.assign({}, this.state.question);
     newQuestion.dueDate = null;
     this.setState({ question: newQuestion });
+  }
+
+  onRemoveQuestionFromLessonClick = (event: Event): void => {
+    event.preventDefault();
+    let newQuestion = Object.assign({}, this.state.question);
+    newQuestion.lesson = null;
+    this.setState({ question: newQuestion }, () => {
+      this.onSaveClick(event);
+    });
   }
 
   render() {
@@ -229,6 +241,11 @@ class EditQuestion extends Component {
                     to={`/admin/questions/new/${this.props.question.id}`}>
                     <Button>Copy Question</Button>
             </Link>
+            <Button style={{marginLeft: "10px"}}
+                    onClick={this.onRemoveQuestionFromLessonClick}
+                    hidden={!this.props.showRemoveQuestionFromLessonButton}>
+              Remove from Lesson
+            </Button>
             <Button color="danger"
                     id={"delete" + this.state.question.id}
                     style={{marginLeft: "10px"}}
@@ -258,7 +275,7 @@ class EditQuestion extends Component {
                 <Input
                   type="select"
                   name="select"
-                  value={this.state.question.lesson}
+                  value={this.state.question.lesson || ""}
                   onChange={this.updateLesson}
                 >
                   <option value="">No Lesson</option>
