@@ -16,12 +16,13 @@ class AllLessons extends Component {
     fetchQuestions: () => void,
     saveQuestion: Question => void,
     deleteQuestion: string => void,
-    saveLesson: Question => void,
+    saveLesson: (id: string, title: string, background: string) => void,
     deleteLesson: string => void
   };
 
-  onSaveLessonClick = (lesson: Lesson): void => {
-    this.props.saveLesson(lesson);
+  onSaveLessonClick = (id: string, title: string, background: string): void => {
+    this.props.saveLesson(id, title, background);
+    window.location.reload();
   };
 
   onDeleteLessonClick = (id: string): void => {
@@ -31,6 +32,7 @@ class AllLessons extends Component {
 
   onSaveQuestionClick = (question: Question): void => {
     this.props.saveQuestion(question);
+    window.location.reload();
   };
 
   onDeleteQuestionClick = (id: string): void => {
@@ -104,8 +106,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     deleteQuestion: (id: string) => {
       dispatch(deleteQuestion(id));
     },
-    saveLesson: (lesson: Lesson) => {
-      dispatch(saveLesson(lesson));
+    saveLesson: (id: string, title: string, background: string) => {
+      dispatch(saveLesson(id, title, background));
     },
     deleteLesson: (id: string) => {
       dispatch(deleteLesson(id));
