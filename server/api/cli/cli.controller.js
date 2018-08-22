@@ -6,7 +6,6 @@ import { exec as execSync, spawn } from "child_process";
 import jsesc from "jsesc";
 import Logger from "../logger/logger.model";
 import { promisify } from "util";
-import { timeout, TimeoutError } from 'promise-timeout';
 
 const exec = promisify(execSync);
 
@@ -196,14 +195,8 @@ export async function runLogger(req: $Request, res: $Response) {
     //   .status(200)
     //   .json({ error: false, stdout: stdout, stderr: stderr });
   } catch (err) {
-    let stderr = err.stderr;
-    if (err.signal === "SIGTERM") {
-      stderr = stderr + `\nTimeoutError: file took longer than ${timeLimitInSeconds} seconds to run`;
-    } else if (err instanceof TimeoutError) {
-      stderr = stderr + `\nError running executable: attempt took longer than ${1.5 * timeLimitInSeconds} seconds to run`;
-    }
     return res
       .status(200)
-      .json({ error: true, stdout: err.stdout || "", stderr: stderr });
+      .json({ error: true, stdout: err.stdout || "", stderr: err.stderr || "" });
   }
 }
