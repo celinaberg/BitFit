@@ -168,6 +168,7 @@ class EditQuestion extends Component {
       let id = this.props.question.id;
       this.props.onDelete(id);
     }
+    window.location.reload();
   }
 
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
@@ -239,7 +240,7 @@ class EditQuestion extends Component {
               placement="top"
               target={"delete" + this.state.question.id}
             >
-              Delete
+              Delete Question From Database
             </UncontrolledTooltip>
           </CardTitle>
           <Collapse isOpen={this.state.collapse}>

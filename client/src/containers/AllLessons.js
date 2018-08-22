@@ -37,7 +37,6 @@ class AllLessons extends Component {
 
   onDeleteQuestionClick = (id: string): void => {
     this.props.deleteQuestion(id);
-    window.location.reload();
   };
 
   onExportAllLessonsAsJSONClick = (): void => {
@@ -73,7 +72,8 @@ class AllLessons extends Component {
                 saveLesson={this.onSaveLessonClick}
                 deleteLesson={this.onDeleteLessonClick}
                 allLessons={this.props.lessons}
-                lessonQuestions={lessonQuestions} />);
+                lessonQuestions={lessonQuestions}
+                deleteQuestion={this.onDeleteQuestionClick} />);
     });
     return (
       <Col sm="9" md="10">
