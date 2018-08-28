@@ -82,9 +82,15 @@ class EditLessonComponent extends Component {
     this.setState({collapse: !this.state.collapse});
   };
 
-  maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
-
   render() {
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
+    const maxPossibleLessonIndex = Math.min(maxLessonIndex + 1, this.props.allLessons.length);
+    const lessonIndexOptions = [<option value={null}></option>];
+    for (let i = 1; i <= maxPossibleLessonIndex; i++) {
+      let indexOption = <option value={i}>{i}</option>;
+      lessonIndexOptions.push(indexOption);
+    }
+
     if (this.props.id === null) {
       return (
         <Col sm="9" md="10">
@@ -118,9 +124,7 @@ class EditLessonComponent extends Component {
                   id="inputLessonLessonIndex"
                   onChange={this.onLessonIndexChange}
                   value={this.state.lessonIndex}>
-                  <option value={null}></option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
+                  {lessonIndexOptions}
                 </Input>
               </FormGroup>
               <FormGroup>

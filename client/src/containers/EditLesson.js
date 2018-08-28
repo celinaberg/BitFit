@@ -45,10 +45,6 @@ class EditLesson extends Component {
     };
   }
 
-  onLessonIndexChange = event => {
-    this.setState({ lessonIndex: event.target.value || null });
-  };
-
   onTitleChange = event => {
     this.setState({ title: event.target.value });
   };
@@ -90,19 +86,6 @@ class EditLesson extends Component {
 
         <div>
           <Form>
-            <FormGroup>
-              <Label for="inputLessonLessonIndex">Lesson Index</Label>
-              <Input
-                type="select"
-                name="Lesson Index"
-                id="inputLessonLessonIndex"
-                onChange={this.onLessonIndexChange}
-                value={this.state.lessonIndex}>
-                <option value={null}></option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-              </Input>
-            </FormGroup>
             <FormGroup>
               <Label for="inputLessonTitle">Title</Label>
               <Input
