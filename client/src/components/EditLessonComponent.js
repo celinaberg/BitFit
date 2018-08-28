@@ -65,12 +65,70 @@ class EditLessonComponent extends Component {
 
   onSaveClick = (event: Event) => {
     event.preventDefault();
-    this.props.saveLesson(
-      this.props.id,
-      this.state.title,
-      this.state.background.toString("html"),
-      this.state.lessonIndex
-    );
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
+    const oldIndex = this.props.lessonIndex;
+    const newIndex = this.state.lessonIndex;
+    const didLessonIndexChange = oldIndex !== newIndex;
+    if (!didLessonIndexChange) {
+      this.props.saveLesson(
+        this.props.id,
+        this.state.title,
+        this.state.background.toString("html"),
+        newIndex
+      );
+    } else {
+      if (oldIndex === null) {
+        // Case 1: oldIndex is null.
+        // Let's say we wanna move it to 3 and there are 4 lessons with indices (1, 2, 3, 4).
+        // Then we need to start at the Lesson with index 3, push it to 4, push 4 to 5, and finally
+        // set this lesson to 3.
+        for (let i = newIndex; i <= maxLessonIndex; i++) {
+          // push the index up by one
+          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          if (otherLesson) {
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
+          }
+        }
+      } else if (newIndex === null) {
+        // Case 2: newIndex is null.
+        for (let i = oldIndex + 1; i <= maxLessonIndex; i++) {
+          // push the index down by one
+          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          if (otherLesson) {
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
+          }
+        }
+      } else if (oldIndex < newIndex) {
+        // Case 3: oldIndex < newIndex
+        // Let's say oldIndex is 3 and newIndex is 5. Then we'd want to push the Lesson with
+        // index 4 to 3, 5 to 4, and finally 3 (this lesson) to 5.
+        for (let i = oldIndex + 1; i <= newIndex; i++) {
+          // push the index down by one
+          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          if (otherLesson) {
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
+          }
+        }
+      } else {
+        // Case 4: oldIndex > newIndex
+        // Let's say oldIndex is 6 and newIndex is 2. Then we'd want to push 2 to 3, 3 to 4,
+        // 4 to 5, 5 to 6, and finally 6 (this lesson) to 2.
+        for (let i = newIndex; i < oldIndex; i++) {
+          // push the index up by one
+          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          if (otherLesson) {
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
+          }
+        }
+      }
+
+      this.props.saveLesson(
+        this.props.id,
+        this.state.title,
+        this.state.background.toString("html"),
+        newIndex
+      );
+    }
   };
 
   onDeleteClick = (event: Event) => {
