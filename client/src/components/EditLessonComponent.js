@@ -65,7 +65,7 @@ class EditLessonComponent extends Component {
 
   onSaveClick = (event: Event) => {
     event.preventDefault();
-    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || -9999));
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || 0));
     const oldIndex = Number(this.props.lessonIndex);
     const newIndex = Number(this.state.lessonIndex);
     const didLessonIndexChange = oldIndex !== newIndex;
@@ -146,7 +146,7 @@ class EditLessonComponent extends Component {
       `${this.props.lessonIndex}: Edit Lesson: ${this.state.title}` :
       `Edit Lesson: ${this.state.title}`;
 
-    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || -9999));
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || 0));
     const maxPossibleLessonIndex = Math.min(maxLessonIndex + 1, this.props.allLessons.length);
     const lessonIndexOptions = [<option value={null}></option>];
     for (let i = 1; i <= maxPossibleLessonIndex; i++) {
