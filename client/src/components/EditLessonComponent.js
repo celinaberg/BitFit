@@ -21,7 +21,8 @@ type Props = {
   id: string,
   title: string,
   background: string,
-  saveLesson: (id: string, title: string, background: string) => void,
+  lessonIndex: number,
+  saveLesson: (id: string, title: string, background: string, lessonIndex: number) => void,
   deleteLesson: (id: string) => void,
   allLessons: Array<Lesson>,
   lessonQuestions: Array<Question>,
@@ -35,6 +36,7 @@ class EditLessonComponent extends Component {
   state: {
     title: string,
     background: RichTextEditor,
+    lessonIndex: number,
     collapse: boolean
   };
 
@@ -44,9 +46,14 @@ class EditLessonComponent extends Component {
     this.state = {
       title: props.title,
       background: RichTextEditor.createValueFromString(props.background, "html"),
+      lessonIndex: props.lessonIndex,
       collapse: true
     };
   }
+
+  onLessonIndexChange = event => {
+    this.setState({ lessonIndex: event.target.value || null });
+  };
 
   onTitleChange = event => {
     this.setState({ title: event.target.value });
@@ -61,7 +68,8 @@ class EditLessonComponent extends Component {
     this.props.saveLesson(
       this.props.id,
       this.state.title,
-      this.state.background.toString("html")
+      this.state.background.toString("html"),
+      this.state.lessonIndex
     );
   };
 
@@ -73,6 +81,8 @@ class EditLessonComponent extends Component {
   onToggleCollapseClick = (): void => {
     this.setState({collapse: !this.state.collapse});
   };
+
+  maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
 
   render() {
     if (this.props.id === null) {
@@ -94,12 +104,25 @@ class EditLessonComponent extends Component {
           <Button style={{marginRight: "10px"}} onClick={this.onToggleCollapseClick}>
             {this.state.collapse ? "+" : "-"}
           </Button>
-          Edit Lesson: {this.state.title}
+          {this.props.lessonIndex}: Edit Lesson: {this.state.title}
         </h2>
 
         <div>
           <Collapse isOpen={!this.state.collapse}>
             <Form>
+              <FormGroup>
+                <Label for="inputLessonLessonIndex">Lesson Index</Label>
+                <Input
+                  type="select"
+                  name="Lesson Index"
+                  id="inputLessonLessonIndex"
+                  onChange={this.onLessonIndexChange}
+                  value={this.state.lessonIndex}>
+                  <option value={null}></option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                </Input>
+              </FormGroup>
               <FormGroup>
                 <Label for="inputLessonTitle">Title</Label>
                 <Input

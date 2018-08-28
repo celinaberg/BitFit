@@ -21,7 +21,8 @@ type Props = {
   id: string,
   title: string,
   background: RichTextEditor,
-  saveLesson: (id: string, title: string, background: string) => void,
+  lessonIndex: number,
+  saveLesson: (id: string, title: string, background: string, lessonIndex: number) => void,
   deleteLesson: (id: string) => void
 };
 
@@ -30,7 +31,8 @@ class EditLesson extends Component {
 
   state: {
     title: string,
-    background: RichTextEditor
+    background: RichTextEditor,
+    lessonIndex: number
   };
 
   constructor(props) {
@@ -38,9 +40,14 @@ class EditLesson extends Component {
 
     this.state = {
       title: props.title,
-      background: props.background
+      background: props.background,
+      lessonIndex: props.lessonIndex
     };
   }
+
+  onLessonIndexChange = event => {
+    this.setState({ lessonIndex: event.target.value || null });
+  };
 
   onTitleChange = event => {
     this.setState({ title: event.target.value });
@@ -55,7 +62,8 @@ class EditLesson extends Component {
     this.props.saveLesson(
       this.props.id,
       this.state.title,
-      this.state.background.toString("html")
+      this.state.background.toString("html"),
+      this.state.lessonIndex
     );
   };
 
@@ -82,6 +90,19 @@ class EditLesson extends Component {
 
         <div>
           <Form>
+            <FormGroup>
+              <Label for="inputLessonLessonIndex">Lesson Index</Label>
+              <Input
+                type="select"
+                name="Lesson Index"
+                id="inputLessonLessonIndex"
+                onChange={this.onLessonIndexChange}
+                value={this.state.lessonIndex}>
+                <option value={null}></option>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+              </Input>
+            </FormGroup>
             <FormGroup>
               <Label for="inputLessonTitle">Title</Label>
               <Input
@@ -125,20 +146,22 @@ const mapStateToProps = (state: State, ownProps) => {
     return {
       id: null,
       title: null,
-      background: null
+      background: null,
+      lessonIndex: null
     };
   }
   return {
     id: lesson.id,
     title: lesson.title,
-    background: RichTextEditor.createValueFromString(lesson.background, "html")
+    background: RichTextEditor.createValueFromString(lesson.background, "html"),
+    lessonIndex: lesson.lessonIndex
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    saveLesson: (id: string, title: string, background: string) => {
-      dispatch(saveLesson(id, title, background));
+    saveLesson: (id: string, title: string, background: string, lessonIndex: number) => {
+      dispatch(saveLesson(id, title, background, lessonIndex));
     },
     deleteLesson: (id: string) => {
       dispatch(deleteLesson(id));
