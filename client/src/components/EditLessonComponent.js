@@ -83,6 +83,11 @@ class EditLessonComponent extends Component {
   };
 
   render() {
+
+    let editLessonTitle = this.props.lessonIndex ?
+      `${this.props.lessonIndex}: Edit Lesson: ${this.state.title}` :
+      `Edit Lesson: ${this.state.title}`;
+
     const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
     const maxPossibleLessonIndex = Math.min(maxLessonIndex + 1, this.props.allLessons.length);
     const lessonIndexOptions = [<option value={null}></option>];
@@ -110,7 +115,7 @@ class EditLessonComponent extends Component {
           <Button style={{marginRight: "10px"}} onClick={this.onToggleCollapseClick}>
             {this.state.collapse ? "+" : "-"}
           </Button>
-          {this.props.lessonIndex}: Edit Lesson: {this.state.title}
+          {editLessonTitle}
         </h2>
 
         <div>

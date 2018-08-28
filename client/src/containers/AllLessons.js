@@ -54,7 +54,14 @@ class AllLessons extends Component {
   }
 
   render() {
-    let lessons = this.props.lessons.map(lesson => {
+    const lessonsSortedByLessonIndex = this.props.lessons.sort((lessonOne, lessonTwo) => {
+      const i1 = lessonOne.lessonIndex;
+      const i2 = lessonTwo.lessonIndex;
+      if (i1 === null) return +1;
+      if (i2 === null) return -1;
+      return i1 - i2;
+    });
+    let lessons = lessonsSortedByLessonIndex.map(lesson => {
       let lessonQuestions;
       if (!this.props.questions.fetched) {
         lessonQuestions = [];

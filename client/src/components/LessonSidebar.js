@@ -30,12 +30,22 @@ class LessonSidebar extends Component {
     if (this.props.lessons.fetching) {
       return <Progress animated color="muted" value="100" />;
     } else {
-      let lessons = this.props.lessons.lessons.map(lesson => {
+      const lessonsSortedByLessonIndex = this.props.lessons.lessons.sort((lessonOne, lessonTwo) => {
+        const i1 = lessonOne.lessonIndex;
+        const i2 = lessonTwo.lessonIndex;
+        if (i1 === null) return +1;
+        if (i2 === null) return -1;
+        return i1 - i2;
+      });
+      let lessons = lessonsSortedByLessonIndex.map(lesson => {
+        let lessonSidebarItemTitle = lesson.lessonIndex ?
+          `${lesson.lessonIndex}: ${lesson.title}` :
+          lesson.title;
         return (
           <LessonSidebarItem
             key={lesson.id}
             id={lesson.id}
-            title={lesson.title}
+            title={lessonSidebarItemTitle}
             admin={this.props.admin}
           />
         );
