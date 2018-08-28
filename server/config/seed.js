@@ -140,10 +140,12 @@ export function seedTestData() {
       console.log("Finished removing lessons");
       Lesson.create({
           title: "Screencast III",
-          background: "Variables are containers for storing many different types of information."
+          background: "Variables are containers for storing many different types of information.",
+          lessonIndex: 1
         }, {
           title: "Screencast IV",
-          background: "Methods are collections of statements that are executed in sequence, between curly braces."
+          background: "Methods are collections of statements that are executed in sequence, between curly braces.",
+          lessonIndex: 2
         },
         function() {
           console.log("Finished adding lessons, now adding questions");
