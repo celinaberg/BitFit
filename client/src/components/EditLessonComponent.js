@@ -52,7 +52,7 @@ class EditLessonComponent extends Component {
   }
 
   onLessonIndexChange = event => {
-    this.setState({ lessonIndex: event.target.value || null });
+    this.setState({ lessonIndex: Number(event.target.value) || null });
   };
 
   onTitleChange = event => {
@@ -65,9 +65,9 @@ class EditLessonComponent extends Component {
 
   onSaveClick = (event: Event) => {
     event.preventDefault();
-    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
-    const oldIndex = this.props.lessonIndex;
-    const newIndex = this.state.lessonIndex;
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || -9999));
+    const oldIndex = Number(this.props.lessonIndex);
+    const newIndex = Number(this.state.lessonIndex);
     const didLessonIndexChange = oldIndex !== newIndex;
     if (!didLessonIndexChange) {
       this.props.saveLesson(
@@ -77,23 +77,23 @@ class EditLessonComponent extends Component {
         newIndex
       );
     } else {
-      if (oldIndex === null) {
+      if (!oldIndex) {
         // Case 1: oldIndex is null.
         // Let's say we wanna move it to 3 and there are 4 lessons with indices (1, 2, 3, 4).
         // Then we need to start at the Lesson with index 3, push it to 4, push 4 to 5, and finally
         // set this lesson to 3.
         for (let i = newIndex; i <= maxLessonIndex; i++) {
           // push the index up by one
-          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
             this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
           }
         }
-      } else if (newIndex === null) {
+      } else if (!newIndex) {
         // Case 2: newIndex is null.
         for (let i = oldIndex + 1; i <= maxLessonIndex; i++) {
           // push the index down by one
-          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
             this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
           }
@@ -104,7 +104,7 @@ class EditLessonComponent extends Component {
         // index 4 to 3, 5 to 4, and finally 3 (this lesson) to 5.
         for (let i = oldIndex + 1; i <= newIndex; i++) {
           // push the index down by one
-          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
             this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
           }
@@ -115,7 +115,7 @@ class EditLessonComponent extends Component {
         // 4 to 5, 5 to 6, and finally 6 (this lesson) to 2.
         for (let i = newIndex; i < oldIndex; i++) {
           // push the index up by one
-          let otherLesson = this.props.allLessons.find(lesson => lesson.lessonIndex === i);
+          let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
             this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
           }
@@ -146,7 +146,7 @@ class EditLessonComponent extends Component {
       `${this.props.lessonIndex}: Edit Lesson: ${this.state.title}` :
       `Edit Lesson: ${this.state.title}`;
 
-    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => l.lessonIndex));
+    const maxLessonIndex = Math.max.apply(Math, this.props.allLessons.map(l => Number(l.lessonIndex) || -9999));
     const maxPossibleLessonIndex = Math.min(maxLessonIndex + 1, this.props.allLessons.length);
     const lessonIndexOptions = [<option value={null}></option>];
     for (let i = 1; i <= maxPossibleLessonIndex; i++) {

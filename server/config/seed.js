@@ -146,6 +146,17 @@ export function seedTestData() {
           title: "Screencast IV",
           background: "Methods are collections of statements that are executed in sequence, between curly braces.",
           lessonIndex: 2
+        }, {
+          title: "Test Lesson 1",
+          background: "test",
+          lessonIndex: 3
+        }, {
+          title: "Test Lesson 2",
+          background: "test test",
+          lessonIndex: 4
+        }, {
+          title: "Test Lesson 3",
+          background: "Methods are collections of statements that are executed in sequence, between curly braces."
         },
         function() {
           console.log("Finished adding lessons, now adding questions");
