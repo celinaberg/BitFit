@@ -170,7 +170,6 @@ class EditQuestion extends Component {
       let id = this.props.question.id;
       this.props.onDelete(id);
     }
-    window.location.reload();
   }
 
   onDeleteHintClick = (id: number): ((value: RichTextEditor) => void) => {
@@ -201,7 +200,6 @@ class EditQuestion extends Component {
       newQuestion.lesson = null;
     }
     this.props.onSave(newQuestion);
-    window.location.reload();
   };
 
   onRemoveDueDateClick = (): void => {

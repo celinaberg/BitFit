@@ -27,7 +27,6 @@ class AllLessons extends Component {
 
   onDeleteLessonClick = (id: string): void => {
     this.props.deleteLesson(id);
-    window.location.reload();
   };
 
   onSaveQuestionClick = (question: Question): void => {
