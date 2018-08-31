@@ -6,18 +6,13 @@ import type { Lesson, State } from "../types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
+  Card,
   Row,
   Col,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
   Progress
 } from "reactstrap";
 import TestQuestion from "../components/TestQuestion";
 import { fetchLessons, fetchLessonQuestions } from "../actions";
-import classnames from "classnames";
 
 type Props = {
   id: string,
@@ -32,29 +27,18 @@ type Props = {
 class Lessons extends Component {
   props: Props;
 
-  state = {
-    activeTab: "background"
-  };
-
   UNSAFE_componentWillMount() {
     if (this.props.loading) {
       this.props.fetchLessons();
+      this.props.fetchLessonQuestions(this.props.id);
     }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.lesson !== nextProps.lesson) {
-      this.setState({ activeTab: "background" });
+      this.props.fetchLessonQuestions(nextProps.id);
     }
   }
-
-  toggle = (tab: string): void => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
 
   render() {
     if (this.props.loading) {
@@ -62,64 +46,34 @@ class Lessons extends Component {
     }
     return (
       <Col sm="9" md="10">
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({
-                active: this.state.activeTab === "background"
-              })}
-              onClick={() => {
-                this.toggle("background");
-              }}
-            >
-              Background
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({
-                active: this.state.activeTab === "questions"
-              })}
-              onClick={() => {
-                this.props.fetchLessonQuestions(this.props.id);
-                this.toggle("questions");
-              }}
-            >
-              Questions
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="background">
-            <Row>
-              <Col sm="12">
-                <h4>Background</h4>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: this.props.lesson.background
-                  }}
-                />
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="questions">
-            <Row>
-              <Col sm="12">
-                <h4>Questions</h4>
-                {this.props.lessons.questions.map(question => {
-                  return (
-                    <TestQuestion
-                      key={question.id}
-                      question={question}
-                      lessonId={this.props.lesson.id}
-                      userId={this.props.userId}
-                    />
-                  );
-                })}
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
+        <Row>
+          <Col sm="12">
+            <h4>Background</h4>
+            <Card style={{padding: "15px"}}>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: this.props.lesson.background
+                }}
+              />
+            </Card>
+            <br></br>
+            <h4>Questions</h4>
+            {this.props.lessons.questions.length !== 0 ?
+              this.props.lessons.questions.map(question => {
+                return (
+                  <TestQuestion
+                    key={question.id}
+                    question={question}
+                    lessonId={this.props.lesson.id}
+                    userId={this.props.userId}
+                  />
+                );
+              }) :
+              <Card style={{padding: "15px"}}>
+                There are no questions in this lesson.
+              </Card>}
+          </Col>
+        </Row>
       </Col>
     );
   }

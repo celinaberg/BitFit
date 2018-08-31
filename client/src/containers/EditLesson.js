@@ -45,6 +45,16 @@ class EditLesson extends Component {
     };
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    if (this.props.id !== nextProps.id) {
+      this.setState({
+        title: nextProps.title,
+        background: nextProps.background,
+        lessonIndex: nextProps.lessonIndex
+      });
+    }
+  }
+
   onTitleChange = event => {
     this.setState({ title: event.target.value });
   };
