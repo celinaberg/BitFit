@@ -15,7 +15,7 @@ Uses the user's local time zone.
 export function formatDateStringInLocalTime(dateString) {
   if (!dateString) return "";
   let date = new Date(dateString);
-  return date.toDateString() + " at " + date.toLocaleTimeString('en-US');
+  return date.toDateString() + " at " + date.toLocaleTimeString('en-US', {hour: "2-digit", minute: "2-digit"});
 }
 
 class GetLoggers extends Component {
