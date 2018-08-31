@@ -34,6 +34,9 @@ class GetLoggers extends Component {
   };
 
   state: {
+    userFilter: (user: string) => boolean,
+    userFilterString: string,
+    userFilterRegexErrorMsg: string,
     sectionFilter: (section: string) => boolean,
     sectionFilterString: string,
     sectionFilterRegexErrorMsg: string,
@@ -52,6 +55,9 @@ class GetLoggers extends Component {
     super(props);
 
     this.state = {
+      userFilter: user => user.match(new RegExp("")),
+      userFilterString: "",
+      userFilterRegexErrorMsg: null,
       sectionFilter: section => section.match(new RegExp("")),
       sectionFilterString: "",
       sectionFilterRegexErrorMsg: null,
@@ -76,6 +82,32 @@ class GetLoggers extends Component {
     }
     if (!this.props.users.fetched) {
       this.props.fetchUsers();
+    }
+  }
+
+  onUserFilterChange = (event) => {
+    const newUserFilterString = event.target.value;
+    const isExactMatch = newUserFilterString.length > 0 && newUserFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        userFilterString: newUserFilterString,
+        userFilter: user => user === newUserFilterString.substring(1),
+        userFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newUserRegexFilter = new RegExp(newUserFilterString);
+        this.setState({
+          userFilterString: newUserFilterString,
+          userFilter: user => user.match(newUserRegexFilter),
+          userFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          userFilterString: newUserFilterString,
+          userFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
     }
   }
 
@@ -194,7 +226,7 @@ class GetLoggers extends Component {
         const loggerUser = this.props.users.users.find(user => {
           return user.id === logger.user;
         });
-        let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
+        let loggerUserNameOrId = loggerUser ? (loggerUser.displayName || "") : (logger.user || "");
         let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
         let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
         let loggerUserSection = loggerUser ? (loggerUser.section || "") : "";
@@ -202,7 +234,8 @@ class GetLoggers extends Component {
         let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
         let loggerUserYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
 
-        if (!(this.state.sectionFilter(loggerUserSection) &&
+        if (!(this.state.userFilter(loggerUserNameOrId) &&
+              this.state.sectionFilter(loggerUserSection) &&
               this.state.termFilter(loggerUserTerm) &&
               this.state.sessionFilter(loggerUserSession) &&
               this.state.yearFilter(loggerUserYear))) {
@@ -258,6 +291,14 @@ class GetLoggers extends Component {
         <h2 className="page-header">Loggers</h2>
         <div style={{marginBottom: "10px", marginTop: "15px"}}>
           <span style={{marginRight: "10px"}}>Filters:</span>
+          <Tooltip placement="top" target="userFilterInput" isOpen={this.state.userFilterRegexErrorMsg ? true : false}>{this.state.userFilterRegexErrorMsg}</Tooltip>
+          <Input
+            type="text"
+            id="userFilterInput"
+            onChange={this.onUserFilterChange}
+            value={this.state.userFilterString}
+            placeholder="Filter by User"
+            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
           <Tooltip placement="top" target="sectionFilterInput" isOpen={this.state.sectionFilterRegexErrorMsg ? true : false}>{this.state.sectionFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
