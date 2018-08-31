@@ -12,10 +12,15 @@ import {
   Label,
   Input,
   Button,
-  Progress
+  Progress,
+  UncontrolledTooltip
 } from "reactstrap";
 import RichTextEditor from "react-rte";
 import QuestionList from "./QuestionList";
+
+// Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   id: string,
@@ -179,7 +184,13 @@ class EditLessonComponent extends Component {
       <CardBlock>
       <Col sm="9" md="10">
         <h2 className="page-header">
-          <Button style={{marginRight: "10px"}} onClick={this.onToggleCollapseClick}>
+          <UncontrolledTooltip placement="top" target={"visibleToStudentsIcon" + this.props.id}>
+            {this.props.visibleToStudents ? "Visible to Students" : "Invisible to Students"}
+          </UncontrolledTooltip>
+          <FontAwesomeIcon icon={this.props.visibleToStudents ? faEye : faEyeSlash}
+                           id={"visibleToStudentsIcon" + this.props.id}
+                           style={{marginRight: "15px"}}/>
+          <Button style={{marginRight: "15px"}} onClick={this.onToggleCollapseClick}>
             {this.state.collapse ? "+" : "-"}
           </Button>
           {editLessonTitle}
@@ -190,13 +201,13 @@ class EditLessonComponent extends Component {
             <Form>
               <FormGroup>
                 <div onClick={this.onVisibleToStudentsClick}
-                     style={{position: "relative", left: "20px", marginTop: "5px"}}>
-                  <Input
-                    type="checkbox"
-                    id="inputLessonVisibleToStudents"
-                    checked={this.state.visibleToStudents}>
-                  </Input>
-                  Visible to Students
+                     style={{marginTop: "5px", cursor: "pointer", position: "relative", left: "20px"}}>
+                  <Input type="checkbox"
+                         id="inputLessonVisibleToStudents"
+                         checked={this.state.visibleToStudents}/>
+                  <span style={{marginLeft: "5px"}}>
+                    Visible to Students
+                  </span>
                 </div>
               </FormGroup>
               <FormGroup>
