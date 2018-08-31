@@ -105,10 +105,10 @@ class GetLoggers extends Component {
         let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
         let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
         let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
-        let loggerUserSection = loggerUser ? loggerUser.section : "";
-        let loggerUserTerm = loggerUser ? loggerUser.term : "";
-        let loggerUserSession = loggerUser ? loggerUser.session : "";
-        let loggerUserYear = loggerUser ? loggerUser.year : "";
+        let loggerUserSection = loggerUser ? (loggerUser.section || "") : "";
+        let loggerUserTerm = loggerUser ? (loggerUser.term || "") : "";
+        let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
+        let loggerUserYear = loggerUser ? (loggerUser.year || "") : "";
 
         if (!loggerUserSection.match(this.state.sectionFilter) ||
             !loggerUserTerm.match(this.state.termFilter) ||
