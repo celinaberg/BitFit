@@ -27,6 +27,12 @@ type Props = {
 class Lessons extends Component {
   props: Props;
 
+  constructor(props) {
+    super(props);
+    this.props.fetchLessons();
+    this.props.fetchLessonQuestions(this.props.id);
+  }
+
   UNSAFE_componentWillMount() {
     if (this.props.loading) {
       this.props.fetchLessons();
