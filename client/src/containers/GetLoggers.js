@@ -106,9 +106,9 @@ class GetLoggers extends Component {
         let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
         let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
         let loggerUserSection = loggerUser ? (loggerUser.section || "") : "";
-        let loggerUserTerm = loggerUser ? (loggerUser.term || "") : "";
+        let loggerUserTerm = loggerUser ? (loggerUser.term ? loggerUser.term.toString() : "") : "";
         let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
-        let loggerUserYear = loggerUser ? (loggerUser.year || "") : "";
+        let loggerUserYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
 
         if (!loggerUserSection.match(this.state.sectionFilter) ||
             !loggerUserTerm.match(this.state.termFilter) ||
@@ -165,30 +165,31 @@ class GetLoggers extends Component {
       <Col sm="9" md="10">
         <h2 className="page-header">Loggers</h2>
         <div style={{marginBottom: "10px", marginTop: "15px"}}>
+          <span style={{marginRight: "10px"}}>Filters:</span>
           <Input
             type="text"
             onChange={this.onSectionFilterChange}
             value={this.state.sectionFilterString}
             placeholder="Filter by Section"
-            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
           <Input
             type="text"
             onChange={this.onTermFilterChange}
             value={this.state.termFilterString}
             placeholder="Filter by Term"
-            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
           <Input
             type="text"
             onChange={this.onSessionFilterChange}
             value={this.state.sessionFilterString}
             placeholder="Filter by Session"
-            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
           <Input
             type="text"
             onChange={this.onYearFilterChange}
             value={this.state.yearFilterString}
             placeholder="Filter by Year"
-            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
         </div>
 
         <ReactHTMLTableToExcel

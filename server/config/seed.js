@@ -21,7 +21,13 @@ export function seedTestData() {
           firstName: "Backdoor",
           lastName: "User",
           displayName: "Backdoor User",
-          role: "instructor"
+          role: "instructor",
+          studentNumber: "12345678",
+          employeeNumber: "1234567",
+          section: "201",
+          term: 2,
+          session: "2099W2",
+          year: 2099
         },
         function() {
           console.log("Finished adding users");
