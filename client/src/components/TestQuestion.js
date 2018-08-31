@@ -516,7 +516,7 @@ class TestQuestion extends Component {
           </FormGroup>
           {output}
           <Button color="primary" onClick={this.onCheckAnswerClick}>
-            Check Answer
+            {this.props.question.dueDate ? "Check and Submit Answer" : "Check Answer"}
           </Button>
           {checkAnswer}
         </CardBlock>
