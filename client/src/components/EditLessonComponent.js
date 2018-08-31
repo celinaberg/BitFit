@@ -22,7 +22,8 @@ type Props = {
   title: string,
   background: string,
   lessonIndex: number,
-  saveLesson: (id: string, title: string, background: string, lessonIndex: number) => void,
+  visibleToStudents: boolean,
+  saveLesson: (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean) => void,
   deleteLesson: (id: string) => void,
   allLessons: Array<Lesson>,
   lessonQuestions: Array<Question>,
@@ -37,6 +38,7 @@ class EditLessonComponent extends Component {
     title: string,
     background: RichTextEditor,
     lessonIndex: number,
+    visibleToStudents: boolean,
     collapse: boolean
   };
 
@@ -47,6 +49,7 @@ class EditLessonComponent extends Component {
       title: props.title,
       background: RichTextEditor.createValueFromString(props.background, "html"),
       lessonIndex: props.lessonIndex,
+      visibleToStudents: props.visibleToStudents,
       collapse: true
     };
   }
@@ -86,7 +89,7 @@ class EditLessonComponent extends Component {
           // push the index up by one
           let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
-            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1, otherLesson.visibleToStudents);
           }
         }
       } else if (!newIndex) {
@@ -95,7 +98,7 @@ class EditLessonComponent extends Component {
           // push the index down by one
           let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
-            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1, otherLesson.visibleToStudents);
           }
         }
       } else if (oldIndex < newIndex) {
@@ -106,7 +109,7 @@ class EditLessonComponent extends Component {
           // push the index down by one
           let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
-            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1);
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i - 1, otherLesson.visibleToStudents);
           }
         }
       } else {
@@ -117,7 +120,7 @@ class EditLessonComponent extends Component {
           // push the index up by one
           let otherLesson = this.props.allLessons.find(lesson => Number(lesson.lessonIndex) === i);
           if (otherLesson) {
-            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1);
+            this.props.saveLesson(otherLesson.id, otherLesson.title, otherLesson.background, i + 1, otherLesson.visibleToStudents);
           }
         }
       }
@@ -126,7 +129,8 @@ class EditLessonComponent extends Component {
         this.props.id,
         this.state.title,
         this.state.background.toString("html"),
-        newIndex
+        newIndex,
+        this.state.visibleToStudents
       );
     }
   };

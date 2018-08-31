@@ -141,22 +141,30 @@ export function seedTestData() {
       Lesson.create({
           title: "Screencast III",
           background: "Variables are containers for storing many different types of information.",
-          lessonIndex: 1
+          lessonIndex: 1,
+          visibleToStudents: true
         }, {
           title: "Screencast IV",
           background: "Methods are collections of statements that are executed in sequence, between curly braces.",
-          lessonIndex: 2
+          lessonIndex: 2,
+          visibleToStudents: true
         }, {
           title: "Test Lesson 1",
           background: "test",
-          lessonIndex: 3
+          lessonIndex: 3,
+          visibleToStudents: true
         }, {
           title: "Test Lesson 2",
           background: "test test",
-          lessonIndex: 4
+          lessonIndex: 4,
+          visibleToStudents: true
         }, {
           title: "Test Lesson 3",
-          background: "Methods are collections of statements that are executed in sequence, between curly braces."
+          background: "Methods are collections of statements that are executed in sequence, between curly braces.",
+          visibleToStudents: true
+        }, {
+          title: "Test Lesson Invisible to Students",
+          background: "This lesson should not be shown to students (unless you change it to be visible)."
         },
         function() {
           console.log("Finished adding lessons, now adding questions");

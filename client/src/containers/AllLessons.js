@@ -16,12 +16,12 @@ class AllLessons extends Component {
     fetchQuestions: () => void,
     saveQuestion: Question => void,
     deleteQuestion: string => void,
-    saveLesson: (id: string, title: string, background: string, lessonIndex: number) => void,
+    saveLesson: (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean) => void,
     deleteLesson: string => void
   };
 
-  onSaveLessonClick = (id: string, title: string, background: string, lessonIndex: number): void => {
-    this.props.saveLesson(id, title, background, lessonIndex);
+  onSaveLessonClick = (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean): void => {
+    this.props.saveLesson(id, title, background, lessonIndex, visibleToStudents);
     // window.location.reload();
   };
 
@@ -75,6 +75,7 @@ class AllLessons extends Component {
                 title={lesson.title}
                 background={lesson.background}
                 lessonIndex={lesson.lessonIndex}
+                visibleToStudents={lesson.visibleToStudents}
                 saveLesson={this.onSaveLessonClick}
                 deleteLesson={this.onDeleteLessonClick}
                 allLessons={this.props.lessons}
@@ -113,8 +114,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     deleteQuestion: (id: string) => {
       dispatch(deleteQuestion(id));
     },
-    saveLesson: (id: string, title: string, background: string, lessonIndex: number) => {
-      dispatch(saveLesson(id, title, background, lessonIndex));
+    saveLesson: (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean) => {
+      dispatch(saveLesson(id, title, background, lessonIndex, visibleToStudents));
     },
     deleteLesson: (id: string) => {
       dispatch(deleteLesson(id));

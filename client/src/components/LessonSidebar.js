@@ -30,7 +30,10 @@ class LessonSidebar extends Component {
     if (this.props.lessons.fetching) {
       return <Progress animated color="muted" value="100" />;
     } else {
-      const lessonsSortedByLessonIndex = this.props.lessons.lessons.sort((lessonOne, lessonTwo) => {
+      const lessonsFilteredByVisibilityToStudents = this.props.admin ?
+        this.props.lessons.lessons :
+        this.props.lessons.lessons.filter(lesson => lesson.visibleToStudents);
+      const lessonsSortedByLessonIndex = lessonsFilteredByVisibilityToStudents.sort((lessonOne, lessonTwo) => {
         const i1 = lessonOne.lessonIndex;
         const i2 = lessonTwo.lessonIndex;
         if (i1 === null) return +1;

@@ -19,7 +19,7 @@ export type SaveNewLessonAction = {
 };
 export type SaveLessonAction = {
   type: "SAVE_LESSON",
-  payload: { id: string, title: string, background: string }
+  payload: { id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean }
 };
 export type DeleteLessonAction = {
   type: "DELETE_LESSON",

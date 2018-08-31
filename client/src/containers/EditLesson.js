@@ -22,7 +22,8 @@ type Props = {
   title: string,
   background: RichTextEditor,
   lessonIndex: number,
-  saveLesson: (id: string, title: string, background: string, lessonIndex: number) => void,
+  visibleToStudents: boolean,
+  saveLesson: (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean) => void,
   deleteLesson: (id: string) => void
 };
 
@@ -32,7 +33,8 @@ class EditLesson extends Component {
   state: {
     title: string,
     background: RichTextEditor,
-    lessonIndex: number
+    lessonIndex: number,
+    visibleToStudents: boolean
   };
 
   constructor(props) {
@@ -41,7 +43,8 @@ class EditLesson extends Component {
     this.state = {
       title: props.title,
       background: props.background,
-      lessonIndex: props.lessonIndex
+      lessonIndex: props.lessonIndex,
+      visibleToStudents: props.visibleToStudents
     };
   }
 
@@ -50,7 +53,8 @@ class EditLesson extends Component {
       this.setState({
         title: nextProps.title,
         background: nextProps.background,
-        lessonIndex: nextProps.lessonIndex
+        lessonIndex: nextProps.lessonIndex,
+        visibleToStudents: nextProps.visibleToStudents
       });
     }
   }
@@ -69,7 +73,8 @@ class EditLesson extends Component {
       this.props.id,
       this.state.title,
       this.state.background.toString("html"),
-      this.state.lessonIndex
+      this.state.lessonIndex,
+      this.state.visibleToStudents
     );
   };
 
@@ -140,21 +145,23 @@ const mapStateToProps = (state: State, ownProps) => {
       id: null,
       title: null,
       background: null,
-      lessonIndex: null
+      lessonIndex: null,
+      visibleToStudents: null
     };
   }
   return {
     id: lesson.id,
     title: lesson.title,
     background: RichTextEditor.createValueFromString(lesson.background, "html"),
-    lessonIndex: lesson.lessonIndex
+    lessonIndex: lesson.lessonIndex,
+    visibleToStudents: lesson.visibleToStudents
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    saveLesson: (id: string, title: string, background: string, lessonIndex: number) => {
-      dispatch(saveLesson(id, title, background, lessonIndex));
+    saveLesson: (id: string, title: string, background: string, lessonIndex: number, visibleToStudents: boolean) => {
+      dispatch(saveLesson(id, title, background, lessonIndex, visibleToStudents));
     },
     deleteLesson: (id: string) => {
       dispatch(deleteLesson(id));

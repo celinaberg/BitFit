@@ -47,14 +47,16 @@ export const saveLesson = (
   id: string,
   title: string,
   background: string,
-  lessonIndex: number
+  lessonIndex: number,
+  visibleToStudents: boolean
 ): Action => {
   return {
     type: "SAVE_LESSON",
     payload: axios.put("/api/lessons/" + id, {
       title,
       background,
-      lessonIndex
+      lessonIndex,
+      visibleToStudents
     })
   };
 };
