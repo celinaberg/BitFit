@@ -431,16 +431,20 @@ class TestQuestion extends Component {
     } else {
       dueDateString = "Due Date: " + formatDateStringInLocalTime(this.props.question.dueDate);
     }
+    const studentProgressString = (this.state.logger && this.state.logger.gotAnswerCorrectBeforeDueDate) ?
+      `You answered this question correctly at ${formatDateStringInLocalTime(this.state.logger.timeOfCorrectAnswer)}.` :
+      "";
     return (
       <Card key={this.props.question.id}>
         <CardBlock>
           <CardTitle>
             {this.props.question.title}
             <div style={{fontSize: "16px", marginTop: "10px"}}>{dueDateString}</div>
+            <div style={{fontSize: "14px", marginTop: "10px", color: "green"}}>{studentProgressString}</div>
             <div>
               <Button color="primary"
                       onClick={this.onResetToStarterClick}
-                      style={{float: "right", position: "relative", bottom: "50px"}}>
+                      style={{float: "right", position: "absolute", top: "20px", right: "20px"}}>
                 Reset to Starter
               </Button>
             </div>
