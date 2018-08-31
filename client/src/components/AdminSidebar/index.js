@@ -18,7 +18,7 @@ class AdminSidebar extends Component {
           </NavItem>
           <NavItem>
             <NavLink tag={Link} to="/admin/loggers">
-              Logger
+              Loggers
             </NavLink>
           </NavItem>
           <NavItem>

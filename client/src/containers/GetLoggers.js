@@ -4,7 +4,7 @@ import type { Dispatch } from "../actions/types";
 import type { LoggerState, State, Lesson, QuestionState, UserState } from "../types";
 
 import React, { Component } from "react";
-import { Col, Progress } from "reactstrap";
+import { Col, Input, Progress } from "reactstrap";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
 import { fetchLoggers, fetchQuestions, fetchUsers } from "../actions";
@@ -29,6 +29,28 @@ class GetLoggers extends Component {
     fetchUsers: () => void
   };
 
+  state: {
+    sectionFilter: RegExp,
+    termFilter: RegExp,
+    sessionFilter: RegExp,
+    yearFilter: RegExp
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sectionFilterString: "",
+      termFilterString: "",
+      sessionFilterString: "",
+      yearFilterString: "",
+      sectionFilter: new RegExp(""),
+      termFilter: new RegExp(""),
+      sessionFilter: new RegExp(""),
+      yearFilter: new RegExp("")
+    };
+  }
+
   UNSAFE_componentWillMount() {
     if (!this.props.loggers.fetched) {
       this.props.fetchLoggers();
@@ -41,13 +63,60 @@ class GetLoggers extends Component {
     }
   }
 
+  onSectionFilterChange = (event) => {
+    this.setState({
+      sectionFilterString: event.target.value,
+      sectionFilter: new RegExp(event.target.value)
+    });
+  }
+
+  onTermFilterChange = (event) => {
+    this.setState({
+      termFilterString: event.target.value,
+      termFilter: new RegExp(event.target.value)
+    });
+  }
+
+  onSessionFilterChange = (event) => {
+    this.setState({
+      sessionFilterString: event.target.value,
+      sessionFilter: new RegExp(event.target.value)
+    });
+  }
+
+  onYearFilterChange = (event) => {
+    this.setState({
+      yearFilterString: event.target.value,
+      yearFilter: new RegExp(event.target.value)
+    });
+  }
+
   render() {
-    let loggers;
+    let filteredLoggerTableRows;
     if (this.props.loggers.fetching) {
-      loggers = <Progress animated color="muted" value="100" />;
+      filteredLoggerTableRows = <Progress animated color="muted" value="100" />;
     } else {
 
-      loggers = this.props.loggers.loggers.map(logger => {
+      filteredLoggerTableRows = this.props.loggers.loggers.reduce((acc, logger) => {
+
+        const loggerUser = this.props.users.users.find(user => {
+          return user.id === logger.user;
+        });
+        let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
+        let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
+        let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
+        let loggerUserSection = loggerUser ? loggerUser.section : "";
+        let loggerUserTerm = loggerUser ? loggerUser.term : "";
+        let loggerUserSession = loggerUser ? loggerUser.session : "";
+        let loggerUserYear = loggerUser ? loggerUser.year : "";
+
+        if (!loggerUserSection.match(this.state.sectionFilter) ||
+            !loggerUserTerm.match(this.state.termFilter) ||
+            !loggerUserSession.match(this.state.sessionFilter) ||
+            !loggerUserYear.match(this.state.yearFilter)) {
+          // Skip this Logger since it doesn't match the filters
+          return acc;
+        }
 
         let gotAnswerCorrectBeforeDueDateInteger;
         if (logger.gotAnswerCorrectBeforeDueDate) {
@@ -68,45 +137,59 @@ class GetLoggers extends Component {
         });
         loggerLessonTitle = loggerLesson ? loggerLesson.title : "";
 
-        let loggerUser = this.props.users.users.find(user => {
-          return user.id === logger.user;
-        });
-        let loggerUserNameOrId = loggerUser ? loggerUser.displayName : logger.user;
-        let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
-        let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
-        let loggerUserSection = loggerUser ? loggerUser.section : "";
-        let loggerUserTerm = loggerUser ? loggerUser.term : "";
-        let loggerUserSession = loggerUser ? loggerUser.session : "";
-        let loggerUserYear = loggerUser ? loggerUser.year : "";
-
-        return (
-        <tr key={logger.id}>
-          <td>{loggerUserNameOrId}</td>
-          <td>{loggerUserStudentId}</td>
-          <td>{loggerUserStudentNumber}</td>
-          <td>{loggerUserSection}</td>
-          <td>{loggerUserTerm}</td>
-          <td>{loggerUserSession}</td>
-          <td>{loggerUserYear}</td>
-          <td>{loggerQuestionTitleOrId}</td>
-          <td>{loggerLessonTitle}</td>
-          <td>{formatDateStringInLocalTime(logger.startTime)}</td>
-          <td>{formatDateStringInLocalTime(logger.endTime)}</td>
-          <td>{logger.numCompiles}</td>
-          <td>{logger.numErrorFreeCompiles}</td>
-          <td>{logger.numRuns}</td>
-          <td>{logger.numHints}</td>
-          <td>{logger.totalAttempts}</td>
-          <td>{logger.correctAttempts}</td>
-          <td>{gotAnswerCorrectBeforeDueDateInteger}</td>
-          <td>{formatDateStringInLocalTime(logger.timeOfCorrectAnswer)}</td>
-        </tr>
-        );
-      });
+        acc.push(<tr key={logger.id}>
+                  <td>{loggerUserNameOrId}</td>
+                  <td>{loggerUserStudentId}</td>
+                  <td>{loggerUserStudentNumber}</td>
+                  <td>{loggerUserSection}</td>
+                  <td>{loggerUserTerm}</td>
+                  <td>{loggerUserSession}</td>
+                  <td>{loggerUserYear}</td>
+                  <td>{loggerQuestionTitleOrId}</td>
+                  <td>{loggerLessonTitle}</td>
+                  <td>{formatDateStringInLocalTime(logger.startTime)}</td>
+                  <td>{formatDateStringInLocalTime(logger.endTime)}</td>
+                  <td>{logger.numCompiles}</td>
+                  <td>{logger.numErrorFreeCompiles}</td>
+                  <td>{logger.numRuns}</td>
+                  <td>{logger.numHints}</td>
+                  <td>{logger.totalAttempts}</td>
+                  <td>{logger.correctAttempts}</td>
+                  <td>{gotAnswerCorrectBeforeDueDateInteger}</td>
+                  <td>{formatDateStringInLocalTime(logger.timeOfCorrectAnswer)}</td>
+                </tr>);
+        return acc;
+      }, []);
     }
     return (
       <Col sm="9" md="10">
         <h2 className="page-header">Loggers</h2>
+        <div style={{marginBottom: "10px", marginTop: "15px"}}>
+          <Input
+            type="text"
+            onChange={this.onSectionFilterChange}
+            value={this.state.sectionFilterString}
+            placeholder="Filter by Section"
+            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+          <Input
+            type="text"
+            onChange={this.onTermFilterChange}
+            value={this.state.termFilterString}
+            placeholder="Filter by Term"
+            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+          <Input
+            type="text"
+            onChange={this.onSessionFilterChange}
+            value={this.state.sessionFilterString}
+            placeholder="Filter by Session"
+            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+          <Input
+            type="text"
+            onChange={this.onYearFilterChange}
+            value={this.state.yearFilterString}
+            placeholder="Filter by Year"
+            style={{width: "200px", display: "inline", marginRight: "5px"}}/>
+        </div>
 
         <ReactHTMLTableToExcel
                     id="loggers-table-xls-button"
@@ -140,7 +223,7 @@ class GetLoggers extends Component {
           </tr>
           </thead>
           <tbody>
-          {loggers}
+          {filteredLoggerTableRows}
           </tbody>
         </table>
       </Col>
