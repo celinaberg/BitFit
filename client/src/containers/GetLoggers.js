@@ -74,15 +74,9 @@ class GetLoggers extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    if (!this.props.loggers.fetched) {
-      this.props.fetchLoggers();
-    }
-    if (!this.props.questions.fetched) {
-      this.props.fetchQuestions();
-    }
-    if (!this.props.users.fetched) {
-      this.props.fetchUsers();
-    }
+    this.props.fetchLoggers();
+    this.props.fetchQuestions();
+    this.props.fetchUsers();
   }
 
   onUserFilterChange = (event) => {
