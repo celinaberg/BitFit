@@ -436,25 +436,34 @@ class TestQuestion extends Component {
         <CardBlock>
           <CardTitle>
             {this.props.question.title}
-            <div style={{fontSize: "16px"}}>{dueDateString}</div>
+            <div style={{fontSize: "16px", marginTop: "10px"}}>{dueDateString}</div>
             <div>
-              <Button color="primary" onClick={this.onResetToStarterClick}>
+              <Button color="primary"
+                      onClick={this.onResetToStarterClick}
+                      style={{float: "right", position: "relative", bottom: "50px"}}>
                 Reset to Starter
               </Button>
             </div>
           </CardTitle>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: this.props.question.instructions
-            }}
-          />
-          <Card>
+          <Card style={{marginBottom: "10px", marginTop: "10px"}}>
+            <CardHeader>
+              Instructions
+            </CardHeader>
+            <CardBlock>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: this.props.question.instructions
+                }}
+              />
+            </CardBlock>
+          </Card>
+          <Card style={{marginBottom: "5px"}}>
             <CardHeader>
               Hints{" "}
               <Button color="primary" onClick={this.onGetHintClick}>
                 Get Hint
               </Button>
-              <p>number of hints left: {hintsLeft} </p>
+              <div style={{marginTop: "5px"}}>Number of hints left: {hintsLeft}</div>
             </CardHeader>
             <CardBlock>
               <div>
