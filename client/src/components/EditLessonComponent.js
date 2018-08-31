@@ -54,6 +54,10 @@ class EditLessonComponent extends Component {
     };
   }
 
+  onVisibleToStudentsClick = () => {
+    this.setState({visibleToStudents: !this.state.visibleToStudents});
+  }
+
   onLessonIndexChange = event => {
     this.setState({ lessonIndex: Number(event.target.value) || null });
   };
@@ -77,7 +81,8 @@ class EditLessonComponent extends Component {
         this.props.id,
         this.state.title,
         this.state.background.toString("html"),
-        newIndex
+        newIndex,
+        this.state.visibleToStudents
       );
     } else {
       if (!oldIndex) {
@@ -183,6 +188,17 @@ class EditLessonComponent extends Component {
         <div>
           <Collapse isOpen={!this.state.collapse}>
             <Form>
+              <FormGroup>
+                <div onClick={this.onVisibleToStudentsClick}
+                     style={{position: "relative", left: "20px", marginTop: "5px"}}>
+                  <Input
+                    type="checkbox"
+                    id="inputLessonVisibleToStudents"
+                    checked={this.state.visibleToStudents}>
+                  </Input>
+                  Visible to Students
+                </div>
+              </FormGroup>
               <FormGroup>
                 <Label for="inputLessonLessonIndex">Lesson Index</Label>
                 <Input
