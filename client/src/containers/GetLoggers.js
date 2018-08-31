@@ -4,10 +4,14 @@ import type { Dispatch } from "../actions/types";
 import type { LoggerState, State, Lesson, QuestionState, UserState } from "../types";
 
 import React, { Component } from "react";
-import { Col, Input, Progress } from "reactstrap";
+import { Col, Input, Progress, Tooltip, UncontrolledTooltip } from "reactstrap";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from "react-redux";
 import { fetchLoggers, fetchQuestions, fetchUsers } from "../actions";
+
+// Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 /* Takes in a string representing a date. Formats it in a nice human readable way.
 Uses the user's local time zone.
@@ -30,24 +34,36 @@ class GetLoggers extends Component {
   };
 
   state: {
-    sectionFilter: RegExp,
-    termFilter: RegExp,
-    sessionFilter: RegExp,
-    yearFilter: RegExp
+    sectionFilter: (section: string) => boolean,
+    sectionFilterString: string,
+    sectionFilterRegexErrorMsg: string,
+    termFilter: (term: string) => boolean,
+    termFilterString: string,
+    termFilterRegexErrorMsg: string,
+    sessionFilter: (session: string) => boolean,
+    sessionFilterString: string,
+    sessionFilterRegexErrorMsg: string,
+    yearFilter: (year: string) => boolean,
+    yearFilterString: string,
+    yearFilterRegexErrorMsg: string,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
+      sectionFilter: section => section.match(new RegExp("")),
       sectionFilterString: "",
+      sectionFilterRegexErrorMsg: null,
+      termFilter: term => term.match(new RegExp("")),
       termFilterString: "",
+      termFilterRegexErrorMsg: null,
+      sessionFilter: session => session.match(new RegExp("")),
       sessionFilterString: "",
+      sessionFilterRegexErrorMsg: null,
+      yearFilter: year => year.match(new RegExp("")),
       yearFilterString: "",
-      sectionFilter: new RegExp(""),
-      termFilter: new RegExp(""),
-      sessionFilter: new RegExp(""),
-      yearFilter: new RegExp("")
+      yearFilterRegexErrorMsg: null,
     };
   }
 
@@ -64,31 +80,107 @@ class GetLoggers extends Component {
   }
 
   onSectionFilterChange = (event) => {
-    this.setState({
-      sectionFilterString: event.target.value,
-      sectionFilter: new RegExp(event.target.value)
-    });
+    const newSectionFilterString = event.target.value;
+    const isExactMatch = newSectionFilterString.length > 0 && newSectionFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        sectionFilterString: newSectionFilterString,
+        sectionFilter: section => section === newSectionFilterString.substring(1),
+        sectionFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newSectionRegexFilter = new RegExp(newSectionFilterString);
+        this.setState({
+          sectionFilterString: newSectionFilterString,
+          sectionFilter: section => section.match(newSectionRegexFilter),
+          sectionFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          sectionFilterString: newSectionFilterString,
+          sectionFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
   }
 
   onTermFilterChange = (event) => {
-    this.setState({
-      termFilterString: event.target.value,
-      termFilter: new RegExp(event.target.value)
-    });
+    const newTermFilterString = event.target.value;
+    const isExactMatch = newTermFilterString.length > 0 && newTermFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        termFilterString: newTermFilterString,
+        termFilter: term => term === newTermFilterString.substring(1),
+        termFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newTermRegexFilter = new RegExp(newTermFilterString);
+        this.setState({
+          termFilterString: newTermFilterString,
+          termFilter: term => term.match(newTermRegexFilter),
+          termFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          termFilterString: newTermFilterString,
+          termFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
   }
 
   onSessionFilterChange = (event) => {
-    this.setState({
-      sessionFilterString: event.target.value,
-      sessionFilter: new RegExp(event.target.value)
-    });
+    const newSessionFilterString = event.target.value;
+    const isExactMatch = newSessionFilterString.length > 0 && newSessionFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        sessionFilterString: newSessionFilterString,
+        sessionFilter: session => session === newSessionFilterString.substring(1),
+        sessionFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newSessionRegexFilter = new RegExp(newSessionFilterString);
+        this.setState({
+          sessionFilterString: newSessionFilterString,
+          sessionFilter: session => session.match(newSessionRegexFilter),
+          sessionFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          sessionFilterString: newSessionFilterString,
+          sessionFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
   }
 
   onYearFilterChange = (event) => {
-    this.setState({
-      yearFilterString: event.target.value,
-      yearFilter: new RegExp(event.target.value)
-    });
+    const newYearFilterString = event.target.value;
+    const isExactMatch = newYearFilterString.length > 0 && newYearFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        yearFilterString: newYearFilterString,
+        yearFilter: year => year === newYearFilterString.substring(1),
+        yearFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newYearRegexFilter = new RegExp(newYearFilterString);
+        this.setState({
+          yearFilterString: newYearFilterString,
+          yearFilter: year => year.match(newYearRegexFilter),
+          yearFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          yearFilterString: newYearFilterString,
+          yearFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
   }
 
   render() {
@@ -110,10 +202,10 @@ class GetLoggers extends Component {
         let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
         let loggerUserYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
 
-        if (!loggerUserSection.match(this.state.sectionFilter) ||
-            !loggerUserTerm.match(this.state.termFilter) ||
-            !loggerUserSession.match(this.state.sessionFilter) ||
-            !loggerUserYear.match(this.state.yearFilter)) {
+        if (!(this.state.sectionFilter(loggerUserSection) &&
+              this.state.termFilter(loggerUserTerm) &&
+              this.state.sessionFilter(loggerUserSession) &&
+              this.state.yearFilter(loggerUserYear))) {
           // Skip this Logger since it doesn't match the filters
           return acc;
         }
@@ -166,30 +258,45 @@ class GetLoggers extends Component {
         <h2 className="page-header">Loggers</h2>
         <div style={{marginBottom: "10px", marginTop: "15px"}}>
           <span style={{marginRight: "10px"}}>Filters:</span>
+          <Tooltip placement="top" target="sectionFilterInput" isOpen={this.state.sectionFilterRegexErrorMsg ? true : false}>{this.state.sectionFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
+            id="sectionFilterInput"
             onChange={this.onSectionFilterChange}
             value={this.state.sectionFilterString}
             placeholder="Filter by Section"
             style={{width: "150px", display: "inline", marginRight: "5px"}}/>
+          <Tooltip placement="top" target="termFilterInput" isOpen={this.state.termFilterRegexErrorMsg ? true : false}>{this.state.termFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
+            id="termFilterInput"
             onChange={this.onTermFilterChange}
             value={this.state.termFilterString}
             placeholder="Filter by Term"
             style={{width: "150px", display: "inline", marginRight: "5px"}}/>
+          <Tooltip placement="top" target="sessionFilterInput" isOpen={this.state.sessionFilterRegexErrorMsg ? true : false}>{this.state.sessionFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
+            id="sessionFilterInput"
             onChange={this.onSessionFilterChange}
             value={this.state.sessionFilterString}
             placeholder="Filter by Session"
             style={{width: "150px", display: "inline", marginRight: "5px"}}/>
+          <Tooltip placement="top" target="yearFilterInput" isOpen={this.state.yearFilterRegexErrorMsg ? true : false}>{this.state.yearFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
+            id="yearFilterInput"
             onChange={this.onYearFilterChange}
             value={this.state.yearFilterString}
             placeholder="Filter by Year"
             style={{width: "150px", display: "inline", marginRight: "5px"}}/>
+          <UncontrolledTooltip placement="top" target="filtersInfoIcon" style={{maxWidth: "400px"}}>
+            <div>
+              <div>Filters are Regex by default.</div>
+              <div>Prefix with "=" for exact matching, e.g. =2018W2.</div>
+            </div>
+          </UncontrolledTooltip>
+          <FontAwesomeIcon icon={faQuestionCircle} id="filtersInfoIcon"/>
         </div>
 
         <ReactHTMLTableToExcel
