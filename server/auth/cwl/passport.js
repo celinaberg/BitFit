@@ -110,9 +110,9 @@ const samlStrategy = new SamlStrategy(
           }
 
           // Temp: Restrict access to students.
-          return done(null, false, {
-            message: "Students are currently not allowed to access BitFit."
-          });
+          // return done(null, false, {
+          //   message: "Students are currently not allowed to access BitFit."
+          // });
         }
       }
     } else {
