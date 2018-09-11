@@ -116,7 +116,7 @@ export async function compileLogger(req: $Request, res: $Response) {
     const escapedCode = jsesc(logger.code, {
       wrap: true
     });
-    await exec(`echo ${escapedCode} > ${dirName}/${logger.className}.c`);
+    await exec(`echo $${escapedCode} > ${dirName}/${logger.className}.c`, {shell: "/bin/bash"});
     const gcc = `gcc "${dirName}/${logger.className}.c" -o "${dirName}/${logger.className}" -lm`;
     //console.log(gcc);
     const result = await exec(gcc);
