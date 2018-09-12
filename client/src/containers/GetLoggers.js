@@ -49,6 +49,12 @@ class GetLoggers extends Component {
     yearFilter: (year: string) => boolean,
     yearFilterString: string,
     yearFilterRegexErrorMsg: string,
+    questionFilter: (question: string) => boolean,
+    questionFilterString: string,
+    questionFilterRegexErrorMsg: string,
+    lessonFilter: (lesson: string) => boolean,
+    lessonFilterString: string,
+    lessonFilterRegexErrorMsg: string,
   }
 
   constructor(props) {
@@ -70,6 +76,12 @@ class GetLoggers extends Component {
       yearFilter: year => year.match(new RegExp("")),
       yearFilterString: "",
       yearFilterRegexErrorMsg: null,
+      questionFilter: question => question.match(new RegExp("")),
+      questionFilterString: "",
+      questionFilterRegexErrorMsg: null,
+      lessonFilter: lesson => lesson.match(new RegExp("")),
+      lessonFilterString: "",
+      lessonFilterRegexErrorMsg: null,
     };
   }
 
@@ -209,6 +221,58 @@ class GetLoggers extends Component {
     }
   }
 
+  onQuestionFilterChange = (event) => {
+    const newQuestionFilterString = event.target.value;
+    const isExactMatch = newQuestionFilterString.length > 0 && newQuestionFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        questionFilterString: newQuestionFilterString,
+        questionFilter: question => question === newQuestionFilterString.substring(1),
+        questionFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newQuestionRegexFilter = new RegExp(newQuestionFilterString);
+        this.setState({
+          questionFilterString: newQuestionFilterString,
+          questionFilter: question => question.match(newQuestionRegexFilter),
+          questionFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          questionFilterString: newQuestionFilterString,
+          questionFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
+  }
+
+  onLessonFilterChange = (event) => {
+    const newLessonFilterString = event.target.value;
+    const isExactMatch = newLessonFilterString.length > 0 && newLessonFilterString[0] === "=";
+    if (isExactMatch) {
+      this.setState({
+        lessonFilterString: newLessonFilterString,
+        lessonFilter: lesson => lesson === newLessonFilterString.substring(1),
+        lessonFilterRegexErrorMsg: null
+      });
+    } else {
+      try {
+        let newLessonRegexFilter = new RegExp(newLessonFilterString);
+        this.setState({
+          lessonFilterString: newLessonFilterString,
+          lessonFilter: lesson => lesson.match(newLessonRegexFilter),
+          lessonFilterRegexErrorMsg: null
+        });
+      } catch (err) {
+        this.setState({
+          lessonFilterString: newLessonFilterString,
+          lessonFilterRegexErrorMsg: "Invalid Regex: " + err
+        });
+      }
+    }
+  }
+
   render() {
     let filteredLoggerTableRows;
     if (this.props.loggers.fetching) {
@@ -228,15 +292,6 @@ class GetLoggers extends Component {
         let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
         let loggerUserYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
 
-        if (!(this.state.userFilter(loggerUserNameOrId) &&
-              this.state.sectionFilter(loggerUserSection) &&
-              this.state.termFilter(loggerUserTerm) &&
-              this.state.sessionFilter(loggerUserSession) &&
-              this.state.yearFilter(loggerUserYear))) {
-          // Skip this Logger since it doesn't match the filters
-          return acc;
-        }
-
         let gotAnswerCorrectBeforeDueDateInteger;
         if (logger.gotAnswerCorrectBeforeDueDate) {
           gotAnswerCorrectBeforeDueDateInteger = 1;
@@ -248,13 +303,24 @@ class GetLoggers extends Component {
         let loggerQuestion = this.props.questions.questions.find(question => {
           return question.id === logger.question;
         });
-        loggerQuestionTitleOrId = loggerQuestion ? loggerQuestion.title : logger.question;
+        loggerQuestionTitleOrId = (loggerQuestion ? loggerQuestion.title : logger.question) || "";
 
         let loggerLessonTitle;
         let loggerLesson = this.props.lessons.find(lesson => {
           return loggerQuestion ? lesson.id === loggerQuestion.lesson : false;
         });
-        loggerLessonTitle = loggerLesson ? loggerLesson.title : "";
+        loggerLessonTitle = loggerLesson ? (loggerLesson.title || "") : "";
+
+        if (!(this.state.userFilter(loggerUserNameOrId) &&
+              this.state.sectionFilter(loggerUserSection) &&
+              this.state.termFilter(loggerUserTerm) &&
+              this.state.sessionFilter(loggerUserSession) &&
+              this.state.yearFilter(loggerUserYear) &&
+              this.state.questionFilter(loggerQuestionTitleOrId) &&
+              this.state.lessonFilter(loggerLessonTitle))) {
+          // Skip this Logger since it doesn't match the filters
+          return acc;
+        }
 
         acc.push(<tr key={logger.id}>
                   <td>{loggerUserNameOrId}</td>
@@ -308,7 +374,7 @@ class GetLoggers extends Component {
             onChange={this.onTermFilterChange}
             value={this.state.termFilterString}
             placeholder="Filter by Term"
-            style={{width: "150px", display: "inline", marginRight: "5px"}}/>
+            style={{width: "130px", display: "inline", marginRight: "5px"}}/>
           <Tooltip placement="top" target="sessionFilterInput" isOpen={this.state.sessionFilterRegexErrorMsg ? true : false}>{this.state.sessionFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
@@ -324,6 +390,22 @@ class GetLoggers extends Component {
             onChange={this.onYearFilterChange}
             value={this.state.yearFilterString}
             placeholder="Filter by Year"
+            style={{width: "130px", display: "inline", marginRight: "5px"}}/>
+          <Tooltip placement="top" target="questionFilterInput" isOpen={this.state.questionFilterRegexErrorMsg ? true : false}>{this.state.questionFilterRegexErrorMsg}</Tooltip>
+          <Input
+            type="text"
+            id="questionFilterInput"
+            onChange={this.onQuestionFilterChange}
+            value={this.state.questionFilterString}
+            placeholder="Filter by Question"
+            style={{width: "160px", display: "inline", marginRight: "5px"}}/>
+          <Tooltip placement="top" target="lessonFilterInput" isOpen={this.state.lessonFilterRegexErrorMsg ? true : false}>{this.state.lessonFilterRegexErrorMsg}</Tooltip>
+          <Input
+            type="text"
+            id="lessonFilterInput"
+            onChange={this.onLessonFilterChange}
+            value={this.state.lessonFilterString}
+            placeholder="Filter by Lesson"
             style={{width: "150px", display: "inline", marginRight: "5px"}}/>
           <UncontrolledTooltip placement="top" target="filtersInfoIcon" style={{maxWidth: "400px"}}>
             <div>
