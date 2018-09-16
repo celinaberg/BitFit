@@ -1,7 +1,7 @@
 // @flow
 
 import type { Dispatch } from "../actions/types";
-import type { LoggerState, State, Lesson, QuestionState, UserState } from "../types";
+import type { LoggerState, State, Lesson, QuestionState, UserState, LoggerInfo } from "../types";
 
 import React, { Component } from "react";
 import { Col, Input, Progress, Tooltip, UncontrolledTooltip } from "reactstrap";
@@ -55,6 +55,8 @@ class GetLoggers extends Component {
     lessonFilter: (lesson: string) => boolean,
     lessonFilterString: string,
     lessonFilterRegexErrorMsg: string,
+    loggerInfos: Array<LoggerInfo>,
+    filteredLoggerInfos: Array<LoggerInfo>
   }
 
   constructor(props) {
@@ -82,13 +84,73 @@ class GetLoggers extends Component {
       lessonFilter: lesson => lesson.match(new RegExp("")),
       lessonFilterString: "",
       lessonFilterRegexErrorMsg: null,
+      loggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null),
+      filteredLoggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null)
     };
   }
 
-  UNSAFE_componentWillMount() {
-    this.props.fetchLoggers();
-    this.props.fetchQuestions();
-    this.props.fetchUsers();
+  componentDidUpdate(prevProps) {
+    if (!this.props.loggers.fetched && !this.props.loggers.fetching) {
+      console.log("Fetching loggers");
+      this.props.fetchLoggers();
+    }
+    if (!this.props.questions.fetched && !this.props.questions.fetching) {
+      console.log("Fetching questions");
+      this.props.fetchQuestions();
+    }
+    if (!this.props.users.fetched && !this.props.users.fetching) {
+      console.log("Fetching users");
+      this.props.fetchUsers();
+    }
+    if (this.state.loggerInfos === null || this.state.filteredLoggerInfos === null) {
+      if (this.props.loggers.fetched && !prevProps.loggers.fetched) {
+        // Loggers are now available
+        const newLoggerInfos = this.props.loggers.loggers.map(this.getLoggerInfo);
+        this.setState({
+          loggerInfos: newLoggerInfos,
+          filteredLoggerInfos: newLoggerInfos.filter(this.loggerInfoFilter)
+        });
+      }
+    }
+  }
+
+  getLoggerInfo = logger => {
+    let loggerInfo = {};
+    loggerInfo.key = logger.id;
+    const loggerUser = this.props.users.users.find(user => {
+      return user.id === logger.user;
+    });
+    loggerInfo.userNameOrId = loggerUser ? (loggerUser.displayName || "") : (logger.user || "");
+    loggerInfo.userStudentId = loggerUser ? loggerUser.uid : "";
+    loggerInfo.userStudentNumber = loggerUser ? loggerUser.studentNumber : "";
+    loggerInfo.userSection = loggerUser ? (loggerUser.section || "") : "";
+    loggerInfo.userTerm = loggerUser ? (loggerUser.term ? loggerUser.term.toString() : "") : "";
+    loggerInfo.userSession = loggerUser ? (loggerUser.session || "") : "";
+    loggerInfo.userYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
+
+    loggerInfo.gotAnswerCorrectBeforeDueDateInteger = logger.gotAnswerCorrectBeforeDueDate ? "1" : "0";
+
+    let loggerQuestion = this.props.questions.questions.find(question => {
+      return question.id === logger.question;
+    });
+    loggerInfo.questionTitleOrId = (loggerQuestion ? loggerQuestion.title : logger.question) || "";
+
+    let loggerLesson = this.props.lessons.find(lesson => {
+      return loggerQuestion ? lesson.id === loggerQuestion.lesson : false;
+    });
+    loggerInfo.lessonTitle = loggerLesson ? (loggerLesson.title || "") : "";
+
+    loggerInfo.startTime = formatDateStringInLocalTime(logger.startTime);
+    loggerInfo.endTime = formatDateStringInLocalTime(logger.endTime);
+    loggerInfo.numCompiles = logger.numCompiles.toString();
+    loggerInfo.numErrorFreeCompiles = logger.numErrorFreeCompiles.toString();
+    loggerInfo.numRuns = logger.numRuns.toString();
+    loggerInfo.numHints = logger.numHints.toString();
+    loggerInfo.totalAttempts = logger.totalAttempts.toString();
+    loggerInfo.correctAttempts = logger.correctAttempts.toString();
+    loggerInfo.timeOfCorrectAnswer = formatDateStringInLocalTime(logger.timeOfCorrectAnswer);
+
+    return loggerInfo;
   }
 
   onUserFilterChange = (event) => {
@@ -99,6 +161,8 @@ class GetLoggers extends Component {
         userFilterString: newUserFilterString,
         userFilter: user => user === newUserFilterString.substring(1),
         userFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -107,6 +171,8 @@ class GetLoggers extends Component {
           userFilterString: newUserFilterString,
           userFilter: user => user.match(newUserRegexFilter),
           userFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -125,6 +191,8 @@ class GetLoggers extends Component {
         sectionFilterString: newSectionFilterString,
         sectionFilter: section => section === newSectionFilterString.substring(1),
         sectionFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -133,6 +201,8 @@ class GetLoggers extends Component {
           sectionFilterString: newSectionFilterString,
           sectionFilter: section => section.match(newSectionRegexFilter),
           sectionFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -151,6 +221,8 @@ class GetLoggers extends Component {
         termFilterString: newTermFilterString,
         termFilter: term => term === newTermFilterString.substring(1),
         termFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -159,6 +231,8 @@ class GetLoggers extends Component {
           termFilterString: newTermFilterString,
           termFilter: term => term.match(newTermRegexFilter),
           termFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -177,6 +251,8 @@ class GetLoggers extends Component {
         sessionFilterString: newSessionFilterString,
         sessionFilter: session => session === newSessionFilterString.substring(1),
         sessionFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -185,6 +261,8 @@ class GetLoggers extends Component {
           sessionFilterString: newSessionFilterString,
           sessionFilter: session => session.match(newSessionRegexFilter),
           sessionFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -203,6 +281,8 @@ class GetLoggers extends Component {
         yearFilterString: newYearFilterString,
         yearFilter: year => year === newYearFilterString.substring(1),
         yearFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -211,6 +291,8 @@ class GetLoggers extends Component {
           yearFilterString: newYearFilterString,
           yearFilter: year => year.match(newYearRegexFilter),
           yearFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -229,6 +311,8 @@ class GetLoggers extends Component {
         questionFilterString: newQuestionFilterString,
         questionFilter: question => question === newQuestionFilterString.substring(1),
         questionFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -237,6 +321,8 @@ class GetLoggers extends Component {
           questionFilterString: newQuestionFilterString,
           questionFilter: question => question.match(newQuestionRegexFilter),
           questionFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -255,6 +341,8 @@ class GetLoggers extends Component {
         lessonFilterString: newLessonFilterString,
         lessonFilter: lesson => lesson === newLessonFilterString.substring(1),
         lessonFilterRegexErrorMsg: null
+      }, () => {
+        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -263,6 +351,8 @@ class GetLoggers extends Component {
           lessonFilterString: newLessonFilterString,
           lessonFilter: lesson => lesson.match(newLessonRegexFilter),
           lessonFilterRegexErrorMsg: null
+        }, () => {
+          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -273,78 +363,48 @@ class GetLoggers extends Component {
     }
   }
 
+  getLoggerInfoTableRow = loggerInfo => {
+    return (
+      <tr key={loggerInfo.key}>
+        <td>{loggerInfo.userNameOrId}</td>
+        <td>{loggerInfo.userStudentId}</td>
+        <td>{loggerInfo.userStudentNumber}</td>
+        <td>{loggerInfo.userSection}</td>
+        <td>{loggerInfo.userTerm}</td>
+        <td>{loggerInfo.userSession}</td>
+        <td>{loggerInfo.userYear}</td>
+        <td>{loggerInfo.questionTitleOrId}</td>
+        <td>{loggerInfo.lessonTitle}</td>
+        <td>{loggerInfo.startTime}</td>
+        <td>{loggerInfo.endTime}</td>
+        <td>{loggerInfo.numCompiles}</td>
+        <td>{loggerInfo.numErrorFreeCompiles}</td>
+        <td>{loggerInfo.numRuns}</td>
+        <td>{loggerInfo.numHints}</td>
+        <td>{loggerInfo.totalAttempts}</td>
+        <td>{loggerInfo.correctAttempts}</td>
+        <td>{loggerInfo.gotAnswerCorrectBeforeDueDateInteger}</td>
+        <td>{loggerInfo.timeOfCorrectAnswer}</td>
+      </tr>
+    );
+  }
+
+  loggerInfoFilter = loggerInfo => {
+    return (this.state.userFilter(loggerInfo.userNameOrId) &&
+            this.state.sectionFilter(loggerInfo.userSection) &&
+            this.state.termFilter(loggerInfo.userTerm) &&
+            this.state.sessionFilter(loggerInfo.userSession) &&
+            this.state.yearFilter(loggerInfo.userYear) &&
+            this.state.questionFilter(loggerInfo.questionTitleOrId) &&
+            this.state.lessonFilter(loggerInfo.lessonTitle));
+  }
+
   render() {
     let filteredLoggerTableRows;
-    if (this.props.loggers.fetching) {
+    if (this.state.loggerInfos === null || this.state.filteredLoggerInfos === null) {
       filteredLoggerTableRows = <Progress animated color="muted" value="100" />;
     } else {
-
-      filteredLoggerTableRows = this.props.loggers.loggers.reduce((acc, logger) => {
-
-        const loggerUser = this.props.users.users.find(user => {
-          return user.id === logger.user;
-        });
-        let loggerUserNameOrId = loggerUser ? (loggerUser.displayName || "") : (logger.user || "");
-        let loggerUserStudentId = loggerUser ? loggerUser.uid : "";
-        let loggerUserStudentNumber = loggerUser ? loggerUser.studentNumber : "";
-        let loggerUserSection = loggerUser ? (loggerUser.section || "") : "";
-        let loggerUserTerm = loggerUser ? (loggerUser.term ? loggerUser.term.toString() : "") : "";
-        let loggerUserSession = loggerUser ? (loggerUser.session || "") : "";
-        let loggerUserYear = loggerUser ? (loggerUser.year ? loggerUser.year.toString() : "") : "";
-
-        let gotAnswerCorrectBeforeDueDateInteger;
-        if (logger.gotAnswerCorrectBeforeDueDate) {
-          gotAnswerCorrectBeforeDueDateInteger = 1;
-        } else {
-          gotAnswerCorrectBeforeDueDateInteger = 0;
-        }
-
-        let loggerQuestionTitleOrId;
-        let loggerQuestion = this.props.questions.questions.find(question => {
-          return question.id === logger.question;
-        });
-        loggerQuestionTitleOrId = (loggerQuestion ? loggerQuestion.title : logger.question) || "";
-
-        let loggerLessonTitle;
-        let loggerLesson = this.props.lessons.find(lesson => {
-          return loggerQuestion ? lesson.id === loggerQuestion.lesson : false;
-        });
-        loggerLessonTitle = loggerLesson ? (loggerLesson.title || "") : "";
-
-        if (!(this.state.userFilter(loggerUserNameOrId) &&
-              this.state.sectionFilter(loggerUserSection) &&
-              this.state.termFilter(loggerUserTerm) &&
-              this.state.sessionFilter(loggerUserSession) &&
-              this.state.yearFilter(loggerUserYear) &&
-              this.state.questionFilter(loggerQuestionTitleOrId) &&
-              this.state.lessonFilter(loggerLessonTitle))) {
-          // Skip this Logger since it doesn't match the filters
-          return acc;
-        }
-
-        acc.push(<tr key={logger.id}>
-                  <td>{loggerUserNameOrId}</td>
-                  <td>{loggerUserStudentId}</td>
-                  <td>{loggerUserStudentNumber}</td>
-                  <td>{loggerUserSection}</td>
-                  <td>{loggerUserTerm}</td>
-                  <td>{loggerUserSession}</td>
-                  <td>{loggerUserYear}</td>
-                  <td>{loggerQuestionTitleOrId}</td>
-                  <td>{loggerLessonTitle}</td>
-                  <td>{formatDateStringInLocalTime(logger.startTime)}</td>
-                  <td>{formatDateStringInLocalTime(logger.endTime)}</td>
-                  <td>{logger.numCompiles}</td>
-                  <td>{logger.numErrorFreeCompiles}</td>
-                  <td>{logger.numRuns}</td>
-                  <td>{logger.numHints}</td>
-                  <td>{logger.totalAttempts}</td>
-                  <td>{logger.correctAttempts}</td>
-                  <td>{gotAnswerCorrectBeforeDueDateInteger}</td>
-                  <td>{formatDateStringInLocalTime(logger.timeOfCorrectAnswer)}</td>
-                </tr>);
-        return acc;
-      }, []);
+      filteredLoggerTableRows = this.state.filteredLoggerInfos.map(this.getLoggerInfoTableRow);
     }
     return (
       <Col sm="9" md="10">

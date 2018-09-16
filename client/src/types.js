@@ -108,3 +108,26 @@ export type State = {
   +users: UserState,
   +loggers: LoggerState
 };
+
+export type LoggerInfo = {
+  +key: string,
+  +userNameOrId: string,
+  +userStudentId: string,
+  +userStudentNumber: string,
+  +userSection: string,
+  +userTerm: string,
+  +userSession: string,
+  +userYear: string,
+  +gotAnswerCorrectBeforeDueDateInteger: string,
+  +questionTitleOrId: string,
+  +lessonTitle: string,
+  +startTime: string,
+  +endTime: string,
+  +numCompiles: string,
+  +numErrorFreeCompiles: string,
+  +numRuns: string,
+  +numHints: string,
+  +totalAttempts: string,
+  +correctAttempts: string,
+  +timeOfCorrectAnswer: string,
+}
