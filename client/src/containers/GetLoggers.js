@@ -85,6 +85,18 @@ class GetLoggers extends Component {
       lessonFilterRegexErrorMsg: null,
       loggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null)
     };
+
+    console.log("Fetching loggers, questions, and users");
+    this.props.fetchLoggers();
+    this.props.fetchQuestions();
+    this.props.fetchUsers();
+  }
+
+  componentDidMount() {
+    if (this.props.loggers.fetched && this.props.questions.fetched && this.props.users.fetched) {
+      // Loggers, questions, and users are all available
+      this.setState({ loggerInfos: this.props.loggers.loggers.map(this.getLoggerInfo) });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -100,9 +112,14 @@ class GetLoggers extends Component {
       console.log("Fetching users");
       this.props.fetchUsers();
     }
-    if (this.state.loggerInfos === null) {
-      if (this.props.loggers.fetched && !prevProps.loggers.fetched) {
-        // Loggers are now available
+    if (
+      (this.props.loggers.fetched && !prevProps.loggers.fetched) ||
+      (this.props.questions.fetched && !prevProps.questions.fetched) ||
+      (this.props.users.fetched && !prevProps.users.fetched)
+    ) {
+      // Loggers, or questions, or users, have now become available
+      if (this.props.loggers.fetched && this.props.questions.fetched && this.props.users.fetched) {
+        // Loggers, questions, and users are all available
         this.setState({ loggerInfos: this.props.loggers.loggers.map(this.getLoggerInfo) });
       }
     }

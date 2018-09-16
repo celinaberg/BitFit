@@ -131,3 +131,18 @@ export type LoggerInfo = {
   +correctAttempts: string,
   +timeOfCorrectAnswer: string,
 }
+
+export type LessonGradeInfo = {
+  +key: string,
+  +userNameOrId: string,
+  +userStudentId: string,
+  +userStudentNumber: string,
+  +userSection: string,
+  +userTerm: string,
+  +userSession: string,
+  +userYear: string,
+  +lessonId: string,
+  +lessonTitle: string,
+  +numQuestionsAttempted: number,
+  +numQuestionsCorrect: number
+}

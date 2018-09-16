@@ -1,7 +1,7 @@
 // @flow
 
 import type { Dispatch } from "../actions/types";
-import type { LoggerState, State, Lesson, QuestionState, UserState, LoggerInfo } from "../types";
+import type { LoggerState, State, Lesson, QuestionState, UserState, LessonGradeInfo } from "../types";
 
 import React, { Component } from "react";
 import { Col, Input, Progress, Tooltip, UncontrolledTooltip } from "reactstrap";
@@ -45,7 +45,7 @@ class LessonGrades extends Component {
     lessonFilter: (lesson: string) => boolean,
     lessonFilterString: string,
     lessonFilterRegexErrorMsg: string,
-    loggerInfos: Array<LoggerInfo>
+    lessonGradeInfos: Array<LessonGradeInfo>
   }
 
   constructor(props) {
@@ -70,8 +70,29 @@ class LessonGrades extends Component {
       lessonFilter: lesson => lesson.match(new RegExp("")),
       lessonFilterString: "",
       lessonFilterRegexErrorMsg: null,
-      loggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null)
+      lessonGradeInfos: (
+        this.props.loggers.fetched ?
+        this.getLessonGradeInfos(this.props.loggers.loggers.map(this.getLoggerInfo)) :
+        null
+      ),
+      numQuestionsInLessonObject: {}
     };
+
+    console.log("Fetching loggers, questions, and users");
+    this.props.fetchLoggers();
+    this.props.fetchQuestions();
+    this.props.fetchUsers();
+  }
+
+  componentDidMount() {
+    if (this.props.loggers.fetched && this.props.questions.fetched && this.props.users.fetched) {
+      // Loggers, questions, and users are all available
+      const newLoggerInfos = this.props.loggers.loggers.map(this.getLoggerInfo);
+      this.setState({
+        lessonGradeInfos: this.getLessonGradeInfos(newLoggerInfos),
+        numQuestionsInLessonObject: this.getNumQuestionsInLessonObject(this.props.questions.questions)
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -87,12 +108,65 @@ class LessonGrades extends Component {
       console.log("Fetching users");
       this.props.fetchUsers();
     }
-    if (this.state.loggerInfos === null) {
-      if (this.props.loggers.fetched && !prevProps.loggers.fetched) {
-        // Loggers are now available
-        this.setState({ loggerInfos: this.props.loggers.loggers.map(this.getLoggerInfo) });
+    if (
+      (this.props.loggers.fetched && !prevProps.loggers.fetched) ||
+      (this.props.questions.fetched && !prevProps.questions.fetched) ||
+      (this.props.users.fetched && !prevProps.users.fetched)
+    ) {
+      // Loggers, or questions, or users, are now available
+      if (this.props.loggers.fetched && this.props.questions.fetched && this.props.users.fetched) {
+        // Loggers, questions, and users are all available
+        const newLoggerInfos = this.props.loggers.loggers.map(this.getLoggerInfo);
+        this.setState({
+          lessonGradeInfos: this.getLessonGradeInfos(newLoggerInfos),
+          numQuestionsInLessonObject: this.getNumQuestionsInLessonObject(this.props.questions.questions)
+        });
       }
     }
+  }
+
+  getNumQuestionsInLessonObject(questions) {
+    return questions.reduce((acc, question) => {
+      if (question.lesson in acc) {
+        acc[question.lesson] += 1;
+      } else {
+        acc[question.lesson] = 1;
+      }
+      return acc;
+    }, {});
+  }
+
+  getLessonGradeInfos(loggerInfos) {
+    const lessonGradeInfosObject = loggerInfos.reduce((acc, loggerInfo) => {
+      const userLessonKey = loggerInfo.userId + loggerInfo.lessonId;
+      if (userLessonKey in acc) {
+        // update acc[userLessonKey]
+        if (loggerInfo.totalAttempts !== "0") {
+          acc[userLessonKey].numQuestionsAttempted += 1;
+        }
+        if (loggerInfo.gotAnswerCorrectBeforeDueDateInteger === "1") {
+          acc[userLessonKey].numQuestionsCorrect += 1;
+        }
+      } else {
+        // initialize acc[userLessonKey]
+        acc[userLessonKey] = {
+          key: userLessonKey,
+          userNameOrId: loggerInfo.userNameOrId,
+          userStudentId: loggerInfo.userStudentId,
+          userStudentNumber: loggerInfo.userStudentNumber,
+          userSection: loggerInfo.userSection,
+          userTerm: loggerInfo.userTerm,
+          userSession: loggerInfo.userSession,
+          userYear: loggerInfo.userYear,
+          lessonId: loggerInfo.lessonId,
+          lessonTitle: loggerInfo.lessonTitle,
+          numQuestionsAttempted: loggerInfo.totalAttempts === "0" ? 0 : 1,
+          numQuestionsCorrect: loggerInfo.gotAnswerCorrectBeforeDueDateInteger === "1" ? 1 : 0
+        };
+      }
+      return acc;
+    }, {});
+    return Object.values(lessonGradeInfosObject);
   }
 
   getLoggerInfo = logger => {
@@ -101,6 +175,7 @@ class LessonGrades extends Component {
     const loggerUser = this.props.users.users.find(user => {
       return user.id === logger.user;
     });
+    loggerInfo.userId = logger.user || "";
     loggerInfo.userNameOrId = loggerUser ? (loggerUser.displayName || "") : (logger.user || "");
     loggerInfo.userStudentId = loggerUser ? loggerUser.uid : "";
     loggerInfo.userStudentNumber = loggerUser ? loggerUser.studentNumber : "";
@@ -115,6 +190,8 @@ class LessonGrades extends Component {
       return question.id === logger.question;
     });
     loggerInfo.questionTitleOrId = (loggerQuestion ? loggerQuestion.title : logger.question) || "";
+
+    loggerInfo.lessonId = loggerQuestion ? loggerQuestion.lesson : "";
 
     let loggerLesson = this.props.lessons.find(lesson => {
       return loggerQuestion ? lesson.id === loggerQuestion.lesson : false;
@@ -290,48 +367,45 @@ class LessonGrades extends Component {
     }
   }
 
-  getLoggerInfoTableRow = loggerInfo => {
+  getLessonGradeInfoTableRow = lessonGradeInfo => {
+    const numQuestionsInLesson = (
+      lessonGradeInfo.lessonId in this.state.numQuestionsInLessonObject ?
+      this.state.numQuestionsInLessonObject[lessonGradeInfo.lessonId].toString() :
+      ""
+    );
     return (
-      <tr key={loggerInfo.key}>
-        <td>{loggerInfo.userNameOrId}</td>
-        <td>{loggerInfo.userStudentId}</td>
-        <td>{loggerInfo.userStudentNumber}</td>
-        <td>{loggerInfo.userSection}</td>
-        <td>{loggerInfo.userTerm}</td>
-        <td>{loggerInfo.userSession}</td>
-        <td>{loggerInfo.userYear}</td>
-        <td>{loggerInfo.questionTitleOrId}</td>
-        <td>{loggerInfo.lessonTitle}</td>
-        <td>{loggerInfo.startTime}</td>
-        <td>{loggerInfo.endTime}</td>
-        <td>{loggerInfo.numCompiles}</td>
-        <td>{loggerInfo.numErrorFreeCompiles}</td>
-        <td>{loggerInfo.numRuns}</td>
-        <td>{loggerInfo.numHints}</td>
-        <td>{loggerInfo.totalAttempts}</td>
-        <td>{loggerInfo.correctAttempts}</td>
-        <td>{loggerInfo.gotAnswerCorrectBeforeDueDateInteger}</td>
-        <td>{loggerInfo.timeOfCorrectAnswer}</td>
+      <tr key={lessonGradeInfo.key}>
+        <td>{lessonGradeInfo.userNameOrId}</td>
+        <td>{lessonGradeInfo.userStudentId}</td>
+        <td>{lessonGradeInfo.userStudentNumber}</td>
+        <td>{lessonGradeInfo.userSection}</td>
+        <td>{lessonGradeInfo.userTerm}</td>
+        <td>{lessonGradeInfo.userSession}</td>
+        <td>{lessonGradeInfo.userYear}</td>
+        <td>{lessonGradeInfo.lessonTitle}</td>
+        <td>{lessonGradeInfo.numQuestionsAttempted.toString()}</td>
+        <td>{lessonGradeInfo.numQuestionsCorrect.toString()}</td>
+        <td>{numQuestionsInLesson}</td>
       </tr>
     );
   }
 
-  loggerInfoFilter = loggerInfo => {
-    return (this.state.userFilter(loggerInfo.userNameOrId) &&
-            this.state.sectionFilter(loggerInfo.userSection) &&
-            this.state.termFilter(loggerInfo.userTerm) &&
-            this.state.sessionFilter(loggerInfo.userSession) &&
-            this.state.yearFilter(loggerInfo.userYear) &&
-            this.state.lessonFilter(loggerInfo.lessonTitle));
+  lessonGradeInfoFilter = lessonGradeInfo => {
+    return (this.state.userFilter(lessonGradeInfo.userNameOrId) &&
+            this.state.sectionFilter(lessonGradeInfo.userSection) &&
+            this.state.termFilter(lessonGradeInfo.userTerm) &&
+            this.state.sessionFilter(lessonGradeInfo.userSession) &&
+            this.state.yearFilter(lessonGradeInfo.userYear) &&
+            this.state.lessonFilter(lessonGradeInfo.lessonTitle));
   }
 
   render() {
-    let filteredLoggerTableRows;
-    if (this.state.loggerInfos === null) {
-      filteredLoggerTableRows = <Progress animated color="muted" value="100" />;
+    let filteredLessonGradeRows;
+    if (this.state.lessonGradeInfos === null) {
+      filteredLessonGradeRows = <Progress animated color="muted" value="100" />;
     } else {
-      const filteredLoggerInfos = this.state.loggerInfos.filter(this.loggerInfoFilter);
-      filteredLoggerTableRows = filteredLoggerInfos.map(this.getLoggerInfoTableRow);
+      const filteredLessonGradeInfos = this.state.lessonGradeInfos.filter(this.lessonGradeInfoFilter);
+      filteredLessonGradeRows = filteredLessonGradeInfos.map(this.getLessonGradeInfoTableRow);
     }
     return (
       <Col sm="9" md="10">
@@ -412,22 +486,14 @@ class LessonGrades extends Component {
             <th>term</th>
             <th>session</th>
             <th>year</th>
-            <th>question</th>
             <th>lesson</th>
-            <th>startTime</th>
-            <th>endTime</th>
-            <th>numCompiles</th>
-            <th>numErrorFreeCompiles</th>
-            <th>numRuns</th>
-            <th>numHints</th>
-            <th>totalAttempts</th>
-            <th>correctAttempts</th>
-            <th>gotAnswerCorrectBeforeDueDate</th>
-            <th>timeOfCorrectAnswer</th>
+            <th>numQuestionsAttempted</th>
+            <th>numQuestionsCorrect</th>
+            <th>numQuestionsInLesson</th>
           </tr>
           </thead>
           <tbody>
-          {filteredLoggerTableRows}
+          {filteredLessonGradeRows}
           </tbody>
         </table>
       </Col>
