@@ -470,26 +470,26 @@ class LessonGrades extends Component {
         </div>
 
         <ReactHTMLTableToExcel
-                    id="loggers-table-xls-button"
+                    id="lesson-grades-table-xls-button"
                     className=""
-                    table="loggers-table"
-                    filename="allStudentLoggers"
-                    sheet="loggers"
+                    table="lesson-grades-table"
+                    filename="StudentLessonGrades"
+                    sheet="lessongrades"
                     buttonText="Download as XLS"/>
-        <table border="1" id="loggers-table">
+        <table border="1" id="lesson-grades-table">
         <thead>
           <tr>
             <th>user</th>
             <th>studentId</th>
-            <th>student#</th>
+            <th>student #</th>
             <th>section</th>
             <th>term</th>
             <th>session</th>
             <th>year</th>
             <th>lesson</th>
-            <th>numQuestionsAttempted</th>
-            <th>numQuestionsCorrect</th>
-            <th>numQuestionsInLesson</th>
+            <th># of questions attempted</th>
+            <th># of questions correct</th>
+            <th># questions in lesson</th>
           </tr>
           </thead>
           <tbody>
