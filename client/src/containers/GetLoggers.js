@@ -55,8 +55,7 @@ class GetLoggers extends Component {
     lessonFilter: (lesson: string) => boolean,
     lessonFilterString: string,
     lessonFilterRegexErrorMsg: string,
-    loggerInfos: Array<LoggerInfo>,
-    filteredLoggerInfos: Array<LoggerInfo>
+    loggerInfos: Array<LoggerInfo>
   }
 
   constructor(props) {
@@ -84,8 +83,7 @@ class GetLoggers extends Component {
       lessonFilter: lesson => lesson.match(new RegExp("")),
       lessonFilterString: "",
       lessonFilterRegexErrorMsg: null,
-      loggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null),
-      filteredLoggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null)
+      loggerInfos: (this.props.loggers.fetched ? this.props.loggers.loggers.map(this.getLoggerInfo) : null)
     };
   }
 
@@ -102,14 +100,10 @@ class GetLoggers extends Component {
       console.log("Fetching users");
       this.props.fetchUsers();
     }
-    if (this.state.loggerInfos === null || this.state.filteredLoggerInfos === null) {
+    if (this.state.loggerInfos === null) {
       if (this.props.loggers.fetched && !prevProps.loggers.fetched) {
         // Loggers are now available
-        const newLoggerInfos = this.props.loggers.loggers.map(this.getLoggerInfo);
-        this.setState({
-          loggerInfos: newLoggerInfos,
-          filteredLoggerInfos: newLoggerInfos.filter(this.loggerInfoFilter)
-        });
+        this.setState({ loggerInfos: this.props.loggers.loggers.map(this.getLoggerInfo) });
       }
     }
   }
@@ -161,8 +155,6 @@ class GetLoggers extends Component {
         userFilterString: newUserFilterString,
         userFilter: user => user === newUserFilterString.substring(1),
         userFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -171,8 +163,6 @@ class GetLoggers extends Component {
           userFilterString: newUserFilterString,
           userFilter: user => user.match(newUserRegexFilter),
           userFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -191,8 +181,6 @@ class GetLoggers extends Component {
         sectionFilterString: newSectionFilterString,
         sectionFilter: section => section === newSectionFilterString.substring(1),
         sectionFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -201,8 +189,6 @@ class GetLoggers extends Component {
           sectionFilterString: newSectionFilterString,
           sectionFilter: section => section.match(newSectionRegexFilter),
           sectionFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -221,8 +207,6 @@ class GetLoggers extends Component {
         termFilterString: newTermFilterString,
         termFilter: term => term === newTermFilterString.substring(1),
         termFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -231,8 +215,6 @@ class GetLoggers extends Component {
           termFilterString: newTermFilterString,
           termFilter: term => term.match(newTermRegexFilter),
           termFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -251,8 +233,6 @@ class GetLoggers extends Component {
         sessionFilterString: newSessionFilterString,
         sessionFilter: session => session === newSessionFilterString.substring(1),
         sessionFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -261,8 +241,6 @@ class GetLoggers extends Component {
           sessionFilterString: newSessionFilterString,
           sessionFilter: session => session.match(newSessionRegexFilter),
           sessionFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -281,8 +259,6 @@ class GetLoggers extends Component {
         yearFilterString: newYearFilterString,
         yearFilter: year => year === newYearFilterString.substring(1),
         yearFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -291,8 +267,6 @@ class GetLoggers extends Component {
           yearFilterString: newYearFilterString,
           yearFilter: year => year.match(newYearRegexFilter),
           yearFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -311,8 +285,6 @@ class GetLoggers extends Component {
         questionFilterString: newQuestionFilterString,
         questionFilter: question => question === newQuestionFilterString.substring(1),
         questionFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -321,8 +293,6 @@ class GetLoggers extends Component {
           questionFilterString: newQuestionFilterString,
           questionFilter: question => question.match(newQuestionRegexFilter),
           questionFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -341,8 +311,6 @@ class GetLoggers extends Component {
         lessonFilterString: newLessonFilterString,
         lessonFilter: lesson => lesson === newLessonFilterString.substring(1),
         lessonFilterRegexErrorMsg: null
-      }, () => {
-        this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
       });
     } else {
       try {
@@ -351,8 +319,6 @@ class GetLoggers extends Component {
           lessonFilterString: newLessonFilterString,
           lessonFilter: lesson => lesson.match(newLessonRegexFilter),
           lessonFilterRegexErrorMsg: null
-        }, () => {
-          this.setState({ filteredLoggerInfos: this.state.loggerInfos.filter(this.loggerInfoFilter) });
         });
       } catch (err) {
         this.setState({
@@ -401,10 +367,11 @@ class GetLoggers extends Component {
 
   render() {
     let filteredLoggerTableRows;
-    if (this.state.loggerInfos === null || this.state.filteredLoggerInfos === null) {
+    if (this.state.loggerInfos === null) {
       filteredLoggerTableRows = <Progress animated color="muted" value="100" />;
     } else {
-      filteredLoggerTableRows = this.state.filteredLoggerInfos.map(this.getLoggerInfoTableRow);
+      const filteredLoggerInfos = this.state.loggerInfos.filter(this.loggerInfoFilter);
+      filteredLoggerTableRows = filteredLoggerInfos.map(this.getLoggerInfoTableRow);
     }
     return (
       <Col sm="9" md="10">
