@@ -42,9 +42,6 @@ class LessonGrades extends Component {
     yearFilter: (year: string) => boolean,
     yearFilterString: string,
     yearFilterRegexErrorMsg: string,
-    questionFilter: (question: string) => boolean,
-    questionFilterString: string,
-    questionFilterRegexErrorMsg: string,
     lessonFilter: (lesson: string) => boolean,
     lessonFilterString: string,
     lessonFilterRegexErrorMsg: string,
@@ -70,9 +67,6 @@ class LessonGrades extends Component {
       yearFilter: year => year.match(new RegExp("")),
       yearFilterString: "",
       yearFilterRegexErrorMsg: null,
-      questionFilter: question => question.match(new RegExp("")),
-      questionFilterString: "",
-      questionFilterRegexErrorMsg: null,
       lessonFilter: lesson => lesson.match(new RegExp("")),
       lessonFilterString: "",
       lessonFilterRegexErrorMsg: null,
@@ -270,32 +264,6 @@ class LessonGrades extends Component {
     }
   }
 
-  onQuestionFilterChange = (event) => {
-    const newQuestionFilterString = event.target.value;
-    const isExactMatch = newQuestionFilterString.length > 0 && newQuestionFilterString[0] === "=";
-    if (isExactMatch) {
-      this.setState({
-        questionFilterString: newQuestionFilterString,
-        questionFilter: question => question === newQuestionFilterString.substring(1),
-        questionFilterRegexErrorMsg: null
-      });
-    } else {
-      try {
-        let newQuestionRegexFilter = new RegExp(newQuestionFilterString);
-        this.setState({
-          questionFilterString: newQuestionFilterString,
-          questionFilter: question => question.match(newQuestionRegexFilter),
-          questionFilterRegexErrorMsg: null
-        });
-      } catch (err) {
-        this.setState({
-          questionFilterString: newQuestionFilterString,
-          questionFilterRegexErrorMsg: "Invalid Regex: " + err
-        });
-      }
-    }
-  }
-
   onLessonFilterChange = (event) => {
     const newLessonFilterString = event.target.value;
     const isExactMatch = newLessonFilterString.length > 0 && newLessonFilterString[0] === "=";
@@ -354,7 +322,6 @@ class LessonGrades extends Component {
             this.state.termFilter(loggerInfo.userTerm) &&
             this.state.sessionFilter(loggerInfo.userSession) &&
             this.state.yearFilter(loggerInfo.userYear) &&
-            this.state.questionFilter(loggerInfo.questionTitleOrId) &&
             this.state.lessonFilter(loggerInfo.lessonTitle));
   }
 
@@ -368,7 +335,7 @@ class LessonGrades extends Component {
     }
     return (
       <Col sm="9" md="10">
-        <h2 className="page-header">Loggers</h2>
+        <h2 className="page-header">Lesson Grades</h2>
         <div style={{marginBottom: "10px", marginTop: "15px"}}>
           <span style={{marginRight: "10px"}}>Filters:</span>
           <Tooltip placement="top" target="userFilterInput" isOpen={this.state.userFilterRegexErrorMsg ? true : false}>{this.state.userFilterRegexErrorMsg}</Tooltip>
@@ -411,14 +378,6 @@ class LessonGrades extends Component {
             value={this.state.yearFilterString}
             placeholder="Filter by Year"
             style={{width: "130px", display: "inline", marginRight: "5px"}}/>
-          <Tooltip placement="top" target="questionFilterInput" isOpen={this.state.questionFilterRegexErrorMsg ? true : false}>{this.state.questionFilterRegexErrorMsg}</Tooltip>
-          <Input
-            type="text"
-            id="questionFilterInput"
-            onChange={this.onQuestionFilterChange}
-            value={this.state.questionFilterString}
-            placeholder="Filter by Question"
-            style={{width: "160px", display: "inline", marginRight: "5px"}}/>
           <Tooltip placement="top" target="lessonFilterInput" isOpen={this.state.lessonFilterRegexErrorMsg ? true : false}>{this.state.lessonFilterRegexErrorMsg}</Tooltip>
           <Input
             type="text"
