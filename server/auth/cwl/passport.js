@@ -18,7 +18,7 @@ const memberOfInstructors =
   "cn=instructors,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
-const memberOfAPSC160StudentsRegex = /cn=apsc_160_[A-KM-SU-Za-km-su-z\d]\w+_\w+,ou=apsc,ou=ubc,ou=academic,dc=id,dc=ubc,dc=ca/i;
+const memberOfAPSC160StudentsRegex = /cn=apsc_160_[A-KM-SU-Za-km-su-z\d][A-KM-SU-Za-km-su-z\d]\w_\w+,ou=apsc,ou=ubc,ou=academic,dc=id,dc=ubc,dc=ca/i;
 
 passport.serializeUser((user, done) => {
   //console.log("serialize user", user);
