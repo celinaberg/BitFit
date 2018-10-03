@@ -211,10 +211,16 @@ class TestQuestion extends Component {
     });
     const runOutput = await runRequest.json();
     if (runOutput.stdout === this.state.logger.expectedOutput) {
+      // Correct answer
       newLogger.correctAttempts = this.state.logger.correctAttempts + 1;
-      if (!questionDueDate || (answerTime < questionDueDate)) {
-        newLogger.gotAnswerCorrectBeforeDueDate = true;
+      if (!newLogger.timeOfCorrectAnswer) {
+        // Set the time of correct answer to now, if this is the student's first correct attempt
         newLogger.timeOfCorrectAnswer = answerTime;
+      }
+      if (!questionDueDate || (answerTime < questionDueDate)) {
+        // Either there is no due date, or the due date has not passed yet.
+        // Either way, they get the points.
+        newLogger.gotAnswerCorrectBeforeDueDate = true;
       }
       this.setState({ checkAnswer: true });
     } else {
