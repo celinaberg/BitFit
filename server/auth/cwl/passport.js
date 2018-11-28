@@ -18,6 +18,15 @@ const memberOfInstructors =
   "cn=instructors,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
+
+// ***** Change these next two variables as needed for the current term *****
+const currentAPSC160Sections = ["101", "102", "VE1", "VE2"];
+const currentAPSC160Session = "2018W";
+
+const memberOfAPSC160StudentsRegexPatterns = currentAPSC160Sections.map(section => {
+  const regexpString = "cn=apsc_160_" + section + "_" + currentAPSC160Session + ",ou=apsc,ou=ubc,ou=academic,dc=id,dc=ubc,dc=ca";
+  return new RegExp(regexpString, "i");
+});
 const memberOfAPSC160StudentsRegex = /cn=apsc_160_[A-KM-SU-Za-km-su-z\d][A-KM-SU-Za-km-su-z\d]\w_\w+,ou=apsc,ou=ubc,ou=academic,dc=id,dc=ubc,dc=ca/i;
 
 passport.serializeUser((user, done) => {
@@ -84,7 +93,13 @@ const samlStrategy = new SamlStrategy(
         role = "teaching-assistant";
       } else {
         // Check if `groupMembership` contains an APSC 160 student LDAP string
-        let studentLDAPstring = profile[groupMembership].find(s => memberOfAPSC160StudentsRegex.test(s));
+        let studentLDAPstring = null;
+        for (let pattern of memberOfAPSC160StudentsRegexPatterns) {
+          let studentLDAPstring = profile[groupMembership].find(s => pattern.test(s));
+          if (studentLDAPstring) {
+            break;
+          }
+        }
         if (!studentLDAPstring) {
           // Unauthorized to access app
           return done(null, false, {
