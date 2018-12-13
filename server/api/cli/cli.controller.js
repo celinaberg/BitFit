@@ -111,7 +111,7 @@ export async function compileLogger(req: $Request, res: $Response) {
       });
     }
     //console.log(logger);
-    const dirName = "users/" + userId + "/" + loggerId;
+    const dirName = "../users/" + userId + "/" + loggerId;
     await exec("mkdir -p " + dirName);
     const escapedCode = jsesc(logger.code, {
       wrap: true
@@ -144,7 +144,7 @@ export async function runLogger(req: $Request, res: $Response) {
         error: `No logger found;`
       });
     }
-    const dirName = "users/" + userId + "/" + loggerId;
+    const dirName = "../users/" + userId + "/" + loggerId;
     const timeoutWrapper = `${timeoutCmd} ${timeLimitInSeconds} ./${dirName}/${logger.className} || if [ $? -eq 124 ]; then echo "Timed Out!" && exit 124; else exit 1; fi`
     const cmd = runExecutablesAsCompedExecUser ? `sudo -u comped-exec ${timeoutWrapper}` : timeoutWrapper;
     const result = await exec(cmd);
