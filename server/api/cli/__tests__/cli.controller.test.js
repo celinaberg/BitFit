@@ -41,7 +41,7 @@ const goodCodeCompileResponseJSON = {
 const badCodeCompileResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /Error: Command failed: gcc "users\/\w+\/\w+\/\w+\.c" -o "users\/\w+\/\w+\/\w+" -lm/
+  stderr: /Error: Command failed: gcc "\.\.\/users\/\w+\/\w+\/\w+\.c" -o "\.\.\/users\/\w+\/\w+\/\w+" -lm/
   // stderr: /users\/\w+\/\w+\/BadCode\.c:\d+:\d+: error: unknown type name/
 };
 
@@ -56,7 +56,7 @@ const goodCodeRunResponseJSON = {
 const badCodeRunResponseJSON = {
   error: true,
   stdout: "",
-  stderr: /timeout: failed to run command ‘\.\/users\/\w+\/\w+\/BadCode’: No such file or directory/
+  stderr: /timeout: failed to run command ‘\.\/\.\.\/users\/\w+\/\w+\/BadCode’: No such file or directory/
 };
 
 const infiniteLoopCodeRunResponseJSON = {
