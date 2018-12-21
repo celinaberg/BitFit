@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SESSION=$1
+
+mongoexport --db its110 --collection loggers --out /home/comped/archive/$SESSION/loggers.csv --type csv --fields _id,user,question,startTime,endTime,numCompiles,numErrorFreeCompiles,numRums,numHints,numHintsDisplayed,totalAttempts,correctAttempts,className,code,expectedOutput,gotAnswerCorrectBeforeDueDate,timeOfCorrectAnswer
+mongoexport --db its110 --collection users --out /home/comped/archive/$SESSION/users.csv --type csv --fields _id,uid,firstName,lastName,displayName,role,studentNumber,employeeNumber,section,term,session,year
