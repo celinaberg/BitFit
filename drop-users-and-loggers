@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mongo its110 --eval "db.loggers.remove({});"
+mongo its110 --eval "db.users.remove({});"
