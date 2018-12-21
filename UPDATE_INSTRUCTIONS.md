@@ -112,4 +112,14 @@ From Michael Sanderson:
 
 ### Archive past data
 
-Lots of database objects are stored each term, and this can make some rendering on the website very slow. To avoid this, archive data at the end of each term by executing
+Lots of database objects are stored each term, particularly in the ```users``` and ```loggers``` collections, and this can make some rendering on the website extremely slow. To avoid this, archive data at the end of each term by executing the ```/home/comped/BitFit/archive-users-and-loggers``` script:
+- ```ssh comped@comped.cs.ubc.ca```
+- ```cd /home/comped/BitFit```
+- ```./archive-users-and-loggers <session>```, where ```<session>``` should be replaced by whichever session you're archiving data for
+  - E.g. ```./archive-users-and-loggers 2018W1``` to archive the users and loggers from 2018 Winter Term 1.
+- Double-check that CSV archive files named ```loggers.csv``` and ```users.csv``` were created in ```/home/comped/archive/<session>``` as desired: ```ls /home/comped/archive/<session>```
+- ```./drop-users-and-loggers``` to remove all users and loggers from the database
+  - This **CANNOT** be undone so use with caution
+
+
+That should be all! :)
