@@ -20,7 +20,7 @@ const memberOfTeachingAssistants =
   "cn=teaching-assistants,ou=comped.cs.ubc.ca,ou=applications,ou=cpsc-ubcv,ou=clients,dc=id,dc=ubc,dc=ca";
 
 // ***** Change these next two variables as needed for the current term *****
-const currentAPSC160Sections = [];
+const currentAPSC160Sections = ["203", "204"];
 const currentAPSC160Session = "2018W";
 
 const memberOfAPSC160StudentsRegexPatterns = currentAPSC160Sections.map(section => {
