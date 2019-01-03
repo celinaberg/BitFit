@@ -76,7 +76,7 @@ const currentAPSC160Session = "2018W";
 
 ```currentAPSC160Session``` should be a string representing the current UBC session. Change it as needed for the current term, e.g. ```"2018W"``` for the 2018 Winter session, or ```"2019S"``` for the 2019 Summer session.
 
-Once you've changed those two lines of code as needed, make sure that you ```commit``` and ```push``` these changes to the ```master``` branch on GitHub, and then re-build and re-start the project as described earlier in this documentation.
+**Once you've changed those two lines of code as needed, make sure that you ```commit``` and ```push``` these changes to the ```master``` branch on GitHub, and then re-build and re-start the project as described earlier in this documentation.**
 
 If you're new to this stuff (e.g. GitHub), just follow these steps:
 - SSH into the VM: ```ssh comped@comped.cs.ubc.ca```
@@ -97,6 +97,8 @@ If you're new to this stuff (e.g. GitHub), just follow these steps:
 - ```git add -A``` to ready all the files listed by ```git status``` to be committed to GitHub
 - ```git commit -m "Update current session and list of current APSC 160 sections"``` to commit your changes with a descriptive message
 - ```git push``` to push your commit to GitHub
+- Then re-build and re-start (in that order) the project as described under _Start up the comped server_ above.
+  - If the server is already up after re-building, take it down and then start it up again to re-start it.
 
 
 
