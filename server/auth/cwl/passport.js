@@ -95,7 +95,7 @@ const samlStrategy = new SamlStrategy(
         // Check if `groupMembership` contains an APSC 160 student LDAP string
         let studentLDAPstring = null;
         for (let pattern of memberOfAPSC160StudentsRegexPatterns) {
-          let studentLDAPstring = profile[groupMembership].find(s => pattern.test(s));
+          studentLDAPstring = profile[groupMembership].find(s => pattern.test(s));
           if (studentLDAPstring) {
             break;
           }
